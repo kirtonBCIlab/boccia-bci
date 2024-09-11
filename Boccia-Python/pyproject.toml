@@ -1,0 +1,37 @@
+[project]
+name = "Boccia"
+version = "0.0.1"
+description = "Python back end for Boccia"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+	"bci-essentials>=0.2.0",
+]
+
+[tool.setuptools.packages.find]
+exclude = [
+	"examples*",
+	"docs*"
+]
+
+[tool.black]
+py311 = true
+line-length = 120
+include = '\.pyi?$'
+exclude = '''
+/(
+	\.git
+	| \.hg
+	| \.mypy_cache
+	| \.tox
+	| \.venv
+	| _build
+	| buck-out
+	| build
+	| dist
+
+	# The following are specific to Black, you probably don't want those.
+	| blib2to3
+	| tests/data
+)/
+'''
