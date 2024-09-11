@@ -13,7 +13,7 @@ public class BocciaModel : Singleton<BocciaModel>
     private BocciaData bocciaData = new BocciaData();
 
     // BocciaData is accessed using read only properties and mutated with functions
-    public Color CubeColor => bocciaData.CubeColor;
+    public Color RampColor => bocciaData.RampColor;
     public bool IsRotating => bocciaData.IsRotating;
     public Vector3 RotationRates => bocciaData.RotationRates;
 
@@ -25,37 +25,21 @@ public class BocciaModel : Singleton<BocciaModel>
         // If the model is uninitialized, set it up
         if (!bocciaData.WasInitialized)
         {
-            SetCubeColor("Green");
             ResetRotations();
+            bocciaData.RampColor = Color.white;
             bocciaData.WasInitialized = true;
         }
         SendChangeEvent();
     }
 
 
-    // cube setup
-    public string CubeColorName => CubeColors.FirstOrDefault(item => item.Value == CubeColor).Key;
-
-    public List<string> CubeColorNames => CubeColors.Keys.ToList<string>();
-
-    public void SetCubeColor(string colorName)
+    // Model mutators
+    public void RandomColor()
     {
-        if (CubeColors.ContainsKey(colorName))
-        {
-            bocciaData.CubeColor = CubeColors[colorName];
-            SendChangeEvent();
-        }
+        bocciaData.RampColor = Random.ColorHSV();
+        SendChangeEvent();
     }
 
-    private static readonly Dictionary<string, Color> CubeColors = new Dictionary<string, Color>
-    {
-        {"Blue", Color.blue},
-        {"Green", Color.green},
-        {"Purple", Color.magenta}
-    };
-
-
-    // game control
     public void StartRotation()
     {
         bocciaData.IsRotating = true;

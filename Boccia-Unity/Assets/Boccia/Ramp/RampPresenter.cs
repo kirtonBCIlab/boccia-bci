@@ -16,6 +16,9 @@ public class RampPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
         BocciaModel.WasChanged += ModelChanged;
+
+        // initialize ramp to saved data
+        ModelChanged();
     }
 
 
@@ -26,6 +29,7 @@ public class RampPresenter : MonoBehaviour
 
     void Update()
     {
+        // For high rate changes, we can poll the model
         if (model?.IsRotating ?? false)
         {
             ramp.transform.Rotate(model.RotationRates * Time.deltaTime);
@@ -34,8 +38,8 @@ public class RampPresenter : MonoBehaviour
 
     private void ModelChanged()
     {
-        // update the cube color
-        ramp.GetComponent<Renderer>().material.color = model.CubeColor;
+        // For lower rate changes, update when model sends change event
+        ramp.GetComponent<Renderer>().material.color = model.RampColor;
     }
 }
 

@@ -8,6 +8,7 @@ public class PlayPresenter : MonoBehaviour
     // TODO - This is a dummy example, replace with real ramp prefab object, etc
     public Button rotateStartButton;
     public Button rotateStopButton;
+    public Button colorButton;
 
     private BocciaModel model;
 
@@ -21,6 +22,7 @@ public class PlayPresenter : MonoBehaviour
         // connect buttons to model
         rotateStartButton.onClick.AddListener(model.StartRotation);
         rotateStopButton.onClick.AddListener(model.StopRotation);
+        colorButton.onClick.AddListener(model.RandomColor);
     }
 
 

@@ -7,7 +7,7 @@ using UnityEngine;
 public class BocciaData
 {
     public bool WasInitialized;
-    public Color CubeColor;
+    public Color RampColor;
     public bool IsRotating;
     public Vector3 RotationRates;
 }
