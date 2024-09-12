@@ -8,8 +8,9 @@ public class RampPresenter : MonoBehaviour
 {
     // TODO - This is a dummy example, replace with real ramp prefab object, etc
     public GameObject ramp;
-    private BocciaModel model;
+    public GameObject ball;
 
+    private BocciaModel model;
 
     void Start()
     {
@@ -39,7 +40,7 @@ public class RampPresenter : MonoBehaviour
     private void ModelChanged()
     {
         // For lower rate changes, update when model sends change event
-        ramp.GetComponent<Renderer>().material.color = model.RampColor;
+        ball.GetComponent<Renderer>().material.color = model.BallColor;
     }
 }
 
