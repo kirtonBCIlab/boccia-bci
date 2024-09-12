@@ -71,6 +71,12 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
 
+    // Navigation control
+
+    // ShowGameOptions()
+    // ShowBciOptions()
+    // BackPressed()
+
     // Game control
     public void RandomColor()
     {
@@ -80,6 +86,17 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void RotateLeft() => rampController.RotateLeft();
     public void RotateRight() => rampController.RotateRight();
+
+
+    // BCI control
+
+    // StartTraining()
+    // StopTraining()
+
+
+    // Ramp Hardware
+    // SetSerialPort(name)
+    // CalibrateRamp(part)
 
 
     // Bind replaces the current gameData with another one.  This is used
