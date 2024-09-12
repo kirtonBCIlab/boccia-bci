@@ -5,32 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public enum BocciaScreen
-{
-    Start,
-    GameOptions,
-    BciOptions,
-    RampSetup,
-    PlayMenu,
-    TrainView,
-    RampView,
-    QuitGame,
-}
-
-public enum BocciaGameMode
-{
-    Start,
-    Train,
-    Live,
-    Simulated,
-}
-
-public enum BocciaBallState
-{
-    Ready,
-    Released,
-}
-
 // BocciaModel implements the "business logic" for the game.  The BocciaModel 
 // exposes state to the application via read only properties.  The state is changed
 // through functions, ex: BocciaModel.doSomething().  Persistent state is stored a 
@@ -45,8 +19,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Game
     public BocciaGameMode GameMode;
-    public float RampRotation;
-    public float RampElevation;
+    public float RampRotation => rampController.Rotation;
+    public float RampElevation => rampController.Elevation;
     public BocciaBallState BallState;
 
     public Color BallColor => bocciaData.BallColor;
@@ -76,6 +50,10 @@ public class BocciaModel : Singleton<BocciaModel>
     public static event System.Action WasChanged;
 
 
+    // Hardware interface
+    // TODO - create this based on game mode (live or sim)
+    private RampController rampController = new SimulatedRamp();
+
     public void Start()
     {
         // If the model is uninitialized, set it up
@@ -88,6 +66,7 @@ public class BocciaModel : Singleton<BocciaModel>
             
             bocciaData.WasInitialized = true;
         }
+
         SendChangeEvent();
     }
 
@@ -99,15 +78,8 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
-    public void RotateLeft()
-    {
-        RampRotation -= 10.0f;
-    }
-
-    public void RotateRight()
-    {
-        RampRotation += 10.0f;
-    }
+    public void RotateLeft() => rampController.RotateLeft();
+    public void RotateRight() => rampController.RotateRight();
 
 
     // Bind replaces the current gameData with another one.  This is used
@@ -133,8 +105,6 @@ public class BocciaModel : Singleton<BocciaModel>
     private void ResetGameState()
     {
         GameMode = BocciaGameMode.Start;
-        RampRotation = 0.0f;
-        RampElevation = 0.0f;
         BallState = BocciaBallState.Ready;
 
         bocciaData.BallColor = Color.blue;
