@@ -20,12 +20,12 @@ public class BocciaData
 
     // Game
     public Color BallColor;
-    public Double ElevationPrecision;
-    public Double ElevationRange;
-    public Double ElevationSpeed;
-    public Double RotationPrecision;
-    public Double RotationRange;
-    public Double RotationSpeed;
+    public float ElevationPrecision;
+    public float ElevationRange;
+    public float ElevationSpeed;
+    public float RotationPrecision;
+    public float RotationRange;
+    public float RotationSpeed;
 
     // hotkeys?
 
@@ -42,10 +42,5 @@ public class BocciaData
 
     // Hardware
     public string SerialPortName;
-
-    // TODO - remove
-    public bool IsRotating;
-    public Vector3 RotationRates;
-
 }
 

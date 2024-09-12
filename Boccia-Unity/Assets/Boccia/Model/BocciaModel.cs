@@ -45,17 +45,17 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Game
     public BocciaGameMode GameMode;
-    public Double RampRotation;
-    public Double RampHeight;
+    public float RampRotation;
+    public float RampElevation;
     public BocciaBallState BallState;
 
     public Color BallColor => bocciaData.BallColor;
-    public Double ElevationPrecision => bocciaData.ElevationPrecision;
-    public Double ElevationRange => bocciaData.ElevationRange;
-    public Double ElevationSpeed => bocciaData.ElevationSpeed;
-    public Double RotationPrecision => bocciaData.RotationPrecision;
-    public Double RotationRange => bocciaData.RotationRange;
-    public Double RotationSpeed => bocciaData.RotationSpeed;
+    public float ElevationPrecision => bocciaData.ElevationPrecision;
+    public float ElevationRange => bocciaData.ElevationRange;
+    public float ElevationSpeed => bocciaData.ElevationSpeed;
+    public float RotationPrecision => bocciaData.RotationPrecision;
+    public float RotationRange => bocciaData.RotationRange;
+    public float RotationSpeed => bocciaData.RotationSpeed;
 
     // BCI
     public bool BciTrained;
@@ -76,19 +76,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public static event System.Action WasChanged;
 
 
-    // TODO - remove, these are here just for example
-    public bool IsRotating => bocciaData.IsRotating;
-    public Vector3 RotationRates => bocciaData.RotationRates;
-
-
     public void Start()
     {
         // If the model is uninitialized, set it up
         if (!bocciaData.WasInitialized)
         {
-            // TODO - remove
-            ResetRotations();
-
             ResetNavigationState();
             ResetGameState();
             ResetBciState();
@@ -100,26 +92,21 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
 
-    // Model mutators
+    // Game control
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();
         SendChangeEvent();
     }
 
-    public void StartRotation()
+    public void RotateLeft()
     {
-        bocciaData.IsRotating = true;
+        RampRotation -= 10.0f;
     }
 
-    public void StopRotation()
+    public void RotateRight()
     {
-        bocciaData.IsRotating = false;
-    }
-
-    public void ResetRotations()
-    {
-        bocciaData.RotationRates = UnityEngine.Random.rotation.eulerAngles;
+        RampRotation += 10.0f;
     }
 
 
@@ -131,6 +118,8 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
+
+    // Helpers
     private void SendChangeEvent()
     {
         WasChanged?.Invoke();
@@ -144,17 +133,17 @@ public class BocciaModel : Singleton<BocciaModel>
     private void ResetGameState()
     {
         GameMode = BocciaGameMode.Start;
-        RampRotation = 0.0;
-        RampHeight = 0.0;
+        RampRotation = 0.0f;
+        RampElevation = 0.0f;
         BallState = BocciaBallState.Ready;
 
         bocciaData.BallColor = Color.blue;
-        bocciaData.ElevationPrecision = 0.0;
-        bocciaData.ElevationRange = 0.0;
-        bocciaData.ElevationSpeed = 0.0;
-        bocciaData.RotationPrecision = 0.0;
-        bocciaData.RotationRange = 0.0;
-        bocciaData.RotationSpeed = 0.0;
+        bocciaData.ElevationPrecision = 0.0f;
+        bocciaData.ElevationRange = 0.0f;
+        bocciaData.ElevationSpeed = 0.0f;
+        bocciaData.RotationPrecision = 0.0f;
+        bocciaData.RotationRange = 0.0f;
+        bocciaData.RotationSpeed = 0.0f;
 
     }
 

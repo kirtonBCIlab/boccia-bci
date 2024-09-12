@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -30,11 +31,9 @@ public class RampPresenter : MonoBehaviour
 
     void Update()
     {
-        // For high rate changes, we can poll the model
-        if (model?.IsRotating ?? false)
-        {
-            ramp.transform.Rotate(model.RotationRates * Time.deltaTime);
-        }
+        // Ramp is a digital twin, so we just match visualization with model data
+        ramp.transform.rotation = Quaternion.AngleAxis(model.RampRotation, Vector3.up);
+        ramp.transform.rotation *= Quaternion.AngleAxis(model.RampElevation, Vector3.right);
     }
 
     private void ModelChanged()

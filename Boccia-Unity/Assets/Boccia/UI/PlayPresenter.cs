@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+// This is an example UI presenter.  This could be broken into several smaller scripts
+// that each reference their own local UI element.  Typically there's interaction between
+// UI elements, so can be more convenient to keep the logic in a single presenter.
 public class PlayPresenter : MonoBehaviour
 {
     // TODO - This is a dummy example, replace with real ramp prefab object, etc
-    public Button rotateStartButton;
-    public Button rotateStopButton;
+    public Button rotateLeftButton;
+    public Button rotateRightButton;
     public Button colorButton;
 
     private BocciaModel model;
@@ -20,8 +24,8 @@ public class PlayPresenter : MonoBehaviour
         BocciaModel.WasChanged += ModelChanged;
 
         // connect buttons to model
-        rotateStartButton.onClick.AddListener(model.StartRotation);
-        rotateStopButton.onClick.AddListener(model.StopRotation);
+        rotateLeftButton.onClick.AddListener(model.RotateLeft);
+        rotateRightButton.onClick.AddListener(model.RotateRight);
         colorButton.onClick.AddListener(model.RandomColor);
     }
 
@@ -37,8 +41,9 @@ public class PlayPresenter : MonoBehaviour
 
     private void ModelChanged()
     {
-        // update the view accorting to new model state
-        // in this case, there's nothing to update as there's just two buttons
+        // For a presenter, this is usually used to refresh the UI to reflect the
+        // state of the model (UI does not store state, it just provides a way
+        // to view and change it)
     }
 
 }
