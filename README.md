@@ -32,4 +32,3 @@ If backend won't exit properly, kill the job
 kill %1
 ```
 
-This is a test
