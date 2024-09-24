@@ -8,6 +8,11 @@ public interface RampController
     public void RotateLeft();
     public void RotateRight();
 
+    public void MoveUp();
+    public void MoveDown();
+
+    public void ResetRampPosition();
+
     // add remaining methods like calibration, test, reset
 }
 

@@ -16,28 +16,42 @@ public class SimulatedRamp: RampController
     public SimulatedRamp()
     {
         Rotation = 0.0f;
-        Elevation = 0.0f;
+        Elevation = 50.0f;
     }
 
     public void RotateLeft()
     {
-        RotateRamp(-30.0f);
+        RotateRamp(-6.0f);
     }
 
     public void RotateRight()
     {
-        RotateRamp(30.0f);
+        RotateRamp(6.0f);
     }
 
-    // This task will produce the desired change in rotation over a few steps
+    public void MoveUp()
+    {
+        ChangeElevation(1.0f);
+    }
+
+    public void MoveDown()
+    {
+        ChangeElevation(-1.0f);
+    }
+
     private async void RotateRamp(float rotationDegrees)
     {
-        float startRotation = Rotation;
-        float rotationStep = Math.Sign(rotationDegrees) * 1.0f;
-        while(Math.Abs(Rotation - startRotation) <= Math.Abs(rotationDegrees))
-        {
-            await Task.Delay(100);
-            Rotation += rotationStep;
-        }
+        Rotation += rotationDegrees;
+    }
+
+    private async void ChangeElevation(float elevationPercent)
+    {
+        Elevation += elevationPercent;
+    }
+
+    public async void ResetRampPosition()
+    {
+        Rotation = 0.0f;
+        Elevation = 50.0f;
     }
 }

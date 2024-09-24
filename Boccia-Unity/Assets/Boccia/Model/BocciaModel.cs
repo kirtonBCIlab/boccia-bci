@@ -86,6 +86,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void RotateLeft() => rampController.RotateLeft();
     public void RotateRight() => rampController.RotateRight();
+    public void MoveUp() => rampController.MoveUp();
+    public void MoveDown() => rampController.MoveDown();
+    public void ResetRampPosition() => rampController.ResetRampPosition();
 
 
     // BCI control
