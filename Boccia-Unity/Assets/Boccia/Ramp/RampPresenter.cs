@@ -29,15 +29,12 @@ public class RampPresenter : MonoBehaviour
         BocciaModel.WasChanged -= ModelChanged;
     }
 
-    void Update()
+    private void ModelChanged()
     {
         // Ramp is a digital twin, so we just match visualization with model data
         ramp.transform.rotation = Quaternion.AngleAxis(model.RampRotation, Vector3.up);
         ramp.transform.rotation *= Quaternion.AngleAxis(model.RampElevation, Vector3.right);
-    }
 
-    private void ModelChanged()
-    {
         // For lower rate changes, update when model sends change event
         ball.GetComponent<Renderer>().material.color = model.BallColor;
     }
