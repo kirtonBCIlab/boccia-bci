@@ -49,7 +49,6 @@ public class BocciaModel : Singleton<BocciaModel>
     // Change events
     public static event System.Action WasChanged;
 
-
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
     private RampController rampController = new SimulatedRamp();
@@ -78,15 +77,14 @@ public class BocciaModel : Singleton<BocciaModel>
     // BackPressed()
 
     // Game control
+    public void RotateBy(float degrees) => rampController.RotateBy(degrees);
+    public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
+
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();
         SendChangeEvent();
     }
-
-    public void RotateLeft() => rampController.RotateLeft();
-    public void RotateRight() => rampController.RotateRight();
-
 
     // BCI control
 

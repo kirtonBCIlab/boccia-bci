@@ -19,25 +19,13 @@ public class SimulatedRamp: RampController
         Elevation = 0.0f;
     }
 
-    public void RotateLeft()
+    public void RotateBy(float degrees)
     {
-        RotateRamp(-30.0f);
+        Rotation += degrees;
     }
 
-    public void RotateRight()
+    public void ElevateBy(float elevation)
     {
-        RotateRamp(30.0f);
-    }
-
-    // This task will produce the desired change in rotation over a few steps
-    private async void RotateRamp(float rotationDegrees)
-    {
-        float startRotation = Rotation;
-        float rotationStep = Math.Sign(rotationDegrees) * 1.0f;
-        while(Math.Abs(Rotation - startRotation) <= Math.Abs(rotationDegrees))
-        {
-            await Task.Delay(100);
-            Rotation += rotationStep;
-        }
+        Elevation += elevation;
     }
 }
