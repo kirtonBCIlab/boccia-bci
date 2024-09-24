@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.UI;
 using UnityEngine;
 
 
@@ -67,14 +68,17 @@ public class BocciaModel : Singleton<BocciaModel>
         }
 
         SendChangeEvent();
+
+        // For now, just emit change event if ramp changes
+        rampController.RampChanged += SendChangeEvent;
+    }
+
+    private void OnDisable()
+    {
+        rampController.RampChanged -= SendChangeEvent;
     }
 
 
-    // Navigation control
-
-    // ShowGameOptions()
-    // ShowBciOptions()
-    // BackPressed()
 
     // Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
@@ -86,27 +90,26 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
-    // BCI control
+    // Navigation control
 
-    // StartTraining()
-    // StopTraining()
+
+    // BCI control
 
 
     // Ramp Hardware
-    // SetSerialPort(name)
-    // CalibrateRamp(part)
 
 
-    // Bind replaces the current gameData with another one.  This is used
-    // to provide the model with a BocciaData loaded from disk, etc.
+    // Persistence
     public void Bind(BocciaData gameData)
     {
+        // Bind replaces the current gameData with another one.  This is used
+        // to provide the model with a BocciaData loaded from disk, etc.
         this.bocciaData = gameData;
         SendChangeEvent();
     }
 
 
-    // Helpers
+    // MARK: Helpers
     private void SendChangeEvent()
     {
         WasChanged?.Invoke();
