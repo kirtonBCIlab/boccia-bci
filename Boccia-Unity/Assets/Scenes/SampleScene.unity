@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 215524016}
   - component: {fileID: 215524015}
   m_Layer: 0
-  m_Name: PlayCanvas
+  m_Name: ExampleCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 215524013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be13d79d50d6a43828aaaecdfbe44efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a14970601ce544be92d2517dfee5174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotateLeftButton: {fileID: 1730103702}

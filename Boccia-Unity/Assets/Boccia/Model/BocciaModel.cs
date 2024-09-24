@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.UI;
 using UnityEngine;
 
 
@@ -49,7 +50,6 @@ public class BocciaModel : Singleton<BocciaModel>
     // Change events
     public static event System.Action WasChanged;
 
-
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
     private RampController rampController = new SimulatedRamp();
@@ -68,50 +68,48 @@ public class BocciaModel : Singleton<BocciaModel>
         }
 
         SendChangeEvent();
+
+        // For now, just emit change event if ramp changes
+        rampController.RampChanged += SendChangeEvent;
+    }
+
+    private void OnDisable()
+    {
+        rampController.RampChanged -= SendChangeEvent;
     }
 
 
-    // Navigation control
-
-    // ShowGameOptions()
-    // ShowBciOptions()
-    // BackPressed()
 
     // Game control
+    public void RotateBy(float degrees) => rampController.RotateBy(degrees);
+    public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
+
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();
         SendChangeEvent();
     }
 
-    public void RotateLeft() => rampController.RotateLeft();
-    public void RotateRight() => rampController.RotateRight();
-    public void MoveUp() => rampController.MoveUp();
-    public void MoveDown() => rampController.MoveDown();
-    public void ResetRampPosition() => rampController.ResetRampPosition();
+    // Navigation control
 
 
     // BCI control
 
-    // StartTraining()
-    // StopTraining()
-
 
     // Ramp Hardware
-    // SetSerialPort(name)
-    // CalibrateRamp(part)
 
 
-    // Bind replaces the current gameData with another one.  This is used
-    // to provide the model with a BocciaData loaded from disk, etc.
+    // Persistence
     public void Bind(BocciaData gameData)
     {
+        // Bind replaces the current gameData with another one.  This is used
+        // to provide the model with a BocciaData loaded from disk, etc.
         this.bocciaData = gameData;
         SendChangeEvent();
     }
 
 
-    // Helpers
+    // MARK: Helpers
     private void SendChangeEvent()
     {
         WasChanged?.Invoke();

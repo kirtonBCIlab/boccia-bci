@@ -47,7 +47,7 @@ public class RampPresenter : MonoBehaviour
         BocciaModel.WasChanged -= ModelChanged;
     }
 
-    void Update()
+    private void ModelChanged()
     {
         // Ramp is a digital twin, so we just match visualization with model data
         RotationVisualization();
@@ -72,8 +72,6 @@ public class RampPresenter : MonoBehaviour
         //Debug.Log("Current Elevation: " + model.RampElevation);
     }
 
-    private void ModelChanged()
-    {
         // For lower rate changes, update when model sends change event
         ball.GetComponent<Renderer>().material.color = model.BallColor;
     }
