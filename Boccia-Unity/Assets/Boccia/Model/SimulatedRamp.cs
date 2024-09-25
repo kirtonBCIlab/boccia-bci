@@ -33,6 +33,12 @@ public class SimulatedRamp : RampController
         SendChangeEvent();
     }
 
+    public void ResetRampPosition()
+    {
+        Rotation = 0.0f;
+        Elevation = 50.0f;
+    }
+
     private void SendChangeEvent()
     {
         RampChanged?.Invoke();

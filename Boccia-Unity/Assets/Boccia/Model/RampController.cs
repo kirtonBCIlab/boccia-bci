@@ -10,9 +10,6 @@ public interface RampController
     public void RotateBy(float degrees);
     public void ElevateBy(float elevation);
 
-    public void MoveUp();
-    public void MoveDown();
-
     public void ResetRampPosition();
 
     // add remaining methods like calibration, test, reset
