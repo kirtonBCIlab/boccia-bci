@@ -12,6 +12,9 @@ public class ExamplePresenter : MonoBehaviour
     // TODO - This is a dummy example, replace with real ramp prefab object, etc
     public Button rotateLeftButton;
     public Button rotateRightButton;
+    public Button moveUpButton;
+    public Button moveDownButton;
+    public Button resetRampButton;
     public Button colorButton;
 
     private BocciaModel model;
@@ -26,6 +29,9 @@ public class ExamplePresenter : MonoBehaviour
         // connect buttons to model
         rotateLeftButton.onClick.AddListener(RotateRight);
         rotateRightButton.onClick.AddListener(RotateLeft);
+        moveUpButton.onClick.AddListener(MoveUp);
+        moveDownButton.onClick.AddListener(MoveDown);
+        resetRampButton.onClick.AddListener(model.ResetRampPosition);
         colorButton.onClick.AddListener(model.RandomColor);
     }
 
@@ -48,14 +54,25 @@ public class ExamplePresenter : MonoBehaviour
 
     // Somehow we'll have to figure out the amount of rotation by looking at what SPO was clicked
     // Perhaps the SPO onCLick can provide the value that's initialized when the fan is created?
+    // Temporary hard-coded values for incrementing
     private void RotateRight()
     {
-        model.RotateBy(10.0f);
+        model.RotateBy(6.0f);
     }
 
     private void RotateLeft()
     {
-        model.RotateBy(-10.0f);
+        model.RotateBy(-6.0f);
+    }
+
+    private void MoveUp()
+    {
+        model.ElevateBy(1.0f);
+    }
+
+    private void MoveDown()
+    {
+        model.ElevateBy(-1.0f);
     }
 
 }
