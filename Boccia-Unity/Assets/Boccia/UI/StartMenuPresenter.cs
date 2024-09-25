@@ -20,10 +20,10 @@ public class StartMenuPresenter : MonoBehaviour
         BocciaModel.WasChanged += ModelChanged;
         
         //connect buttons to model
-        //startButton.onClick.AddListener();
-        //gameOptionsButton.onClick.AddListener();
-        //bciOptionsButton.onClick.AddListener();
-        //quitButton.onClick.AddListener();
+        //startButton.onClick.AddListener(ToPlay);
+        //gameOptionsButton.onClick.AddListener(ToGameOptions);
+        //bciOptionsButton.onClick.AddListener(ToBCIOptions);
+        //quitButton.onClick.AddListener(Quit);
     }
 
 
@@ -42,4 +42,26 @@ public class StartMenuPresenter : MonoBehaviour
     {
 
     }
+
+    //These are all skeletons- the methods do not exist in BCIModel
+    private void ToPlay()
+    {
+        model.NavigateToPlay();
+    }
+
+    private void ToBCIOptions()
+    {
+        model.NavigateToBCIOptions();
+    }
+
+    private void ToGameOptions()
+    {
+        model.NavigateToGameOptions();
+    }
+
+    private void Quit()
+    {
+        model.Quit();
+    }
+
 }
