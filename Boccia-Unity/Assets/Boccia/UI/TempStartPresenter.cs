@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TempHamburgerPresenter : MonoBehaviour
+public class TempStartPresenter : MonoBehaviour
 {
-    public Button playButton;
+    public Button startButton;
     public Button quitButton;
-    public Button backButton;
 
     private BocciaModel model;
 
@@ -19,8 +18,8 @@ public class TempHamburgerPresenter : MonoBehaviour
         // BocciaModel.WasChanged += ModelChanged;
 
         // connect buttons to model
-        playButton.onClick.AddListener(model.PlayMenuPressed);
+        startButton.onClick.AddListener(model.StartPressed);
         quitButton.onClick.AddListener(model.QuitPressed);
-        backButton.onClick.AddListener(model.BackPressed);
     }
 }
+
