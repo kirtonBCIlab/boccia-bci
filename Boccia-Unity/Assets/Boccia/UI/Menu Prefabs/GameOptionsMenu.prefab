@@ -877,6 +877,7 @@ GameObject:
   - component: {fileID: 6908630087068870074}
   - component: {fileID: 3604911906083512445}
   - component: {fileID: 8443311105216810911}
+  - component: {fileID: 3254357422855799959}
   m_Layer: 0
   m_Name: GameOptionsMenu
   m_TagString: Untagged
@@ -893,7 +894,7 @@ RectTransform:
   m_GameObject: {fileID: 407664765047655102}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 188379485545147026}
@@ -982,6 +983,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballColorDropdown: {fileID: 5913711440129553192}
+--- !u!114 &3254357422855799959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407664765047655102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &449910837477996627
 GameObject:
   m_ObjectHideFlags: 0
