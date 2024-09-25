@@ -84,6 +84,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
 
+    public void ResetRampPosition() => rampController.ResetRampPosition();
+
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();

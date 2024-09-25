@@ -18,7 +18,7 @@ public class SimulatedRamp : RampController
     public SimulatedRamp()
     {
         Rotation = 0.0f;
-        Elevation = 0.0f;
+        Elevation = 50.0f;
     }
 
     public void RotateBy(float degrees)
@@ -30,6 +30,13 @@ public class SimulatedRamp : RampController
     public void ElevateBy(float elevation)
     {
         Elevation += elevation;
+        SendChangeEvent();
+    }
+
+    public void ResetRampPosition()
+    {
+        Rotation = 0.0f;
+        Elevation = 50.0f;
         SendChangeEvent();
     }
 
