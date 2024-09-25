@@ -983,6 +983,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballColorDropdown: {fileID: 5913711440129553192}
+  elevationPrecisionSlider: {fileID: 1214302279510719805}
+  elevationRangeSlider: {fileID: 4537534951723010529}
 --- !u!114 &3254357422855799959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6040,7 +6042,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8443311105216810911}
+        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
+        m_MethodName: ChangeElevationRange
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3343014234787340886
 GameObject:
   m_ObjectHideFlags: 0
@@ -13546,7 +13560,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8443311105216810911}
+        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
+        m_MethodName: ChangeElevationPrecision
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7196327520474393748
 GameObject:
   m_ObjectHideFlags: 0

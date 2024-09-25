@@ -10,6 +10,8 @@ using TMPro;
 public class GameOptionsMenuPresenter : MonoBehaviour
 {
     public TMPro.TMP_Dropdown ballColorDropdown;
+    public Slider elevationPrecisionSlider;
+    public Slider elevationRangeSlider;
 
     private BocciaModel model;
 
@@ -21,6 +23,8 @@ public class GameOptionsMenuPresenter : MonoBehaviour
 
         // connect UI to model
         ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
+        elevationPrecisionSlider.onValueChanged.AddListener(ChangeElevationPrecision);
+        elevationRangeSlider.onValueChanged.AddListener(ChangeElevationRange);
     }
 
 
@@ -44,9 +48,18 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         //get the selected dropdown option
         string selectedValue = ballColorDropdown.options[valueIndex].text;
-        Debug.Log("Selected dropdown value: " + selectedValue);
         
         //send the selected color to the model
         model.ChangeBallColor(selectedValue);
+    }
+
+    public void ChangeElevationPrecision(float precisionPercent)
+    {
+        model.SetElevationPrecision(precisionPercent);
+    }
+
+    public void ChangeElevationRange(float rangePercent)
+    {
+        model.SetElevationRange(rangePercent);
     }
 }

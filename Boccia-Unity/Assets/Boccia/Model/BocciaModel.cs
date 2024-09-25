@@ -99,6 +99,18 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
+    public void SetElevationPrecision(float precisionPercent)
+    {
+        bocciaData.ElevationPrecision = precisionPercent;
+        SendChangeEvent();
+    }
+
+    public void SetElevationRange(float precisionRange)
+    {
+        bocciaData.ElevationRange = precisionRange;
+        SendChangeEvent();
+    }
+
     // Navigation control
 
 
