@@ -92,6 +92,13 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
+    public void ChangeBallColor(string colorString)
+    {
+        Color color = GetColorFromName(colorString);
+        bocciaData.BallColor = color;
+        SendChangeEvent();
+    }
+
     // Navigation control
 
 
@@ -155,6 +162,27 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         RampHardwareConnected = false;
         bocciaData.SerialPortName = "COM1";
+    }
+
+    Color GetColorFromName(string colorName)
+    {
+        switch (colorName.ToLower())
+        {
+            case "red":
+                return Color.red;
+            case "green":
+                return Color.green;
+            case "blue":
+                return Color.blue;
+            case "yellow":
+                return Color.yellow;
+            case "white":
+                return Color.white;
+            case "black":
+                return Color.black;
+            default:
+                return Color.clear;  // Returns a transparent color if not found
+        }
     }
 }
 
