@@ -17,6 +17,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Navigation
     public BocciaScreen CurrentScreen;
+    private BocciaScreen PreviousScreen;
 
     // Game
     public BocciaGameMode GameMode;
@@ -49,6 +50,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Change events
     public static event System.Action WasChanged;
+    public static event System.Action NavigationChanged;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -67,15 +69,15 @@ public class BocciaModel : Singleton<BocciaModel>
             bocciaData.WasInitialized = true;
         }
 
-        SendChangeEvent();
+        SendRampChangeEvent();
 
         // For now, just emit change event if ramp changes
-        rampController.RampChanged += SendChangeEvent;
+        rampController.RampChanged += SendRampChangeEvent;
     }
 
     private void OnDisable()
     {
-        rampController.RampChanged -= SendChangeEvent;
+        rampController.RampChanged -= SendRampChangeEvent;
     }
 
 
@@ -87,10 +89,32 @@ public class BocciaModel : Singleton<BocciaModel>
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
+
     // Navigation control
+    public void StartPressed()
+    {
+        PreviousScreen = CurrentScreen;
+        CurrentScreen = BocciaScreen.PlayMenu;
+    }
+
+    public void HamburgerPressed()
+    {
+        PreviousScreen = CurrentScreen;
+        CurrentScreen = BocciaScreen.HamburgerMenu;
+    }
+
+    public void BackPressed()
+    {
+        CurrentScreen = PreviousScreen;
+    }
+
+    public void QuitPressed()
+    {
+        Debug.Log("quit the game");
+    }
 
 
     // BCI control
@@ -105,19 +129,25 @@ public class BocciaModel : Singleton<BocciaModel>
         // Bind replaces the current gameData with another one.  This is used
         // to provide the model with a BocciaData loaded from disk, etc.
         this.bocciaData = gameData;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
 
     // MARK: Helpers
-    private void SendChangeEvent()
+    private void SendRampChangeEvent()
     {
         WasChanged?.Invoke();
     }
 
+    private void SendNavigationChangeEvent()
+    {
+        NavigationChanged?.Invoke();
+    }
+
     private void ResetNavigationState()
     {
-        CurrentScreen = BocciaScreen.Start;
+        CurrentScreen = BocciaScreen.StartMenu;
+        PreviousScreen = CurrentScreen;
     }
 
     private void ResetGameState()
