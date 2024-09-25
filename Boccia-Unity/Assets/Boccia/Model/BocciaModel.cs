@@ -96,34 +96,34 @@ public class BocciaModel : Singleton<BocciaModel>
 
 
     // Navigation control
-    public void StartPressed()
-    {
-        PreviousScreen = CurrentScreen;
-        CurrentScreen = BocciaScreen.PlayMenu;
-        SendNavigationChangeEvent();
-    }
-
-    public void PlayMenuPressed()
+    public void ShowStartMenu()
     {
         PreviousScreen = CurrentScreen;
         CurrentScreen = BocciaScreen.StartMenu;
         SendNavigationChangeEvent();
     }
 
-    public void HamburgerPressed()
+    public void ShowPlayMenu()
+    {
+        PreviousScreen = CurrentScreen;
+        CurrentScreen = BocciaScreen.PlayMenu;
+        SendNavigationChangeEvent();
+    }
+
+    public void ShowHamburgerMenu()
     {
         PreviousScreen = CurrentScreen;
         CurrentScreen = BocciaScreen.HamburgerMenu;
         SendNavigationChangeEvent();
     }
 
-    public void BackPressed()
+    public void ShowPreviousScreen()
     {
         CurrentScreen = PreviousScreen;
         SendNavigationChangeEvent();
     }
 
-    public void QuitPressed()
+    public void QuitGame()
     {
         SendNavigationChangeEvent();
         Debug.Log("quit the game");
