@@ -22,7 +22,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public BocciaGameMode GameMode;
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
-    public bool BarState => rampController.IsDropSelected;
+    public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
 
     public Color BallColor => bocciaData.BallColor;

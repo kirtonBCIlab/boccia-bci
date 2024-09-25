@@ -14,13 +14,13 @@ public class SimulatedRamp : RampController
 
     public float Rotation { get; private set; }
     public float Elevation { get; private set; }
-    public bool IsDropSelected { get; private set;}
+    public bool IsBarOpen { get; private set;}
 
     public SimulatedRamp()
     {
         Rotation = 0.0f;
         Elevation = 50.0f;
-        IsDropSelected = false; // Initialize
+        IsBarOpen = false; // Initialize the bar state as closed
     }
 
     public void RotateBy(float degrees)
@@ -44,7 +44,7 @@ public class SimulatedRamp : RampController
 
     public void DropBall()
     {
-        IsDropSelected = true; 
+        IsBarOpen = true; // Toggle bar state
         SendChangeEvent();
     }
 
