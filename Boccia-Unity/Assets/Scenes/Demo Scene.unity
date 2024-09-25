@@ -1238,6 +1238,7 @@ MonoBehaviour:
   moveUpButton: {fileID: 442806196}
   moveDownButton: {fileID: 608753585}
   resetRampButton: {fileID: 821895689}
+  dropBallButton: {fileID: 1796561146}
   colorButton: {fileID: 277511692}
 --- !u!1 &628569331
 GameObject:
@@ -1637,6 +1638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 709340952}
   - component: {fileID: 709340953}
+  - component: {fileID: 709340954}
   m_Layer: 0
   m_Name: Boccia Ramp
   m_TagString: Untagged
@@ -1676,12 +1678,24 @@ MonoBehaviour:
   rotationShaft: {fileID: 830448772}
   elevationMechanism: {fileID: 1765375688}
   rampAdapter: {fileID: 130384640}
-  dropBar: {fileID: 1711277676}
   ball: {fileID: 1616241089}
   rotationSpeed: 10
   elevationSpeed: 5
   minElevation: 0.0026
   maxElevation: 0.43
+--- !u!114 &709340954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709340951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e00db2064c1c65b4386e26d8e7d1c6e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropBar: {fileID: 1711277676}
 --- !u!1 &821895687
 GameObject:
   m_ObjectHideFlags: 0

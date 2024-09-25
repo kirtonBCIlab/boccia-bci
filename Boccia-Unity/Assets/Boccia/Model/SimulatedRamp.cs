@@ -40,6 +40,11 @@ public class SimulatedRamp : RampController
         SendChangeEvent();
     }
 
+    public void DropBall()
+    {
+        SendChangeEvent();
+    }
+
     private void SendChangeEvent()
     {
         RampChanged?.Invoke();

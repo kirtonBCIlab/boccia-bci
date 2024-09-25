@@ -12,6 +12,8 @@ public interface RampController
 
     public void ResetRampPosition();
 
+    public void DropBall();
+
     // add remaining methods like calibration, test, reset
 }
 

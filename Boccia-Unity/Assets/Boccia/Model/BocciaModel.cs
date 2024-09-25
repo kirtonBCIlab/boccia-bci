@@ -86,6 +86,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
+    public void DropBall() => rampController.DropBall();
+
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();
