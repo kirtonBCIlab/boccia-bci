@@ -50,29 +50,44 @@ public class RampPresenter : MonoBehaviour
     private void ModelChanged()
     {
         // Ramp is a digital twin, so we just match visualization with model data
-        RotationVisualization();
-        ElevationVisualization();
+        StartCoroutine(RotationVisualization());
+        StartCoroutine(ElevationVisualization());
         
         // For lower rate changes, update when model sends change event
         ball.GetComponent<Renderer>().material.color = model.BallColor;
     }
 
-    private async void RotationVisualization()
+    private IEnumerator RotationVisualization()
     {
         // Smoothly show the rotatation of the ramp to the new position
         Quaternion currentRotation = rotationShaft.transform.localRotation;
         //Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
         Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, model.RampRotation, rotationShaft.transform.localEulerAngles.z);
-        Quaternion newRotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
-	    rotationShaft.transform.localRotation = newRotation;
+
+        while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
+        {
+            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
+            rotationShaft.transform.localRotation = currentRotation;
+            yield return null;
+        }
+
+        rotationShaft.transform.localRotation = targetQuaternion;
     }
 
-    private async void ElevationVisualization()
-    {  
-        // Smoothly show the motion of elevationMechanism along elevationDirection to the new position
+    private IEnumerator ElevationVisualization()
+    {
+        Vector3 currentElevation = elevationMechanism.transform.localPosition;
         float elevationScalar = minElevation + (model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
-        elevationMechanism.transform.localPosition = Vector3.Lerp(elevationMechanism.transform.localPosition, elevationDirection * elevationScalar, elevationSpeed * Time.deltaTime);
-        //Debug.Log("Current Elevation: " + model.RampElevation);
+        Vector3 targetElevation = elevationDirection * elevationScalar;
+
+        while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
+        {
+            currentElevation = Vector3.Lerp(currentElevation, targetElevation, elevationSpeed * Time.deltaTime);
+            elevationMechanism.transform.localPosition = currentElevation;
+            yield return null;
+        }
+
+        elevationMechanism.transform.localPosition = targetElevation;
     }
 
 }
