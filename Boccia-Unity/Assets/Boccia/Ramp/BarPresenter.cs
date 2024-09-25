@@ -24,7 +24,10 @@ public class BarPresenter : MonoBehaviour
 
     private void ModelChanged()
     {
-        StartCoroutine(BarAnimation());
+        if (model.BarState)
+        {
+             StartCoroutine(BarAnimation()); // Start the bar movement animation
+        }
     }
 
     private IEnumerator BarAnimation()
