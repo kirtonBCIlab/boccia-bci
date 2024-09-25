@@ -46,22 +46,22 @@ public class StartMenuPresenter : MonoBehaviour
     //These are all skeletons- the methods do not exist in BCIModel
     private void ToPlay()
     {
-        model.NavigateToPlay();
+       // model.NavigateToPlay();
     }
 
     private void ToBCIOptions()
     {
-        model.NavigateToBCIOptions();
+       // model.NavigateToBCIOptions();
     }
 
     private void ToGameOptions()
     {
-        model.NavigateToGameOptions();
+      //  model.NavigateToGameOptions();
     }
 
     private void Quit()
     {
-        model.Quit();
+        //model.Quit();
     }
 
 }
