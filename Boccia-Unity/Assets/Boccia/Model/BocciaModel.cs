@@ -22,6 +22,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public BocciaGameMode GameMode;
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
+    public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
 
     public Color BallColor => bocciaData.BallColor;
@@ -85,6 +86,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
 
     public void ResetRampPosition() => rampController.ResetRampPosition();
+
+    public void DropBall() => rampController.DropBall();
 
     public void RandomColor()
     {
