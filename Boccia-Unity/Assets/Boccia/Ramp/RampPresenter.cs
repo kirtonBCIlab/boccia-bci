@@ -52,6 +52,9 @@ public class RampPresenter : MonoBehaviour
         // Ramp is a digital twin, so we just match visualization with model data
         RotationVisualization();
         ElevationVisualization();
+        
+        // For lower rate changes, update when model sends change event
+        ball.GetComponent<Renderer>().material.color = model.BallColor;
     }
 
     private async void RotationVisualization()
@@ -72,8 +75,5 @@ public class RampPresenter : MonoBehaviour
         //Debug.Log("Current Elevation: " + model.RampElevation);
     }
 
-        // For lower rate changes, update when model sends change event
-        ball.GetComponent<Renderer>().material.color = model.BallColor;
-    }
 }
 
