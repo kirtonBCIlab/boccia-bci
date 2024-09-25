@@ -102,6 +102,11 @@ public class BocciaModel : Singleton<BocciaModel>
         CurrentScreen = BocciaScreen.PlayMenu;
     }
 
+    public void PlayMenuPressed()
+    {
+        StartPressed();
+    }
+
     public void HamburgerPressed()
     {
         PreviousScreen = CurrentScreen;
