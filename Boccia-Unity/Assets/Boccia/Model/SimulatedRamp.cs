@@ -37,6 +37,7 @@ public class SimulatedRamp : RampController
     {
         Rotation = 0.0f;
         Elevation = 50.0f;
+        SendChangeEvent();
     }
 
     private void SendChangeEvent()
