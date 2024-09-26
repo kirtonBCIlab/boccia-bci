@@ -83,7 +83,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
 
 
-    // Game control
+    // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
 
@@ -98,25 +98,26 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
 
-    // Navigation control
+    // MARK: Navigation control
     public void ShowStartMenu()
     {
-        PreviousScreen = CurrentScreen;
-        CurrentScreen = BocciaScreen.StartMenu;
-        SendNavigationChangeEvent();
+        ShowScreen(BocciaScreen.StartMenu);
     }
 
     public void ShowPlayMenu()
     {
-        PreviousScreen = CurrentScreen;
-        CurrentScreen = BocciaScreen.PlayMenu;
-        SendNavigationChangeEvent();
+        ShowScreen(BocciaScreen.PlayMenu);
     }
 
     public void ShowHamburgerMenu()
     {
+        ShowScreen(BocciaScreen.HamburgerMenu); 
+    }
+
+    public void ShowScreen(BocciaScreen screen)
+    {
         PreviousScreen = CurrentScreen;
-        CurrentScreen = BocciaScreen.HamburgerMenu;
+        CurrentScreen = screen;
         SendNavigationChangeEvent();
     }
 
@@ -128,18 +129,14 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void QuitGame()
     {
-        SendNavigationChangeEvent();
-        Debug.Log("quit the game");
+        Application.Quit();
     }
 
 
-    // BCI control
+    // MARK: BCI control
 
 
-    // Ramp Hardware
-
-
-    // Persistence
+    // MARK: Persistence
     public void Bind(BocciaData gameData)
     {
         // Bind replaces the current gameData with another one.  This is used

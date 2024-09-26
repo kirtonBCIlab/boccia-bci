@@ -42,6 +42,7 @@ public class ScreenSwitcher : MonoBehaviour
                 ShowScreen(PlayMenu);
                 break;
             
+            // For now just switch back to start menu to show switchign works
             default:
                 ShowScreen(StartMenu);
                 break;
