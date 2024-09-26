@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d184640b57f9643aed35e4ea325fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 3278946434972644767}
+  ball: {fileID: 6213523397869663847}
 --- !u!1001 &3617087452676809311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -143,10 +143,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
   m_PrefabInstance: {fileID: 3617087452676809311}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3278946434972644767 stripped
+--- !u!1001 &3807655573034552910
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6147289232074132707}
+    m_Modifications:
+    - target: {fileID: 7128455000201345065, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_Name
+      value: Small Boccia Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0461455
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6666844
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1288295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+--- !u!1 &6213523397869663847 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2284259283304519616, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-  m_PrefabInstance: {fileID: 3617087452676809311}
+  m_CorrespondingSourceObject: {fileID: 7128455000201345065, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+  m_PrefabInstance: {fileID: 3807655573034552910}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6889123925484812083 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+  m_PrefabInstance: {fileID: 3807655573034552910}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6012540737330847611
 PrefabInstance:
@@ -200,9 +262,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boccia Ramp Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 8059123415170052603, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: ad02698239a380848b6ffdd5b74a19ae, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 450178601291568024, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 6889123925484812083}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
 --- !u!1 &1447192591350278973 stripped
@@ -213,6 +282,11 @@ GameObject:
 --- !u!1 &5816064425209161337 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 271933648768039170, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
+  m_PrefabInstance: {fileID: 6012540737330847611}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6147289232074132707 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 450178601291568024, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
   m_PrefabInstance: {fileID: 6012540737330847611}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6504535355485800295 stripped
