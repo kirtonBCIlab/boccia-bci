@@ -12,6 +12,7 @@ public class ScreenSwitcher : MonoBehaviour
     public GameObject PlayMenu;
 
     private BocciaModel model;
+    private List<GameObject> screenList;
 
 
     // Start is called before the first frame update
@@ -22,33 +23,52 @@ public class ScreenSwitcher : MonoBehaviour
         BocciaModel.NavigationChanged += NavigationChanged;
 
         // initialize to model
+        InitializeScreens();
         NavigationChanged();
     }
 
-    void NavigationChanged()
+    private void InitializeScreens()
+    {
+        screenList = new List<GameObject>();
+        screenList.Add(StartMenu);
+        screenList.Add(PlayMenu);
+    }
+
+    private void NavigationChanged()
     {
         switch (model.CurrentScreen)
         {
-            // TODO - make a helper function hide all but given screen and move camera to it
             case BocciaScreen.PlayMenu:
-                StartMenu.SetActive(false);
-                PlayMenu.SetActive(true); 
-                // MoveCamera(StartMenu.transform);
+                ShowScreen(PlayMenu);
                 break;
             
             default:
-                StartMenu.SetActive(true);
-                PlayMenu.SetActive(false);
-                // MoveCamera(PlayMenu.transform);
+                ShowScreen(StartMenu);
                 break;
+        }
+    }
+
+    // Hides every screen except screenToShow
+    private void ShowScreen(GameObject screenToShow)
+    {
+        foreach (var screen in screenList)
+        {
+            if(screen == screenToShow)
+            {
+                screen.SetActive(true);
+            }
+            else
+            {
+                screen.SetActive(false);
+            }
         }
     }
 
     // private void MoveCamera(Transform screenTransform)
     // {
-        // TODO - calculate a camera position by projecting a point away from the prefab's normal?
-        // Or, just provide a way to set the pose manually?
-        // ScreenCamera.transform.position = screenTransform.position;
-        // ScreenCamera.transform.rotation = screenTransform.rotation;
+    // TODO - calculate a camera position by projecting a point away from the prefab's normal?
+    // Or, just provide a way to set the pose manually?
+    // ScreenCamera.transform.position = screenTransform.position;
+    // ScreenCamera.transform.rotation = screenTransform.rotation;
     // }
 }
