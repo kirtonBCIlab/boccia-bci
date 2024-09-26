@@ -130,7 +130,18 @@ public class BocciaModel : Singleton<BocciaModel>
         // GameMode = BocciaGameMode.Virtual;
     }
 
-    public void ShowHamburgerMenu() => ShowScreen(BocciaScreen.HamburgerMenu);
+    public void ShowHamburgerMenu()
+    {
+        if (CurrentScreen == BocciaScreen.HamburgerMenu)
+        {
+            ShowPreviousScreen();
+        }
+        else
+        {
+            ShowScreen(BocciaScreen.HamburgerMenu);
+        }
+    }   
+    
     public void ShowGameOptions() => ShowScreen(BocciaScreen.GameOptions);
     public void ShowBciOptions() => ShowScreen(BocciaScreen.BciOptions);
     public void ShowRampOptions() => ShowScreen(BocciaScreen.RampOptions);
