@@ -11,7 +11,6 @@ public class RampPresenter : MonoBehaviour
     public GameObject rotationShaft; // Shaft and Ramp child component of the Boccia Ramp GameObject (the ramp parts that will rotate in the visualization)
     public GameObject elevationMechanism; // Elevation Mechanism child component of Shaft and Ramp (the ramp parts that will change elevation in the visualization)
     public GameObject rampAdapter; // To define direction of movement for elevationMechanism
-    public GameObject ball;
 
     private BocciaModel model;
 
@@ -47,9 +46,6 @@ public class RampPresenter : MonoBehaviour
         // Ramp is a digital twin, so we just match visualization with model data
         StartCoroutine(RotationVisualization());
         StartCoroutine(ElevationVisualization());
-        
-        // For lower rate changes, update when model sends change event
-        ball.GetComponent<Renderer>().material.color = model.BallColor;
     }
 
     private IEnumerator RotationVisualization()
