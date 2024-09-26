@@ -3172,7 +3172,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2126314745}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f9695436baa490647a54a7720c55d32e, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3361,6 +3361,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boccia
       objectReference: {fileID: 0}
+    - target: {fileID: 4370488342338727552, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: ad02698239a380848b6ffdd5b74a19ae, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
