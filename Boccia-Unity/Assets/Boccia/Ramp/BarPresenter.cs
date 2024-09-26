@@ -22,6 +22,11 @@ public class BarPresenter : MonoBehaviour
         ModelChanged();
     }
 
+    void OnDisable()
+    {
+        model.WasChanged -= ModelChanged;
+    }
+
     private void ModelChanged()
     {
         if (model.BarState)

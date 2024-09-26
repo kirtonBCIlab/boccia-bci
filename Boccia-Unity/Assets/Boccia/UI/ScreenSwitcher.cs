@@ -34,6 +34,12 @@ public class ScreenSwitcher : MonoBehaviour
         NavigationChanged();
     }
 
+    void OnDisable()
+    {
+        model.NavigationChanged -= NavigationChanged;
+    }
+
+
     private void InitializeScreens()
     {
         screenList = new List<GameObject>

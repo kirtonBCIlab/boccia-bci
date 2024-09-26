@@ -38,7 +38,7 @@ public class ExamplePresenter : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    void OnDisable()
     {
         model.WasChanged -= ModelChanged;
     }

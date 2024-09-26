@@ -35,11 +35,11 @@ public class RampPresenter : MonoBehaviour
         ModelChanged();
     }
 
-
-    private void OnDisable()
+    void OnDisable()
     {
         model.WasChanged -= ModelChanged;
     }
+
 
     private void ModelChanged()
     {
