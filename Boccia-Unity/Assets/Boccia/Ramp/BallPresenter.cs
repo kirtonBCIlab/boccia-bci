@@ -13,7 +13,7 @@ public class BallPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // initialize ball to saved data
         ModelChanged();
@@ -21,7 +21,7 @@ public class BallPresenter : MonoBehaviour
 
     private void OnDisable()
     {
-        BocciaModel.WasChanged -= ModelChanged;
+        model.WasChanged -= ModelChanged;
     }
 
     private void ModelChanged()

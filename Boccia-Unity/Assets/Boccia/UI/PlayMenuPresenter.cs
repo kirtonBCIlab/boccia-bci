@@ -16,7 +16,7 @@ public class PlayMenuPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // connect buttons to model
         // Note - need to connect to real model function, start menu is just for test
@@ -28,7 +28,7 @@ public class PlayMenuPresenter : MonoBehaviour
 
     private void OnDisable()
     {
-        BocciaModel.WasChanged -= ModelChanged;
+        model.WasChanged -= ModelChanged;
     }
 
     // Update is called once per frame

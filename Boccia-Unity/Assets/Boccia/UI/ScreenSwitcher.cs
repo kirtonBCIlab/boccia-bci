@@ -27,7 +27,7 @@ public class ScreenSwitcher : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.NavigationChanged += NavigationChanged;
+        model.NavigationChanged += NavigationChanged;
 
         // initialize to model
         InitializeScreens();

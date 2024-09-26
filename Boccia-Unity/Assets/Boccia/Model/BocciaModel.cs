@@ -50,8 +50,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public string SerialPortName => bocciaData.SerialPortName;
 
     // Change events
-    public static event System.Action WasChanged;
-    public static event System.Action NavigationChanged;
+    public event System.Action WasChanged;
+    public event System.Action NavigationChanged;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)

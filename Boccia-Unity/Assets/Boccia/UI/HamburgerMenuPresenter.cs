@@ -22,7 +22,7 @@ public class HamburgerMenuPresenter : MonoBehaviour
     {
         // Cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // Connect buttons to model
         // TODO: connect to real model functions

@@ -25,7 +25,7 @@ public class RampPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // Convert rampAdapter z-axis to local space of elevationMechanism parent to get the direction for the elevationMechanism visualization
         Vector3 rampDirection = rampAdapter.transform.forward;
@@ -38,7 +38,7 @@ public class RampPresenter : MonoBehaviour
 
     private void OnDisable()
     {
-        BocciaModel.WasChanged -= ModelChanged;
+        model.WasChanged -= ModelChanged;
     }
 
     private void ModelChanged()
