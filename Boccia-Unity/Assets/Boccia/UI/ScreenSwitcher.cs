@@ -44,6 +44,7 @@ public class ScreenSwitcher : MonoBehaviour
 
     private void NavigationChanged()
     {
+        // TODO - consider replacing with a dictionary that maps screen enum to screen game object
         switch (model.CurrentScreen)
         {
             case BocciaScreen.PlayMenu:
