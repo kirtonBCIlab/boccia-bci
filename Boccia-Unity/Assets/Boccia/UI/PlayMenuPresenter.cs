@@ -20,9 +20,9 @@ public class PlayMenuPresenter : MonoBehaviour
 
         // connect buttons to model
         // Note - need to connect to real model function, start menu is just for test
-        trainingButton.onClick.AddListener(model.ShowStartMenu);
-        playBocciaButton.onClick.AddListener(model.ShowStartMenu);
-        virtualPlayButton.onClick.AddListener(model.ShowStartMenu);
+        trainingButton.onClick.AddListener(model.Train);
+        playBocciaButton.onClick.AddListener(model.Play);
+        virtualPlayButton.onClick.AddListener(model.VirtualPlay);
     }
 
 
@@ -34,7 +34,7 @@ public class PlayMenuPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void ModelChanged()

@@ -66,7 +66,7 @@ public class BocciaModel : Singleton<BocciaModel>
             ResetGameState();
             ResetBciState();
             ResetRampHardwareState();
-            
+
             bocciaData.WasInitialized = true;
         }
 
@@ -99,29 +99,50 @@ public class BocciaModel : Singleton<BocciaModel>
 
 
     // MARK: Navigation control
-    public void ShowStartMenu()
+    public void StartMenu()
     {
         ShowScreen(BocciaScreen.StartMenu);
+        // GameMode = BocciaGameMode.Stop;
     }
 
-    public void ShowPlayMenu()
+    public void PlayMenu()
     {
         ShowScreen(BocciaScreen.PlayMenu);
+        // GameMode = BocciaGameMode.Stop;
     }
 
-    public void ShowHamburgerMenu()
+    public void Train()
     {
-        ShowScreen(BocciaScreen.HamburgerMenu); 
+        ShowScreen(BocciaScreen.Train);
+        // start training, hamburger -> menu = stop?
+        // GameMode = BocciaGameMode.Train;
     }
 
-    public void ShowScreen(BocciaScreen screen)
+    public void Play()
+    {
+        ShowScreen(BocciaScreen.Play);
+        // GameMode = BocciaGameMode.Play;
+    }
+
+    public void VirtualPlay()
+    {
+        ShowScreen(BocciaScreen.VirtualPlay);
+        // GameMode = BocciaGameMode.Virtual;
+    }
+
+    public void ShowHamburgerMenu() => ShowScreen(BocciaScreen.HamburgerMenu);
+    public void ShowGameOptions() => ShowScreen(BocciaScreen.GameOptions);
+    public void ShowBciOptions() => ShowScreen(BocciaScreen.BciOptions);
+    public void ShowRampOptions() => ShowScreen(BocciaScreen.RampOptions);
+
+    private void ShowScreen(BocciaScreen screen)
     {
         PreviousScreen = CurrentScreen;
         CurrentScreen = screen;
         SendNavigationChangeEvent();
     }
 
-    public void ShowPreviousScreen()
+    private void ShowPreviousScreen()
     {
         CurrentScreen = PreviousScreen;
         SendNavigationChangeEvent();
@@ -129,6 +150,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void QuitGame()
     {
+        UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
 
@@ -165,7 +187,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void ResetGameState()
     {
-        GameMode = BocciaGameMode.Start;
+        GameMode = BocciaGameMode.StopPlay;
         BallState = BocciaBallState.Ready;
 
         bocciaData.BallColor = Color.blue;
