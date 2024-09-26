@@ -27,9 +27,9 @@ public class HamburgerMenuPresenter : MonoBehaviour
         // Connect buttons to model
         // TODO: connect to real model functions
         hamburgerButton.onClick.AddListener(model.ShowHamburgerMenu);
-        playMenuButton.onClick.AddListener(model.ShowPlayMenu);
-        gameOptionsButton.onClick.AddListener(model.ShowStartMenu); // Need to change this to show game options
-        bciOptionsButton.onClick.AddListener(model.ShowStartMenu);  // Need to change this to show BCI options
+        playMenuButton.onClick.AddListener(model.PlayMenu);
+        gameOptionsButton.onClick.AddListener(model.ShowGameOptions); // Need to change this to show game options
+        bciOptionsButton.onClick.AddListener(model.ShowBciOptions);  // Need to change this to show BCI options
         quitButton.onClick.AddListener(model.QuitGame);
     }
 
