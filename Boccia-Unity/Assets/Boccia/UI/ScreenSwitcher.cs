@@ -33,20 +33,22 @@ public class ScreenSwitcher : MonoBehaviour
             case BocciaScreen.PlayMenu:
                 StartMenu.SetActive(false);
                 PlayMenu.SetActive(true); 
-                MoveCamera(new Vector3(849, 255, -184), new Vector3(7, 4, 0));
+                // MoveCamera(StartMenu.transform);
                 break;
             
             default:
                 StartMenu.SetActive(true);
                 PlayMenu.SetActive(false);
-                MoveCamera(new Vector3(121, 138, 31), new Vector3(0, 18, 0));
+                // MoveCamera(PlayMenu.transform);
                 break;
         }
     }
 
-    private void MoveCamera(Vector3 position, Vector3 rotation)
-    {
-        ScreenCamera.transform.position = position;
-        ScreenCamera.transform.rotation = Quaternion.Euler(rotation);
-    }
+    // private void MoveCamera(Transform screenTransform)
+    // {
+        // TODO - calculate a camera position by projecting a point away from the prefab's normal?
+        // Or, just provide a way to set the pose manually?
+        // ScreenCamera.transform.position = screenTransform.position;
+        // ScreenCamera.transform.rotation = screenTransform.rotation;
+    // }
 }
