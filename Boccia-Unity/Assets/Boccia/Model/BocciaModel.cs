@@ -187,7 +187,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void ResetGameState()
     {
-        GameMode = BocciaGameMode.Stop;
+        GameMode = BocciaGameMode.StopPlay;
         BallState = BocciaBallState.Ready;
 
         bocciaData.BallColor = Color.blue;

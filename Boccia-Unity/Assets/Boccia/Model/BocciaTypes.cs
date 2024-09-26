@@ -13,7 +13,7 @@ public enum BocciaScreen
 
 public enum BocciaGameMode
 {
-    Stop,
+    StopPlay,
     Train,
     Play,
     Virtual,
