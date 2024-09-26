@@ -16,6 +16,7 @@ public class ScreenSwitcher : MonoBehaviour
 
     public GameObject StartMenu;
     public GameObject PlayMenu;
+    public GameObject HamburgerMenuOptions;
 
     private BocciaModel model;
     private List<GameObject> screenList;
@@ -38,7 +39,8 @@ public class ScreenSwitcher : MonoBehaviour
         screenList = new List<GameObject>
         {
             StartMenu,
-            PlayMenu
+            PlayMenu,
+            HamburgerMenuOptions
         };
     }
 
@@ -50,7 +52,11 @@ public class ScreenSwitcher : MonoBehaviour
             case BocciaScreen.PlayMenu:
                 PanCameraToScreen(PlayMenu);
                 break;
-
+                
+            case BocciaScreen.HamburgerMenu:
+                PanCameraToScreen(HamburgerMenuOptions);
+                break;
+            
             // For now just switch back to start menu to show switchign works
             default:
                 PanCameraToScreen(StartMenu);
