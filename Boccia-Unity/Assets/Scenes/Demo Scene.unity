@@ -3307,6 +3307,10 @@ PrefabInstance:
       propertyPath: m_AngularDrag
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5191911137963565878, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7584115605016008607, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: m_Material
       value: 
