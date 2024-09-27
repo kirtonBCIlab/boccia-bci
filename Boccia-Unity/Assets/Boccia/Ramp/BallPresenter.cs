@@ -8,6 +8,8 @@ public class BallPresenter : MonoBehaviour
     private Rigidbody ballRigidbody;
     private BocciaModel model;
 
+    private Vector3 initialPosition;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,8 @@ public class BallPresenter : MonoBehaviour
         // For lower rate changes, update when model sends change event
         ball.GetComponent<Renderer>().material.color = model.BallColor;
 
+        initialPosition = ball.transform.position;
+
         // Set sleep threshold to minimum so the ball is ready to roll
         ballRigidbody.sleepThreshold = 0.0f;
     }
@@ -40,5 +44,11 @@ public class BallPresenter : MonoBehaviour
     void Update()
     {
         Debug.Log(ballRigidbody.velocity.magnitude);
+
+        if (ballRigidbody.velocity.magnitude < 0.01f)
+        {
+            ballRigidbody.velocity = Vector3.zero;
+            ballRigidbody.angularVelocity = Vector3.zero;
+        }
     }
 }
