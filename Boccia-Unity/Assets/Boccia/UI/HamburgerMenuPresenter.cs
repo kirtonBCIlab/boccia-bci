@@ -22,25 +22,12 @@ public class HamburgerMenuPresenter : MonoBehaviour
     {
         // Cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
 
         // Connect buttons to model
-        // TODO: connect to real model functions
         hamburgerButton.onClick.AddListener(model.ShowHamburgerMenu);
         playMenuButton.onClick.AddListener(model.PlayMenu);
         gameOptionsButton.onClick.AddListener(model.ShowGameOptions); // Need to change this to show game options
         bciOptionsButton.onClick.AddListener(model.ShowBciOptions);  // Need to change this to show BCI options
         quitButton.onClick.AddListener(model.QuitGame);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void ModelChanged()
-    {
-
     }
 }

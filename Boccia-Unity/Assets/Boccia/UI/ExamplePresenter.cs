@@ -25,7 +25,7 @@ public class ExamplePresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // connect buttons to model
         rotateLeftButton.onClick.AddListener(RotateRight);
@@ -38,9 +38,9 @@ public class ExamplePresenter : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    void OnDisable()
     {
-        BocciaModel.WasChanged -= ModelChanged;
+        model.WasChanged -= ModelChanged;
     }
 
     void Update()

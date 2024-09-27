@@ -14,12 +14,17 @@ public class BarPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // Initialize bar animation
         barAnimation = dropBar.GetComponent<Animator>();
 
         ModelChanged();
+    }
+
+    void OnDisable()
+    {
+        model.WasChanged -= ModelChanged;
     }
 
     private void ModelChanged()
