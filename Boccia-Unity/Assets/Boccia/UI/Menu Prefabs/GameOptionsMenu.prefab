@@ -987,6 +987,8 @@ MonoBehaviour:
   elevationRangeSlider: {fileID: 4537534951723010529}
   rotationPrecisionSlider: {fileID: 8550961515427245145}
   rotationRangeSlider: {fileID: 1638828288303969560}
+  elevationSpeedSlider: {fileID: 2924849139167696035}
+  rotationSpeedSlider: {fileID: 8491921247395821542}
 --- !u!114 &3254357422855799959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18091,7 +18093,7 @@ GameObject:
   - component: {fileID: 1114739795117290827}
   - component: {fileID: 8491921247395821542}
   m_Layer: 0
-  m_Name: RSpeedSlider
+  m_Name: RotationSpeedSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18169,7 +18171,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8443311105216810911}
+        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
+        m_MethodName: ChangeRotationSpeed
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9128066371031096169
 GameObject:
   m_ObjectHideFlags: 0
@@ -18181,7 +18195,7 @@ GameObject:
   - component: {fileID: 6783681638521873422}
   - component: {fileID: 2924849139167696035}
   m_Layer: 0
-  m_Name: ESpeedSlider
+  m_Name: ElevationSpeedSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18259,7 +18273,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8443311105216810911}
+        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
+        m_MethodName: ChangeElevationSpeed
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9167544954483041671
 GameObject:
   m_ObjectHideFlags: 0

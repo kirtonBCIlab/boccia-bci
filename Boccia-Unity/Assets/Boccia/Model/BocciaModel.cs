@@ -122,6 +122,18 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
+    public void SetElevationSpeed(float elevationSpeed)
+    {
+        bocciaData.ElevationSpeed = elevationSpeed;
+        SendChangeEvent();
+    }
+
+    public void SetRotationSpeed(float rotationSpeed)
+    {
+        bocciaData.RotationSpeed = rotationSpeed;
+        SendChangeEvent();
+    }
+
     // Navigation control
 
 

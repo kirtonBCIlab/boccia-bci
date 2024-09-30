@@ -14,6 +14,9 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider elevationRangeSlider;
     public Slider rotationPrecisionSlider;
     public Slider rotationRangeSlider;
+    public Slider elevationSpeedSlider;
+    public Slider rotationSpeedSlider;
+    
 
     private BocciaModel model;
 
@@ -27,8 +30,10 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
         elevationPrecisionSlider.onValueChanged.AddListener(ChangeElevationPrecision);
         elevationRangeSlider.onValueChanged.AddListener(ChangeElevationRange);
-        rotationRangeSlider.onValueChanged.AddListener(ChangeRotationPrecision);
+        rotationPrecisionSlider.onValueChanged.AddListener(ChangeRotationPrecision);
         rotationRangeSlider.onValueChanged.AddListener(ChangeRotationRange);
+        elevationSpeedSlider.onValueChanged.AddListener(ChangeElevationSpeed);
+        rotationSpeedSlider.onValueChanged.AddListener(ChangeRotationSpeed);
     }
 
 
@@ -73,5 +78,15 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void ChangeRotationRange(float rangePercent)
     {
         model.SetRotationRange(rangePercent);
+    }
+
+    public void ChangeElevationSpeed(float elevationSpeed)
+    {
+        model.SetElevationSpeed(elevationSpeed);
+    }
+
+    public void ChangeRotationSpeed(float rotationSpeed)
+    {
+        model.SetRotationSpeed(rotationSpeed);
     }
 }
