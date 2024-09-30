@@ -12,6 +12,8 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public TMPro.TMP_Dropdown ballColorDropdown;
     public Slider elevationPrecisionSlider;
     public Slider elevationRangeSlider;
+    public Slider rotationPrecisionSlider;
+    public Slider rotationRangeSlider;
 
     private BocciaModel model;
 
@@ -25,6 +27,8 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
         elevationPrecisionSlider.onValueChanged.AddListener(ChangeElevationPrecision);
         elevationRangeSlider.onValueChanged.AddListener(ChangeElevationRange);
+        rotationRangeSlider.onValueChanged.AddListener(ChangeRotationPrecision);
+        rotationRangeSlider.onValueChanged.AddListener(ChangeRotationRange);
     }
 
 
@@ -61,5 +65,13 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void ChangeElevationRange(float rangePercent)
     {
         model.SetElevationRange(rangePercent);
+    }
+    public void ChangeRotationPrecision(float precisionPercent)
+    {
+        model.SetRotationPrecision(precisionPercent);
+    }
+    public void ChangeRotationRange(float rangePercent)
+    {
+        model.SetRotationRange(rangePercent);
     }
 }

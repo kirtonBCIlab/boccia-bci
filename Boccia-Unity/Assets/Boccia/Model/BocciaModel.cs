@@ -99,15 +99,26 @@ public class BocciaModel : Singleton<BocciaModel>
         SendChangeEvent();
     }
 
-    public void SetElevationPrecision(float precisionPercent)
+    public void SetElevationPrecision(float elevationPercent)
     {
-        bocciaData.ElevationPrecision = precisionPercent;
+        bocciaData.ElevationPrecision = elevationPercent;
         SendChangeEvent();
     }
 
-    public void SetElevationRange(float precisionRange)
+    public void SetElevationRange(float elevationRange)
     {
-        bocciaData.ElevationRange = precisionRange;
+        bocciaData.ElevationRange = elevationRange;
+        SendChangeEvent();
+    }
+
+    public void SetRotationPrecision(float rangeDegree)
+    {
+        bocciaData.RotationPrecision = rangeDegree;
+        SendChangeEvent();
+    }
+    public void SetRotationRange(float rotationRange)
+    {
+        bocciaData.RotationRange = rotationRange;
         SendChangeEvent();
     }
 
