@@ -17,11 +17,13 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Navigation
     public BocciaScreen CurrentScreen;
+    private BocciaScreen PreviousScreen;
 
     // Game
     public BocciaGameMode GameMode;
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
+    public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
 
     public Color BallColor => bocciaData.BallColor;
@@ -48,7 +50,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public string SerialPortName => bocciaData.SerialPortName;
 
     // Change events
-    public static event System.Action WasChanged;
+    public event System.Action WasChanged;
+    public event System.Action NavigationChanged;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -63,33 +66,35 @@ public class BocciaModel : Singleton<BocciaModel>
             ResetGameState();
             ResetBciState();
             ResetRampHardwareState();
-            
+
             bocciaData.WasInitialized = true;
         }
 
-        SendChangeEvent();
+        SendRampChangeEvent();
 
         // For now, just emit change event if ramp changes
-        rampController.RampChanged += SendChangeEvent;
+        rampController.RampChanged += SendRampChangeEvent;
     }
 
     private void OnDisable()
     {
-        rampController.RampChanged -= SendChangeEvent;
+        rampController.RampChanged -= SendRampChangeEvent;
     }
 
 
 
-    // Game control
+    // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
 
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
+    public void DropBall() => rampController.DropBall();
+
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
     public void ChangeBallColor(string colorString)
@@ -133,40 +138,109 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.RotationSpeed = rotationSpeed;
         SendChangeEvent();
     }
+    
 
-    // Navigation control
+    // MARK: Navigation control
+    public void StartMenu()
+    {
+        ShowScreen(BocciaScreen.StartMenu);
+        // GameMode = BocciaGameMode.Stop;
+    }
+
+    public void PlayMenu()
+    {
+        ShowScreen(BocciaScreen.PlayMenu);
+        // GameMode = BocciaGameMode.Stop;
+    }
+
+    public void Train()
+    {
+        ShowScreen(BocciaScreen.Train);
+        // start training, hamburger -> menu = stop?
+        // GameMode = BocciaGameMode.Train;
+    }
+
+    public void Play()
+    {
+        ShowScreen(BocciaScreen.Play);
+        // GameMode = BocciaGameMode.Play;
+    }
+
+    public void VirtualPlay()
+    {
+        ShowScreen(BocciaScreen.VirtualPlay);
+        // GameMode = BocciaGameMode.Virtual;
+    }
+
+    public void ShowHamburgerMenu()
+    {
+        if (CurrentScreen == BocciaScreen.HamburgerMenu)
+        {
+            ShowPreviousScreen();
+        }
+        else
+        {
+            ShowScreen(BocciaScreen.HamburgerMenu);
+        }
+    }   
+    
+    public void ShowGameOptions() => ShowScreen(BocciaScreen.GameOptions);
+    public void ShowBciOptions() => ShowScreen(BocciaScreen.BciOptions);
+    public void ShowRampOptions() => ShowScreen(BocciaScreen.RampOptions);
+
+    private void ShowScreen(BocciaScreen screen)
+    {
+        PreviousScreen = CurrentScreen;
+        CurrentScreen = screen;
+        SendNavigationChangeEvent();
+    }
+
+    private void ShowPreviousScreen()
+    {
+        CurrentScreen = PreviousScreen;
+        SendNavigationChangeEvent();
+    }
+
+    public void QuitGame()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+    }
 
 
-    // BCI control
+    // MARK: BCI control
 
 
-    // Ramp Hardware
-
-
-    // Persistence
+    // MARK: Persistence
     public void Bind(BocciaData gameData)
     {
         // Bind replaces the current gameData with another one.  This is used
         // to provide the model with a BocciaData loaded from disk, etc.
         this.bocciaData = gameData;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
 
     // MARK: Helpers
-    private void SendChangeEvent()
+    private void SendRampChangeEvent()
     {
         WasChanged?.Invoke();
     }
 
+    private void SendNavigationChangeEvent()
+    {
+        NavigationChanged?.Invoke();
+    }
+
     private void ResetNavigationState()
     {
-        CurrentScreen = BocciaScreen.Start;
+        CurrentScreen = BocciaScreen.StartMenu;
+        PreviousScreen = CurrentScreen;
     }
 
     private void ResetGameState()
     {
-        GameMode = BocciaGameMode.Start;
+        GameMode = BocciaGameMode.StopPlay;
         BallState = BocciaBallState.Ready;
 
         bocciaData.BallColor = Color.blue;

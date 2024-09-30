@@ -1,21 +1,22 @@
 public enum BocciaScreen
 {
-    Start,
+    StartMenu,
+    PlayMenu,
+    HamburgerMenu,
     GameOptions,
     BciOptions,
-    RampSetup,
-    PlayMenu,
-    TrainView,
-    RampView,
-    QuitGame,
+    RampOptions,
+    Train,
+    Play,
+    VirtualPlay,
 }
 
 public enum BocciaGameMode
 {
-    Start,
+    StopPlay,
     Train,
-    Live,
-    Simulated,
+    Play,
+    Virtual,
 }
 
 public enum BocciaBallState

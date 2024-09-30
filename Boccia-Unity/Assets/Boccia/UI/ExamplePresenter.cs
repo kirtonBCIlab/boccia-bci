@@ -15,6 +15,7 @@ public class ExamplePresenter : MonoBehaviour
     public Button moveUpButton;
     public Button moveDownButton;
     public Button resetRampButton;
+    public Button dropBallButton;
     public Button colorButton;
 
     private BocciaModel model;
@@ -24,7 +25,7 @@ public class ExamplePresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+        model.WasChanged += ModelChanged;
 
         // connect buttons to model
         rotateLeftButton.onClick.AddListener(RotateRight);
@@ -32,13 +33,14 @@ public class ExamplePresenter : MonoBehaviour
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
         resetRampButton.onClick.AddListener(model.ResetRampPosition);
+        dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
     }
 
 
-    private void OnDisable()
+    void OnDisable()
     {
-        BocciaModel.WasChanged -= ModelChanged;
+        model.WasChanged -= ModelChanged;
     }
 
     void Update()

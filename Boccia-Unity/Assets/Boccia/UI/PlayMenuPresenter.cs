@@ -16,28 +16,11 @@ public class PlayMenuPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
-        
+
         // connect buttons to model
-        //trainingButton.onClick.AddListener();
-        //playBocciaButton.onClick.AddListener();
-        //virtualPlayButton.onClick.AddListener();
-    }
-
-
-    private void OnDisable()
-    {
-        BocciaModel.WasChanged -= ModelChanged;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void ModelChanged()
-    {
-
+        // Note - need to connect to real model function, start menu is just for test
+        trainingButton.onClick.AddListener(model.Train);
+        playBocciaButton.onClick.AddListener(model.Play);
+        virtualPlayButton.onClick.AddListener(model.VirtualPlay);
     }
 }
