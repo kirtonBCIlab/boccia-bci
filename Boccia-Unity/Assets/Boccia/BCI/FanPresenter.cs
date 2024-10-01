@@ -7,20 +7,17 @@ public class FanPresenter : MonoBehaviour
 {
     public FanGenerator fanGenerator;
 
-    [Header("Fan Parameters")]
-    public float theta;         // Angle in degrees
-    public float r1;            // Inner radius
-    public float r2;            // Outer radius
-    public float columnSpacing; // Spacing between columns
-    public float rowSpacing;    // Spacing between rows;
-    public int nColumns;        // Number of columns
-    public int nRows;           // Number of rows
+    [Header("Positioning")]
+    public bool useRampPosition;
+    
+    private BocciaModel model;
     
     // Start is called before the first frame update
     void Start()
     {
-        
-        
+        model = BocciaModel.Instance;        
+
+        if (useRampPosition) { setFanPositionToRamp(); } 
     }
 
     // Update is called once per frame
@@ -29,15 +26,17 @@ public class FanPresenter : MonoBehaviour
         
     }
 
+    public void setFanPositionToRamp()
+    {
+        float shaftOrientation = model.GetRampOrientation();
+        Quaternion currentRotation = transform.rotation;
+        Quaternion newRotation = Quaternion.Euler(currentRotation.eulerAngles.x, shaftOrientation-90, currentRotation.eulerAngles.z);
+        transform.rotation = newRotation;
+    }
+
+
     public void GenerateFan()
     {
-        fanGenerator.theta = theta;
-        fanGenerator.r1 = r1;
-        fanGenerator.r2 = r2;
-        fanGenerator.columnSpacing = columnSpacing;
-        fanGenerator.rowSpacing = rowSpacing;
-        fanGenerator.nColumns = nColumns;
-        fanGenerator.nRows = nRows;
         fanGenerator.GenerateFanShape();
     }
 }

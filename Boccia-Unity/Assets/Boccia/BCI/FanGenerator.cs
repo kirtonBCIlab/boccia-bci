@@ -6,6 +6,7 @@ using BCIEssentials.StimulusEffects;
 
 public class FanGenerator : MonoBehaviour
 {
+    [Header("Fan Parameters")]
     public float theta;         // Angle in degrees
     public float r1;            // Inner radius
     public float r2;            // Outer radius
@@ -33,6 +34,10 @@ public class FanGenerator : MonoBehaviour
         set { _nRows = Mathf.Clamp(value, 1, _maxRows); }
     }
 
+    [Header("SPO settings")]
+    public Color flashOnColor = Color.red;
+    public Color flashOffColor = Color.white;
+
     public void GenerateFanShape()
     {
         GameObject fan = gameObject;
@@ -58,7 +63,8 @@ public class FanGenerator : MonoBehaviour
         }
 
         // Rotate object on Z to align straight
-        fan.transform.rotation = Quaternion.Euler(0, 0, 90 - (theta / 2));
+        Vector3 currentRotation = fan.transform.rotation.eulerAngles;
+        fan.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, 90 - (theta / 2));
     }
 
     private void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius, int segmentID)
@@ -106,7 +112,10 @@ public class FanGenerator : MonoBehaviour
         mesh.RecalculateNormals();
 
         // Add Flashing effects component
-        segment.AddComponent<ColorFlashEffect>();
+        // TODO: We need something to add the color of the SPO segment here
+        ColorFlashEffect colorFlashEffect = segment.AddComponent<ColorFlashEffect>();
+        // colorFlashEffect.OnColor = flashOnColor;
+        // colorFlashEffect.OffColor = flashOffColor;          
 
         // Add SPO component
         SPO spo = segment.AddComponent<SPO>();

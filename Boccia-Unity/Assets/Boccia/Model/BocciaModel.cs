@@ -146,6 +146,10 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
     
+    public float GetRampOrientation()
+    {
+        return rampController.Rotation;
+    }
 
     // MARK: Navigation control
     public void StartMenu()
