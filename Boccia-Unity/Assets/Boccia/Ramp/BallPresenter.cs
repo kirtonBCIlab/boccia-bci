@@ -62,6 +62,8 @@ public class BallPresenter : MonoBehaviour
 
         checkBallCoroutine = StartCoroutine(CheckBallSpeed());
 
+        model.ResetBar(); // Call the method to reset the bar state to false
+
         yield return null;
     }
 
