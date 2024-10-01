@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// THIS SCRIPT HAS BEEN COMBINED INTO BallPresenter.cs
+
 public class BarPresenter : MonoBehaviour
 {
     private Animator barAnimation;
