@@ -71,6 +71,7 @@ public class BallPresenter : MonoBehaviour
     {
         while (ballRigidbody.velocity.magnitude > 0.01f)
         {
+            //Debug.Log("Ball velocity: " + ballRigidbody.velocity.magnitude);
             yield return new WaitForSecondsRealtime(0.1f); 
         }
 
@@ -82,6 +83,7 @@ public class BallPresenter : MonoBehaviour
 
     private void ResetBall()
     {
+        //Debug.Log("Resetting ball to position: " + dropPosition);      
         ball.transform.position = dropPosition;
 
         if (checkBallCoroutine != null)
