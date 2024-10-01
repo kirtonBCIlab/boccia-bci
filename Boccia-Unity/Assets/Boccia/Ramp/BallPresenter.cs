@@ -6,6 +6,10 @@ public class BallPresenter : MonoBehaviour
 {
     public GameObject ball;
     private Rigidbody ballRigidbody;
+
+    private Animator barAnimation;
+    public GameObject dropBar;
+
     private BocciaModel model;
 
     private Vector3 initialPosition;
@@ -19,6 +23,8 @@ public class BallPresenter : MonoBehaviour
 
         // Initialize rigidbody 
         ballRigidbody = ball.GetComponent<Rigidbody>();
+        // Initialize bar animation
+        barAnimation = dropBar.GetComponent<Animator>();
 
         // initialize ball to saved data
         ModelChanged();
@@ -38,6 +44,11 @@ public class BallPresenter : MonoBehaviour
 
         // Set sleep threshold to minimum so the ball is ready to roll
         ballRigidbody.sleepThreshold = 0.0f;
+
+        if (model.BarState)
+        {
+             StartCoroutine(BarAnimation()); // Start the bar movement animation
+        }
     }
 
     // Update is called once per frame
@@ -50,5 +61,16 @@ public class BallPresenter : MonoBehaviour
             ballRigidbody.velocity = Vector3.zero;
             ballRigidbody.angularVelocity = Vector3.zero;
         }
+    }
+
+    private IEnumerator BarAnimation()
+    {
+        barAnimation.SetBool("isOpening", true);
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        barAnimation.SetBool("isOpening", false);
+
+        yield return null;
     }
 }

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 588444543545713023}
   - component: {fileID: 2548263327086350593}
-  - component: {fileID: 8776580604946116368}
   - component: {fileID: 2165396535546456436}
   m_Layer: 0
   m_Name: Boccia
@@ -33,7 +32,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6504535355485800295}
-  - {fileID: 1377419631192020737}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2548263327086350593
@@ -55,19 +53,6 @@ MonoBehaviour:
   elevationSpeed: 5
   minElevation: 0.0026
   maxElevation: 0.43
---- !u!114 &8776580604946116368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3668368408969929286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e00db2064c1c65b4386e26d8e7d1c6e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropBar: {fileID: 8448552161599435182}
 --- !u!114 &2165396535546456436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,68 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 6213523397869663847}
---- !u!1001 &3617087452676809311
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 588444543545713023}
-    m_Modifications:
-    - target: {fileID: 2284259283304519616, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_Name
-      value: Large Boccia Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.323
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.332509
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.653
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 61de0ef06638334429b16d769a00da53, type: 3}
---- !u!4 &1377419631192020737 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2391387232432518494, guid: 61de0ef06638334429b16d769a00da53, type: 3}
-  m_PrefabInstance: {fileID: 3617087452676809311}
-  m_PrefabAsset: {fileID: 0}
+  dropBar: {fileID: 8448552161599435182}
 --- !u!1001 &3807655573034552910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151,6 +75,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6147289232074132707}
     m_Modifications:
+    - target: {fileID: 6744055110612752849, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: d9728e9eb81eda2428dd491c20171bd8, type: 2}
     - target: {fileID: 7128455000201345065, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
       propertyPath: m_Name
       value: Small Boccia Ball
@@ -194,6 +122,14 @@ PrefabInstance:
     - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996746463622245752, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996746463622245752, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
