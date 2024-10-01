@@ -12,7 +12,9 @@ public class BallPresenter : MonoBehaviour
 
     private BocciaModel model;
 
-    private Vector3 initialPosition;
+    private Vector3 dropPosition;
+
+    private Coroutine checkBallCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,9 @@ public class BallPresenter : MonoBehaviour
 
         // Initialize rigidbody 
         ballRigidbody = ball.GetComponent<Rigidbody>();
+        // Set sleep threshold to minimum so the ball is ready to roll
+        ballRigidbody.sleepThreshold = 0.0f;
+
         // Initialize bar animation
         barAnimation = dropBar.GetComponent<Animator>();
 
@@ -40,30 +45,14 @@ public class BallPresenter : MonoBehaviour
         // For lower rate changes, update when model sends change event
         ball.GetComponent<Renderer>().material.color = model.BallColor;
 
-        initialPosition = ball.transform.position;
-
-        // Set sleep threshold to minimum so the ball is ready to roll
-        ballRigidbody.sleepThreshold = 0.0f;
-
         if (model.BarState)
         {
-             StartCoroutine(BarAnimation()); // Start the bar movement animation
+            dropPosition = ball.transform.position; // Save ball position right before it is dropped
+            StartCoroutine(DropBall()); // Start the bar movement animation
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.Log(ballRigidbody.velocity.magnitude);
-
-        if (ballRigidbody.velocity.magnitude < 0.01f)
-        {
-            ballRigidbody.velocity = Vector3.zero;
-            ballRigidbody.angularVelocity = Vector3.zero;
-        }
-    }
-
-    private IEnumerator BarAnimation()
+    private IEnumerator DropBall()
     {
         barAnimation.SetBool("isOpening", true);
 
@@ -71,6 +60,32 @@ public class BallPresenter : MonoBehaviour
 
         barAnimation.SetBool("isOpening", false);
 
+        checkBallCoroutine = StartCoroutine(CheckBallSpeed());
+
         yield return null;
+    }
+
+    private IEnumerator CheckBallSpeed()
+    {
+        while (ballRigidbody.velocity.magnitude > 0.01f)
+        {
+            yield return new WaitForSecondsRealtime(0.1f); 
+        }
+
+        ballRigidbody.velocity = Vector3.zero;
+        ballRigidbody.angularVelocity = Vector3.zero;
+
+        ResetBall();
+    }
+
+    private void ResetBall()
+    {
+        ball.transform.position = dropPosition;
+
+        if (checkBallCoroutine != null)
+        {
+            StopCoroutine(checkBallCoroutine);
+            checkBallCoroutine = null;
+        }
     }
 }
