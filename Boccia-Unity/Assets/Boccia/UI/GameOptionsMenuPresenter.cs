@@ -24,7 +24,8 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        BocciaModel.WasChanged += ModelChanged;
+
+        InitializeValues();
 
         // connect UI to model
         ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
@@ -36,21 +37,19 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         rotationSpeedSlider.onValueChanged.AddListener(ChangeRotationSpeed);
     }
 
-
-    private void OnDisable()
+    private void InitializeValues()
     {
-        BocciaModel.WasChanged -= ModelChanged;
-    }
+        // Convert the Color from the model to a corresponding dropdown value
+        int colorIndex = GetColorIndexFromModel(model.BallColor);
+        ballColorDropdown.value = colorIndex;
 
-    void Update()
-    {
-    }
-
-    private void ModelChanged()
-    {
-        // For a presenter, this is usually used to refresh the UI to reflect the
-        // state of the model (UI does not store state, it just provides a way
-        // to view and change it)
+        // Initialize other variables from BocciaModel
+        elevationPrecisionSlider.value = model.ElevationPrecision;
+        elevationRangeSlider.value = model.ElevationRange;
+        elevationSpeedSlider.value = model.ElevationSpeed;
+        rotationPrecisionSlider.value = model.RotationPrecision;
+        rotationRangeSlider.value = model.RotationRange;
+        rotationSpeedSlider.value = model.RotationSpeed;
     }
 
     public void ChangeBallColor(int valueIndex)
@@ -89,4 +88,25 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         model.SetRotationSpeed(rotationSpeed);
     }
+
+    private int GetColorIndexFromModel(Color color)
+    {
+        if (color == Color.blue)
+        {
+            return 0; // Blue option in the dropdown
+        }
+        else if (color == Color.red)
+        {
+            return 1; // Red option in the dropdown
+        }
+        else if (color == Color.green)
+        {
+            return 2; // Green option in the dropdown
+        }
+        else
+        {
+            return 0; // Default to blue if not recognized
+        }
+    }
+
 }
