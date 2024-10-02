@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 9082072509012217209}
   - component: {fileID: 2425395178984046}
   m_Layer: 0
-  m_Name: VirtualPlayScreen
+  m_Name: VirtualPlayButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
