@@ -17,6 +17,7 @@ public class ScreenSwitcher : MonoBehaviour
     public GameObject StartMenu;
     public GameObject PlayMenu;
     public GameObject HamburgerMenuOptions;
+    public GameObject VirtualPlayScreen;
 
     private BocciaModel model;
     private List<GameObject> screenList;
@@ -46,7 +47,8 @@ public class ScreenSwitcher : MonoBehaviour
         {
             StartMenu,
             PlayMenu,
-            HamburgerMenuOptions
+            HamburgerMenuOptions,
+            VirtualPlayScreen
         };
     }
 
@@ -61,6 +63,10 @@ public class ScreenSwitcher : MonoBehaviour
                 
             case BocciaScreen.HamburgerMenu:
                 PanCameraToScreen(HamburgerMenuOptions);
+                break;
+
+            case BocciaScreen.VirtualPlay:
+                PanCameraToScreen(VirtualPlayScreen);
                 break;
             
             // For now just switch back to start menu to show switchign works
