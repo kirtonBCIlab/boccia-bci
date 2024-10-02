@@ -11,8 +11,8 @@ public class FanGenerator : MonoBehaviour
     public float columnSpacing; // Spacing between columns
     public float rowSpacing;    // Spacing between rows;
 
-    private int _maxColumns = 7;    // Max number of columns 
-    private int _maxRows = 7;       // Max number of rows
+    private int _maxColumns = 7;        // Max number of columns 
+    private int _maxRows = 7;           // Max number of rows
 
     [SerializeField]
     private float _r1;          // Inner radius
@@ -92,7 +92,7 @@ public class FanGenerator : MonoBehaviour
         MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
 
-        Mesh mesh = new Mesh();
+        Mesh mesh = new();
         meshFilter.mesh = mesh;
 
         int segments = 100; // Number of segments to approximate the arc
@@ -102,13 +102,21 @@ public class FanGenerator : MonoBehaviour
 
         float angleStep = (endAngle - startAngle) / segments;
 
+        // Get the parent's values
+        Quaternion parentRotation = fan.transform.rotation;
+        Vector3 parentPosition = fan.transform.position;
+
         for (int i = 0; i <= segments; i++)
         {
             float angle = startAngle + i * angleStep;
             float rad = Mathf.Deg2Rad * angle;
 
-            vertices[i] = new Vector3(Mathf.Cos(rad) * innerRadius, Mathf.Sin(rad) * innerRadius, 0);
-            vertices[i + segments + 1] = new Vector3(Mathf.Cos(rad) * outerRadius, Mathf.Sin(rad) * outerRadius, 0);
+            // Define vertices relative to the local origin
+            Vector3 innerVertex = new(Mathf.Cos(rad) * innerRadius, Mathf.Sin(rad) * innerRadius, 0);
+            Vector3 outerVertex = new(Mathf.Cos(rad) * outerRadius, Mathf.Sin(rad) * outerRadius, 0);
+
+            vertices[i] = parentRotation * innerVertex + parentPosition;
+            vertices[i + segments + 1] = parentRotation * outerVertex + parentPosition;
 
             if (i < segments)
             {
@@ -123,9 +131,13 @@ public class FanGenerator : MonoBehaviour
             }
         }
 
+        // Ensure normals are recalculated
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
+
+        // Check if the mesh bounds are correct
+        mesh.RecalculateBounds();
 
         // Add Flashing effects component
         // TODO: We need something to add the color of the SPO segment here
