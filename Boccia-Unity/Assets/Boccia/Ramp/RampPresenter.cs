@@ -44,6 +44,7 @@ public class RampPresenter : MonoBehaviour
     private void ModelChanged()
     {
         // Ramp is a digital twin, so we just match visualization with model data
+        //Debug.Log(model.RampRotation);
         StartCoroutine(RotationVisualization());
         StartCoroutine(ElevationVisualization());
     }
@@ -54,6 +55,7 @@ public class RampPresenter : MonoBehaviour
         Quaternion currentRotation = rotationShaft.transform.localRotation;
         //Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
         Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, model.RampRotation, rotationShaft.transform.localEulerAngles.z);
+        //Debug.Log($"model.RampRotation value: {model.RampRotation}");
 
         while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
         {
@@ -68,6 +70,7 @@ public class RampPresenter : MonoBehaviour
     private IEnumerator ElevationVisualization()
     {
         Vector3 currentElevation = elevationMechanism.transform.localPosition;
+        //Debug.Log($"model.RampElevation value: {model.RampElevation}");
         float elevationScalar = minElevation + (model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
         Vector3 targetElevation = elevationDirection * elevationScalar;
 
