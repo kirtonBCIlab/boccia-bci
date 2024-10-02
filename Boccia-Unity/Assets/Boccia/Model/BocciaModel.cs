@@ -97,6 +97,48 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
+    public void ChangeBallColor(string colorString)
+    {
+        Color color = GetColorFromName(colorString);
+        bocciaData.BallColor = color;
+        SendRampChangeEvent();
+    }
+
+    public void SetElevationPrecision(float elevationPercent)
+    {
+        bocciaData.ElevationPrecision = elevationPercent;
+        SendRampChangeEvent();
+    }
+
+    public void SetElevationRange(float elevationRange)
+    {
+        bocciaData.ElevationRange = elevationRange;
+        SendRampChangeEvent();
+    }
+
+    public void SetRotationPrecision(float rangeDegree)
+    {
+        bocciaData.RotationPrecision = rangeDegree;
+        SendRampChangeEvent();
+    }
+    public void SetRotationRange(float rotationRange)
+    {
+        bocciaData.RotationRange = rotationRange;
+        SendRampChangeEvent();
+    }
+
+    public void SetElevationSpeed(float elevationSpeed)
+    {
+        bocciaData.ElevationSpeed = elevationSpeed;
+        SendRampChangeEvent();
+    }
+
+    public void SetRotationSpeed(float rotationSpeed)
+    {
+        bocciaData.RotationSpeed = rotationSpeed;
+        SendRampChangeEvent();
+    }
+    
 
     // MARK: Navigation control
     public void StartMenu()
@@ -229,6 +271,27 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         RampHardwareConnected = false;
         bocciaData.SerialPortName = "COM1";
+    }
+
+    Color GetColorFromName(string colorName)
+    {
+        switch (colorName.ToLower())
+        {
+            case "red":
+                return Color.red;
+            case "green":
+                return Color.green;
+            case "blue":
+                return Color.blue;
+            case "yellow":
+                return Color.yellow;
+            case "white":
+                return Color.white;
+            case "black":
+                return Color.black;
+            default:
+                return Color.clear;  // Returns a transparent color if not found
+        }
     }
 }
 
