@@ -101,42 +101,42 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         Color color = GetColorFromName(colorString);
         bocciaData.BallColor = color;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
     public void SetElevationPrecision(float elevationPercent)
     {
         bocciaData.ElevationPrecision = elevationPercent;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
     public void SetElevationRange(float elevationRange)
     {
         bocciaData.ElevationRange = elevationRange;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
     public void SetRotationPrecision(float rangeDegree)
     {
         bocciaData.RotationPrecision = rangeDegree;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
     public void SetRotationRange(float rotationRange)
     {
         bocciaData.RotationRange = rotationRange;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
     public void SetElevationSpeed(float elevationSpeed)
     {
         bocciaData.ElevationSpeed = elevationSpeed;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
 
     public void SetRotationSpeed(float rotationSpeed)
     {
         bocciaData.RotationSpeed = rotationSpeed;
-        SendChangeEvent();
+        SendRampChangeEvent();
     }
     
 
