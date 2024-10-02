@@ -620,10 +620,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2146497314}
     m_Modifications:
-    - target: {fileID: 2859724575470018110, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
-      propertyPath: m_Name
-      value: VirtualPlayButtons
-      objectReference: {fileID: 0}
     - target: {fileID: 4818931384772691849, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: m_Name
       value: VirtualPlayScreen
