@@ -57,7 +57,7 @@ public class FanGenerator : MonoBehaviour
     public void GenerateFanShape()
     {
         GameObject fan = gameObject;
-
+        
         float angleStep = theta / NColumns;
         float radiusStep = (R2 - R1) / NRows;
 
@@ -153,7 +153,7 @@ public class FanGenerator : MonoBehaviour
         spo.StartStimulusEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().SetOn());
         spo.StopStimulusEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().SetOff());
         spo.OnSelectedEvent.AddListener(() => segment.GetComponent<SPO>().StopStimulus());
-        spo.OnSelectedEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().Play());
+        spo.OnSelectedEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().Play()); 
     }
 
     public void DestroyFanSegments()
