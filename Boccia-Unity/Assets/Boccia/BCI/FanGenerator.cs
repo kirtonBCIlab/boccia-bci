@@ -57,7 +57,6 @@ public class FanGenerator : MonoBehaviour
     public void GenerateFanShape()
     {
         GameObject fan = gameObject;
-        fan.transform.rotation = Quaternion.identity;   // Reset rotation to default
 
         float angleStep = theta / NColumns;
         float radiusStep = (R2 - R1) / NRows;
@@ -66,8 +65,8 @@ public class FanGenerator : MonoBehaviour
         if (NColumns > 1) { angleStep = (theta - (NColumns - 1) * columnSpacing) / NColumns; }
         if (NRows > 1) { radiusStep = (R2 - R1 - (NRows - 1) * rowSpacing) / NRows; }
 
+        // Create the fan segments
         int segmentID = 0;
-
         for (int i = 0; i < NColumns; i++)
         {
             float startAngle = i * (angleStep + columnSpacing);
@@ -82,10 +81,6 @@ public class FanGenerator : MonoBehaviour
                 segmentID++;
             }
         }
-
-        // Rotate object on Z to align straight
-        Vector3 currentRotation = fan.transform.rotation.eulerAngles;
-        fan.transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, 90 - (theta / 2));
     }
 
     private void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius, int segmentID)
