@@ -91,6 +91,13 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void DropBall() => rampController.DropBall();
 
+    // Method to reset the state of the bar after the ball has been dropped
+    public void ResetBar()
+    {
+        rampController.ResetBar();
+        SendRampChangeEvent();
+    }
+
     public void RandomColor()
     {
         bocciaData.BallColor = UnityEngine.Random.ColorHSV();

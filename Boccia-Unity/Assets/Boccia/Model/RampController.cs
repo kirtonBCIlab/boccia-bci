@@ -12,6 +12,7 @@ public interface RampController
     public void ElevateBy(float elevation);
     public void ResetRampPosition();
     public void DropBall();
+    public void ResetBar();
 
     // add remaining methods like calibration, test, reset
 }

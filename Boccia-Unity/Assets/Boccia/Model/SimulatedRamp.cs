@@ -48,6 +48,12 @@ public class SimulatedRamp : RampController
         SendChangeEvent();
     }
 
+    public void ResetBar()
+    {
+        IsBarOpen = false;
+        SendChangeEvent();
+    }
+
     private void SendChangeEvent()
     {
         RampChanged?.Invoke();
