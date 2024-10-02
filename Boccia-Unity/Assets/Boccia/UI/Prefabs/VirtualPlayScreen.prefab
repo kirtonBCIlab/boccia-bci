@@ -1003,6 +1003,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7764173004061172451}
+  - component: {fileID: 3576948454555312335}
   m_Layer: 0
   m_Name: VirtualPlayScreen
   m_TagString: Untagged
@@ -1027,6 +1028,25 @@ Transform:
   - {fileID: 5941197235164522088}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3576948454555312335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818931384772691849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a14970601ce544be92d2517dfee5174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateLeftButton: {fileID: 3638648145732925411}
+  rotateRightButton: {fileID: 2745594877561296081}
+  moveUpButton: {fileID: 6739501676030411410}
+  moveDownButton: {fileID: 871235478745336152}
+  resetRampButton: {fileID: 5790848212467436699}
+  dropBallButton: {fileID: 1020736014239196524}
+  colorButton: {fileID: 8163365981475531111}
 --- !u!1 &4999685241904479374
 GameObject:
   m_ObjectHideFlags: 0
