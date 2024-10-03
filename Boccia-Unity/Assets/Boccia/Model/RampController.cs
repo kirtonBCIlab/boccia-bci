@@ -9,7 +9,9 @@ public interface RampController
     public bool IsBarOpen { get; }
 
     public void RotateBy(float degrees);
+    public void RotateTo(float degrees);
     public void ElevateBy(float elevation);
+    public void ElevateTo(float elevation);
     public void ResetRampPosition();
     public void DropBall();
     public void ResetBar();

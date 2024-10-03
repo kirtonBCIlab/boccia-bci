@@ -85,7 +85,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
+    public void RotateTo(float degrees) => rampController.RotateTo(degrees);
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
+    public void ElevateTo(float elevation) => rampController.ElevateTo(elevation);
 
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
@@ -149,6 +151,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public float GetRampOrientation()
     {
         return rampController.Rotation;
+    }
+
+    public float GetRampElevation()
+    {
+        return rampController.Elevation;
     }
 
     // MARK: Navigation control

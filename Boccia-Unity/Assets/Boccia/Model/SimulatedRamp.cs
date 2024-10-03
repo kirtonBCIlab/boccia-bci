@@ -29,9 +29,21 @@ public class SimulatedRamp : RampController
         SendChangeEvent();
     }
 
+    public void RotateTo(float degrees)
+    {
+        Rotation = degrees;
+        SendChangeEvent();
+    }
+
     public void ElevateBy(float elevation)
     {
         Elevation += elevation;
+        SendChangeEvent();
+    }
+
+    public void ElevateTo(float elevation)
+    {
+        Elevation = elevation;
         SendChangeEvent();
     }
 
