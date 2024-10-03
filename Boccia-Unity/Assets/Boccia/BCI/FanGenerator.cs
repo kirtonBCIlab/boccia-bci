@@ -16,7 +16,6 @@ public class FanGenerator : MonoBehaviour
 
     [SerializeField]
     private float _r1;          // Inner radius
-
     public float R1
     {
         get { return _r1; }
@@ -25,7 +24,6 @@ public class FanGenerator : MonoBehaviour
 
     [SerializeField]
     private float _r2;          // Outer radius
-
     public float R2
     {
         get { return _r2; }
@@ -34,7 +32,6 @@ public class FanGenerator : MonoBehaviour
 
     [SerializeField]
     private int _nColumns;        // Number of columns
-
     public int NColumns
     {
         get { return _nColumns; }
@@ -43,7 +40,6 @@ public class FanGenerator : MonoBehaviour
 
     [SerializeField]
     private int _nRows;           // Number of rows
-    
     public int NRows
     {
         get { return _nRows; }
