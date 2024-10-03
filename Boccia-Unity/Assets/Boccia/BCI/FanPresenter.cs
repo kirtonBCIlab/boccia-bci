@@ -6,6 +6,7 @@ using UnityEngine;
 public class FanPresenter : MonoBehaviour
 {
     public FanGenerator fanGenerator;
+    public FanClicker fanClicker;
 
     public enum PositioningMode
     {
@@ -17,8 +18,12 @@ public class FanPresenter : MonoBehaviour
     [Header("Positioning")]
     public PositioningMode positioningMode;
 
+    [Header("Interaction")]
+    public bool interactableFanSegments;
+
     private BocciaModel _model;
     private Quaternion _originalRotation;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -90,5 +95,7 @@ public class FanPresenter : MonoBehaviour
 
         fanGenerator.DestroyFanSegments();
         fanGenerator.GenerateFanShape();
+
+        if (interactableFanSegments) { fanClicker.MakeFanSegmentsInteractable(); }
     }
 }
