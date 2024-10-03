@@ -46,7 +46,7 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
         int segmentID = spo.ObjectID;
         int columnIndex = fanGenerator.NColumns - 1 - (segmentID / fanGenerator.NRows);
         int rowIndex = fanGenerator.NRows - 1 - (segmentID % fanGenerator.NRows);
-        Debug.Log("Fan segment clicked: " + segmentID);
+        // Debug.Log("Fan segment clicked: " + segmentID);
 
         // Compute exact rotation angle and elevation based on clicked segmentID
         float rotationAngle = 0f;
