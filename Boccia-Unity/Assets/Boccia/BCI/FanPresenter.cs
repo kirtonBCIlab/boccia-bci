@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -24,7 +25,6 @@ public class FanPresenter : MonoBehaviour
     private BocciaModel _model;
     private Quaternion _originalRotation;
     
-
     // Start is called before the first frame update
     void Start()
     {
@@ -98,4 +98,21 @@ public class FanPresenter : MonoBehaviour
 
         if (interactableFanSegments) { fanClicker.MakeFanSegmentsInteractable(); }
     }
+
+    // Ramp movement functions
+    public void Rotateby(float degrees) 
+    { 
+        Debug.Log("Rotating by " + degrees);
+        _model.RotateBy(degrees); 
+    }
+
+    public void RotateTo(float angle) 
+    {
+        Debug.Log("Rotating to " + angle);
+        _model.RotateTo(angle); 
+    }
+    
+    public void ElevateBy(float elevation) { _model.ElevateBy(elevation); }
+    public void ElevateTo(float elevation) { _model.ElevateTo(elevation); }
+
 }

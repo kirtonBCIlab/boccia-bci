@@ -2,19 +2,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 public class FanClicker : MonoBehaviour, IPointerClickHandler
 {
     private FanGenerator fanGenerator;
+    private FanPresenter fanPresenter;
     
     private void Start()
     {
         fanGenerator = GetComponentInParent<FanGenerator>();
+        fanPresenter = GetComponentInParent<FanPresenter>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Fan clicked" + eventData.pointerCurrentRaycast.gameObject.name);
         OnFanSegmentClick(transform);
     }
 
@@ -34,7 +36,6 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
                 
                 // Add compontent to handle click events
                 FanClicker fanClicker = child.gameObject.AddComponent<FanClicker>();
-                // fanClicker.fanGenerator = this.fanGenerator;
             }
         }
     }
@@ -46,21 +47,38 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
         int columnIndex = segmentID % fanGenerator.NColumns;
         int rowIndex = segmentID / fanGenerator.NColumns;
 
-        float rotationAngle = -fanGenerator.theta / 2 + columnIndex * (fanGenerator.theta / (fanGenerator.NColumns - 1));
-        float elevation = fanGenerator.LowElevationLimit + rowIndex * ((fanGenerator.HighElevationLimit - fanGenerator.LowElevationLimit) / (fanGenerator.NRows - 1));
+        // Compute exact rotation angle and elevation based on clicked segmentID
+        float rotationAngle = 0f;
+        float elevation = 0f;
+        
+        if (fanGenerator.NColumns > 1)
+        {
+            rotationAngle = -fanGenerator.theta / 2 + columnIndex * (fanGenerator.theta / (fanGenerator.NColumns - 1));
+        }
 
-        Debug.Log("Button clicked for segment " + segmentID);
-        RotateFanSegment(segmentID, rotationAngle);
-        ElevateFanSegment(segmentID, elevation);
-    }
+        if (fanGenerator.NRows > 1)
+        {
+            elevation = fanGenerator.LowElevationLimit + rowIndex * ((fanGenerator.HighElevationLimit - fanGenerator.LowElevationLimit) / (fanGenerator.NRows - 1));
+        }
+        
+        // Round down to nearest integer
+        int roundedRotationAngle = Mathf.FloorToInt(rotationAngle);
+        int roundedElevation = Mathf.FloorToInt(elevation);
 
-    private void RotateFanSegment(int segmentID, float angle)
-    {
-        Debug.Log("Rotating segment " + segmentID + " by " + angle);
-    }
+        // Call the appropriate movement based on the positioning mode
+        switch (fanPresenter.positioningMode)
+        {
+            case FanPresenter.PositioningMode.CenterToRails:
+                fanPresenter.Rotateby(rotationAngle);
+                fanPresenter.ElevateBy(elevation);
+                break;
+            case FanPresenter.PositioningMode.CenterToBase:
+                fanPresenter.RotateTo(rotationAngle);
+                fanPresenter.ElevateTo(elevation);
+                break;
+            default:
+                break;
+        }
 
-    private void ElevateFanSegment(int segmentID, float elevation)
-    {
-        Debug.Log("Elevating segment " + segmentID + " by " + elevation);
     }
 }
