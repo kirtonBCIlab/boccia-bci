@@ -59,7 +59,7 @@ public class ScreenSwitcher : MonoBehaviour
         switch (model.CurrentScreen)
         {
             case BocciaScreen.PlayMenu:
-                PanCameraToScreen(PlayMenu, CameraDistance);
+                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
                 break;
                 
             case BocciaScreen.HamburgerMenu:

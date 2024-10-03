@@ -776,7 +776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611488574058446249, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 2611488574058446249, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -796,11 +796,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611488574058446249, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -12
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 2611488574058446249, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 554
+      value: 444.64
       objectReference: {fileID: 0}
     - target: {fileID: 2611488574058446249, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -817,14 +817,6 @@ PrefabInstance:
     - target: {fileID: 5990238419579937565, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
       propertyPath: m_Name
       value: PlayMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990238419579937565, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8142946666391025317, guid: fb7c8d71ccb9bc64896debf946c0b3b1, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
