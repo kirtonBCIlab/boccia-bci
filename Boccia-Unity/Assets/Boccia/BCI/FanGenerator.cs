@@ -46,6 +46,22 @@ public class FanGenerator : MonoBehaviour
         set { _nRows = Mathf.Clamp(value, 1, _maxRows); }
     }
 
+    [SerializeField]
+    private int _lowElevationLimit; // Lower elevation limit
+    public int LowElevationLimit
+    {
+        get { return _lowElevationLimit; }
+        set { _lowElevationLimit = Mathf.Clamp(value, 0, HighElevationLimit); }
+    }
+
+    [SerializeField]
+    private int _highElevationLimit; // Higher elevation limit
+    public int HighElevationLimit
+    {
+        get { return _highElevationLimit; }
+        set { _highElevationLimit = Mathf.Clamp(value, 0, LowElevationLimit); }
+    }
+
     [Header("SPO settings")]
     public Color flashOnColor = Color.red;
     public Color flashOffColor = Color.white;
