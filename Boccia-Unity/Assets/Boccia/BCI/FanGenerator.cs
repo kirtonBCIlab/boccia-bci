@@ -4,6 +4,7 @@ using UnityEngine;
 using BCIEssentials.StimulusObjects;
 using BCIEssentials.StimulusEffects;
 
+
 public class FanGenerator : MonoBehaviour
 {
     [Header("Fan Parameters")]
@@ -101,7 +102,7 @@ public class FanGenerator : MonoBehaviour
         segment.transform.SetParent(fan.transform);
         segment.tag = "BCI";
 
-        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
+        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();       
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
 
         Mesh mesh = new();
@@ -168,11 +169,38 @@ public class FanGenerator : MonoBehaviour
         spo.OnSelectedEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().Play()); 
     }
 
+    // public void MakeFanSegmentsInteractable()
+    // {
+    //     foreach (Transform child in transform)
+    //     {
+    //         if (child != null && child.name == "FanSegment")
+    //         {
+    //             // Add a collider to make segment clickable
+    //             MeshCollider meshCollider = child.AddComponent<MeshCollider>();
+    //             meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
+    //             meshCollider.enabled = true;
+                
+    //             // Add compontent to handle click events
+    //             FanClicker fanClicker = child.gameObject.AddComponent<FanClicker>();
+    //             fanClicker.fanGenerator = this;
+    //         }
+    //     }
+    // }
+
     public void DestroyFanSegments()
     {
+        List<Transform> children = new List<Transform>();
         foreach (Transform child in transform)
         {
-            if (child.name == "FanSegment")
+            if (child != null && child.name == "FanSegment")
+            {
+                children.Add(child);
+            }
+        }
+
+        foreach (Transform child in children)
+        {
+            if (child != null) // Ensure the child is not null
             {
                 Destroy(child.gameObject);
             }
