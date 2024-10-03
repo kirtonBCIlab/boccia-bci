@@ -44,8 +44,9 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
     {
         SPO spo = segment.GetComponent<SPO>();
         int segmentID = spo.ObjectID;
-        int columnIndex = segmentID % fanGenerator.NColumns;
-        int rowIndex = segmentID / fanGenerator.NColumns;
+        int columnIndex = fanGenerator.NColumns - 1 - (segmentID / fanGenerator.NRows);
+        int rowIndex = fanGenerator.NRows - 1 - (segmentID % fanGenerator.NRows);
+        Debug.Log("Fan segment clicked: " + segmentID);
 
         // Compute exact rotation angle and elevation based on clicked segmentID
         float rotationAngle = 0f;
@@ -53,14 +54,14 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
         
         if (fanGenerator.NColumns > 1)
         {
-            rotationAngle = -fanGenerator.theta / 2 + columnIndex * (fanGenerator.theta / (fanGenerator.NColumns - 1));
+            rotationAngle = - fanGenerator.theta / 2 + columnIndex * (fanGenerator.theta / (fanGenerator.NColumns - 1));
         }
 
         if (fanGenerator.NRows > 1)
         {
-            elevation = fanGenerator.LowElevationLimit + rowIndex * ((fanGenerator.HighElevationLimit - fanGenerator.LowElevationLimit) / (fanGenerator.NRows - 1));
+            elevation = fanGenerator.HighElevationLimit - rowIndex * ((fanGenerator.HighElevationLimit - fanGenerator.LowElevationLimit) / (fanGenerator.NRows - 1));
         }
-        
+
         // Round down to nearest integer
         int roundedRotationAngle = Mathf.FloorToInt(rotationAngle);
         int roundedElevation = Mathf.FloorToInt(elevation);
