@@ -73,7 +73,7 @@ public class ScreenSwitcher : MonoBehaviour
                 break;
 
             case BocciaScreen.GameOptions:
-                PanCameraToScreen(GameOptionsMenu);
+                PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
                 break;
             
             // For now just switch back to start menu to show switchign works

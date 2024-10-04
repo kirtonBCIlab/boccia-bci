@@ -201,7 +201,7 @@ public class BocciaModel : Singleton<BocciaModel>
         SendNavigationChangeEvent();
     }
 
-    private void ShowPreviousScreen()
+    public void ShowPreviousScreen()
     {
         CurrentScreen = PreviousScreen;
         SendNavigationChangeEvent();

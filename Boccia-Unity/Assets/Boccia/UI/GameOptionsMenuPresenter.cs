@@ -14,6 +14,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider elevationSpeedSlider;
     public Slider rotationSpeedSlider;
     private BocciaModel model;
+    public Button doneButton;
 
     private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color>
     {
@@ -130,5 +131,10 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void ChangeRotationSpeed(float rotationSpeed)
     {
         model.SetRotationSpeed(rotationSpeed);
+    }
+
+    public void NavigatetoStart()
+    {
+        model.ShowPreviousScreen();
     }
 }
