@@ -25,6 +25,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
+    public Transform[] randomJackPositions;
+    public Vector3 jackPosition;
 
     public Color BallColor => bocciaData.BallColor;
     public float ElevationPrecision => bocciaData.ElevationPrecision;
@@ -52,6 +54,7 @@ public class BocciaModel : Singleton<BocciaModel>
     // Change events
     public event System.Action WasChanged;
     public event System.Action NavigationChanged;
+    public event System.Action NewRandomJack;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -109,6 +112,15 @@ public class BocciaModel : Singleton<BocciaModel>
         Color color = GetColorFromName(colorString);
         bocciaData.BallColor = color;
         SendRampChangeEvent();
+    }
+
+    public void RandomJackBall()
+    {
+        int randomPosition = UnityEngine.Random.Range(0, randomJackPositions.Length);
+        Transform randomJack = randomJackPositions[randomPosition];
+
+        jackPosition = randomJack.position;
+        SendRandomJackEvent();
     }
 
     public void SetElevationPrecision(float elevationPercent)
@@ -232,6 +244,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendRampChangeEvent()
     {
         WasChanged?.Invoke();
+    }
+
+    private void SendRandomJackEvent()
+    {
+        NewRandomJack?.Invoke();
     }
 
     private void SendNavigationChangeEvent()
