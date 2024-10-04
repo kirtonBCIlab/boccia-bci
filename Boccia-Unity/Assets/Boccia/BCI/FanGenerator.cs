@@ -12,25 +12,30 @@ public class FanGenerator : MonoBehaviour
     public float columnSpacing; // Spacing between columns
     public float rowSpacing;    // Spacing between rows;
 
-    private int _maxColumns = 7;        // Max number of columns 
-    private int _maxRows = 7;           // Max number of rows
+    private int _maxColumns = 7;            // Max number of columns 
+    private int _maxRows = 7;               // Max number of rows
+    private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
 
     [SerializeField]
-    private float _r1;          // Inner radius
-    public float R1
+    private float _outerRadius;          // Outer radius
+    public float OuterRadius
     {
-        get { return _r1; }
-        set { _r1 = Mathf.Clamp(value, 0, R2); }
+        get { return _outerRadius; }
+        set 
+        {
+            _outerRadius = Mathf.Clamp(value, _minRadiusDifference, float.MaxValue); 
+            _innerRadius = Mathf.Clamp(_innerRadius, 0, _outerRadius - _minRadiusDifference);
+        }
     }
 
     [SerializeField]
-    private float _r2;          // Outer radius
-    public float R2
+    private float _innerRadius;          // Inner radius
+    public float InnerRadius
     {
-        get { return _r2; }
-        set { _r2 = Mathf.Clamp(value, R1, float.MaxValue); }
+        get { return _innerRadius; }
+        set { _innerRadius = Mathf.Clamp(value, 0, OuterRadius-_minRadiusDifference); }
     }
-
+   
     [SerializeField]
     private int _nColumns;        // Number of columns
     public int NColumns
@@ -72,11 +77,11 @@ public class FanGenerator : MonoBehaviour
         GameObject fan = gameObject;
         
         float angleStep = theta / NColumns;
-        float radiusStep = (R2 - R1) / NRows;
+        float radiusStep = (OuterRadius - InnerRadius) / NRows;
 
         // Only have spacing when there are more than 1 column or row
         if (NColumns > 1) { angleStep = (theta - (NColumns - 1) * columnSpacing) / NColumns; }
-        if (NRows > 1) { radiusStep = (R2 - R1 - (NRows - 1) * rowSpacing) / NRows; }
+        if (NRows > 1) { radiusStep = (OuterRadius - InnerRadius - (NRows - 1) * rowSpacing) / NRows; }
 
         // Create the fan segments
         int segmentID = 0;
@@ -87,7 +92,7 @@ public class FanGenerator : MonoBehaviour
 
             for (int j = 0; j < NRows; j++)
             {
-                float innerRadius = R1 + j * (radiusStep + rowSpacing);
+                float innerRadius = InnerRadius + j * (radiusStep + rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
                 CreateFanSegment(fan, startAngle, endAngle, innerRadius, outerRadius, segmentID);
@@ -211,7 +216,7 @@ public class FanGenerator : MonoBehaviour
     {
         NColumns = _nColumns;
         NRows = _nRows;
-        R1 = _r1;
-        R2 = _r2;
+        InnerRadius = _innerRadius;
+        OuterRadius = _outerRadius;
     }
 }
