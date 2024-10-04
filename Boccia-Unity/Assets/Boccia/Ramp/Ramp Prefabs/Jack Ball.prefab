@@ -10,7 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7128455000201345065, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
       propertyPath: m_Name
-      value: Small Boccia Ball
+      value: Jack Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7731720841866017149, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
       propertyPath: m_LocalPosition.x
