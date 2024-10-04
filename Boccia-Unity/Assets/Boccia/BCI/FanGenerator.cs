@@ -158,7 +158,7 @@ public class FanGenerator : MonoBehaviour
         List<Transform> children = new List<Transform>();
         foreach (Transform child in transform)
         {
-            if (child != null && child.name == "FanSegment")
+            if (child == null || child.name == "FanSegment")
             {
                 children.Add(child);
             }
@@ -166,10 +166,7 @@ public class FanGenerator : MonoBehaviour
 
         foreach (Transform child in children)
         {
-            if (child != null) // Ensure the child is not null
-            {
                 Destroy(child.gameObject);
-            }
         }
     }
 

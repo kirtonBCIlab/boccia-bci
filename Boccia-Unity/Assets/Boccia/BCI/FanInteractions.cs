@@ -18,13 +18,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         _model = BocciaModel.Instance;
-        fanGenerator = GetComponentInParent<FanGenerator>();
-        fanPresenter = GetComponentInParent<FanPresenter>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnFanSegmentClick(transform);
+        OnFanSegmentClick(eventData.pointerCurrentRaycast.gameObject.transform);
     }
 
     /// <summary>
@@ -59,9 +57,6 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
                 spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
                 spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());                
 
-                // Add Interactions component to fan segment                
-                FanInteractions fanInteractions = child.gameObject.AddComponent<FanInteractions>();                        
-
                 segmentID++;
             }
         }
@@ -69,11 +64,14 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     private void OnFanSegmentClick(Transform segment)
     {
+        fanGenerator = GetComponentInParent<FanGenerator>();
+        fanPresenter = GetComponentInParent<FanPresenter>();
+        
         SPO spo = segment.GetComponent<SPO>();
         int segmentID = spo.ObjectID;
         int columnIndex = fanGenerator.NColumns - 1 - (segmentID / fanGenerator.NRows);
         int rowIndex = fanGenerator.NRows - 1 - (segmentID % fanGenerator.NRows);
-        // Debug.Log("Fan segment clicked: " + segmentID);
+        Debug.Log("Fan segment clicked: " + segmentID);
 
         // Compute exact rotation angle and elevation based on clicked segmentID
         float rotationAngle = 0f;
