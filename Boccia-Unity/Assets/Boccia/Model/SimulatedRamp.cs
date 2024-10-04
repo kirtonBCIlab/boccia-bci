@@ -26,12 +26,14 @@ public class SimulatedRamp : RampController
     public void RotateBy(float degrees)
     {
         Rotation += degrees;
+        //Debug.Log($"Rotation: {Rotation}");
         SendChangeEvent();
     }
 
     public void ElevateBy(float elevation)
     {
         Elevation += elevation;
+        //Debug.Log($"Elevation: {Elevation}");
         SendChangeEvent();
     }
 
