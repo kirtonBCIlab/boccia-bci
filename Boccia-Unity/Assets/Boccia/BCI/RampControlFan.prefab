@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3105786588814356231}
   - component: {fileID: 7650961842829309085}
   - component: {fileID: -6058800571561212690}
+  - component: {fileID: -7705321522961072228}
   m_Layer: 0
-  m_Name: Fan Prefab
+  m_Name: RampControlFan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fanGenerator: {fileID: -6058800571561212690}
-  useRampPosition: 0
+  fanInteractions: {fileID: -7705321522961072228}
+  positioningMode: 0
+  interactableFanSegments: 0
 --- !u!114 &-6058800571561212690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,9 +65,23 @@ MonoBehaviour:
   theta: 90
   columnSpacing: 0.5
   rowSpacing: 0.1
-  _r1: 3
-  _r2: 5
+  _outerRadius: 1
+  _innerRadius: 0
   _nColumns: 1
   _nRows: 1
+  _lowElevationLimit: 0
+  _highElevationLimit: 0
+--- !u!114 &-7705321522961072228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462433658856035897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51c587858503b954990f22a32ee04f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   flashOffColor: {r: 1, g: 1, b: 1, a: 1}

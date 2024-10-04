@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
-using BCIEssentials.StimulusEffects;
+
 
 
 public class FanGenerator : MonoBehaviour
@@ -68,10 +68,6 @@ public class FanGenerator : MonoBehaviour
         set { _highElevationLimit = Mathf.Clamp(value, 0, LowElevationLimit); }
     }
 
-    [Header("SPO settings")]
-    public Color flashOnColor = Color.red;
-    public Color flashOffColor = Color.white;
-
     public void GenerateFanShape()
     {
         GameObject fan = gameObject;
@@ -105,8 +101,7 @@ public class FanGenerator : MonoBehaviour
     {
         GameObject segment = new GameObject("FanSegment");
         segment.transform.SetParent(fan.transform);
-        segment.tag = "BCI";
-
+        
         MeshFilter meshFilter = segment.AddComponent<MeshFilter>();       
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
 
@@ -155,42 +150,8 @@ public class FanGenerator : MonoBehaviour
         mesh.RecalculateNormals();
 
         // Check if the mesh bounds are correct
-        mesh.RecalculateBounds();
-
-        // Add Flashing effects component
-        // TODO: We need something to add the color of the SPO segment here
-        ColorFlashEffect colorFlashEffect = segment.AddComponent<ColorFlashEffect>();
-        // colorFlashEffect.OnColor = flashOnColor;
-        // colorFlashEffect.OffColor = flashOffColor;          
-
-        // Add SPO component
-        SPO spo = segment.AddComponent<SPO>();
-        spo.ObjectID = segmentID;
-        spo.Selectable = true;
-
-        spo.StartStimulusEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().SetOn());
-        spo.StopStimulusEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().SetOff());
-        spo.OnSelectedEvent.AddListener(() => segment.GetComponent<SPO>().StopStimulus());
-        spo.OnSelectedEvent.AddListener(() => segment.GetComponent<ColorFlashEffect>().Play()); 
+        mesh.RecalculateBounds();          
     }
-
-    // public void MakeFanSegmentsInteractable()
-    // {
-    //     foreach (Transform child in transform)
-    //     {
-    //         if (child != null && child.name == "FanSegment")
-    //         {
-    //             // Add a collider to make segment clickable
-    //             MeshCollider meshCollider = child.AddComponent<MeshCollider>();
-    //             meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
-    //             meshCollider.enabled = true;
-                
-    //             // Add compontent to handle click events
-    //             FanClicker fanClicker = child.gameObject.AddComponent<FanClicker>();
-    //             fanClicker.fanGenerator = this;
-    //         }
-    //     }
-    // }
 
     public void DestroyFanSegments()
     {

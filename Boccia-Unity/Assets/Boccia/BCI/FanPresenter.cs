@@ -7,7 +7,7 @@ using UnityEngine;
 public class FanPresenter : MonoBehaviour
 {
     public FanGenerator fanGenerator;
-    public FanClicker fanClicker;
+    public FanInteractions fanInteractions;
 
     public enum PositioningMode
     {
@@ -96,32 +96,6 @@ public class FanPresenter : MonoBehaviour
         fanGenerator.DestroyFanSegments();
         fanGenerator.GenerateFanShape();
 
-        if (interactableFanSegments) { fanClicker.MakeFanSegmentsInteractable(); }
+        if (interactableFanSegments) { fanInteractions.MakeFanSegmentsInteractable(); }
     }
-
-    // Ramp movement functions
-    public void Rotateby(float degrees) 
-    { 
-        // Debug.Log("Rotating by " + degrees);
-        _model.RotateBy(degrees); 
-    }
-
-    public void RotateTo(float angle) 
-    {
-        // Debug.Log("Rotating to " + angle);
-        _model.RotateTo(angle); 
-    }
-    
-    public void ElevateBy(float elevation) 
-    { 
-        // Debug.Log("Elevating by " + elevation);
-        _model.ElevateBy(elevation); 
-    }
-
-    public void ElevateTo(float elevation) 
-    {
-        // Debug.Log("Elevating to " + elevation);
-        _model.ElevateTo(elevation);
-    }
-
 }

@@ -1,16 +1,23 @@
 using UnityEngine;
+using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
-using Unity.VisualScripting;
-using System.Runtime.CompilerServices;
+using BCIEssentials.StimulusEffects;
 
-public class FanClicker : MonoBehaviour, IPointerClickHandler
+public class FanInteractions : MonoBehaviour, IPointerClickHandler
 {
+    [Header("SPO settings")]
+    public Color flashOnColor = Color.red;
+    public Color flashOffColor = Color.white;
+
     private FanGenerator fanGenerator;
     private FanPresenter fanPresenter;
+
+    private BocciaModel _model;
     
     private void Start()
     {
+        _model = BocciaModel.Instance;
         fanGenerator = GetComponentInParent<FanGenerator>();
         fanPresenter = GetComponentInParent<FanPresenter>();
     }
@@ -25,6 +32,7 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void MakeFanSegmentsInteractable()
     {
+        int segmentID = 0;
         foreach (Transform child in transform)
         {
             if (child != null && child.name == "FanSegment")
@@ -33,9 +41,28 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
                 MeshCollider meshCollider = child.AddComponent<MeshCollider>();
                 meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
                 meshCollider.enabled = true;
-                
-                // Add compontent to handle click events
-                FanClicker fanClicker = child.gameObject.AddComponent<FanClicker>();
+
+                // Add Flashing effects component
+                // TODO: We need something to add the color of the SPO segment here
+                ColorFlashEffect colorFlashEffect = child.AddComponent<ColorFlashEffect>();
+                // colorFlashEffect.OnColor = flashOnColor;
+                // colorFlashEffect.OffColor = flashOffColor;
+
+                // Add SPO component to make segment selectable with BCI
+                child.tag = "BCI";
+                SPO spo = child.AddComponent<SPO>();
+                spo.ObjectID = segmentID;
+                spo.Selectable = true;
+
+                spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOn());
+                spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOff());
+                spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
+                spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());                
+
+                // Add Interactions component to fan segment                
+                FanInteractions fanInteractions = child.gameObject.AddComponent<FanInteractions>();                        
+
+                segmentID++;
             }
         }
     }
@@ -70,16 +97,40 @@ public class FanClicker : MonoBehaviour, IPointerClickHandler
         switch (fanPresenter.positioningMode)
         {
             case FanPresenter.PositioningMode.CenterToRails:
-                fanPresenter.Rotateby(rotationAngle);
-                fanPresenter.ElevateBy(elevation);
+                Rotateby(rotationAngle);
+                ElevateBy(elevation);
                 break;
             case FanPresenter.PositioningMode.CenterToBase:
-                fanPresenter.RotateTo(rotationAngle);
-                fanPresenter.ElevateTo(elevation);
+                RotateTo(rotationAngle);
+                ElevateTo(elevation);
                 break;
             default:
                 break;
         }
+    }
 
+    // Ramp movement functions
+    public void Rotateby(float degrees) 
+    { 
+        // Debug.Log("Rotating by " + degrees);
+        _model.RotateBy(degrees); 
+    }
+
+    public void RotateTo(float angle) 
+    {
+        // Debug.Log("Rotating to " + angle);
+        _model.RotateTo(angle); 
+    }
+    
+    public void ElevateBy(float elevation) 
+    { 
+        // Debug.Log("Elevating by " + elevation);
+        _model.ElevateBy(elevation); 
+    }
+
+    public void ElevateTo(float elevation) 
+    {
+        // Debug.Log("Elevating to " + elevation);
+        _model.ElevateTo(elevation);
     }
 }
