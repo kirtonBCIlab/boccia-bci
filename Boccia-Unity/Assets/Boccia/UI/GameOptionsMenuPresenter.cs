@@ -13,7 +13,6 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider rotationRangeSlider;
     public Slider elevationSpeedSlider;
     public Slider rotationSpeedSlider;
-    
     private BocciaModel model;
 
     private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color>
@@ -48,6 +47,9 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         // Convert the color from the model to the corresponding dropdown value (string)
         ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorNameFromModel(model.BallColor));
+
+        // Ball color will not persist if this line is removed
+        ChangeBallColor(ballColorDropdown.value);
 
         // Initialize other variables from BocciaModel
         elevationPrecisionSlider.value = model.ElevationPrecision;
@@ -97,7 +99,6 @@ public class GameOptionsMenuPresenter : MonoBehaviour
                 return pair.Key;
             }
         }
-        
         return "Blue"; // Default if no match is found
     }
 
