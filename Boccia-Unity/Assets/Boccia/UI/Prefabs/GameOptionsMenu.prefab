@@ -15846,12 +15846,6 @@ MonoBehaviour:
     m_Options:
     - m_Text: Choose Color
       m_Image: {fileID: 0}
-    - m_Text: Blue
-      m_Image: {fileID: 0}
-    - m_Text: Red
-      m_Image: {fileID: 0}
-    - m_Text: Green
-      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
