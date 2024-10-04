@@ -6,6 +6,7 @@ public class JackPresenter : MonoBehaviour
 {
     private BocciaModel model;
     public GameObject jackBall; // The ball prefab to use as the jack
+    public GameObject bocciaCourt;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class JackPresenter : MonoBehaviour
 
     private void ModelChanged()
     {
-        Instantiate(jackBall, model.jackPosition, Quaternion.identity);
+        Instantiate(jackBall, model.jackPosition, Quaternion.identity, bocciaCourt.transform);
     }
 
 }
