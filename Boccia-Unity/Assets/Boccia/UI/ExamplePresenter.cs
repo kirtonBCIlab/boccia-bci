@@ -17,6 +17,7 @@ public class ExamplePresenter : MonoBehaviour
     public Button resetRampButton;
     public Button dropBallButton;
     public Button colorButton;
+    public Button randomJackButton;
 
     private BocciaModel model;
 
@@ -35,6 +36,7 @@ public class ExamplePresenter : MonoBehaviour
         resetRampButton.onClick.AddListener(model.ResetRampPosition);
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
+        randomJackButton.onClick.AddListener(model.RandomJackBall);
     }
 
 
