@@ -12,7 +12,7 @@ public class JackPresenter : MonoBehaviour
     void Start()
     {
         model = BocciaModel.Instance;
-        model.WasChanged += ModelChanged;
+        model.NewRandomJack += ModelChanged;
     }
 
     private void OnEnable()
