@@ -660,66 +660,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1632882943784705952, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      propertyPath: m_TagString
-      value: JackPosition
-      objectReference: {fileID: 0}
-    - target: {fileID: 2088981580791237960, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3668368408969929286, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: m_Name
       value: Boccia
       objectReference: {fileID: 0}
-    - target: {fileID: 4217990241627392732, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      propertyPath: m_TagString
-      value: JackPosition
-      objectReference: {fileID: 0}
-    - target: {fileID: 5261709183619193524, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      propertyPath: m_TagString
-      value: JackPosition
-      objectReference: {fileID: 0}
-    - target: {fileID: 7683379717063535015, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      propertyPath: m_TagString
-      value: JackPosition
-      objectReference: {fileID: 0}
-    - target: {fileID: 8062990015587290522, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      propertyPath: m_TagString
-      value: JackPosition
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4105162701035392760, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1779128420}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
---- !u!1 &1686683223 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3668368408969929286, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-  m_PrefabInstance: {fileID: 1226142658}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1779128418 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4105162701035392760, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
-  m_PrefabInstance: {fileID: 1226142658}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1779128420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779128418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81457dc162291f2428c7792edced1a4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jackBall: {fileID: 2194365707095796018, guid: 59fd615ebc651804880d2713b41a5551, type: 3}
-  bocciaCourt: {fileID: 1686683223}
 --- !u!1001 &1803754785
 PrefabInstance:
   m_ObjectHideFlags: 0
