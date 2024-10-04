@@ -28,8 +28,8 @@ public class ExamplePresenter : MonoBehaviour
         model.WasChanged += ModelChanged;
 
         // connect buttons to model
-        rotateLeftButton.onClick.AddListener(RotateRight);
-        rotateRightButton.onClick.AddListener(RotateLeft);
+        rotateLeftButton.onClick.AddListener(RotateLeft);
+        rotateRightButton.onClick.AddListener(RotateRight);
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
         resetRampButton.onClick.AddListener(model.ResetRampPosition);
