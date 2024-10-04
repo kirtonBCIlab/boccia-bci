@@ -117,7 +117,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public void RandomJackBall()
     {
         // Populate with the random jack positions represented by GameObjects
-        randomJackPositions = GameObject.FindGameObjectsWithTag("Jack").Select(go => go.transform).ToArray();
+        randomJackPositions = GameObject.FindGameObjectsWithTag("JackPosition").Select(go => go.transform).ToArray();
         int randomPosition = UnityEngine.Random.Range(0, randomJackPositions.Length);
         Transform randomJack = randomJackPositions[randomPosition];
 
