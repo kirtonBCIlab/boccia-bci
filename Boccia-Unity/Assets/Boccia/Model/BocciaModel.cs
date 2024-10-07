@@ -107,10 +107,9 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
-    public void ChangeBallColor(string colorString)
+    public void ChangeBallColor(Color colorString)
     {
-        Color color = GetColorFromName(colorString);
-        bocciaData.BallColor = color;
+        bocciaData.BallColor = colorString;
         SendRampChangeEvent();
     }
 
@@ -216,7 +215,7 @@ public class BocciaModel : Singleton<BocciaModel>
         SendNavigationChangeEvent();
     }
 
-    private void ShowPreviousScreen()
+    public void ShowPreviousScreen()
     {
         CurrentScreen = PreviousScreen;
         SendNavigationChangeEvent();
