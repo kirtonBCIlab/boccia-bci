@@ -7,9 +7,9 @@ public class JackPresenter : MonoBehaviour
     private BocciaModel model;
     public GameObject jackBall; // The ball prefab to use as the jack
 
-    private Vector2 xRange = new Vector2(-8.0f, 8.0f);
-    private float yPosition = 2f;
-    private Vector2 zRange = new Vector2(-6.0f, 6.0f);
+    private Vector2 xRange = new Vector2(-8f, 8f);
+    private float yPosition = 0f;
+    private Vector2 zRange = new Vector2(4f, 12f);
 
     // Start is called before the first frame update
     void Start()
@@ -37,8 +37,10 @@ public class JackPresenter : MonoBehaviour
         }
 
         Vector3 randomJackPosition = RandomLocation();
+        Debug.Log(randomJackPosition);
 
-        Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity);
+        Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
+
     }
 
     private Vector3 RandomLocation()
