@@ -25,9 +25,6 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
-    public Transform[] randomJackPositions;
-    public Vector3 jackPosition;
-
     public Color BallColor => bocciaData.BallColor;
     public float ElevationPrecision => bocciaData.ElevationPrecision;
     public float ElevationRange => bocciaData.ElevationRange;
@@ -115,12 +112,6 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void RandomJackBall()
     {
-        // Populate with the random jack positions represented by GameObjects
-        randomJackPositions = GameObject.FindGameObjectsWithTag("JackPosition").Select(go => go.transform).ToArray();
-        int randomPosition = UnityEngine.Random.Range(0, randomJackPositions.Length);
-        Transform randomJack = randomJackPositions[randomPosition];
-
-        jackPosition = randomJack.position;
         SendRandomJackEvent();
     }
 
