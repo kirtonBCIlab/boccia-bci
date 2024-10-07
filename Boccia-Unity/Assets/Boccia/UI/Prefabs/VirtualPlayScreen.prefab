@@ -1168,6 +1168,7 @@ MonoBehaviour:
   resetRampButton: {fileID: 5790848212467436699}
   dropBallButton: {fileID: 1020736014239196524}
   colorButton: {fileID: 8163365981475531111}
+  randomJackButton: {fileID: 0}
 --- !u!1 &4999685241904479374
 GameObject:
   m_ObjectHideFlags: 0

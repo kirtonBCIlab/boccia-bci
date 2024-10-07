@@ -22,6 +22,17 @@ public class JackPresenter : MonoBehaviour
 
     private void ModelChanged()
     {
+        NewJack();
+    }
+
+    private void NewJack()
+    {
+        GameObject currentJack = GameObject.FindWithTag("JackBall");
+        if (currentJack != null)
+        {
+            Destroy(currentJack);
+        }
+
         Instantiate(jackBall, model.jackPosition, Quaternion.identity, bocciaCourt.transform);
     }
 
