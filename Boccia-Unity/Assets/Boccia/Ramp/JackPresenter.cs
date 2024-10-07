@@ -37,7 +37,7 @@ public class JackPresenter : MonoBehaviour
         }
 
         Vector3 randomJackPosition = RandomLocation();
-        Debug.Log(randomJackPosition);
+        //Debug.Log(randomJackPosition);
 
         Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
 
