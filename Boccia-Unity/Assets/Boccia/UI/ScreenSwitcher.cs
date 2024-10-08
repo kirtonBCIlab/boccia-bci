@@ -20,6 +20,7 @@ public class ScreenSwitcher : MonoBehaviour
     public GameObject HamburgerMenuOptions;
     public GameObject GameOptionsMenu;
     public GameObject VirtualPlayScreen;
+    public GameObject TrainingScreen;
 
     private BocciaModel model;
     private List<GameObject> screenList;
@@ -51,7 +52,8 @@ public class ScreenSwitcher : MonoBehaviour
             PlayMenu,
             HamburgerMenuOptions,
             GameOptionsMenu,
-            VirtualPlayScreen
+            VirtualPlayScreen,
+            TrainingScreen
         };
     }
 
@@ -66,6 +68,10 @@ public class ScreenSwitcher : MonoBehaviour
                 
             case BocciaScreen.HamburgerMenu:
                 PanCameraToScreen(HamburgerMenuOptions, RampViewCameraDistance);
+                break;
+
+            case BocciaScreen.TrainingScreen:
+                PanCameraToScreen(TrainingScreen, RampViewCameraDistance);
                 break;
 
             case BocciaScreen.VirtualPlay:

@@ -177,7 +177,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void Train()
     {
-        ShowScreen(BocciaScreen.Train);
+        ShowScreen(BocciaScreen.TrainingScreen);
         // start training, hamburger -> menu = stop?
         // GameMode = BocciaGameMode.Train;
     }
