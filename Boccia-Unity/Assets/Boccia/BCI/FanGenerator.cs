@@ -80,7 +80,6 @@ public class FanGenerator : MonoBehaviour
         if (NRows > 1) { radiusStep = (OuterRadius - InnerRadius - (NRows - 1) * rowSpacing) / NRows; }
 
         // Create the fan segments
-        int segmentID = 0;
         for (int i = 0; i < NColumns; i++)
         {
             float startAngle = i * (angleStep + columnSpacing);
@@ -91,13 +90,12 @@ public class FanGenerator : MonoBehaviour
                 float innerRadius = InnerRadius + j * (radiusStep + rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
-                CreateFanSegment(fan, startAngle, endAngle, innerRadius, outerRadius, segmentID);
-                segmentID++;
+                CreateFanSegment(fan, startAngle, endAngle, innerRadius, outerRadius);
             }
         }
     }
 
-    private void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius, int segmentID)
+    private void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
         GameObject segment = new GameObject("FanSegment");
         segment.transform.SetParent(fan.transform);
@@ -155,18 +153,9 @@ public class FanGenerator : MonoBehaviour
 
     public void DestroyFanSegments()
     {
-        List<Transform> children = new List<Transform>();
         foreach (Transform child in transform)
         {
-            if (child == null || child.name == "FanSegment")
-            {
-                children.Add(child);
-            }
-        }
-
-        foreach (Transform child in children)
-        {
-                Destroy(child.gameObject);
+            if (child.name == "FanSegment") { Destroy(child.gameObject); }
         }
     }
 
