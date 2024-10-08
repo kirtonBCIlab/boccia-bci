@@ -10,8 +10,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     public Color flashOnColor = Color.red;
     public Color flashOffColor = Color.white;
 
-    private FanGenerator fanGenerator;
-    private FanPresenter fanPresenter;
+    private FanGenerator _fanGenerator;
+    private FanPresenter _fanPresenter;
 
     private BocciaModel _model;
     
@@ -30,7 +30,10 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void MakeFanSegmentsInteractable()
     {
+        _fanGenerator = GetComponentInParent<FanGenerator>();
+        _fanPresenter = GetComponentInParent<FanPresenter>();
         int segmentID = 0;
+
         foreach (Transform child in transform)
         {
             if (child != null && child.name == "FanSegment")
@@ -63,28 +66,24 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     }
 
     private void OnFanSegmentClick(Transform segment)
-    {
-        fanGenerator = GetComponentInParent<FanGenerator>();
-        fanPresenter = GetComponentInParent<FanPresenter>();
-        
+    {        
         SPO spo = segment.GetComponent<SPO>();
         int segmentID = spo.ObjectID;
-        int columnIndex = fanGenerator.NColumns - 1 - (segmentID / fanGenerator.NRows);
-        int rowIndex = fanGenerator.NRows - 1 - (segmentID % fanGenerator.NRows);
-        Debug.Log("Fan segment clicked: " + segmentID);
+        int columnIndex = _fanGenerator.NColumns - 1 - (segmentID / _fanGenerator.NRows);
+        int rowIndex = _fanGenerator.NRows - 1 - (segmentID % _fanGenerator.NRows);
 
         // Compute exact rotation angle and elevation based on clicked segmentID
         float rotationAngle = 0f;
         float elevation = 0f;
         
-        if (fanGenerator.NColumns > 1)
+        if (_fanGenerator.NColumns > 1)
         {
-            rotationAngle = - fanGenerator.theta / 2 + columnIndex * (fanGenerator.theta / (fanGenerator.NColumns - 1));
+            rotationAngle = - _fanGenerator.theta / 2 + columnIndex * (_fanGenerator.theta / (_fanGenerator.NColumns - 1));
         }
 
-        if (fanGenerator.NRows > 1)
+        if (_fanGenerator.NRows > 1)
         {
-            elevation = fanGenerator.HighElevationLimit - rowIndex * ((fanGenerator.HighElevationLimit - fanGenerator.LowElevationLimit) / (fanGenerator.NRows - 1));
+            elevation = _fanGenerator.HighElevationLimit - rowIndex * ((_fanGenerator.HighElevationLimit - _fanGenerator.LowElevationLimit) / (_fanGenerator.NRows - 1));
         }
 
         // Round down to nearest integer
@@ -92,7 +91,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         int roundedElevation = Mathf.FloorToInt(elevation);
 
         // Call the appropriate movement based on the positioning mode
-        switch (fanPresenter.positioningMode)
+        switch (_fanPresenter.positioningMode)
         {
             case FanPresenter.PositioningMode.CenterToRails:
                 Rotateby(rotationAngle);
