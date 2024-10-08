@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7462433658856035897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3105786588814356231}
+  - component: {fileID: 7650961842829309085}
+  - component: {fileID: -6058800571561212690}
+  - component: {fileID: -7705321522961072228}
+  m_Layer: 0
+  m_Name: RampControlFan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3105786588814356231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462433658856035897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7650961842829309085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462433658856035897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b106698e99b89b4f894e3831e72c92c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fanGenerator: {fileID: -6058800571561212690}
+  fanInteractions: {fileID: -7705321522961072228}
+  positioningMode: 0
+  interactableFanSegments: 0
+--- !u!114 &-6058800571561212690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462433658856035897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c0fd8cb5a1624f41b58da45ca099ee4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  theta: 90
+  columnSpacing: 0.5
+  rowSpacing: 0.1
+  _outerRadius: 1
+  _innerRadius: 0
+  _nColumns: 1
+  _nRows: 1
+  _lowElevationLimit: 0
+  _highElevationLimit: 0
+--- !u!114 &-7705321522961072228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462433658856035897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51c587858503b954990f22a32ee04f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashOnColor: {r: 1, g: 0, b: 0, a: 1}
+  flashOffColor: {r: 1, g: 1, b: 1, a: 1}
