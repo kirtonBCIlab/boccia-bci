@@ -80,9 +80,15 @@ public class FanPresenter : MonoBehaviour
 
     public void GenerateFan()
     {
+        StartCoroutine(GenerateFanCoroutine());
+    }
+
+    private IEnumerator GenerateFanCoroutine()
+    {
         // Reset to original rotation to avoid cumulative effects
         CenterToOrigin();
-        
+
+        // Get positioning mode and apply the corresponding offset    
         switch (positioningMode)
         {
             case PositioningMode.CenterToRails:
@@ -94,6 +100,10 @@ public class FanPresenter : MonoBehaviour
         }
 
         fanGenerator.DestroyFanSegments();
+
+        // Force a frame to force fan segments destruction complete before generating the fan shape
+        yield return null;
+
         fanGenerator.GenerateFanShape();
 
         if (interactableFanSegments) { fanInteractions.MakeFanSegmentsInteractable(); }
