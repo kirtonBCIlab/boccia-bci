@@ -26,6 +26,7 @@ public class SimulatedRamp : RampController
     public void RotateBy(float degrees)
     {
         Rotation += degrees;
+        //Debug.Log($"Rotation: {Rotation}");
         SendChangeEvent();
     }
 
@@ -38,6 +39,7 @@ public class SimulatedRamp : RampController
     public void ElevateBy(float elevation)
     {
         Elevation += elevation;
+        //Debug.Log($"Elevation: {Elevation}");
         SendChangeEvent();
     }
 

@@ -17,6 +17,7 @@ public class ExamplePresenter : MonoBehaviour
     public Button resetRampButton;
     public Button dropBallButton;
     public Button colorButton;
+    public Button randomJackButton;
 
     private BocciaModel model;
 
@@ -28,13 +29,14 @@ public class ExamplePresenter : MonoBehaviour
         model.WasChanged += ModelChanged;
 
         // connect buttons to model
-        rotateLeftButton.onClick.AddListener(RotateRight);
-        rotateRightButton.onClick.AddListener(RotateLeft);
+        rotateLeftButton.onClick.AddListener(RotateLeft);
+        rotateRightButton.onClick.AddListener(RotateRight);
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
         resetRampButton.onClick.AddListener(model.ResetRampPosition);
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
+        randomJackButton.onClick.AddListener(model.RandomJackBall);
     }
 
 

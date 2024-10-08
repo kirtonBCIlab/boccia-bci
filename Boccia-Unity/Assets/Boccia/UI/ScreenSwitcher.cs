@@ -9,6 +9,7 @@ public class ScreenSwitcher : MonoBehaviour
 {
     public Camera ScreenCamera;
     public float CameraDistance = 600.0f;
+    public float RampViewCameraDistance = 5.0f; // Custom distance so the camera will view the ramp
     public float CameraSpeed = 5.0f;
 
     private Vector3 targetPosition;
@@ -17,6 +18,8 @@ public class ScreenSwitcher : MonoBehaviour
     public GameObject StartMenu;
     public GameObject PlayMenu;
     public GameObject HamburgerMenuOptions;
+    public GameObject GameOptionsMenu;
+    public GameObject VirtualPlayScreen;
 
     private BocciaModel model;
     private List<GameObject> screenList;
@@ -46,7 +49,9 @@ public class ScreenSwitcher : MonoBehaviour
         {
             StartMenu,
             PlayMenu,
-            HamburgerMenuOptions
+            HamburgerMenuOptions,
+            GameOptionsMenu,
+            VirtualPlayScreen
         };
     }
 
@@ -56,25 +61,33 @@ public class ScreenSwitcher : MonoBehaviour
         switch (model.CurrentScreen)
         {
             case BocciaScreen.PlayMenu:
-                PanCameraToScreen(PlayMenu);
+                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
                 break;
                 
             case BocciaScreen.HamburgerMenu:
-                PanCameraToScreen(HamburgerMenuOptions);
+                PanCameraToScreen(HamburgerMenuOptions, RampViewCameraDistance);
+                break;
+
+            case BocciaScreen.VirtualPlay:
+                PanCameraToScreen(VirtualPlayScreen, RampViewCameraDistance);
+                break;
+
+            case BocciaScreen.GameOptions:
+                PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
                 break;
             
             // For now just switch back to start menu to show switchign works
             default:
-                PanCameraToScreen(StartMenu);
+                PanCameraToScreen(StartMenu, CameraDistance);
                 break;
         }
     }
 
     // Pans the camera to show the new screen, hides all others
-    private void PanCameraToScreen(GameObject screenToShow)
+    private void PanCameraToScreen(GameObject screenToShow, float distance)
     {
         screenToShow.SetActive(true);
-        PanCameraTo(screenToShow);
+        PanCameraTo(screenToShow, distance);
 
         foreach (var screen in screenList)
         {
@@ -85,10 +98,10 @@ public class ScreenSwitcher : MonoBehaviour
         }
     }
 
-    private void PanCameraTo(GameObject screenToShow)
+    private void PanCameraTo(GameObject screenToShow, float distance)
     {
         // Calculate target camera pose based on screen's postion and direction in world space
-        targetPosition = screenToShow.transform.position + screenToShow.transform.forward * CameraDistance * -1.0f;
+        targetPosition = screenToShow.transform.position + screenToShow.transform.forward * distance * -1.0f;
         targetRotation = screenToShow.transform.rotation;
 
         // Spawn two routines to move the camera to the new pose.  Use private members for target
