@@ -54,6 +54,7 @@ public class JackPresenter : MonoBehaviour
     // If the jack rolls out of bounds, reset it
     // Note: the jack should not instantiate outside the boundary, but the Boccia ball could
     // knock the jack out of bounds
+    /*
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("JackBall"))
@@ -62,5 +63,6 @@ public class JackPresenter : MonoBehaviour
             NewJack();
         }
     }
+    */
 
 }
