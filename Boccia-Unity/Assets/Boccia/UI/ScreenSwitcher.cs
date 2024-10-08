@@ -82,7 +82,7 @@ public class ScreenSwitcher : MonoBehaviour
                 PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
                 break;
             
-            // For now just switch back to start menu to show switchign works
+            // For now just switch back to start menu to show switching works
             default:
                 PanCameraToScreen(StartMenu, CameraDistance);
                 break;
