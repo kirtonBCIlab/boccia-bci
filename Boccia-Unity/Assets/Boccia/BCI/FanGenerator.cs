@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
+using FanNamespace;
 
 
 
 public class FanGenerator : MonoBehaviour
 {
     [Header("Fan Parameters")]
-    public float theta;         // Angle in degrees
     public float columnSpacing; // Spacing between columns
     public float rowSpacing;    // Spacing between rows;
 
     private int _maxColumns = 7;            // Max number of columns 
     private int _maxRows = 7;               // Max number of rows
     private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
+
+    [SerializeField]
+    private float _theta;               // Angle in degrees
+    public float Theta
+    {
+        get { return _theta; }
+        set { _theta = Mathf.Clamp(value, 1, 180); }
+    }
 
     [SerializeField]
     private float _outerRadius;          // Outer radius
@@ -68,15 +76,24 @@ public class FanGenerator : MonoBehaviour
         set { _highElevationLimit = Mathf.Clamp(value, 0, LowElevationLimit); }
     }
 
+    [Header("Back Button Parameters")]
+    [SerializeField]
+    private float _backButtonWidth; // Width of the back button
+    public float BackButtonWidth
+    {
+        get { return _backButtonWidth; }
+        set { _backButtonWidth = Mathf.Clamp(value, 1f, float.MaxValue); }
+    }
+
     public void GenerateFanShape()
     {
         GameObject fan = gameObject;
         
-        float angleStep = theta / NColumns;
+        float angleStep = Theta / NColumns;
         float radiusStep = (OuterRadius - InnerRadius) / NRows;
 
         // Only have spacing when there are more than 1 column or row
-        if (NColumns > 1) { angleStep = (theta - (NColumns - 1) * columnSpacing) / NColumns; }
+        if (NColumns > 1) { angleStep = (Theta - (NColumns - 1) * columnSpacing) / NColumns; }
         if (NRows > 1) { radiusStep = (OuterRadius - InnerRadius - (NRows - 1) * rowSpacing) / NRows; }
 
         // Create the fan segments
@@ -155,15 +172,69 @@ public class FanGenerator : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (child.name == "FanSegment") { Destroy(child.gameObject); }
+            if (child.name == "FanSegment" || child.name == "BackButton") 
+            {
+                Destroy(child.gameObject);
+            }
         }
+    }
+
+    public void GenerateBackButton(BackButtonPositioningMode positionMode)
+    {
+        GameObject backButton = new("BackButton");
+        backButton.transform.SetParent(transform);
+
+        MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
+
+        Mesh mesh = new();
+        meshFilter.mesh = mesh;
+
+        Vector3[] vertices = new Vector3[4];
+        int[] triangles = new int[6];
+
+        float halfWidth = BackButtonWidth / 2;
+
+        vertices[0] = new Vector3(InnerRadius, 0, 0);
+        vertices[1] = new Vector3(OuterRadius, 0, 0);
+        vertices[2] = new Vector3(OuterRadius * Mathf.Cos(Theta), OuterRadius * Mathf.Sin(Theta), 0);
+        vertices[3] = new Vector3(InnerRadius * Mathf.Cos(Theta), InnerRadius * Mathf.Sin(Theta), 0);
+
+        triangles[0] = 0;
+        triangles[1] = 1;
+        triangles[2] = 2;
+
+        triangles[3] = 0;
+        triangles[4] = 2;
+        triangles[5] = 3;
+
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        // Position the back button based on the BackButtonPositioningMode
+        float fanWidth = CalculateFanWidth();
+        float offsetX = positionMode == BackButtonPositioningMode.Right ? fanWidth : -fanWidth;
+        backButton.transform.SetLocalPositionAndRotation
+        (
+            new Vector3(offsetX, 0, 0),
+            Quaternion.Euler(180, 0, positionMode == BackButtonPositioningMode.Right ? +Theta/2 : -Theta/2)
+        );
+    }
+
+    private float CalculateFanWidth()
+    {
+        return OuterRadius * Mathf.Sin(Mathf.Deg2Rad * Theta / 2);
     }
 
     private void OnValidate()
     {
+        Theta = _theta;
         NColumns = _nColumns;
         NRows = _nRows;
         InnerRadius = _innerRadius;
         OuterRadius = _outerRadius;
+        BackButtonWidth = _backButtonWidth;
     }
 }

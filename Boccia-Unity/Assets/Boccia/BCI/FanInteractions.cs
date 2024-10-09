@@ -78,7 +78,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         
         if (_fanGenerator.NColumns > 1)
         {
-            rotationAngle = - _fanGenerator.theta / 2 + columnIndex * (_fanGenerator.theta / (_fanGenerator.NColumns - 1));
+            rotationAngle = - _fanGenerator.Theta / 2 + columnIndex * (_fanGenerator.Theta / (_fanGenerator.NColumns - 1));
         }
 
         if (_fanGenerator.NRows > 1)
@@ -93,11 +93,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         // Call the appropriate movement based on the positioning mode
         switch (_fanPresenter.positioningMode)
         {
-            case FanPresenter.PositioningMode.CenterToRails:
+            case FanPresenter.FanPositioningMode.CenterToRails:
                 Rotateby(rotationAngle);
                 ElevateBy(elevation);
                 break;
-            case FanPresenter.PositioningMode.CenterToBase:
+            case FanPresenter.FanPositioningMode.CenterToBase:
                 RotateTo(rotationAngle);
                 ElevateTo(elevation);
                 break;
