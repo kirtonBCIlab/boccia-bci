@@ -97,4 +97,13 @@ public class BallPresenter : MonoBehaviour
             checkBallCoroutine = null;
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == ball)
+        {
+            Debug.Log("Ball out of bounds");
+            ResetBall();
+        }
+    }
 }
