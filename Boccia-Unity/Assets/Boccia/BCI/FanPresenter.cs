@@ -98,12 +98,14 @@ public class FanPresenter : MonoBehaviour
                 CenterToRails();
                 fanGenerator.GenerateFanShape();
                 fanGenerator.GenerateBackButton(backButtonPositioningMode);
+                fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
                 
                 break;
             case FanPositioningMode.CenterToBase:
                 CenterToBase();
                 fanGenerator.GenerateFanShape();
+                fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
                 break;
             case FanPositioningMode.None:
