@@ -36,7 +36,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
         foreach (Transform child in transform)
         {
-            if (child != null && child.name == "FanSegment")
+            if (child.name == "FanSegment" || child.name == "BackButton")
             {
                 // Add a collider to make segment clickable
                 MeshCollider meshCollider = child.AddComponent<MeshCollider>();

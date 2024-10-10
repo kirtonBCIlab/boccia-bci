@@ -21,7 +21,7 @@ public class FanGenerator : MonoBehaviour
     public float Theta
     {
         get { return _theta; }
-        set { _theta = Mathf.Clamp(value, 1, 180); }
+        set { _theta = Mathf.Clamp(value, 5, 180); }
     }
 
     [SerializeField]
@@ -112,27 +112,83 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    private void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius)
+    public void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
-        GameObject segment = new GameObject("FanSegment");
+        GameObject segment = new("FanSegment");
         segment.transform.SetParent(fan.transform);
-        
-        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();       
+
+        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
 
-        Mesh mesh = new();
+        int segments = 100; // Number of segments to approximate the arc
+        Mesh mesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
         meshFilter.mesh = mesh;
 
-        int segments = 100; // Number of segments to approximate the arc
+        // Get the parent's values
+        Quaternion parentRotation = fan.transform.rotation;
+        Vector3 parentPosition = fan.transform.position;
+
+        // Apply the parent's rotation and position to the vertices
+        Vector3[] vertices = meshFilter.mesh.vertices;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = parentRotation * vertices[i] + parentPosition;
+        }
+        meshFilter.mesh.vertices = vertices;
+        
+    }
+
+    public void DestroyFanSegments()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.name == "FanSegment" || child.name == "BackButton") 
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+   public void GenerateBackButton(BackButtonPositioningMode positionMode)
+    {
+        GameObject backButton = new("BackButton");
+        backButton.transform.SetParent(gameObject.transform);
+
+        MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
+        
+        float startAngle = 0;
+        float endAngle = BackButtonWidth / OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
+        int segments = 10; // Number of segments to approximate the arc
+
+        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, InnerRadius, OuterRadius, segments);
+
+        // Position the back button based on the BackButtonPositioningMode
+        float rotationOffset = 0;
+        switch (positionMode)
+        {
+            case BackButtonPositioningMode.Left:
+                rotationOffset = columnSpacing + Theta;
+                break;
+            case BackButtonPositioningMode.Right:
+                rotationOffset = -(columnSpacing + endAngle);
+                break;
+        }
+        
+        // Apply the parent's rotation and position to the vertices
+        backButton.transform.localRotation = Quaternion.Euler(0, 0, rotationOffset);
+        backButton.transform.localPosition = new Vector3(backButton.transform.localPosition.x, backButton.transform.localPosition.y, 0);
+    }
+
+    private Mesh GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
+    {
+        Mesh mesh = new();
+        
         int verticesCount = (segments + 1) * 2;
         Vector3[] vertices = new Vector3[verticesCount];
         int[] triangles = new int[segments * 6];
 
         float angleStep = (endAngle - startAngle) / segments;
-
-        // Get the parent's values
-        Quaternion parentRotation = fan.transform.rotation;
-        Vector3 parentPosition = fan.transform.position;
 
         for (int i = 0; i <= segments; i++)
         {
@@ -143,8 +199,8 @@ public class FanGenerator : MonoBehaviour
             Vector3 innerVertex = new(Mathf.Cos(rad) * innerRadius, Mathf.Sin(rad) * innerRadius, 0);
             Vector3 outerVertex = new(Mathf.Cos(rad) * outerRadius, Mathf.Sin(rad) * outerRadius, 0);
 
-            vertices[i] = parentRotation * innerVertex + parentPosition;
-            vertices[i + segments + 1] = parentRotation * outerVertex + parentPosition;
+            vertices[i] = innerVertex;
+            vertices[i + segments + 1] = outerVertex;
 
             if (i < segments)
             {
@@ -159,73 +215,12 @@ public class FanGenerator : MonoBehaviour
             }
         }
 
-        // Ensure normals are recalculated
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
-
-        // Check if the mesh bounds are correct
-        mesh.RecalculateBounds();          
-    }
-
-    public void DestroyFanSegments()
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.name == "FanSegment" || child.name == "BackButton") 
-            {
-                Destroy(child.gameObject);
-            }
-        }
-    }
-
-    public void GenerateBackButton(BackButtonPositioningMode positionMode)
-    {
-        GameObject backButton = new("BackButton");
-        backButton.transform.SetParent(transform);
-
-        MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
-        MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
-
-        Mesh mesh = new();
-        meshFilter.mesh = mesh;
-
-        Vector3[] vertices = new Vector3[4];
-        int[] triangles = new int[6];
-
-        float halfWidth = BackButtonWidth / 2;
-
-        vertices[0] = new Vector3(InnerRadius, 0, 0);
-        vertices[1] = new Vector3(OuterRadius, 0, 0);
-        vertices[2] = new Vector3(OuterRadius * Mathf.Cos(Theta), OuterRadius * Mathf.Sin(Theta), 0);
-        vertices[3] = new Vector3(InnerRadius * Mathf.Cos(Theta), InnerRadius * Mathf.Sin(Theta), 0);
-
-        triangles[0] = 0;
-        triangles[1] = 1;
-        triangles[2] = 2;
-
-        triangles[3] = 0;
-        triangles[4] = 2;
-        triangles[5] = 3;
-
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
 
-        // Position the back button based on the BackButtonPositioningMode
-        float fanWidth = CalculateFanWidth();
-        float offsetX = positionMode == BackButtonPositioningMode.Right ? fanWidth : -fanWidth;
-        backButton.transform.SetLocalPositionAndRotation
-        (
-            new Vector3(offsetX, 0, 0),
-            Quaternion.Euler(180, 0, positionMode == BackButtonPositioningMode.Right ? +Theta/2 : -Theta/2)
-        );
-    }
-
-    private float CalculateFanWidth()
-    {
-        return OuterRadius * Mathf.Sin(Mathf.Deg2Rad * Theta / 2);
+        return mesh;
     }
 
     private void OnValidate()

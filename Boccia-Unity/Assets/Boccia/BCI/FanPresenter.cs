@@ -41,14 +41,13 @@ public class FanPresenter : MonoBehaviour
     private void CenterToRails()
     {
         float shaftOrientation = _model.GetRampOrientation();
-        Debug.Log("Shaft orientation: " + shaftOrientation);
         float zOffset = (180 - fanGenerator.Theta)/2 - shaftOrientation;
         Quaternion newRotation = Quaternion.Euler(
             _originalRotation.eulerAngles.x,
             _originalRotation.eulerAngles.y,
             _originalRotation.eulerAngles.z + zOffset
             );
-        transform.rotation = newRotation;
+        transform.localRotation = newRotation;
     }
 
     /// <summary>
@@ -64,7 +63,7 @@ public class FanPresenter : MonoBehaviour
             _originalRotation.eulerAngles.y,
             _originalRotation.eulerAngles.z + zOffset
         );
-        transform.rotation = newRotation;
+        transform.localRotation = newRotation;
     }
 
     /// <summary>
@@ -74,7 +73,7 @@ public class FanPresenter : MonoBehaviour
     /// </summary>
     private void CenterToOrigin()
     {
-        transform.rotation = _originalRotation;
+        transform.localRotation = _originalRotation;
     }
 
     public void GenerateFan()
@@ -98,8 +97,9 @@ public class FanPresenter : MonoBehaviour
             case FanPositioningMode.CenterToRails:
                 CenterToRails();
                 fanGenerator.GenerateFanShape();
-                fanInteractions.MakeFanSegmentsInteractable();
                 fanGenerator.GenerateBackButton(backButtonPositioningMode);
+                fanInteractions.MakeFanSegmentsInteractable();
+                
                 break;
             case FanPositioningMode.CenterToBase:
                 CenterToBase();
