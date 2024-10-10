@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,134 +6,124 @@ using TMPro;
 
 public class BciOptionsMenuPresenter : MonoBehaviour
 {
-    public TMP_Dropdown ballColorDropdown;
-    public Slider elevationPrecisionSlider;
-    public Slider elevationRangeSlider;
-    public Slider rotationPrecisionSlider;
-    public Slider rotationRangeSlider;
-    public Slider elevationSpeedSlider;
-    public Slider rotationSpeedSlider;
-    private BocciaModel model;
+    public TMP_Dropdown paradigmDropdown;
+    public GameObject p300SettingsPanel;  // Panel for P300 settings
+    // public GameObject ssvepSettingsPanel;  // Panel for SSVEP settings (future implementation)
+    public Button resetDefaultsButton;
     public Button doneButton;
 
-    private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color>
-    {
-        {"Blue", Color.blue },
-        {"Red", Color.red },
-        {"Green", Color.green },
-        {"Yellow", Color.yellow },
-        {"Black", Color.black },
-        {"Magenta", Color.magenta},
-        {"Grey", Color.grey},
-        {"Cyan", Color.cyan}
-    };
+    private BocciaModel model;
 
     void Start()
     {
         model = BocciaModel.Instance;
-        PopulateColorDropdown();
-        InitializeValues();
 
-        // Connect UI to model
-        ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
-        elevationPrecisionSlider.onValueChanged.AddListener(ChangeElevationPrecision);
-        elevationRangeSlider.onValueChanged.AddListener(ChangeElevationRange);
-        rotationPrecisionSlider.onValueChanged.AddListener(ChangeRotationPrecision);
-        rotationRangeSlider.onValueChanged.AddListener(ChangeRotationRange);
-        elevationSpeedSlider.onValueChanged.AddListener(ChangeElevationSpeed);
-        rotationSpeedSlider.onValueChanged.AddListener(ChangeRotationSpeed);
+        // Initialize the paradigm dropdown listener
+        paradigmDropdown.onValueChanged.AddListener(OnParadigmChanged);
+
+        // Initialize button listeners
+        resetDefaultsButton.onClick.AddListener(OnResetDefaultsClicked);
+        doneButton.onClick.AddListener(OnDoneButtonClicked);
+
+        // Initialize the active paradigm UI
+        InitializeActiveParadigmUI();
     }
 
-    private void InitializeValues()
+    // When the paradigm is changed from the dropdown
+    // private void OnParadigmChanged(int selectedIndex)
+    // {
+    //     // Update the paradigm in the model based on the selected dropdown option
+    //     switch (selectedIndex)
+    //     {
+    //         case 0: // P300 selected
+    //             model.SetBciOption(ref model.Paradigm, BocciaBciParadigm.P300);  // Use the public property instead of bocciaData
+    //             break;
+    //         // case 1: // SSVEP (future) selected
+    //         //     model.SetBciOption(ref model.Paradigm, BocciaBciParadigm.SSVEP);  // Use the public property instead of bocciaData
+    //         //     break;
+    //     }
+
+    //     // Update the UI to show only the relevant settings for the selected paradigm
+    //     UpdateActiveParadigmUI();
+    // }
+
+    // When the paradigm is changed from the dropdown
+    // Test new
+    private void OnParadigmChanged(int selectedIndex)
     {
-        // Convert the color from the model to the corresponding dropdown value (string)
-        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorNameFromModel(model.BallColor));
-
-        // Ball color will not persist if this line is removed
-        ChangeBallColor(ballColorDropdown.value);
-
-        // Initialize other variables from BocciaModel
-        elevationPrecisionSlider.value = model.ElevationPrecision;
-        elevationRangeSlider.value = model.ElevationRange;
-        elevationSpeedSlider.value = model.ElevationSpeed;
-        rotationPrecisionSlider.value = model.RotationPrecision;
-        rotationRangeSlider.value = model.RotationRange;
-        rotationSpeedSlider.value = model.RotationSpeed;
-    }
-
-    private void PopulateColorDropdown()
-    {
-        // Clear any existing options
-        ballColorDropdown.ClearOptions();
-
-        // Extract color names (keys) from the dictionary
-        List<string> colorOptions = new List<string>(colors.Keys);
-
-        // Add color names to the dropdown
-        ballColorDropdown.AddOptions(colorOptions);
-    }
-
-    public void ChangeBallColor(int valueIndex)
-    {
-        // Get the selected dropdown option as a string
-        string selectedColorName = ballColorDropdown.options[valueIndex].text;
-
-        // Find the corresponding Color from the dictionary and pass it to the model
-        if (colors.TryGetValue(selectedColorName, out Color selectedColor))
+        // Update the paradigm in the model based on the selected dropdown option
+        switch (selectedIndex)
         {
-            model.ChangeBallColor(selectedColor);  // Pass the Color, not the string
+            case 0: // P300 selected
+                model.Paradigm = BocciaBciParadigm.P300;  // Direct assignment without ref
+                break;
+            // case 1: // SSVEP (future) selected
+            //     model.Paradigm = BocciaBciParadigm.SSVEP;  // Direct assignment without ref
+            //     break;
         }
-        else
+
+        // Update the UI to show only the relevant settings for the selected paradigm
+        UpdateActiveParadigmUI();
+    }
+
+    // Initialize which paradigm's settings to show on UI load
+    private void InitializeActiveParadigmUI()
+    {
+        switch (model.Paradigm)  // Use the public property
         {
-            Debug.LogWarning($"Color {selectedColorName} not found in the dictionary.");
+            case BocciaBciParadigm.P300:
+                paradigmDropdown.value = 0;
+                p300SettingsPanel.SetActive(true);
+                // ssvepSettingsPanel.SetActive(false);  // Future implementation
+                break;
+            // case BocciaBciParadigm.SSVEP:
+            //     paradigmDropdown.value = 1;
+            //     p300SettingsPanel.SetActive(false);
+            //     ssvepSettingsPanel.SetActive(true);
+            //     break;
         }
     }
 
-
-    private string GetColorNameFromModel(Color color)
+    // Update the active paradigm settings on UI change
+    private void UpdateActiveParadigmUI()
     {
-        // Find the color name in the dictionary based on the color value in the model
-        foreach (var pair in colors)
+        switch (model.Paradigm)  // Use the public property
         {
-            if (pair.Value == color)
-            {
-                return pair.Key;
-            }
+            case BocciaBciParadigm.P300:
+                if (!p300SettingsPanel.activeSelf)
+                {
+                    p300SettingsPanel.SetActive(true);
+                }
+                // if (ssvepSettingsPanel.activeSelf)
+                // {
+                //     ssvepSettingsPanel.SetActive(false);
+                // }
+                break;
+
+            // case BocciaBciParadigm.SSVEP:
+            //     if (!ssvepSettingsPanel.activeSelf)
+            //     {
+            //         ssvepSettingsPanel.SetActive(true);
+            //     }
+            //     if (p300SettingsPanel.activeSelf)
+            //     {
+            //         p300SettingsPanel.SetActive(false);
+            //     }
+            //     break;
         }
-        return "Blue"; // Default if no match is found
     }
 
-    public void ChangeElevationPrecision(float precisionPercent)
+    // Resets the current active paradigm settings to their default
+    private void OnResetDefaultsClicked()
     {
-        model.SetElevationPrecision(precisionPercent);
+        // Reset the BCI settings to defaults for the active paradigm
+        model.ResetBciSettingsToDefaults();
+
+        // The UI will update automatically when the settings reset due to BciChanged event
     }
 
-    public void ChangeElevationRange(float rangePercent)
-    {
-        model.SetElevationRange(rangePercent);
-    }
-
-    public void ChangeRotationPrecision(float precisionPercent)
-    {
-        model.SetRotationPrecision(precisionPercent);
-    }
-
-    public void ChangeRotationRange(float rangePercent)
-    {
-        model.SetRotationRange(rangePercent);
-    }
-
-    public void ChangeElevationSpeed(float elevationSpeed)
-    {
-        model.SetElevationSpeed(elevationSpeed);
-    }
-
-    public void ChangeRotationSpeed(float rotationSpeed)
-    {
-        model.SetRotationSpeed(rotationSpeed);
-    }
-
-    public void NavigatetoStart()
+    // Navigate back to the previous screen when "Done" is clicked
+    private void OnDoneButtonClicked()
     {
         model.ShowPreviousScreen();
     }

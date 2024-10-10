@@ -85,9 +85,9 @@ public class P300SettingsContainer
         public BocciaAnimation TargetAnimation;  // "Training Target Animation"
         public bool ShamSelectionFeedback;  // Sham selection feedback toggle
         public BocciaAnimation ShamSelectionAnimation;  // "Sham Selection Animation". 
-        public double StimulusOnDuration;  // Stimulus on duration
-        public double StimulusOffDuration;  // Stimulus off duration
-        public Color FlashColour;
+        public float StimulusOnDuration;  // Stimulus on duration
+        public float StimulusOffDuration;  // Stimulus off duration
+        public Color FlashColour;  // Stimulus flash colour
         // Add more P300 training-specific parameters here if needed
     }
 
@@ -98,9 +98,9 @@ public class P300SettingsContainer
         public int NumFlashes;  // Number of flashes during testing
         public bool TargetSelectionFeedback;  // Test target selection feedback toggle
         public BocciaAnimation TargetSelectionAnimation;  // "Target Selection Animation"
-        public double StimulusOnDuration;  // Stimulus on duration
-        public double StimulusOffDuration;  // Stimulus off duration
-        public Color FlashColour;
+        public float StimulusOnDuration;  // Stimulus on duration
+        public float StimulusOffDuration;  // Stimulus off duration
+        public Color FlashColour;  // Stimulus flash colour
         // Add more P300 testing-specific parameters here if needed
     }
 }
@@ -108,7 +108,7 @@ public class P300SettingsContainer
 
 // Example of SSVEP Settings class
 // [System.Serializable]
-// public class SSVEPSettings
+// public class SSVEPSettingsContainer
 // {
 //     public TrainSettings Train = new TrainSettings();  // Training settings for SSVEP
 //     public TestSettings Test = new TestSettings();    // Testing settings for SSVEP
