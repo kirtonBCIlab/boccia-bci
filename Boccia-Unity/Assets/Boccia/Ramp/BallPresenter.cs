@@ -35,11 +35,6 @@ public class BallPresenter : MonoBehaviour
         ModelChanged();
     }
 
-    void OnEnable()
-    {
-        model.WasChanged += ModelChanged;
-    }
-
     void OnDisable()
     {
         model.WasChanged -= ModelChanged;
