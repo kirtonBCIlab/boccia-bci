@@ -13,6 +13,7 @@ public class BallPresenter : MonoBehaviour
     private BocciaModel model;
 
     private Vector3 dropPosition;
+    private Quaternion dropRotation;
 
     private Coroutine checkBallCoroutine;
 
@@ -47,8 +48,9 @@ public class BallPresenter : MonoBehaviour
 
         if (model.BarState)
         {
-            dropPosition = ball.transform.position; // Save ball position right before it is dropped
-            //Debug.Log("Drop position: " + dropPosition);
+            // Save ball position and rotation right before it is dropped
+            dropPosition = ball.transform.position; 
+            dropRotation = ball.transform.rotation;
             StartCoroutine(DropBall()); // Start the bar movement animation
         }
     }
@@ -88,9 +90,9 @@ public class BallPresenter : MonoBehaviour
 
     private void ResetBall()
     {
-        //Debug.Log("Resetting ball to position: " + dropPosition);      
+        // Reset ball position and rotation  
         ball.transform.position = dropPosition;
-        //Debug.Log("Ball position: " + ball.transform.position);
+        ball.transform.rotation = dropRotation;
 
         if (checkBallCoroutine != null)
         {
