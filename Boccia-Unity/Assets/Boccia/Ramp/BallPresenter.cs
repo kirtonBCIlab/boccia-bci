@@ -44,15 +44,17 @@ public class BallPresenter : MonoBehaviour
 
     private void InitializeBall()
     {
+        // Make sure the ball is enabled
         if (!activeBall.activeSelf)
         {
             activeBall.SetActive(true);
         }
-        
+
         // Initialize rigidbody 
         ballRigidbody = activeBall.GetComponent<Rigidbody>();
         // Set sleep threshold to minimum so the ball is ready to roll
         ballRigidbody.sleepThreshold = 0.0f;
+
         // Name the ball GameObject in the hierarchy
         activeBall.name = "Ball " + ballCount;
     }
@@ -62,17 +64,21 @@ public class BallPresenter : MonoBehaviour
         // For lower rate changes, update when model sends change event
         activeBall.GetComponent<Renderer>().material.color = model.BallColor;
 
+        // If model.BarState is true, it means the bar is opened
         if (model.BarState)
         {
             // Save ball position and rotation right before it is dropped
             dropPosition = activeBall.transform.position; 
             dropRotation = activeBall.transform.rotation;
-            StartCoroutine(DropBall()); // Start the bar movement animation
+
+            // Start the bar movement animation
+            StartCoroutine(DropBall());
         }
     }
 
     private IEnumerator DropBall()
     {
+        // Bar opening and closing animation
         barAnimation.SetBool("isOpening", true);
         yield return new WaitForSecondsRealtime(1f);
         barAnimation.SetBool("isOpening", false);
@@ -87,21 +93,23 @@ public class BallPresenter : MonoBehaviour
 
     private IEnumerator CheckBallSpeed()
     {
-        //Debug.Log("Checking ball speed");
+        // Velocity threshold
         while (ballRigidbody.velocity.magnitude > 0.01f)
         {
-            //Debug.Log("Ball velocity: " + ballRigidbody.velocity.magnitude);
             yield return new WaitForSecondsRealtime(0.1f); 
         }
 
+        // Stop the ball
         ballRigidbody.velocity = Vector3.zero;
         ballRigidbody.angularVelocity = Vector3.zero;
 
+        // Create a new ball
         NewBocciaBall();
     }
 
     private void NewBocciaBall()
     {
+        // Make sure the CheckBallSpeed coroutine is stopped
         if (checkBallCoroutine != null)
         {
             StopCoroutine(checkBallCoroutine);
@@ -118,11 +126,14 @@ public class BallPresenter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        // Check if any boccia ball currently in the scene rolls out of bounds
         if (other.gameObject.CompareTag("BocciaBall"))
         {
             Debug.Log(other.gameObject.name + " out of bounds");
-            // Disable the out of bounds ball
-            other.gameObject.SetActive(false);
+            other.gameObject.SetActive(false); // Disable the out of bounds ball
+            // Destroy(other.gameObject);
+
+            // Create new boccia ball
             NewBocciaBall();
         }
     }
