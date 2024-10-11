@@ -254,23 +254,47 @@ public class FanGenerator : MonoBehaviour
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
-        Vector3 startPosition = new((float)(Mathf.Cos(startRad) * 1.05 * OuterRadius), (float)(Mathf.Sin(startRad) * 1.05 * OuterRadius), 0);
-        CreateTextAnnotation(startPosition, startAngle.ToString("F1") + "°");
+        Vector3 startPosition = new(Mathf.Cos(startRad) * OuterRadius, Mathf.Sin(startRad) * OuterRadius, 0);
+        CreateTextAnnotation
+        (
+            startPosition,
+            rotationAngle: 0,
+            startAngle.ToString("F1") + "°",
+            TextAlignmentOptions.BottomRight
+        );
 
         // Annotation for the end angle
         float endAngle = Theta;
-        float endRad = Mathf.Deg2Rad * endAngle;
-        Vector3 endPosition = new (Mathf.Cos(endRad) * (OuterRadius + 0.5f), Mathf.Sin(endRad) * (OuterRadius + 0.5f), 0);
-        CreateTextAnnotation(endPosition, endAngle.ToString("F1") + "°");
+        float endRad = Mathf.Deg2Rad * endAngle;        
+        Vector3 endPosition = new (Mathf.Cos(endRad) * OuterRadius, Mathf.Sin(endRad) * OuterRadius, 0);
+        CreateTextAnnotation
+        (
+            position: endPosition,
+            rotationAngle: Theta,
+            endAngle.ToString("F1") + "°",
+            TextAlignmentOptions.BottomLeft
+        );
 
         // Annotation for the low elevation limit
-        CreateTextAnnotation(new (0, InnerRadius, 0), "Low: " + LowElevationLimit.ToString());
+        CreateTextAnnotation
+        (
+            new (InnerRadius, -0.05f, 0),
+            rotationAngle: 0,
+            LowElevationLimit.ToString() + "%",
+            TextAlignmentOptions.BottomLeft
+        );
 
         // Annotation for the high elevation limit
-        CreateTextAnnotation(new (0, OuterRadius, 0), "High: " + HighElevationLimit.ToString());
+        CreateTextAnnotation
+        (
+            new (OuterRadius, -0.05f, 0),
+            rotationAngle: 0,
+            HighElevationLimit.ToString() + "%",
+            TextAlignmentOptions.TopLeft
+        );
     }
     
-    private void CreateTextAnnotation(Vector3 position, string text)
+    private void CreateTextAnnotation(Vector3 position, float rotationAngle, string text, TextAlignmentOptions textAlignment)
     {
         GameObject parent = this.gameObject;
 
@@ -279,14 +303,33 @@ public class FanGenerator : MonoBehaviour
         textObject.transform.SetLocalPositionAndRotation
         (
             position,
-            Quaternion.Euler(0, 0, -90)
+            Quaternion.Euler(0, 0, -90 + rotationAngle)
         );
 
         // Add and configure RectTransform
         RectTransform rectTransform = textObject.AddComponent<RectTransform>();
-        rectTransform.pivot = new Vector2(0, 0);
-        rectTransform.anchorMin = new Vector2(0, 0);
-        rectTransform.anchorMax = new Vector2(0, 0);
+        switch (textAlignment)
+        {
+            case TextAlignmentOptions.BottomLeft:
+                rectTransform.pivot = new Vector2(0, 0);
+                rectTransform.anchorMin = new Vector2(0, 0);
+                rectTransform.anchorMax = new Vector2(0, 0);
+                break;
+            case TextAlignmentOptions.BottomRight:
+                rectTransform.pivot = new Vector2(1, 0);
+                rectTransform.anchorMin = new Vector2(1, 0);
+                rectTransform.anchorMax = new Vector2(1, 0);
+                break;
+            case TextAlignmentOptions.TopLeft:
+                rectTransform.pivot = new Vector2(0, 1);
+                rectTransform.anchorMin = new Vector2(0, 1);
+                rectTransform.anchorMax = new Vector2(0, 1);
+                break;
+            // Add other cases if needed
+            default:
+                break;
+        }
+        
         // rectTransform.anchoredPosition = Vector2.zero;
         rectTransform.sizeDelta = new Vector2(5, 2);
 
@@ -295,7 +338,7 @@ public class FanGenerator : MonoBehaviour
         textMeshPro.text = text;
         textMeshPro.fontSize = annotationFontSize;
         textMeshPro.color = Color.black;
-        textMeshPro.alignment = TextAlignmentOptions.BottomLeft;
+        textMeshPro.alignment = textAlignment;
         textMeshPro.font = Resources.Load<TMP_FontAsset>("Assets/TextMesh Pro/Fonts/LiberationSans.ttf"); // Replace with your font asset path
     }
 
