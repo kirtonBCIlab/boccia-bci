@@ -39,7 +39,8 @@ public class JackPresenter : MonoBehaviour
         Vector3 randomJackPosition = RandomLocation();
         //Debug.Log(randomJackPosition);
 
-        Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
+        GameObject newJack = Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
+        newJack.name = "JackBall";
 
     }
 
