@@ -100,6 +100,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateBackButton(backButtonPositioningMode);
                 fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
+                fanGenerator.GenerateFanAnnotations();
                 
                 break;
             case FanPositioningMode.CenterToBase:
@@ -107,6 +108,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateFanShape();
                 fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
+                fanGenerator.GenerateFanAnnotations();
                 break;
             case FanPositioningMode.None:
                 fanGenerator.GenerateFanShape();

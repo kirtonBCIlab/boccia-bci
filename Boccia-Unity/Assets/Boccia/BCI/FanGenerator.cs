@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
 using FanNamespace;
+using TMPro;
 
 
 
@@ -97,6 +98,9 @@ public class FanGenerator : MonoBehaviour
         get { return _dropButtonHeight; }
         set { _dropButtonHeight = Mathf.Clamp(value, 0.5f, float.MaxValue); }
     }
+
+    [Header("Annotation options")]
+    public int annotationFontSize;
 
     public void GenerateFanShape()
     {
@@ -245,9 +249,54 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
-    private void GenerateFanAnnotations()
-    {
+    public void GenerateFanAnnotations()
+    {        
+        // Annotation for the start angle
+        float startAngle = 0;
+        float startRad = Mathf.Deg2Rad * startAngle;
+        Vector3 startPosition = new((float)(Mathf.Cos(startRad) * 1.05 * OuterRadius), (float)(Mathf.Sin(startRad) * 1.05 * OuterRadius), 0);
+        CreateTextAnnotation(startPosition, startAngle.ToString("F1") + "°");
 
+        // Annotation for the end angle
+        float endAngle = Theta;
+        float endRad = Mathf.Deg2Rad * endAngle;
+        Vector3 endPosition = new (Mathf.Cos(endRad) * (OuterRadius + 0.5f), Mathf.Sin(endRad) * (OuterRadius + 0.5f), 0);
+        CreateTextAnnotation(endPosition, endAngle.ToString("F1") + "°");
+
+        // Annotation for the low elevation limit
+        CreateTextAnnotation(new (0, InnerRadius, 0), "Low: " + LowElevationLimit.ToString());
+
+        // Annotation for the high elevation limit
+        CreateTextAnnotation(new (0, OuterRadius, 0), "High: " + HighElevationLimit.ToString());
+    }
+    
+    private void CreateTextAnnotation(Vector3 position, string text)
+    {
+        GameObject parent = this.gameObject;
+
+        GameObject textObject = new ("TextAnnotation");
+        textObject.transform.SetParent(parent.transform);
+        textObject.transform.SetLocalPositionAndRotation
+        (
+            position,
+            Quaternion.Euler(0, 0, -90)
+        );
+
+        // Add and configure RectTransform
+        RectTransform rectTransform = textObject.AddComponent<RectTransform>();
+        rectTransform.pivot = new Vector2(0, 0);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+        // rectTransform.anchoredPosition = Vector2.zero;
+        rectTransform.sizeDelta = new Vector2(5, 2);
+
+        // Add and configure TextMeshPro
+        TextMeshPro textMeshPro = textObject.AddComponent<TextMeshPro>();
+        textMeshPro.text = text;
+        textMeshPro.fontSize = annotationFontSize;
+        textMeshPro.color = Color.black;
+        textMeshPro.alignment = TextAlignmentOptions.BottomLeft;
+        textMeshPro.font = Resources.Load<TMP_FontAsset>("Assets/TextMesh Pro/Fonts/LiberationSans.ttf"); // Replace with your font asset path
     }
 
     private void OnValidate()
