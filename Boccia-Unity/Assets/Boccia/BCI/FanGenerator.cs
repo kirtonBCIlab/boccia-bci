@@ -65,7 +65,8 @@ public class FanGenerator : MonoBehaviour
     public int LowElevationLimit
     {
         get { return _lowElevationLimit; }
-        set { _lowElevationLimit = Mathf.Clamp(value, 0, HighElevationLimit); }
+        set 
+        { _lowElevationLimit = Mathf.Clamp(value, 0, _highElevationLimit-1); }
     }
 
     [SerializeField]
@@ -73,7 +74,11 @@ public class FanGenerator : MonoBehaviour
     public int HighElevationLimit
     {
         get { return _highElevationLimit; }
-        set { _highElevationLimit = Mathf.Clamp(value, 0, LowElevationLimit); }
+        set 
+        {
+            _lowElevationLimit = Mathf.Clamp(_lowElevationLimit, 0, _highElevationLimit-1);
+            _highElevationLimit = Mathf.Clamp(value, _lowElevationLimit+1, 100);
+        }
     }
 
     [Header("Additional Button Parameters")]
@@ -240,6 +245,11 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
+    private void GenerateFanAnnotations()
+    {
+
+    }
+
     private void OnValidate()
     {
         Theta = _theta;
@@ -249,5 +259,7 @@ public class FanGenerator : MonoBehaviour
         OuterRadius = _outerRadius;
         BackButtonWidth = _backButtonWidth;
         DropButtonHeight = _dropButtonHeight;
+        LowElevationLimit = _lowElevationLimit;
+        HighElevationLimit = _highElevationLimit;
     }
 }
