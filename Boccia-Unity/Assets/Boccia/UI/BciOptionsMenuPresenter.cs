@@ -24,9 +24,30 @@ public class BciOptionsMenuPresenter : MonoBehaviour
         // Initialize button listeners
         resetDefaultsButton.onClick.AddListener(OnResetDefaultsClicked);
         doneButton.onClick.AddListener(OnDoneButtonClicked);
+    }
 
+    void OnEnable()
+    {
         // Initialize the active paradigm UI
         InitializeActiveParadigmUI();
+    }
+
+    // Initialize which paradigm's settings to show on UI load
+    private void InitializeActiveParadigmUI()
+    {
+        switch (model.Paradigm)  // Use the public property
+        {
+            case BocciaBciParadigm.P300:
+                paradigmDropdown.value = 0;
+                p300SettingsPanel.SetActive(true);
+                // ssvepSettingsPanel.SetActive(false);  // Future implementation
+                break;
+            // case BocciaBciParadigm.SSVEP:
+            //     paradigmDropdown.value = 1;
+            //     p300SettingsPanel.SetActive(false);
+            //     ssvepSettingsPanel.SetActive(true);
+            //     break;
+        }
     }
 
     // When the paradigm is changed from the dropdown
@@ -64,24 +85,6 @@ public class BciOptionsMenuPresenter : MonoBehaviour
 
         // Update the UI to show only the relevant settings for the selected paradigm
         UpdateActiveParadigmUI();
-    }
-
-    // Initialize which paradigm's settings to show on UI load
-    private void InitializeActiveParadigmUI()
-    {
-        switch (model.Paradigm)  // Use the public property
-        {
-            case BocciaBciParadigm.P300:
-                paradigmDropdown.value = 0;
-                p300SettingsPanel.SetActive(true);
-                // ssvepSettingsPanel.SetActive(false);  // Future implementation
-                break;
-            // case BocciaBciParadigm.SSVEP:
-            //     paradigmDropdown.value = 1;
-            //     p300SettingsPanel.SetActive(false);
-            //     ssvepSettingsPanel.SetActive(true);
-            //     break;
-        }
     }
 
     // Update the active paradigm settings on UI change

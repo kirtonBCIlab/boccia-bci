@@ -42,11 +42,14 @@ public class BciOptionsP300Settings : MonoBehaviour
         // Subscribe to BCI change events to keep the UI updated
         model.BciChanged += OnBciSettingsChanged;
 
-        // Initialize UI with current model values
-        InitializeUI();
-
         // Add listeners to UI elements
         AddListenersToUI();
+    }
+
+    void OnEnable()
+    {
+        // Initialize UI with current model values every time the panel is enabled/active
+        InitializeUI();
     }
 
     void OnDestroy()
