@@ -179,7 +179,7 @@ public class FanGenerator : MonoBehaviour
         MeshFilter meshFilter = dropButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = dropButton.AddComponent<MeshRenderer>();
         
-        int segments = 10; // Number of segments to approximate the arc
+        int segments = 50; // Number of segments to approximate the arc
         meshFilter.mesh = GenerateFanMesh(0, Theta, InnerRadius-DropButtonHeight, InnerRadius-rowSpacing, segments);
 
         dropButton.transform.SetLocalPositionAndRotation
