@@ -8,7 +8,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
 {
     public TMP_Dropdown paradigmDropdown;
     public GameObject p300SettingsPanel;  // Panel for P300 settings
-    // public GameObject ssvepSettingsPanel;  // Panel for SSVEP settings (future implementation)
+    public GameObject ssvepSettingsPanel;  // Panel for SSVEP settings (future implementation)
     public Button resetDefaultsButton;
     public Button doneButton;
 
@@ -18,18 +18,40 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     {
         model = BocciaModel.Instance;
 
+        // Call the method to populate the paradigm dropdown
+        PopulateParadigmDropdown();
+
         // Initialize the paradigm dropdown listener
         paradigmDropdown.onValueChanged.AddListener(OnParadigmChanged);
 
         // Initialize button listeners
         resetDefaultsButton.onClick.AddListener(OnResetDefaultsClicked);
         doneButton.onClick.AddListener(OnDoneButtonClicked);
+
+        // Initialize the active paradigm UI
+        InitializeActiveParadigmUI();
     }
 
     void OnEnable()
     {
         // Initialize the active paradigm UI
         InitializeActiveParadigmUI();
+    }
+
+    // Populates the paradigm dropdown with enum values from BocciaBciParadigm
+    private void PopulateParadigmDropdown()
+    {
+        // Clear any existing options in the dropdown
+        paradigmDropdown.ClearOptions();
+
+        // Get the names of the BocciaBciParadigm enum as a string list
+        List<string> paradigmOptions = new List<string>(Enum.GetNames(typeof(BocciaBciParadigm)));
+
+        // Add the paradigm options to the dropdown
+        paradigmDropdown.AddOptions(paradigmOptions);
+
+        // Set the default value in the dropdown to match the model's current paradigm
+        paradigmDropdown.value = (int)model.Paradigm;
     }
 
     // Initialize which paradigm's settings to show on UI load
@@ -40,7 +62,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
             case BocciaBciParadigm.P300:
                 paradigmDropdown.value = 0;
                 p300SettingsPanel.SetActive(true);
-                // ssvepSettingsPanel.SetActive(false);  // Future implementation
+                ssvepSettingsPanel.SetActive(false);  // Future implementation
                 break;
             // case BocciaBciParadigm.SSVEP:
             //     paradigmDropdown.value = 1;
@@ -51,37 +73,10 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     }
 
     // When the paradigm is changed from the dropdown
-    // private void OnParadigmChanged(int selectedIndex)
-    // {
-    //     // Update the paradigm in the model based on the selected dropdown option
-    //     switch (selectedIndex)
-    //     {
-    //         case 0: // P300 selected
-    //             model.SetBciOption(ref model.Paradigm, BocciaBciParadigm.P300);  // Use the public property instead of bocciaData
-    //             break;
-    //         // case 1: // SSVEP (future) selected
-    //         //     model.SetBciOption(ref model.Paradigm, BocciaBciParadigm.SSVEP);  // Use the public property instead of bocciaData
-    //         //     break;
-    //     }
-
-    //     // Update the UI to show only the relevant settings for the selected paradigm
-    //     UpdateActiveParadigmUI();
-    // }
-
-    // When the paradigm is changed from the dropdown
-    // Test new
     private void OnParadigmChanged(int selectedIndex)
     {
         // Update the paradigm in the model based on the selected dropdown option
-        switch (selectedIndex)
-        {
-            case 0: // P300 selected
-                model.Paradigm = BocciaBciParadigm.P300;  // Direct assignment without ref
-                break;
-            // case 1: // SSVEP (future) selected
-            //     model.Paradigm = BocciaBciParadigm.SSVEP;  // Direct assignment without ref
-            //     break;
-        }
+        model.Paradigm = (BocciaBciParadigm)selectedIndex;
 
         // Update the UI to show only the relevant settings for the selected paradigm
         UpdateActiveParadigmUI();
@@ -97,10 +92,10 @@ public class BciOptionsMenuPresenter : MonoBehaviour
                 {
                     p300SettingsPanel.SetActive(true);
                 }
-                // if (ssvepSettingsPanel.activeSelf)
-                // {
-                //     ssvepSettingsPanel.SetActive(false);
-                // }
+                if (ssvepSettingsPanel.activeSelf)
+                {
+                    ssvepSettingsPanel.SetActive(false);
+                }
                 break;
 
             // case BocciaBciParadigm.SSVEP:
