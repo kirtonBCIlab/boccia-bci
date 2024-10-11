@@ -25,7 +25,6 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
-
     public Color BallColor => bocciaData.BallColor;
     public float ElevationPrecision => bocciaData.ElevationPrecision;
     public float ElevationRange => bocciaData.ElevationRange;
@@ -68,6 +67,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action WasChanged;  // Referring to the Ramp. Need to change this in other scripts (e.g. RampPresenter.cs) if we want to make the variable name more informative
     public event System.Action NavigationChanged;
     public event System.Action BciChanged;
+    public event System.Action NewRandomJack;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -101,7 +101,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
+    public void RotateTo(float degrees) => rampController.RotateTo(degrees);
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
+    public void ElevateTo(float elevation) => rampController.ElevateTo(elevation);
 
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
@@ -124,6 +126,11 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         bocciaData.BallColor = colorString;
         SendRampChangeEvent();
+    }
+
+    public void RandomJackBall()
+    {
+        SendRandomJackEvent();
     }
 
     public void SetElevationPrecision(float elevationPercent)
@@ -161,6 +168,15 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
     
+    public float GetRampOrientation()
+    {
+        return rampController.Rotation;
+    }
+
+    public float GetRampElevation()
+    {
+        return rampController.Elevation;
+    }
 
     // MARK: Navigation control
     public void StartMenu()
@@ -293,6 +309,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendRampChangeEvent()
     {
         WasChanged?.Invoke();
+    }
+
+    private void SendRandomJackEvent()
+    {
+        NewRandomJack?.Invoke();
     }
 
     private void SendNavigationChangeEvent()
