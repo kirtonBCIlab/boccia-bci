@@ -48,6 +48,7 @@ public class BallPresenter : MonoBehaviour
         if (model.BarState)
         {
             dropPosition = ball.transform.position; // Save ball position right before it is dropped
+            //Debug.Log("Drop position: " + dropPosition);
             StartCoroutine(DropBall()); // Start the bar movement animation
         }
     }
@@ -60,15 +61,19 @@ public class BallPresenter : MonoBehaviour
 
         barAnimation.SetBool("isOpening", false);
 
-        checkBallCoroutine = StartCoroutine(CheckBallSpeed());
-
         model.ResetBar(); // Call the method to reset the bar state to false
+
+        // Wait to check speed of ball to avoid ResetBall() happening too early
+        yield return new WaitForSecondsRealtime(1f); 
+
+        checkBallCoroutine = StartCoroutine(CheckBallSpeed());
 
         yield return null;
     }
 
     private IEnumerator CheckBallSpeed()
     {
+        //Debug.Log("Checking ball speed");
         while (ballRigidbody.velocity.magnitude > 0.01f)
         {
             //Debug.Log("Ball velocity: " + ballRigidbody.velocity.magnitude);
@@ -85,6 +90,7 @@ public class BallPresenter : MonoBehaviour
     {
         //Debug.Log("Resetting ball to position: " + dropPosition);      
         ball.transform.position = dropPosition;
+        //Debug.Log("Ball position: " + ball.transform.position);
 
         if (checkBallCoroutine != null)
         {
