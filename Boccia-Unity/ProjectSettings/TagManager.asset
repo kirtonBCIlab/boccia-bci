@@ -7,6 +7,7 @@ TagManager:
   - BCI
   - JackPosition
   - JackBall
+  - BocciaBall
   layers:
   - Default
   - TransparentFX
