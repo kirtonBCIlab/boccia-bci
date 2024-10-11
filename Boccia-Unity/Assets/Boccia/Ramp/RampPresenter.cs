@@ -14,7 +14,7 @@ public class RampPresenter : MonoBehaviour
 
     private BocciaModel model;
 
-    public float rotationSpeed = 10.0f;
+    public float rotationSpeed = 5.0f;
     public float elevationSpeed = 5.0f;
     public float minElevation = 0.0026f; 
     public float maxElevation = 0.43f; 
