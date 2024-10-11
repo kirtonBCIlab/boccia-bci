@@ -44,6 +44,11 @@ public class BallPresenter : MonoBehaviour
 
     private void InitializeBall()
     {
+        if (!activeBall.activeSelf)
+        {
+            activeBall.SetActive(true);
+        }
+        
         // Initialize rigidbody 
         ballRigidbody = activeBall.GetComponent<Rigidbody>();
         // Set sleep threshold to minimum so the ball is ready to roll
@@ -115,7 +120,7 @@ public class BallPresenter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("BocciaBall"))
         {
-            Debug.Log(other.gameObject.name + "out of bounds");
+            Debug.Log(other.gameObject.name + " out of bounds");
             // Disable the out of bounds ball
             other.gameObject.SetActive(false);
             NewBocciaBall();
