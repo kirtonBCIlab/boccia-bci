@@ -22,7 +22,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnFanSegmentClick(eventData.pointerCurrentRaycast.gameObject.transform);
+        OnSegmentClick(eventData.pointerCurrentRaycast.gameObject.transform);
     }
 
     /// <summary>
@@ -36,39 +36,55 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
         foreach (Transform child in transform)
         {
-            if (child != null && child.name == "FanSegment")
-            {
-                // Add a collider to make segment clickable
-                MeshCollider meshCollider = child.AddComponent<MeshCollider>();
-                meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
-                meshCollider.enabled = true;
+            // Add a collider to make segment clickable
+            MeshCollider meshCollider = child.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
+            meshCollider.enabled = true;
 
-                // Add Flashing effects component
-                // TODO: We need something to add the color of the SPO segment here
-                ColorFlashEffect colorFlashEffect = child.AddComponent<ColorFlashEffect>();
-                // colorFlashEffect.OnColor = flashOnColor;
-                // colorFlashEffect.OffColor = flashOffColor;
+            // Add Flashing effects component
+            // TODO: We need something to add the color of the SPO segment here
+            ColorFlashEffect colorFlashEffect = child.AddComponent<ColorFlashEffect>();
+            // colorFlashEffect.OnColor = flashOnColor;
+            // colorFlashEffect.OffColor = flashOffColor;
 
-                // Add SPO component to make segment selectable with BCI
-                child.tag = "BCI";
-                SPO spo = child.AddComponent<SPO>();
-                spo.ObjectID = segmentID;
-                spo.Selectable = true;
+            // Add SPO component to make segment selectable with BCI
+            child.tag = "BCI";
+            SPO spo = child.AddComponent<SPO>();
+            spo.ObjectID = segmentID;
+            spo.Selectable = true;
 
-                spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOn());
-                spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOff());
-                spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
-                spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());                
+            spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOn());
+            spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOff());
+            spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
+            spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());                
 
-                segmentID++;
-            }
+            segmentID++;
         }
     }
 
-    private void OnFanSegmentClick(Transform segment)
-    {        
+    private void OnSegmentClick(Transform segment)
+    {
         SPO spo = segment.GetComponent<SPO>();
         int segmentID = spo.ObjectID;
+        int nfanSegments = _fanGenerator.NColumns * _fanGenerator.NRows;
+
+        if (segmentID >= 0 && segmentID < nfanSegments)
+        {
+            OnFanSegmentClick(segmentID);
+        }
+        else if (segmentID == nfanSegments)
+        {
+            _fanGenerator.DestroyFanSegments();
+        }
+        else if (segmentID == nfanSegments + 1)
+        {
+            _model.DropBall();
+        }
+
+    }
+
+    private void OnFanSegmentClick(int segmentID)
+    {
         int columnIndex = _fanGenerator.NColumns - 1 - (segmentID / _fanGenerator.NRows);
         int rowIndex = _fanGenerator.NRows - 1 - (segmentID % _fanGenerator.NRows);
 
@@ -78,7 +94,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         
         if (_fanGenerator.NColumns > 1)
         {
-            rotationAngle = - _fanGenerator.theta / 2 + columnIndex * (_fanGenerator.theta / (_fanGenerator.NColumns - 1));
+            rotationAngle = - _fanGenerator.Theta / 2 + columnIndex * (_fanGenerator.Theta / (_fanGenerator.NColumns - 1));
         }
 
         if (_fanGenerator.NRows > 1)
@@ -93,41 +109,16 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         // Call the appropriate movement based on the positioning mode
         switch (_fanPresenter.positioningMode)
         {
-            case FanPresenter.PositioningMode.CenterToRails:
-                Rotateby(rotationAngle);
-                ElevateBy(elevation);
+            case FanPresenter.FanPositioningMode.CenterToRails:
+                _model.RotateBy(rotationAngle);
+                _model.ElevateBy(elevation);
                 break;
-            case FanPresenter.PositioningMode.CenterToBase:
-                RotateTo(rotationAngle);
-                ElevateTo(elevation);
+            case FanPresenter.FanPositioningMode.CenterToBase:
+                _model.RotateTo(rotationAngle);
+                _model.ElevateTo(elevation);
                 break;
             default:
                 break;
         }
-    }
-
-    // Ramp movement functions
-    public void Rotateby(float degrees) 
-    { 
-        // Debug.Log("Rotating by " + degrees);
-        _model.RotateBy(degrees); 
-    }
-
-    public void RotateTo(float angle) 
-    {
-        // Debug.Log("Rotating to " + angle);
-        _model.RotateTo(angle); 
-    }
-    
-    public void ElevateBy(float elevation) 
-    { 
-        // Debug.Log("Elevating by " + elevation);
-        _model.ElevateBy(elevation); 
-    }
-
-    public void ElevateTo(float elevation) 
-    {
-        // Debug.Log("Elevating to " + elevation);
-        _model.ElevateTo(elevation);
     }
 }

@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
+using FanNamespace;
 
 
 
 public class FanGenerator : MonoBehaviour
 {
     [Header("Fan Parameters")]
-    public float theta;         // Angle in degrees
     public float columnSpacing; // Spacing between columns
     public float rowSpacing;    // Spacing between rows;
 
     private int _maxColumns = 7;            // Max number of columns 
     private int _maxRows = 7;               // Max number of rows
     private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
+
+    [SerializeField]
+    private float _theta;               // Angle in degrees
+    public float Theta
+    {
+        get { return _theta; }
+        set { _theta = Mathf.Clamp(value, 5, 180); }
+    }
 
     [SerializeField]
     private float _outerRadius;          // Outer radius
@@ -68,15 +76,32 @@ public class FanGenerator : MonoBehaviour
         set { _highElevationLimit = Mathf.Clamp(value, 0, LowElevationLimit); }
     }
 
+    [Header("Additional Button Parameters")]
+    [SerializeField]
+    private float _backButtonWidth; // Width of the back button
+    public float BackButtonWidth
+    {
+        get { return _backButtonWidth; }
+        set { _backButtonWidth = Mathf.Clamp(value, 1f, float.MaxValue); }
+    }
+
+    [SerializeField]
+    private float _dropButtonHeight; // Width of the back button
+    public float DropButtonHeight
+    {
+        get { return _dropButtonHeight; }
+        set { _dropButtonHeight = Mathf.Clamp(value, 0.5f, float.MaxValue); }
+    }
+
     public void GenerateFanShape()
     {
         GameObject fan = gameObject;
         
-        float angleStep = theta / NColumns;
+        float angleStep = Theta / NColumns;
         float radiusStep = (OuterRadius - InnerRadius) / NRows;
 
         // Only have spacing when there are more than 1 column or row
-        if (NColumns > 1) { angleStep = (theta - (NColumns - 1) * columnSpacing) / NColumns; }
+        if (NColumns > 1) { angleStep = (Theta - (NColumns - 1) * columnSpacing) / NColumns; }
         if (NRows > 1) { radiusStep = (OuterRadius - InnerRadius - (NRows - 1) * rowSpacing) / NRows; }
 
         // Create the fan segments
@@ -95,27 +120,92 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    private void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius)
+    public void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
-        GameObject segment = new GameObject("FanSegment");
-        segment.transform.SetParent(fan.transform);
+        GameObject segment = new("FanSegment");
         
-        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();       
+        segment.transform.SetParent(fan.transform);
+
+        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
 
-        Mesh mesh = new();
-        meshFilter.mesh = mesh;
-
         int segments = 100; // Number of segments to approximate the arc
+        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
+
+        segment.transform.SetLocalPositionAndRotation
+        (
+            new Vector3(segment.transform.localPosition.x, segment.transform.localPosition.y, 0),
+            Quaternion.Euler(0, 0, 0)
+        );
+    }
+
+   public void GenerateBackButton(BackButtonPositioningMode positionMode)
+   {
+        GameObject backButton = new("BackButton");
+        backButton.transform.SetParent(gameObject.transform);
+
+        MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
+        
+        float startAngle = 0;
+        float endAngle = BackButtonWidth / OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
+        int segments = 10; // Number of segments to approximate the arc
+        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, InnerRadius, OuterRadius, segments);
+
+        // Position the back button based on the BackButtonPositioningMode
+        float rotationOffset = 0;
+        switch (positionMode)
+        {
+            case BackButtonPositioningMode.Left:
+                rotationOffset = columnSpacing + Theta;
+                break;
+            case BackButtonPositioningMode.Right:
+                rotationOffset = -(columnSpacing + endAngle);
+                break;
+        }
+        
+        backButton.transform.SetLocalPositionAndRotation
+        (
+            new Vector3(backButton.transform.localPosition.x, backButton.transform.localPosition.y, 0),
+            Quaternion.Euler(0, 0, rotationOffset)
+        );
+    }
+
+    public void GenerateDropButton()
+    {
+        GameObject dropButton = new("DropButton");
+        dropButton.transform.SetParent(gameObject.transform);
+
+        MeshFilter meshFilter = dropButton.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = dropButton.AddComponent<MeshRenderer>();
+        
+        int segments = 50; // Number of segments to approximate the arc
+        meshFilter.mesh = GenerateFanMesh(0, Theta, InnerRadius-DropButtonHeight, InnerRadius-rowSpacing, segments);
+
+        dropButton.transform.SetLocalPositionAndRotation
+        (
+            new Vector3(dropButton.transform.localPosition.x, dropButton.transform.localPosition.y, 0),
+            Quaternion.Euler(0, 0, 0)
+        );
+    }
+
+    public void DestroyFanSegments()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private Mesh GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
+    {
+        Mesh mesh = new();
+        
         int verticesCount = (segments + 1) * 2;
         Vector3[] vertices = new Vector3[verticesCount];
         int[] triangles = new int[segments * 6];
 
         float angleStep = (endAngle - startAngle) / segments;
-
-        // Get the parent's values
-        Quaternion parentRotation = fan.transform.rotation;
-        Vector3 parentPosition = fan.transform.position;
 
         for (int i = 0; i <= segments; i++)
         {
@@ -126,8 +216,8 @@ public class FanGenerator : MonoBehaviour
             Vector3 innerVertex = new(Mathf.Cos(rad) * innerRadius, Mathf.Sin(rad) * innerRadius, 0);
             Vector3 outerVertex = new(Mathf.Cos(rad) * outerRadius, Mathf.Sin(rad) * outerRadius, 0);
 
-            vertices[i] = parentRotation * innerVertex + parentPosition;
-            vertices[i + segments + 1] = parentRotation * outerVertex + parentPosition;
+            vertices[i] = innerVertex;
+            vertices[i + segments + 1] = outerVertex;
 
             if (i < segments)
             {
@@ -142,28 +232,22 @@ public class FanGenerator : MonoBehaviour
             }
         }
 
-        // Ensure normals are recalculated
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
 
-        // Check if the mesh bounds are correct
-        mesh.RecalculateBounds();          
-    }
-
-    public void DestroyFanSegments()
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.name == "FanSegment") { Destroy(child.gameObject); }
-        }
+        return mesh;
     }
 
     private void OnValidate()
     {
+        Theta = _theta;
         NColumns = _nColumns;
         NRows = _nRows;
         InnerRadius = _innerRadius;
         OuterRadius = _outerRadius;
+        BackButtonWidth = _backButtonWidth;
+        DropButtonHeight = _dropButtonHeight;
     }
 }
