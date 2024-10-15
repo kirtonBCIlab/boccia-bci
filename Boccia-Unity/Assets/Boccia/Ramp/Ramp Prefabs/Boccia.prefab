@@ -503,6 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball: {fileID: 6213523397869663847}
   dropBar: {fileID: 8448552161599435182}
+  elevationPlate: {fileID: 9152734532760075096}
 --- !u!114 &7814226423708504148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,5 +1231,10 @@ GameObject:
 --- !u!1 &8448552161599435182 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2760597292113571541, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
+  m_PrefabInstance: {fileID: 6012540737330847611}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9152734532760075096 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3203711221001282595, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
   m_PrefabInstance: {fileID: 6012540737330847611}
   m_PrefabAsset: {fileID: 0}

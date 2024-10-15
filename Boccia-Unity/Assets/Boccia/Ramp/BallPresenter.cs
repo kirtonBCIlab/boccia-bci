@@ -12,6 +12,8 @@ public class BallPresenter : MonoBehaviour
     private Animator barAnimation;
     public GameObject dropBar;
 
+    public GameObject elevationPlate;
+
     private BocciaModel model;
 
     private Vector3 dropPosition;
@@ -68,8 +70,11 @@ public class BallPresenter : MonoBehaviour
         if (model.BarState)
         {
             // Save ball position and rotation right before it is dropped
-            dropPosition = activeBall.transform.position; 
-            dropRotation = activeBall.transform.rotation;
+            //dropPosition = activeBall.transform.position; 
+            //dropRotation = activeBall.transform.rotation;
+
+            dropPosition = elevationPlate.transform.InverseTransformPoint(activeBall.transform.position);
+            dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * activeBall.transform.rotation;
 
             // Start the bar movement animation
             StartCoroutine(DropBall());
@@ -119,8 +124,13 @@ public class BallPresenter : MonoBehaviour
         // Increment ball count
         ballCount++;
 
-        // Create new ball at the previous ball's drop position and rotation
-        activeBall = Instantiate(ball, dropPosition, dropRotation, transform);
+        // Create a new ball at the previous ball's drop position and rotation
+        // activeBall = Instantiate(ball, dropPosition, dropRotation, transform);
+
+        Vector3 newBallPosition = elevationPlate.transform.TransformPoint(dropPosition);
+        Quaternion newBallRotation = elevationPlate.transform.rotation * dropRotation;
+
+        activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
     }
 
