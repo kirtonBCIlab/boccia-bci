@@ -76,7 +76,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     private void OnParadigmChanged(int selectedIndex)
     {
         // Update the paradigm in the model based on the selected dropdown option
-        model.Paradigm = (BocciaBciParadigm)selectedIndex;
+        model.SetBciParadigm((BocciaBciParadigm)selectedIndex);
 
         // Update the UI to show only the relevant settings for the selected paradigm
         UpdateActiveParadigmUI();

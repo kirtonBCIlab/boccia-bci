@@ -35,19 +35,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // BCI
     // Access to the current BCI Paradigm
-    // public BocciaBciParadigm Paradigm => bocciaData.Paradigm;
-    public BocciaBciParadigm Paradigm  // Test new
-    {
-        get => bocciaData.Paradigm;
-        set
-        {
-            if (bocciaData.Paradigm != value)
-            {
-                bocciaData.Paradigm = value;
-                SendBciChangeEvent();  // Notify listeners of the paradigm change
-            }
-        }
-    }
+    public BocciaBciParadigm Paradigm => bocciaData.Paradigm;  // Read-only property
 
     // Paradigm agnostic tracker for whether BCI Training has been done
     // get is public, set is private
@@ -247,18 +235,17 @@ public class BocciaModel : Singleton<BocciaModel>
 
 
     // MARK: BCI control
-    // // Example setters for P300 Training and Testing settings, if we wanted to make one per setting
-    // public void SetP300TrainNumFlashes(int numFlashes)
-    // {
-    //     bocciaData.P300Settings.Train.NumFlashes = numFlashes;
-    //     // Additional logic or events can be triggered here if needed
-    // }
 
-    // public void SetP300TestStimulusOnDuration(double duration)
-    // {
-    //     bocciaData.P300Settings.Test.StimulusOnDuration = duration;
-    //     // Additional logic or events can be triggered here if needed
-    // }
+    // Set the BCI paradigm
+    public void SetBciParadigm(BocciaBciParadigm newParadigm)
+    {
+        if (bocciaData.Paradigm != newParadigm)
+        {
+            bocciaData.Paradigm = newParadigm;
+            SendBciChangeEvent();  // Notify listeners of the paradigm change
+        }
+    }
+
     public void SetBciOption<T>(ref T settingField, T newValue)
     // Generic setter for changing any BCI setting (train or test, P300 or SSVEP)
     {
