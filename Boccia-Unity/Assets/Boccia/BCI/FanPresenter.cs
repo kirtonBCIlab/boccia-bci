@@ -100,15 +100,17 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateBackButton(backButtonPositioningMode);
                 fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
-                fanGenerator.GenerateFanAnnotations();
+                fanGenerator.GenerateFanAnnotations(_model.RampRotation, _model.RampElevation, backButtonPositioningMode);
                 
                 break;
             case FanPositioningMode.CenterToBase:
                 CenterToBase();
+                fanGenerator.ElevationRange = 100f;
+                backButtonPositioningMode = BackButtonPositioningMode.Left;
                 fanGenerator.GenerateFanShape();
                 fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
-                fanGenerator.GenerateFanAnnotations();
+                fanGenerator.GenerateFanAnnotations(0, 50f, backButtonPositioningMode);
                 break;
             case FanPositioningMode.None:
                 fanGenerator.GenerateFanShape();

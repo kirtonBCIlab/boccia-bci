@@ -62,6 +62,14 @@ public class FanGenerator : MonoBehaviour
     }
 
     [SerializeField]
+    private float _elevationRange; // Elevation range [%]
+    public float ElevationRange
+    {
+        get { return _elevationRange; }
+        set { _elevationRange = Mathf.Clamp(value, 1, 100); }
+    }
+
+    [SerializeField]
     private int _lowElevationLimit; // Lower elevation limit
     public int LowElevationLimit
     {
@@ -249,8 +257,8 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
-    public void GenerateFanAnnotations()
-    {        
+    public void GenerateFanAnnotations(float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode)
+    {   
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
@@ -259,7 +267,7 @@ public class FanGenerator : MonoBehaviour
         (
             startPosition,
             rotationAngle: 0,
-            startAngle.ToString("F1") + "°",
+            (currentRotation + Theta/2).ToString("F1") + "°",
             TextAlignmentOptions.BottomRight
         );
 
@@ -271,26 +279,50 @@ public class FanGenerator : MonoBehaviour
         (
             position: endPosition,
             rotationAngle: Theta,
-            endAngle.ToString("F1") + "°",
+            (currentRotation - Theta/2).ToString("F1") + "°",
             TextAlignmentOptions.BottomLeft
         );
+
+        // Place height anotations according to back button position 
+        TextAlignmentOptions lowLimitPosition;
+        TextAlignmentOptions highLimitPosition;
+        Vector3 elevationLowPositionOffset;
+        Vector3 elevationHighPositionOffset;
+        float elevationRotationOffset;        
+        switch (backButtonPositioningMode)
+        {
+            case BackButtonPositioningMode.Right:
+                elevationLowPositionOffset = new(Mathf.Cos(endRad) * InnerRadius, Mathf.Sin(endRad) * InnerRadius + 0.05f, 0);
+                elevationHighPositionOffset = new(Mathf.Cos(endRad) * OuterRadius, Mathf.Sin(endRad) * OuterRadius + 0.05f, 0);
+                elevationRotationOffset = Theta;
+                lowLimitPosition = TextAlignmentOptions.BottomRight;
+                highLimitPosition = TextAlignmentOptions.TopRight;
+                break;
+            default:
+                elevationLowPositionOffset = new (InnerRadius, -0.05f, 0);
+                elevationHighPositionOffset = new(OuterRadius, -0.05f, 0);
+                elevationRotationOffset = 0;
+                lowLimitPosition = TextAlignmentOptions.BottomLeft;
+                highLimitPosition = TextAlignmentOptions.TopLeft;
+                break;
+        }
 
         // Annotation for the low elevation limit
         CreateTextAnnotation
         (
-            new (InnerRadius, -0.05f, 0),
-            rotationAngle: 0,
-            LowElevationLimit.ToString() + "%",
-            TextAlignmentOptions.BottomLeft
+            position: elevationLowPositionOffset,
+            rotationAngle: elevationRotationOffset,
+            text: (currentElevation - ElevationRange/2).ToString() + "%",
+            textAlignment: lowLimitPosition
         );
 
         // Annotation for the high elevation limit
         CreateTextAnnotation
         (
-            new (OuterRadius, -0.05f, 0),
-            rotationAngle: 0,
-            HighElevationLimit.ToString() + "%",
-            TextAlignmentOptions.TopLeft
+            position: elevationHighPositionOffset,
+            rotationAngle: elevationRotationOffset,
+            text: (currentElevation + ElevationRange/2).ToString() + "%",
+            textAlignment: highLimitPosition
         );
     }
     
@@ -325,6 +357,11 @@ public class FanGenerator : MonoBehaviour
                 rectTransform.anchorMin = new Vector2(0, 1);
                 rectTransform.anchorMax = new Vector2(0, 1);
                 break;
+            case TextAlignmentOptions.TopRight:
+                rectTransform.pivot = new Vector2(1, 1);
+                rectTransform.anchorMin = new Vector2(1, 1);
+                rectTransform.anchorMax = new Vector2(1, 1);
+                break;
             // Add other cases if needed
             default:
                 break;
@@ -353,5 +390,6 @@ public class FanGenerator : MonoBehaviour
         DropButtonHeight = _dropButtonHeight;
         LowElevationLimit = _lowElevationLimit;
         HighElevationLimit = _highElevationLimit;
+        ElevationRange = _elevationRange;
     }
 }
