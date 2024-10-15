@@ -60,7 +60,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     private static readonly List<float> durationOptions = new List<float> { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f }; // Example durations in seconds
 
     // List of animations (placeholder)
-    private List<string> animationOptions = new List<string> { "None", "Bop it", "Twist it" };
+    private List<string> animationOptions = new List<string> { "Bop it", "Twist it", "Shake it"};
 
 
     void Start()
