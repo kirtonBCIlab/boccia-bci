@@ -5,7 +5,7 @@ public enum BocciaBciParadigm
 {
     P300,
     // Future paradigms can be added here
-    // SSVEP,
+    SSVEP,
     // MI
 }
 
@@ -65,6 +65,9 @@ public class BocciaData
     //    bocciaData.P300Settings.Test.NumFlashes = 5;
     // ================================
 
+    // Paradigm-specific data container for SSVEP (Example)
+    public SSVEPSettingsContainer SSVEPSettings = new SSVEPSettingsContainer();
+
     // // Hardware
     public string SerialPortName;
 }
@@ -107,28 +110,28 @@ public class P300SettingsContainer
 
 
 // Example of SSVEP Settings class
-// [System.Serializable]
-// public class SSVEPSettingsContainer
-// {
-//     public TrainSettings Train = new TrainSettings();  // Training settings for SSVEP
-//     public TestSettings Test = new TestSettings();    // Testing settings for SSVEP
+[System.Serializable]
+public class SSVEPSettingsContainer
+{
+    public TrainSettings Train = new TrainSettings();  // Training settings for SSVEP
+    public TestSettings Test = new TestSettings();    // Testing settings for SSVEP
 
-//     // Nested class for SSVEP training settings
-//     [System.Serializable]
-//     public class TrainSettings
-//     {
-//         public int NumStimulations;  // Number of stimulations during training
-//         public int NumTrainingWindows;  // Number of training windows
-//         public double Frequency;  // Frequency for the SSVEP stimulus
-//         // Other training-specific parameters
-//     }
+    // Nested class for SSVEP training settings
+    [System.Serializable]
+    public class TrainSettings
+    {
+        public int NumStimulations;  // Number of stimulations during training
+        public int NumTrainingWindows;  // Number of training windows
+        public double Frequency;  // Frequency for the SSVEP stimulus
+        // Other training-specific parameters
+    }
 
-//     // Nested class for SSVEP testing settings
-//     [System.Serializable]
-//     public class TestSettings
-//     {
-//         public int NumStimulations;  // Number of stimulations during testing
-//         public double Frequency;  // Frequency for the SSVEP stimulus
-//         // Other testing-specific parameters
-//     }
-// }
+    // Nested class for SSVEP testing settings
+    [System.Serializable]
+    public class TestSettings
+    {
+        public int NumStimulations;  // Number of stimulations during testing
+        public double Frequency;  // Frequency for the SSVEP stimulus
+        // Other testing-specific parameters
+    }
+}

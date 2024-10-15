@@ -64,11 +64,11 @@ public class BciOptionsMenuPresenter : MonoBehaviour
                 p300SettingsPanel.SetActive(true);
                 ssvepSettingsPanel.SetActive(false);  // Future implementation
                 break;
-            // case BocciaBciParadigm.SSVEP:
-            //     paradigmDropdown.value = 1;
-            //     p300SettingsPanel.SetActive(false);
-            //     ssvepSettingsPanel.SetActive(true);
-            //     break;
+            case BocciaBciParadigm.SSVEP:
+                paradigmDropdown.value = 1;
+                p300SettingsPanel.SetActive(false);
+                ssvepSettingsPanel.SetActive(true);
+                break;
         }
     }
 
@@ -98,16 +98,16 @@ public class BciOptionsMenuPresenter : MonoBehaviour
                 }
                 break;
 
-            // case BocciaBciParadigm.SSVEP:
-            //     if (!ssvepSettingsPanel.activeSelf)
-            //     {
-            //         ssvepSettingsPanel.SetActive(true);
-            //     }
-            //     if (p300SettingsPanel.activeSelf)
-            //     {
-            //         p300SettingsPanel.SetActive(false);
-            //     }
-            //     break;
+            case BocciaBciParadigm.SSVEP:
+                if (!ssvepSettingsPanel.activeSelf)
+                {
+                    ssvepSettingsPanel.SetActive(true);
+                }
+                if (p300SettingsPanel.activeSelf)
+                {
+                    p300SettingsPanel.SetActive(false);
+                }
+                break;
         }
     }
 

@@ -45,7 +45,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
 
     // Example if adding SSVEP
-    // public SSVEPSettingsContainer SSVEPSettings => bocciaData.SSVEPSettings;
+    public SSVEPSettingsContainer SSVEPSettings => bocciaData.SSVEPSettings;
 
     // Ramp Hardware
     public bool RampHardwareConnected;
@@ -277,10 +277,10 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
     // Placeholder for SSVEP paradigm  default settings (future expansion)
-    // private void SetDefaultSSVEPSettings()
-    // {
-    //     // Add SSVEP-specific defaults here
-    // }
+    private void SetDefaultSSVEPSettings()
+    {
+        // Add SSVEP-specific defaults here
+    }
 
     // MARK: Persistence
     public void Bind(BocciaData gameData)
@@ -355,9 +355,9 @@ public class BocciaModel : Singleton<BocciaModel>
                 SetDefaultP300Settings();
                 break;
             // Placeholder for other paradigms like SSVEP, MI, etc.
-            // case BocciaBciParadigm.SSVEP:
-            //     SetDefaultSSVEPSettings();
-            //     break;
+            case BocciaBciParadigm.SSVEP:
+                SetDefaultSSVEPSettings();
+                break;
         }
 
         // Notify the UI of the change
