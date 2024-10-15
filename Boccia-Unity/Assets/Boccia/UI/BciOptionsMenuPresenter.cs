@@ -8,7 +8,6 @@ public class BciOptionsMenuPresenter : MonoBehaviour
 {
     public TMP_Dropdown paradigmDropdown;
     public GameObject p300SettingsPanel;  // Panel for P300 settings
-    public GameObject ssvepSettingsPanel;  // Panel for SSVEP settings (future implementation)
     public Button resetDefaultsButton;
     public Button doneButton;
 
@@ -62,13 +61,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
             case BocciaBciParadigm.P300:
                 paradigmDropdown.value = 0;
                 p300SettingsPanel.SetActive(true);
-                ssvepSettingsPanel.SetActive(false);  // Future implementation
                 break;
-            // case BocciaBciParadigm.SSVEP:
-            //     paradigmDropdown.value = 1;
-            //     p300SettingsPanel.SetActive(false);
-            //     ssvepSettingsPanel.SetActive(true);
-            //     break;
         }
     }
 
@@ -92,22 +85,12 @@ public class BciOptionsMenuPresenter : MonoBehaviour
                 {
                     p300SettingsPanel.SetActive(true);
                 }
-                if (ssvepSettingsPanel.activeSelf)
-                {
-                    ssvepSettingsPanel.SetActive(false);
-                }
+                // Put logic here to turn off active settings panels that are not the selected paradigm
+                // if (otherParadigmSettingsPanel.activeSelf)
+                // {
+                //     otherParadigmSettingsPanel.SetActive(false);
+                // }
                 break;
-
-            // case BocciaBciParadigm.SSVEP:
-            //     if (!ssvepSettingsPanel.activeSelf)
-            //     {
-            //         ssvepSettingsPanel.SetActive(true);
-            //     }
-            //     if (p300SettingsPanel.activeSelf)
-            //     {
-            //         p300SettingsPanel.SetActive(false);
-            //     }
-            //     break;
         }
     }
 

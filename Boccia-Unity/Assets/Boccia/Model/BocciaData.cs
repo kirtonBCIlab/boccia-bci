@@ -5,8 +5,6 @@ public enum BocciaBciParadigm
 {
     P300,
     // Future paradigms can be added here
-    // SSVEP,
-    // MI
 }
 
 public enum BocciaAnimation
@@ -34,15 +32,6 @@ public class BocciaData
 
     // Active BCI Paradigm for switching between paradigms
     public BocciaBciParadigm Paradigm;  // Tracks the currently active paradigm
-
-    // public int NumFlashes;
-    // public int NumTrainingWindows;
-    // public BocciaAnimation TargetAnimation;
-    // public bool ShamFeedback;
-    // public Double StimulusOnDuration;
-    // public Double StimulusOffDuration;
-
-    // // bci testing?
 
     // Paradigm-specific data container for P300
     public P300SettingsContainer P300Settings = new P300SettingsContainer();
@@ -104,31 +93,3 @@ public class P300SettingsContainer
         // Add more P300 testing-specific parameters here if needed
     }
 }
-
-
-// Example of SSVEP Settings class
-// [System.Serializable]
-// public class SSVEPSettingsContainer
-// {
-//     public TrainSettings Train = new TrainSettings();  // Training settings for SSVEP
-//     public TestSettings Test = new TestSettings();    // Testing settings for SSVEP
-
-//     // Nested class for SSVEP training settings
-//     [System.Serializable]
-//     public class TrainSettings
-//     {
-//         public int NumStimulations;  // Number of stimulations during training
-//         public int NumTrainingWindows;  // Number of training windows
-//         public double Frequency;  // Frequency for the SSVEP stimulus
-//         // Other training-specific parameters
-//     }
-
-//     // Nested class for SSVEP testing settings
-//     [System.Serializable]
-//     public class TestSettings
-//     {
-//         public int NumStimulations;  // Number of stimulations during testing
-//         public double Frequency;  // Frequency for the SSVEP stimulus
-//         // Other testing-specific parameters
-//     }
-// }

@@ -39,13 +39,10 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Paradigm agnostic tracker for whether BCI Training has been done
     // get is public, set is private
-    public bool BciTrained { get; private set; }  // Is there a need to have a paradigm-specific state tracker, e.g. BciTrainedP300, BciTrainedSSVEP
+    public bool BciTrained { get; private set; }
 
     // Expose the entire P300SettingsContainer via a property
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
-
-    // Example if adding SSVEP
-    // public SSVEPSettingsContainer SSVEPSettings => bocciaData.SSVEPSettings;
 
     // Ramp Hardware
     public bool RampHardwareConnected;
@@ -247,7 +244,8 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
     public void SetBciOption<T>(ref T settingField, T newValue)
-    // Generic setter for changing any BCI setting (train or test, P300 or SSVEP)
+    // Generic setter for changing any BCI setting for a given paradigm given an existing data container for the paradigm
+    // e.g. settingField = bocciaModel.P300Settings.Train.NumFlashes; newValue = 10;
     {
         settingField = newValue;
         SendBciChangeEvent();
@@ -275,12 +273,6 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.P300Settings.Test.StimulusOffDuration = 2.0f;
         bocciaData.P300Settings.Test.FlashColour = Color.red;  
     }
-
-    // Placeholder for SSVEP paradigm  default settings (future expansion)
-    // private void SetDefaultSSVEPSettings()
-    // {
-    //     // Add SSVEP-specific defaults here
-    // }
 
     // MARK: Persistence
     public void Bind(BocciaData gameData)
@@ -354,10 +346,6 @@ public class BocciaModel : Singleton<BocciaModel>
             case BocciaBciParadigm.P300:
                 SetDefaultP300Settings();
                 break;
-            // Placeholder for other paradigms like SSVEP, MI, etc.
-            // case BocciaBciParadigm.SSVEP:
-            //     SetDefaultSSVEPSettings();
-            //     break;
         }
 
         // Notify the UI of the change
