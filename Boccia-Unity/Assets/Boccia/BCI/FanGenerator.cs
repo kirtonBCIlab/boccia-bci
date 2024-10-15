@@ -69,27 +69,6 @@ public class FanGenerator : MonoBehaviour
         set { _elevationRange = Mathf.Clamp(value, 1, 100); }
     }
 
-    [SerializeField]
-    private int _lowElevationLimit; // Lower elevation limit
-    public int LowElevationLimit
-    {
-        get { return _lowElevationLimit; }
-        set 
-        { _lowElevationLimit = Mathf.Clamp(value, 0, _highElevationLimit-1); }
-    }
-
-    [SerializeField]
-    private int _highElevationLimit; // Higher elevation limit
-    public int HighElevationLimit
-    {
-        get { return _highElevationLimit; }
-        set 
-        {
-            _lowElevationLimit = Mathf.Clamp(_lowElevationLimit, 0, _highElevationLimit-1);
-            _highElevationLimit = Mathf.Clamp(value, _lowElevationLimit+1, 100);
-        }
-    }
-
     [Header("Additional Button Parameters")]
     [SerializeField]
     private float _backButtonWidth; // Width of the back button
@@ -388,8 +367,6 @@ public class FanGenerator : MonoBehaviour
         OuterRadius = _outerRadius;
         BackButtonWidth = _backButtonWidth;
         DropButtonHeight = _dropButtonHeight;
-        LowElevationLimit = _lowElevationLimit;
-        HighElevationLimit = _highElevationLimit;
         ElevationRange = _elevationRange;
     }
 }
