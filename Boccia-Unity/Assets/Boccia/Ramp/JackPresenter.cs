@@ -7,9 +7,9 @@ public class JackPresenter : MonoBehaviour
     private BocciaModel model;
     public GameObject jackBall; // The ball prefab to use as the jack
 
-    private Vector2 xRange = new Vector2(-8f, 8f);
+    private Vector2 xRange = new Vector2(-6f, 6f);
     private float yPosition = 0f;
-    private Vector2 zRange = new Vector2(4f, 12f);
+    private Vector2 zRange = new Vector2(6f, 18f);
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +39,8 @@ public class JackPresenter : MonoBehaviour
         Vector3 randomJackPosition = RandomLocation();
         //Debug.Log(randomJackPosition);
 
-        Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
+        GameObject newJack = Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
+        newJack.name = "JackBall";
 
     }
 
@@ -50,5 +51,19 @@ public class JackPresenter : MonoBehaviour
         
         return new Vector3(xPosition, yPosition, zPosition);
     }
+
+    // If the jack rolls out of bounds, reset it
+    // Note: the jack should not instantiate outside the boundary, but the Boccia ball could
+    // knock the jack out of bounds
+    /*
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("JackBall"))
+        {
+            Debug.Log("Jack out of bounds");
+            NewJack();
+        }
+    }
+    */
 
 }
