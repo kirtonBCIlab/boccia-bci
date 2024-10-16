@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -758,8 +758,16 @@ PrefabInstance:
       value: ControllerManager
       objectReference: {fileID: 0}
     - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: _selfRegister
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
       propertyPath: setupRequired
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: _selfRegisterAsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5532972415639130385, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
       propertyPath: _spoPrefab
@@ -1401,6 +1409,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+--- !u!1 &1328160566 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1649985292535673242, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+  m_PrefabInstance: {fileID: 415153929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1353213726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,11 +1508,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!1 &1609661544 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4818931384772691849, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
-  m_PrefabInstance: {fileID: 1825258637}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1533873502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1609,6 +1617,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67284b57dff4747ecbe18ccca03cfe89, type: 3}
+--- !u!1 &1609661544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4818931384772691849, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+  m_PrefabInstance: {fileID: 1825258637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1701171800 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
@@ -1831,6 +1844,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2146497314}
     m_Modifications:
+    - target: {fileID: -6759359065324159966, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: bciControllerManager
+      value: 
+      objectReference: {fileID: 1328160566}
     - target: {fileID: 713961130739357503, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: OnSelectedEvent.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1971,9 +1988,25 @@ PrefabInstance:
       propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 748026187130600216, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 748026187130600216, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
+      objectReference: {fileID: 0}
     - target: {fileID: 930210435583609575, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: m_TagString
       value: BCI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731453703119658755, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731453703119658755, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
       objectReference: {fileID: 0}
     - target: {fileID: 1769239266467359189, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: m_TagString
@@ -2118,6 +2151,14 @@ PrefabInstance:
     - target: {fileID: 1860694407378895147, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375138796574563450, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375138796574563450, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
       objectReference: {fileID: 0}
     - target: {fileID: 2859724575470018110, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: m_Name
@@ -2843,9 +2884,33 @@ PrefabInstance:
       propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6529758659080158235, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529758659080158235, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676466496226083426, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676466496226083426, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
+      objectReference: {fileID: 0}
     - target: {fileID: 7138297023662964630, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: m_TagString
       value: BCI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334154639932684827, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334154639932684827, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
       objectReference: {fileID: 0}
     - target: {fileID: 7692940783509767500, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: OnSelectedEvent.m_PersistentCalls.m_Calls.Array.size
@@ -3027,9 +3092,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7974405448322503833, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 7974405448322503833, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
+      objectReference: {fileID: 0}
     - target: {fileID: 7983456653138342303, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: m_TagString
       value: BCI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120570402068262843, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOff
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120570402068262843, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
+      propertyPath: StartTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefaultScaleEffectOn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
