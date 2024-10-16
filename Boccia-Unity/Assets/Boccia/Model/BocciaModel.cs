@@ -25,13 +25,16 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
-    public Color BallColor => bocciaData.BallColor;
-    public float ElevationPrecision => bocciaData.ElevationPrecision;
-    public float ElevationRange => bocciaData.ElevationRange;
-    public float ElevationSpeed => bocciaData.ElevationSpeed;
-    public float RotationPrecision => bocciaData.RotationPrecision;
-    public float RotationRange => bocciaData.RotationRange;
-    public float RotationSpeed => bocciaData.RotationSpeed;
+
+    // Expose the GameOptionsContainer via a property
+    public GameOptionsContainer GameOptions => bocciaData.GameOptions;
+    // public Color BallColor => bocciaData.BallColor;
+    // public float ElevationPrecision => bocciaData.ElevationPrecision;
+    // public float ElevationRange => bocciaData.ElevationRange;
+    // public float ElevationSpeed => bocciaData.ElevationSpeed;
+    // public float RotationPrecision => bocciaData.RotationPrecision;
+    // public float RotationRange => bocciaData.RotationRange;
+    // public float RotationSpeed => bocciaData.RotationSpeed;
 
     // BCI
     // Access to the current BCI Paradigm
@@ -83,6 +86,68 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
 
+    // MARK: Game options
+    // Setting default values for Game Options
+    private void SetDefaultGameOptions()
+    {
+        bocciaData.GameOptions.BallColor = Color.blue;
+        bocciaData.GameOptions.ElevationPrecision = 0.0f;
+        bocciaData.GameOptions.ElevationRange = 0.0f;
+        bocciaData.GameOptions.ElevationSpeed = 0.0f;
+        bocciaData.GameOptions.RotationPrecision = 0.0f;
+        bocciaData.GameOptions.RotationRange = 0.0f;
+        bocciaData.GameOptions.RotationSpeed = 0.0f;
+
+        // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
+    }
+
+    // Generic setter method for changing any game option
+    public void SetGameOption<T>(ref T settingField, T newValue)
+    {
+        settingField = newValue;
+        SendRampChangeEvent();
+    }
+
+    public void ChangeBallColor(Color colorString)
+    {
+        bocciaData.GameOptions.BallColor = colorString;
+        SendRampChangeEvent();
+    }
+
+    // public void SetElevationPrecision(float elevationPercent)
+    // {
+    //     bocciaData.ElevationPrecision = elevationPercent;
+    //     SendRampChangeEvent();
+    // }
+
+    // public void SetElevationRange(float elevationRange)
+    // {
+    //     bocciaData.ElevationRange = elevationRange;
+    //     SendRampChangeEvent();
+    // }
+
+    // public void SetRotationPrecision(float rangeDegree)
+    // {
+    //     bocciaData.RotationPrecision = rangeDegree;
+    //     SendRampChangeEvent();
+    // }
+    // public void SetRotationRange(float rotationRange)
+    // {
+    //     bocciaData.RotationRange = rotationRange;
+    //     SendRampChangeEvent();
+    // }
+
+    // public void SetElevationSpeed(float elevationSpeed)
+    // {
+    //     bocciaData.ElevationSpeed = elevationSpeed;
+    //     SendRampChangeEvent();
+    // }
+
+    // public void SetRotationSpeed(float rotationSpeed)
+    // {
+    //     bocciaData.RotationSpeed = rotationSpeed;
+    //     SendRampChangeEvent();
+    // }
 
     // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
@@ -103,13 +168,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void RandomColor()
     {
-        bocciaData.BallColor = UnityEngine.Random.ColorHSV();
-        SendRampChangeEvent();
-    }
-
-    public void ChangeBallColor(Color colorString)
-    {
-        bocciaData.BallColor = colorString;
+        bocciaData.GameOptions.BallColor = UnityEngine.Random.ColorHSV();
         SendRampChangeEvent();
     }
 
@@ -118,40 +177,6 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRandomJackEvent();
     }
 
-    public void SetElevationPrecision(float elevationPercent)
-    {
-        bocciaData.ElevationPrecision = elevationPercent;
-        SendRampChangeEvent();
-    }
-
-    public void SetElevationRange(float elevationRange)
-    {
-        bocciaData.ElevationRange = elevationRange;
-        SendRampChangeEvent();
-    }
-
-    public void SetRotationPrecision(float rangeDegree)
-    {
-        bocciaData.RotationPrecision = rangeDegree;
-        SendRampChangeEvent();
-    }
-    public void SetRotationRange(float rotationRange)
-    {
-        bocciaData.RotationRange = rotationRange;
-        SendRampChangeEvent();
-    }
-
-    public void SetElevationSpeed(float elevationSpeed)
-    {
-        bocciaData.ElevationSpeed = elevationSpeed;
-        SendRampChangeEvent();
-    }
-
-    public void SetRotationSpeed(float rotationSpeed)
-    {
-        bocciaData.RotationSpeed = rotationSpeed;
-        SendRampChangeEvent();
-    }
     
     public float GetRampOrientation()
     {
@@ -271,7 +296,9 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.P300Settings.Test.TargetSelectionAnimation = BocciaAnimation.Default;
         bocciaData.P300Settings.Test.StimulusOnDuration = 2.0f;
         bocciaData.P300Settings.Test.StimulusOffDuration = 2.0f;
-        bocciaData.P300Settings.Test.FlashColour = Color.red;  
+        bocciaData.P300Settings.Test.FlashColour = Color.red;
+
+        // Note: SendBciChangeEvent() trigged within ResetBciOptionsToDefaults();
     }
 
     // MARK: Persistence
@@ -317,14 +344,14 @@ public class BocciaModel : Singleton<BocciaModel>
         GameMode = BocciaGameMode.StopPlay;
         BallState = BocciaBallState.Ready;
 
-        bocciaData.BallColor = Color.blue;
-        bocciaData.ElevationPrecision = 0.0f;
-        bocciaData.ElevationRange = 0.0f;
-        bocciaData.ElevationSpeed = 0.0f;
-        bocciaData.RotationPrecision = 0.0f;
-        bocciaData.RotationRange = 0.0f;
-        bocciaData.RotationSpeed = 0.0f;
+        ResetGameOptionsToDefaults();
+        // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
+    }
 
+    public void ResetGameOptionsToDefaults()
+    {
+        SetDefaultGameOptions();
+        SendRampChangeEvent();
     }
 
     private void ResetBciState()
@@ -334,7 +361,7 @@ public class BocciaModel : Singleton<BocciaModel>
         
         // Call the public method to reset the settings
         ResetBciSettingsToDefaults();
-        // SendBciChangeEvent() trigged within ResetBciSettingsToDefaults();
+        // Note: SendBciChangeEvent() trigged within ResetBciSettingsToDefaults();
     }
 
     // This method resets the BCI settings to default without touching the BciTrained state

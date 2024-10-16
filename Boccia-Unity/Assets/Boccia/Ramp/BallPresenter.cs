@@ -64,7 +64,7 @@ public class BallPresenter : MonoBehaviour
     private void ModelChanged()
     {
         // For lower rate changes, update when model sends change event
-        activeBall.GetComponent<Renderer>().material.color = model.BallColor;
+        activeBall.GetComponent<Renderer>().material.color = model.GameOptions.BallColor;
 
         // If model.BarState is true, it means the bar is opened
         if (model.BarState)

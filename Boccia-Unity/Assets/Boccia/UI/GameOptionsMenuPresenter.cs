@@ -15,6 +15,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider rotationSpeedSlider;
     private BocciaModel model;
     public Button doneButton;
+    public Button resetDefaultsButton;
 
     private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color>
     {
@@ -35,30 +36,51 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         InitializeValues();
 
         // Connect UI to model
-        ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
-        elevationPrecisionSlider.onValueChanged.AddListener(ChangeElevationPrecision);
-        elevationRangeSlider.onValueChanged.AddListener(ChangeElevationRange);
-        rotationPrecisionSlider.onValueChanged.AddListener(ChangeRotationPrecision);
-        rotationRangeSlider.onValueChanged.AddListener(ChangeRotationRange);
-        elevationSpeedSlider.onValueChanged.AddListener(ChangeElevationSpeed);
-        rotationSpeedSlider.onValueChanged.AddListener(ChangeRotationSpeed);
+        // ballColorDropdown.onValueChanged.AddListener(ChangeBallColor);
+        // elevationPrecisionSlider.onValueChanged.AddListener(ChangeElevationPrecision);
+        // elevationRangeSlider.onValueChanged.AddListener(ChangeElevationRange);
+        // rotationPrecisionSlider.onValueChanged.AddListener(ChangeRotationPrecision);
+        // rotationRangeSlider.onValueChanged.AddListener(ChangeRotationRange);
+        // elevationSpeedSlider.onValueChanged.AddListener(ChangeElevationSpeed);
+        // rotationSpeedSlider.onValueChanged.AddListener(ChangeRotationSpeed);
+
+        // Add listeners for UI changes
+        ballColorDropdown.onValueChanged.AddListener(OnChangeBallColor);
+        elevationPrecisionSlider.onValueChanged.AddListener(OnChangeElevationPrecision);
+        elevationRangeSlider.onValueChanged.AddListener(OnChangeElevationRange);
+        rotationPrecisionSlider.onValueChanged.AddListener(OnChangeRotationPrecision);
+        rotationRangeSlider.onValueChanged.AddListener(OnChangeRotationRange);
+        elevationSpeedSlider.onValueChanged.AddListener(OnChangeElevationSpeed);
+        rotationSpeedSlider.onValueChanged.AddListener(OnChangeRotationSpeed);
+        resetDefaultsButton.onClick.AddListener(OnResetDefaultsClicked);
+    }
+
+    void OnEnable()
+    {
+        InitializeValues();
     }
 
     private void InitializeValues()
     {
         // Convert the color from the model to the corresponding dropdown value (string)
-        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorNameFromModel(model.BallColor));
+        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorNameFromModel(model.GameOptions.BallColor));
 
         // Ball color will not persist if this line is removed
-        ChangeBallColor(ballColorDropdown.value);
+        OnChangeBallColor(ballColorDropdown.value);
 
         // Initialize other variables from BocciaModel
-        elevationPrecisionSlider.value = model.ElevationPrecision;
-        elevationRangeSlider.value = model.ElevationRange;
-        elevationSpeedSlider.value = model.ElevationSpeed;
-        rotationPrecisionSlider.value = model.RotationPrecision;
-        rotationRangeSlider.value = model.RotationRange;
-        rotationSpeedSlider.value = model.RotationSpeed;
+        // elevationPrecisionSlider.value = model.ElevationPrecision;
+        // elevationRangeSlider.value = model.ElevationRange;
+        // elevationSpeedSlider.value = model.ElevationSpeed;
+        // rotationPrecisionSlider.value = model.RotationPrecision;
+        // rotationRangeSlider.value = model.RotationRange;
+        // rotationSpeedSlider.value = model.RotationSpeed;
+        elevationPrecisionSlider.value = model.GameOptions.ElevationPrecision;
+        elevationRangeSlider.value = model.GameOptions.ElevationRange;
+        elevationSpeedSlider.value = model.GameOptions.ElevationSpeed;
+        rotationPrecisionSlider.value = model.GameOptions.RotationPrecision;
+        rotationRangeSlider.value = model.GameOptions.RotationRange;
+        rotationSpeedSlider.value = model.GameOptions.RotationSpeed;
     }
 
     private void PopulateColorDropdown()
@@ -73,22 +95,21 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         ballColorDropdown.AddOptions(colorOptions);
     }
 
-    public void ChangeBallColor(int valueIndex)
-    {
-        // Get the selected dropdown option as a string
-        string selectedColorName = ballColorDropdown.options[valueIndex].text;
+    // public void ChangeBallColor(int valueIndex)
+    // {
+    //     // Get the selected dropdown option as a string
+    //     string selectedColorName = ballColorDropdown.options[valueIndex].text;
 
-        // Find the corresponding Color from the dictionary and pass it to the model
-        if (colors.TryGetValue(selectedColorName, out Color selectedColor))
-        {
-            model.ChangeBallColor(selectedColor);  // Pass the Color, not the string
-        }
-        else
-        {
-            Debug.LogWarning($"Color {selectedColorName} not found in the dictionary.");
-        }
-    }
-
+    //     // Find the corresponding Color from the dictionary and pass it to the model
+    //     if (colors.TryGetValue(selectedColorName, out Color selectedColor))
+    //     {
+    //         model.ChangeBallColor(selectedColor);  // Pass the Color, not the string
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"Color {selectedColorName} not found in the dictionary.");
+    //     }
+    // }
 
     private string GetColorNameFromModel(Color color)
     {
@@ -103,34 +124,81 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         return "Blue"; // Default if no match is found
     }
 
-    public void ChangeElevationPrecision(float precisionPercent)
+    // public void ChangeElevationPrecision(float precisionPercent)
+    // {
+    //     model.SetElevationPrecision(precisionPercent);
+    // }
+
+    // public void ChangeElevationRange(float rangePercent)
+    // {
+    //     model.SetElevationRange(rangePercent);
+    // }
+
+    // public void ChangeRotationPrecision(float precisionPercent)
+    // {
+    //     model.SetRotationPrecision(precisionPercent);
+    // }
+
+    // public void ChangeRotationRange(float rangePercent)
+    // {
+    //     model.SetRotationRange(rangePercent);
+    // }
+
+    // public void ChangeElevationSpeed(float elevationSpeed)
+    // {
+    //     model.SetElevationSpeed(elevationSpeed);
+    // }
+
+    // public void ChangeRotationSpeed(float rotationSpeed)
+    // {
+    //     model.SetRotationSpeed(rotationSpeed);
+    // }
+
+    // Event handlers for changes to game options
+    public void OnChangeBallColor(int valueIndex)
     {
-        model.SetElevationPrecision(precisionPercent);
+        string selectedColorName = ballColorDropdown.options[valueIndex].text;
+        if (colors.TryGetValue(selectedColorName, out Color selectedColor))
+        {
+            model.SetGameOption(ref model.GameOptions.BallColor, selectedColor);
+        }
     }
 
-    public void ChangeElevationRange(float rangePercent)
+    public void OnChangeElevationPrecision(float value)
     {
-        model.SetElevationRange(rangePercent);
+        model.SetGameOption(ref model.GameOptions.ElevationPrecision, value);
     }
 
-    public void ChangeRotationPrecision(float precisionPercent)
+    public void OnChangeElevationRange(float value)
     {
-        model.SetRotationPrecision(precisionPercent);
+        model.SetGameOption(ref model.GameOptions.ElevationRange, value);
     }
 
-    public void ChangeRotationRange(float rangePercent)
+    public void OnChangeRotationPrecision(float value)
     {
-        model.SetRotationRange(rangePercent);
+        model.SetGameOption(ref model.GameOptions.RotationPrecision, value);
     }
 
-    public void ChangeElevationSpeed(float elevationSpeed)
+    public void OnChangeRotationRange(float value)
     {
-        model.SetElevationSpeed(elevationSpeed);
+        model.SetGameOption(ref model.GameOptions.RotationRange, value);
     }
 
-    public void ChangeRotationSpeed(float rotationSpeed)
+    public void OnChangeElevationSpeed(float value)
     {
-        model.SetRotationSpeed(rotationSpeed);
+        model.SetGameOption(ref model.GameOptions.ElevationSpeed, value);
+    }
+
+    public void OnChangeRotationSpeed(float value)
+    {
+        model.SetGameOption(ref model.GameOptions.RotationSpeed, value);
+    }
+
+    // Reset game options to defaults
+    public void OnResetDefaultsClicked()
+    {
+        model.ResetGameOptionsToDefaults();
+        InitializeValues();
     }
 
     public void NavigatetoStart()
