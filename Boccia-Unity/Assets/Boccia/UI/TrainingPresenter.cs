@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class TrainingPresenter : MonoBehaviour
 {
-    private BocciaModel model;
+    private BocciaModel _model;
 
     public GameObject bciControllerManager;
 
@@ -20,8 +20,8 @@ public class TrainingPresenter : MonoBehaviour
     void Start()
     {
         // cache model and subscribe for changed event
-        model = BocciaModel.Instance;
-        model.WasChanged += ModelChanged;
+        _model = BocciaModel.Instance;
+        _model.WasChanged += ModelChanged;
 
         // Generate the fan
         fanPresenter.GenerateFan();
@@ -30,7 +30,7 @@ public class TrainingPresenter : MonoBehaviour
 
     void OnDisable()
     {
-        model.WasChanged -= ModelChanged;
+        _model.WasChanged -= ModelChanged;
     }
 
     private void ModelChanged()

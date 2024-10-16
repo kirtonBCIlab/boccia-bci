@@ -26,7 +26,8 @@ namespace BCIEssentials.StimulusEffects
         private bool _startOn;
         
         [SerializeField]
-        [Min(0)]
+        [Min(0.05f)]
+
         private float _flashDurationSeconds = 0.2f;
 
         [SerializeField]
