@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using BCIEssentials.ControllerBehaviors;
+using BCIEssentials.Controllers;
 using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using TMPro;
 using UnityEngine;
@@ -8,6 +10,8 @@ using UnityEngine.UI;
 public class TrainingPresenter : MonoBehaviour
 {
     private BocciaModel model;
+
+    public GameObject bciControllerManager;
 
     public GameObject instructionText;
 
