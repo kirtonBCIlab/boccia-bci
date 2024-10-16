@@ -34,23 +34,24 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RotationSpeed => bocciaData.RotationSpeed;
 
     // BCI
-    public bool BciTrained;
+    // Access to the current BCI Paradigm
+    public BocciaBciParadigm Paradigm => bocciaData.Paradigm;  // Read-only property
 
-    public BocciaBciParadigm Paradigm => bocciaData.Paradigm;
-    public int NumFlashes => bocciaData.NumFlashes;
-    public int NumTrainingWindows => bocciaData.NumTrainingWindows;
-    public BocciaAnimation TargetAnimation => bocciaData.TargetAnimation;
-    public bool ShamFeedback => bocciaData.ShamFeedback;
-    public Double StimulusOnDuration => bocciaData.StimulusOnDuration;
-    public Double StimulusOffDuration => bocciaData.StimulusOffDuration;
+    // Paradigm agnostic tracker for whether BCI Training has been done
+    // get is public, set is private
+    public bool BciTrained { get; private set; }
+
+    // Expose the entire P300SettingsContainer via a property
+    public P300SettingsContainer P300Settings => bocciaData.P300Settings;
 
     // Ramp Hardware
     public bool RampHardwareConnected;
     public string SerialPortName => bocciaData.SerialPortName;
 
     // Change events
-    public event System.Action WasChanged;
+    public event System.Action WasChanged;  // Referring to the Ramp. Need to change this in other scripts (e.g. RampPresenter.cs) if we want to make the variable name more informative
     public event System.Action NavigationChanged;
+    public event System.Action BciChanged;
     public event System.Action NewRandomJack;
 
     // Hardware interface
@@ -232,6 +233,46 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // MARK: BCI control
 
+    // Set the BCI paradigm
+    public void SetBciParadigm(BocciaBciParadigm newParadigm)
+    {
+        if (bocciaData.Paradigm != newParadigm)
+        {
+            bocciaData.Paradigm = newParadigm;
+            SendBciChangeEvent();  // Notify listeners of the paradigm change
+        }
+    }
+
+    public void SetBciOption<T>(ref T settingField, T newValue)
+    // Generic setter for changing any BCI setting for a given paradigm given an existing data container for the paradigm
+    // e.g. settingField = bocciaModel.P300Settings.Train.NumFlashes; newValue = 10;
+    {
+        settingField = newValue;
+        SendBciChangeEvent();
+    }
+
+    // MARK: BCI Setting Defaults
+    private void SetDefaultP300Settings()
+    // Set default values for P300 settings
+    {
+        // Reset P300 Training settings
+        bocciaData.P300Settings.Train.NumFlashes = 5;
+        bocciaData.P300Settings.Train.NumTrainingWindows = 3;
+        bocciaData.P300Settings.Train.TargetAnimation = BocciaAnimation.Default;
+        bocciaData.P300Settings.Train.ShamSelectionFeedback = false;
+        bocciaData.P300Settings.Train.ShamSelectionAnimation = BocciaAnimation.Default;
+        bocciaData.P300Settings.Train.StimulusOnDuration = 2.0f;
+        bocciaData.P300Settings.Train.StimulusOffDuration = 2.0f;
+        bocciaData.P300Settings.Train.FlashColour = Color.red;
+
+        // Reset P300 Testing settings
+        bocciaData.P300Settings.Test.NumFlashes = 5;
+        bocciaData.P300Settings.Test.TargetSelectionFeedback = true;
+        bocciaData.P300Settings.Test.TargetSelectionAnimation = BocciaAnimation.Default;
+        bocciaData.P300Settings.Test.StimulusOnDuration = 2.0f;
+        bocciaData.P300Settings.Test.StimulusOffDuration = 2.0f;
+        bocciaData.P300Settings.Test.FlashColour = Color.red;  
+    }
 
     // MARK: Persistence
     public void Bind(BocciaData gameData)
@@ -259,6 +300,12 @@ public class BocciaModel : Singleton<BocciaModel>
         NavigationChanged?.Invoke();
     }
 
+    private void SendBciChangeEvent()
+    {
+        BciChanged?.Invoke();
+    }
+
+    // MARK: Resetting states to Defaults
     private void ResetNavigationState()
     {
         CurrentScreen = BocciaScreen.StartMenu;
@@ -281,17 +328,28 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
     private void ResetBciState()
+    // Reset BCI to untrained state with active-paradigm-specific default settings
     {
-        BciTrained = false;
+        BciTrained = false;  // Reset the training state
+        
+        // Call the public method to reset the settings
+        ResetBciSettingsToDefaults();
+        // SendBciChangeEvent() trigged within ResetBciSettingsToDefaults();
+    }
 
-        bocciaData.Paradigm = BocciaBciParadigm.P300;
-        bocciaData.NumFlashes = 5;
-        bocciaData.NumTrainingWindows = 3;
-        bocciaData.TargetAnimation = BocciaAnimation.Default;
-        bocciaData.ShamFeedback = false;
-        bocciaData.StimulusOnDuration = 2.0;
-        bocciaData.StimulusOffDuration = 2.0;
+    // This method resets the BCI settings to default without touching the BciTrained state
+    public void ResetBciSettingsToDefaults()
+    {
+        // Reset settings based on the active paradigm
+        switch (bocciaData.Paradigm)
+        {
+            case BocciaBciParadigm.P300:
+                SetDefaultP300Settings();
+                break;
+        }
 
+        // Notify the UI of the change
+        SendBciChangeEvent();
     }
 
     private void ResetRampHardwareState()

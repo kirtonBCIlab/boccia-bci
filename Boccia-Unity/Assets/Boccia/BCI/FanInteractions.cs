@@ -88,10 +88,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         int columnIndex = _fanGenerator.NColumns - 1 - (segmentID / _fanGenerator.NRows);
         int rowIndex = _fanGenerator.NRows - 1 - (segmentID % _fanGenerator.NRows);
 
-        // Compute exact rotation angle and elevation based on clicked segmentID
+        // Initialize values to starting position of the ramp
         float rotationAngle = 0f;
-        float elevation = 0f;
-        
+        float elevation = 50f;
+
+        // Calculate the rotation angle and elevation based on the number of columns and rows        
         if (_fanGenerator.NColumns > 1)
         {
             rotationAngle = - _fanGenerator.Theta / 2 + columnIndex * (_fanGenerator.Theta / (_fanGenerator.NColumns - 1));
@@ -99,12 +100,13 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
         if (_fanGenerator.NRows > 1)
         {
-            elevation = _fanGenerator.HighElevationLimit - rowIndex * ((_fanGenerator.HighElevationLimit - _fanGenerator.LowElevationLimit) / (_fanGenerator.NRows - 1));
+            elevation = _fanGenerator.ElevationRange/2 - rowIndex * (_fanGenerator.ElevationRange / (_fanGenerator.NRows - 1));
         }
 
         // Round down to nearest integer
-        int roundedRotationAngle = Mathf.FloorToInt(rotationAngle);
-        int roundedElevation = Mathf.FloorToInt(elevation);
+        // Might be needed when serial communication is enabled
+        // int roundedRotationAngle = Mathf.FloorToInt(rotationAngle);
+        // int roundedElevation = Mathf.FloorToInt(elevation);
 
         // Call the appropriate movement based on the positioning mode
         switch (_fanPresenter.positioningMode)
@@ -115,7 +117,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
                 break;
             case FanPresenter.FanPositioningMode.CenterToBase:
                 _model.RotateTo(rotationAngle);
-                _model.ElevateTo(elevation);
+                _model.ElevateTo(elevation + 50f); // Add an offset of 50%, since 50% is the starting point of the elevation range
                 break;
             default:
                 break;

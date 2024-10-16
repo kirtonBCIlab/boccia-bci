@@ -19,6 +19,7 @@ public class ScreenSwitcher : MonoBehaviour
     public GameObject PlayMenu;
     public GameObject HamburgerMenuOptions;
     public GameObject GameOptionsMenu;
+    public GameObject BciOptionsMenu;
     public GameObject VirtualPlayScreen;
     public GameObject TrainingScreen;
 
@@ -52,8 +53,9 @@ public class ScreenSwitcher : MonoBehaviour
             PlayMenu,
             HamburgerMenuOptions,
             GameOptionsMenu,
-            VirtualPlayScreen,
-            TrainingScreen
+            TrainingScreen,
+            BciOptionsMenu,
+            VirtualPlayScreen
         };
     }
 
@@ -80,6 +82,10 @@ public class ScreenSwitcher : MonoBehaviour
 
             case BocciaScreen.GameOptions:
                 PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
+                break;
+
+            case BocciaScreen.BciOptions:
+                PanCameraToScreen(BciOptionsMenu, RampViewCameraDistance);
                 break;
             
             // For now just switch back to start menu to show switching works
