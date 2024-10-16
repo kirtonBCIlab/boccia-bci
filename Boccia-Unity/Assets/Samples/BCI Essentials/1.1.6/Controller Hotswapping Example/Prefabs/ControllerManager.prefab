@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439125805200747299}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6644194211345973513
 MonoBehaviour:
@@ -45,13 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0070b41ff2de85e4ba4b273315f74265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _selfRegister: 1
+  _selfRegisterAsActive: 0
   targetFrameRate: 60
-  setupRequired: 0
-  listExists: 0
-  objectList: []
+  _selectableSPOs: []
+  _hotkeysEnabled: 1
   windowLength: 2
   interWindowInterval: 0
-  stimOn: 0
+  setup: {fileID: 6644194211345973512}
+  setupRequired: 0
   numTrainingSelections: 9
   numTrainWindows: 3
   pauseBeforeTraining: 2
@@ -60,8 +62,7 @@ MonoBehaviour:
   trainBreak: 1
   shamFeedback: 0
   trainTarget: 99
-  _myTag: BCI
-  setup: {fileID: 6644194211345973512}
+  myTag: BCI
   numSelectionsBeforeTraining: 2
   numSelectionsBetweenTraining: 2
 --- !u!114 &6644194211345973512
@@ -77,8 +78,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spoPrefab: {fileID: 7639228323464969584, guid: 4a190a7ad6ec4e64d87105d7de7f0611, type: 3}
-  _numColumns: 2
   _numRows: 1
+  _numColumns: 2
   _spacing: {x: 4, y: 0}
 --- !u!1 &1649985291859044835
 GameObject:
@@ -105,13 +106,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985291859044835}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5532972414438851525
 MonoBehaviour:
@@ -125,13 +126,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce01ae687a6194a48adf9dab50c3130f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _selfRegister: 1
+  _selfRegisterAsActive: 0
   targetFrameRate: 165
-  setupRequired: 1
-  listExists: 0
-  objectList: []
+  _selectableSPOs: []
+  _hotkeysEnabled: 1
   windowLength: 1
   interWindowInterval: 0
-  stimOn: 0
+  setup: {fileID: 5532972414438851522}
+  setupRequired: 1
   numTrainingSelections: 12
   numTrainWindows: 6
   pauseBeforeTraining: 2
@@ -140,8 +143,7 @@ MonoBehaviour:
   trainBreak: 1
   shamFeedback: 0
   trainTarget: 99
-  _myTag: BCI
-  setup: {fileID: 5532972414438851522}
+  myTag: BCI
   setFreqFlash:
   - 8
   - 10
@@ -163,8 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spoPrefab: {fileID: 7639228323464969584, guid: 4a190a7ad6ec4e64d87105d7de7f0611, type: 3}
-  _numColumns: 3
   _numRows: 2
+  _numColumns: 3
   _spacing: {x: 2, y: 2}
 --- !u!1 &1649985292535673242
 GameObject:
@@ -192,6 +194,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985292535673242}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -201,7 +204,6 @@ Transform:
   - {fileID: 1649985293060537290}
   - {fileID: 1649985291859044833}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5532972415090187197
 MonoBehaviour:
@@ -245,9 +247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725310e9dbbc07a40960a87df5dd5764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  responsePredicate: name='PythonResponse'
-  value: PythonResponse
-  pyRespIndex: 0
+  _targetStreamName: PythonResponse
+  _resolveTimeout: 1
+  _pollFrequency: 0
 --- !u!1 &1649985293060537292
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,13 +275,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985293060537292}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5532972415639130384
 MonoBehaviour:
@@ -293,13 +295,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0fc542aefa44840bb3889f25d6e245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _selfRegister: 1
+  _selfRegisterAsActive: 1
   targetFrameRate: 60
-  setupRequired: 0
-  listExists: 0
-  objectList: []
+  _selectableSPOs: []
+  _hotkeysEnabled: 1
   windowLength: 1
   interWindowInterval: 0
-  stimOn: 0
+  setup: {fileID: 5532972415639130385}
+  setupRequired: 0
   numTrainingSelections: 5
   numTrainWindows: 0
   pauseBeforeTraining: 2
@@ -308,8 +312,7 @@ MonoBehaviour:
   trainBreak: 1
   shamFeedback: 0
   trainTarget: 99
-  _myTag: BCI
-  setup: {fileID: 5532972415639130385}
+  myTag: BCI
   numFlashesLowerLimit: 9
   numFlashesUpperLimit: 12
   onTime: 0.1
@@ -318,8 +321,8 @@ MonoBehaviour:
   multiFlash: 0
   rowColumn: 0
   checkerboard: 0
-  checkerBoardRows: 3
-  checkerBoardCols: 4
+  numFlashRows: 5
+  numFlashColumns: 6
   timeDebug: 0
   trainBufferTime: 0
 --- !u!114 &5532972415639130385
@@ -335,6 +338,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spoPrefab: {fileID: 7639228323464969584, guid: 4a190a7ad6ec4e64d87105d7de7f0611, type: 3}
-  _numColumns: 3
   _numRows: 3
+  _numColumns: 3
   _spacing: {x: 2, y: 2}
