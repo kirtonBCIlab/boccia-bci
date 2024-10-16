@@ -1581,7 +1581,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdff72d1b12d86447915afe2c80ddc75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instructionText: {fileID: 0}
+  bciControllerManager: {fileID: 0}
+  instructionText: {fileID: 6428448526347787154}
   fanPresenter: {fileID: 0}
 --- !u!1 &5038584690394473772
 GameObject:
