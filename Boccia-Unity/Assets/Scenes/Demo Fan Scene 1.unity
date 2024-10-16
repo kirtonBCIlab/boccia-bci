@@ -1769,11 +1769,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6058800571561212690, guid: ac665ac115a02a344af5c3955a46d709, type: 3}
       propertyPath: _lowElevationLimit
-      value: -10
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6058800571561212690, guid: ac665ac115a02a344af5c3955a46d709, type: 3}
+      propertyPath: annotationFontSize
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -6058800571561212690, guid: ac665ac115a02a344af5c3955a46d709, type: 3}
       propertyPath: _highElevationLimit
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3105786588814356231, guid: ac665ac115a02a344af5c3955a46d709, type: 3}
       propertyPath: m_LocalPosition.x
