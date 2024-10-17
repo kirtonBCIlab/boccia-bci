@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
 using BCIEssentials.StimulusEffects;
+using FanNamespace;
 
 public class FanInteractions : MonoBehaviour, IPointerClickHandler
 {
@@ -111,11 +112,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         // Call the appropriate movement based on the positioning mode
         switch (_fanPresenter.positioningMode)
         {
-            case FanPresenter.FanPositioningMode.CenterToRails:
+            case FanPositioningMode.CenterToRails:
                 _model.RotateBy(rotationAngle);
                 _model.ElevateBy(elevation);
                 break;
-            case FanPresenter.FanPositioningMode.CenterToBase:
+            case FanPositioningMode.CenterToBase:
                 _model.RotateTo(rotationAngle);
                 _model.ElevateTo(elevation + 50f); // Add an offset of 50%, since 50% is the starting point of the elevation range
                 break;

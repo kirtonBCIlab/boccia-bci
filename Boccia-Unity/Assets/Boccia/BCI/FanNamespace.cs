@@ -5,4 +5,11 @@ namespace FanNamespace
         Left,
         Right
     }
+
+    public enum FanPositioningMode
+    {
+        None,
+        CenterToRails,
+        CenterToBase
+    }
 }

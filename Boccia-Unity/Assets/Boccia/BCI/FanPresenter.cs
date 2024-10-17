@@ -10,13 +10,6 @@ public class FanPresenter : MonoBehaviour
     public FanGenerator fanGenerator;
     public FanInteractions fanInteractions;
 
-    public enum FanPositioningMode
-    {
-        None,
-        CenterToRails,
-        CenterToBase
-    }
-
     [Header("Positioning")]
     public FanPositioningMode positioningMode;
     public BackButtonPositioningMode backButtonPositioningMode;
