@@ -42,6 +42,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
             meshCollider.enabled = true;
 
+            // Ensure the collider's transform matches the segment's transform
+            // meshCollider.transform.localPosition = Vector3.zero;
+            // meshCollider.transform.localRotation = Quaternion.identity;
+            // meshCollider.transform.localScale = Vector3.one;
+
             // Add Flashing effects component
             // TODO: We need something to add the color of the SPO segment here
             ColorFlashEffect colorFlashEffect = child.AddComponent<ColorFlashEffect>();
@@ -122,6 +127,24 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
                 break;
             default:
                 break;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        foreach (Transform child in transform)
+        {
+            MeshFilter meshFilter = child.GetComponent<MeshFilter>();
+            if (meshFilter != null)
+            {
+                Mesh mesh = meshFilter.sharedMesh;
+                if (mesh != null)
+                {
+                    Gizmos.DrawWireMesh(mesh, child.position, child.rotation, child.localScale);
+                }
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using FanNamespace;
+using Unity.VisualScripting;
 
 
 public class FanPresenter : MonoBehaviour
@@ -17,11 +18,21 @@ public class FanPresenter : MonoBehaviour
     private BocciaModel _model;
     private Quaternion _originalRotation;
     
+    private FanPositioningMode _lastFanDisplayed;
+    
     // Start is called before the first frame update
     void Start()
     {
         _model = BocciaModel.Instance; 
-        _originalRotation = transform.rotation;       
+        _originalRotation = transform.localRotation;  
+    }
+
+    private void OnEnable()
+    {
+        if (transform.childCount == 0)
+        {
+            GenerateFan();
+        }
     }
 
     /// <summary>
