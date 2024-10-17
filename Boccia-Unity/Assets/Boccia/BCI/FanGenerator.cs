@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
 using FanNamespace;
+using TMPro;
 
 
 
@@ -61,19 +62,11 @@ public class FanGenerator : MonoBehaviour
     }
 
     [SerializeField]
-    private int _lowElevationLimit; // Lower elevation limit
-    public int LowElevationLimit
+    private float _elevationRange; // Elevation range [%]
+    public float ElevationRange
     {
-        get { return _lowElevationLimit; }
-        set { _lowElevationLimit = Mathf.Clamp(value, 0, HighElevationLimit); }
-    }
-
-    [SerializeField]
-    private int _highElevationLimit; // Higher elevation limit
-    public int HighElevationLimit
-    {
-        get { return _highElevationLimit; }
-        set { _highElevationLimit = Mathf.Clamp(value, 0, LowElevationLimit); }
+        get { return _elevationRange; }
+        set { _elevationRange = Mathf.Clamp(value, 1, 100); }
     }
 
     [Header("Additional Button Parameters")]
@@ -92,6 +85,9 @@ public class FanGenerator : MonoBehaviour
         get { return _dropButtonHeight; }
         set { _dropButtonHeight = Mathf.Clamp(value, 0.5f, float.MaxValue); }
     }
+
+    [Header("Annotation options")]
+    public int annotationFontSize;
 
     public void GenerateFanShape()
     {
@@ -240,6 +236,128 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
+    public void GenerateFanAnnotations(float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode)
+    {   
+        // Annotation for the start angle
+        float startAngle = 0;
+        float startRad = Mathf.Deg2Rad * startAngle;
+        Vector3 startPosition = new(Mathf.Cos(startRad) * OuterRadius, Mathf.Sin(startRad) * OuterRadius, 0);
+        CreateTextAnnotation
+        (
+            startPosition,
+            rotationAngle: 0,
+            (currentRotation + Theta/2).ToString("F1") + "°",
+            TextAlignmentOptions.BottomRight
+        );
+
+        // Annotation for the end angle
+        float endAngle = Theta;
+        float endRad = Mathf.Deg2Rad * endAngle;        
+        Vector3 endPosition = new (Mathf.Cos(endRad) * OuterRadius, Mathf.Sin(endRad) * OuterRadius, 0);
+        CreateTextAnnotation
+        (
+            position: endPosition,
+            rotationAngle: Theta,
+            (currentRotation - Theta/2).ToString("F1") + "°",
+            TextAlignmentOptions.BottomLeft
+        );
+
+        // Place height anotations according to back button position 
+        TextAlignmentOptions lowLimitPosition;
+        TextAlignmentOptions highLimitPosition;
+        Vector3 elevationLowPositionOffset;
+        Vector3 elevationHighPositionOffset;
+        float elevationRotationOffset;        
+        switch (backButtonPositioningMode)
+        {
+            case BackButtonPositioningMode.Right:
+                elevationLowPositionOffset = new(Mathf.Cos(endRad) * InnerRadius, Mathf.Sin(endRad) * InnerRadius + 0.05f, 0);
+                elevationHighPositionOffset = new(Mathf.Cos(endRad) * OuterRadius, Mathf.Sin(endRad) * OuterRadius + 0.05f, 0);
+                elevationRotationOffset = Theta;
+                lowLimitPosition = TextAlignmentOptions.BottomRight;
+                highLimitPosition = TextAlignmentOptions.TopRight;
+                break;
+            default:
+                elevationLowPositionOffset = new (InnerRadius, -0.05f, 0);
+                elevationHighPositionOffset = new(OuterRadius, -0.05f, 0);
+                elevationRotationOffset = 0;
+                lowLimitPosition = TextAlignmentOptions.BottomLeft;
+                highLimitPosition = TextAlignmentOptions.TopLeft;
+                break;
+        }
+
+        // Annotation for the low elevation limit
+        CreateTextAnnotation
+        (
+            position: elevationLowPositionOffset,
+            rotationAngle: elevationRotationOffset,
+            text: (currentElevation - ElevationRange/2).ToString() + "%",
+            textAlignment: lowLimitPosition
+        );
+
+        // Annotation for the high elevation limit
+        CreateTextAnnotation
+        (
+            position: elevationHighPositionOffset,
+            rotationAngle: elevationRotationOffset,
+            text: (currentElevation + ElevationRange/2).ToString() + "%",
+            textAlignment: highLimitPosition
+        );
+    }
+    
+    private void CreateTextAnnotation(Vector3 position, float rotationAngle, string text, TextAlignmentOptions textAlignment)
+    {
+        GameObject parent = this.gameObject;
+
+        GameObject textObject = new ("TextAnnotation");
+        textObject.transform.SetParent(parent.transform);
+        textObject.transform.SetLocalPositionAndRotation
+        (
+            position,
+            Quaternion.Euler(0, 0, -90 + rotationAngle)
+        );
+
+        // Add and configure RectTransform
+        RectTransform rectTransform = textObject.AddComponent<RectTransform>();
+        switch (textAlignment)
+        {
+            case TextAlignmentOptions.BottomLeft:
+                rectTransform.pivot = new Vector2(0, 0);
+                rectTransform.anchorMin = new Vector2(0, 0);
+                rectTransform.anchorMax = new Vector2(0, 0);
+                break;
+            case TextAlignmentOptions.BottomRight:
+                rectTransform.pivot = new Vector2(1, 0);
+                rectTransform.anchorMin = new Vector2(1, 0);
+                rectTransform.anchorMax = new Vector2(1, 0);
+                break;
+            case TextAlignmentOptions.TopLeft:
+                rectTransform.pivot = new Vector2(0, 1);
+                rectTransform.anchorMin = new Vector2(0, 1);
+                rectTransform.anchorMax = new Vector2(0, 1);
+                break;
+            case TextAlignmentOptions.TopRight:
+                rectTransform.pivot = new Vector2(1, 1);
+                rectTransform.anchorMin = new Vector2(1, 1);
+                rectTransform.anchorMax = new Vector2(1, 1);
+                break;
+            // Add other cases if needed
+            default:
+                break;
+        }
+        
+        // rectTransform.anchoredPosition = Vector2.zero;
+        rectTransform.sizeDelta = new Vector2(5, 2);
+
+        // Add and configure TextMeshPro
+        TextMeshPro textMeshPro = textObject.AddComponent<TextMeshPro>();
+        textMeshPro.text = text;
+        textMeshPro.fontSize = annotationFontSize;
+        textMeshPro.color = Color.black;
+        textMeshPro.alignment = textAlignment;
+        textMeshPro.font = Resources.Load<TMP_FontAsset>("Assets/TextMesh Pro/Fonts/LiberationSans.ttf"); // Replace with your font asset path
+    }
+
     private void OnValidate()
     {
         Theta = _theta;
@@ -249,5 +367,6 @@ public class FanGenerator : MonoBehaviour
         OuterRadius = _outerRadius;
         BackButtonWidth = _backButtonWidth;
         DropButtonHeight = _dropButtonHeight;
+        ElevationRange = _elevationRange;
     }
 }
