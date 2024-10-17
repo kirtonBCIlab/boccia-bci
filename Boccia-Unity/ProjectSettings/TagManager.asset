@@ -8,6 +8,7 @@ TagManager:
   - JackPosition
   - JackBall
   - BocciaBall
+  - BocciaCourt
   layers:
   - Default
   - TransparentFX
