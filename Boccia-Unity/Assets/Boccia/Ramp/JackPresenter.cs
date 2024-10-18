@@ -16,6 +16,7 @@ public class JackPresenter : MonoBehaviour
     {
         model = BocciaModel.Instance;
         model.NewRandomJack += ModelChanged;
+        model.BallResetChanged += ResetJackBall;
     }
  
     private void OnDisable()
@@ -41,7 +42,15 @@ public class JackPresenter : MonoBehaviour
 
         GameObject newJack = Instantiate(jackBall, transform.position + randomJackPosition, Quaternion.identity, transform);
         newJack.name = "JackBall";
+    }
 
+    private void ResetJackBall()
+    {
+        GameObject currentJack = GameObject.FindWithTag("JackBall");
+        if (currentJack != null)
+        {
+            Destroy(currentJack);
+        }
     }
 
     private Vector3 RandomLocation()
