@@ -9,6 +9,7 @@ public enum BocciaScreen
     Train,
     Play,
     VirtualPlay,
+    TrainingScreen,
 }
 
 public enum BocciaGameMode
