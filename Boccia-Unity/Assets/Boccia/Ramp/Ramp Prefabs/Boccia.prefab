@@ -485,7 +485,7 @@ MonoBehaviour:
   rotationShaft: {fileID: 8310897335574750232}
   elevationMechanism: {fileID: 1447192591350278973}
   rampAdapter: {fileID: 5816064425209161337}
-  rotationSpeed: 10
+  rotationSpeed: 5
   elevationSpeed: 5
   minElevation: 0.0026
   maxElevation: 0.43
