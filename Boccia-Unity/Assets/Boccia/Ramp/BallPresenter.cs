@@ -184,6 +184,7 @@ public class BallPresenter : MonoBehaviour
         }
     }
 
+    /*
     private void OnTriggerExit(Collider other)
     {
         // Check if any boccia ball currently in the scene rolls out of bounds
@@ -197,4 +198,5 @@ public class BallPresenter : MonoBehaviour
             NewBocciaBall();
         }
     }
+    */
 }
