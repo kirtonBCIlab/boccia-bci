@@ -24,7 +24,7 @@ public class TrainingPresenter : MonoBehaviour
         _model.WasChanged += ModelChanged;
 
         // Generate the fan
-        fanPresenter.GenerateFan();
+        //fanPresenter.GenerateFan();
     }
 
 
