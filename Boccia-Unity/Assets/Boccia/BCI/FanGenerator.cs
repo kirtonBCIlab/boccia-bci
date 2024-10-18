@@ -91,8 +91,7 @@ public class FanGenerator : MonoBehaviour
 
     public void GenerateFanShape()
     {
-        GameObject fan = this.gameObject;
-        fan.transform.localScale = Vector3.one;
+        GameObject fan = gameObject;
         
         float angleStep = Theta / NColumns;
         float radiusStep = (OuterRadius - InnerRadius) / NRows;
@@ -112,17 +111,16 @@ public class FanGenerator : MonoBehaviour
                 float innerRadius = InnerRadius + j * (radiusStep + rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
-                CreateFanSegment(startAngle, endAngle, innerRadius, outerRadius);
+                CreateFanSegment(fan, startAngle, endAngle, innerRadius, outerRadius);
             }
         }
     }
 
-    public void CreateFanSegment(float startAngle, float endAngle, float innerRadius, float outerRadius)
+    public void CreateFanSegment(GameObject fan, float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
         GameObject segment = new("FanSegment");
         
-        segment.transform.SetParent(this.transform);
-        segment.transform.localPosition = Vector3.zero;
+        segment.transform.SetParent(fan.transform);
 
         MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
@@ -141,7 +139,6 @@ public class FanGenerator : MonoBehaviour
    {
         GameObject backButton = new("BackButton");
         backButton.transform.SetParent(gameObject.transform);
-        backButton.transform.localPosition = Vector3.zero;
 
         MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
@@ -174,7 +171,6 @@ public class FanGenerator : MonoBehaviour
     {
         GameObject dropButton = new("DropButton");
         dropButton.transform.SetParent(gameObject.transform);
-        dropButton.transform.localPosition = Vector3.zero;
 
         MeshFilter meshFilter = dropButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = dropButton.AddComponent<MeshRenderer>();
@@ -315,7 +311,6 @@ public class FanGenerator : MonoBehaviour
 
         GameObject textObject = new ("TextAnnotation");
         textObject.transform.SetParent(parent.transform);
-        textObject.transform.localPosition = Vector3.zero;
         textObject.transform.SetLocalPositionAndRotation
         (
             position,
