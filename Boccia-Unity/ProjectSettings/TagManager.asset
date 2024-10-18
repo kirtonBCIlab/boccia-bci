@@ -8,6 +8,8 @@ TagManager:
   - JackPosition
   - JackBall
   - BocciaBall
+  - BocciaCourt
+  - JackSpawnArea
   layers:
   - Default
   - TransparentFX
