@@ -35,7 +35,7 @@ public class ExamplePresenter : MonoBehaviour
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
         resetRampButton.onClick.AddListener(model.ResetRampPosition);
-        //resetBallButton.onClick.AddListener(model.ResetVirtualBalls);
+        resetBallButton.onClick.AddListener(model.ResetVirtualBalls);
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
         randomJackButton.onClick.AddListener(model.RandomJackBall);
