@@ -37,6 +37,9 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
         foreach (Transform child in transform)
         {
+            // Change layer to the interacaable layer
+            child.gameObject.layer = gameObject.layer;
+
             // Add a collider to make segment clickable
             MeshCollider meshCollider = child.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
