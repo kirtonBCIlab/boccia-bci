@@ -11,7 +11,6 @@ public class BallPresenter : MonoBehaviour
 
     private Animator barAnimation;
     public GameObject dropBar;
-
     public GameObject elevationPlate;
 
     private BocciaModel model;
@@ -29,7 +28,7 @@ public class BallPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
-        model.WasChanged += ModelChanged;
+        model.WasChanged += RampChanged;
         model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
@@ -39,13 +38,13 @@ public class BallPresenter : MonoBehaviour
         // Initialize bar animation
         barAnimation = dropBar.GetComponent<Animator>();
 
-        // initialize ball to saved data
-        ModelChanged();
+        // initialize to saved data
+        RampChanged();
     }
 
     void OnDisable()
     {
-        model.WasChanged -= ModelChanged;
+        model.WasChanged -= RampChanged;
         model.BallResetChanged -= ResetBocciaBalls;
     }
 
@@ -72,18 +71,19 @@ public class BallPresenter : MonoBehaviour
         activeBall.GetComponent<Renderer>().material.color = model.BallColor;
     }
 
-    private void ModelChanged()
+    private void RampChanged()
     {
-        // For lower rate changes, update when model sends change event
+        // Updates color if ball color is pressed
         activeBall.GetComponent<Renderer>().material.color = model.BallColor;
 
-        // If model.BarState is true, it means the bar is opened
+        // If model.BarState is true, it means the bar opened (drop ball was pressed)
         if (model.BarState)
         {
             // Save ball position and rotation right before it is dropped
             //dropPosition = activeBall.transform.position; 
             //dropRotation = activeBall.transform.rotation;
 
+            // Convert ball position and rotation to local space of elevationPlate
             dropPosition = elevationPlate.transform.InverseTransformPoint(activeBall.transform.position);
             dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * activeBall.transform.rotation;
 
@@ -136,17 +136,11 @@ public class BallPresenter : MonoBehaviour
         }
 
         // Create a new ball at the previous ball's drop position and rotation
-        // activeBall = Instantiate(ball, dropPosition, dropRotation, transform);
-
+        // Convert the drop position and rotation back into to world space
         Vector3 newBallPosition = elevationPlate.transform.TransformPoint(dropPosition);
         Quaternion newBallRotation = elevationPlate.transform.rotation * dropRotation;
 
-        if (ball == null)
-        {
-            Debug.LogError("Ball prefab not set");
-            return;
-        }
-
+        // Instantiate the new ball
         activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
     }
