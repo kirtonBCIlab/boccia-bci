@@ -68,23 +68,23 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     private void OnSegmentClick(Transform segment)
     {
-        SPO spo = segment.GetComponent<SPO>();
-        int segmentID = spo.ObjectID;
-        int nfanSegments = _fanGenerator.NColumns * _fanGenerator.NRows;
-
-        if (segmentID >= 0 && segmentID < nfanSegments)
+        string segmentName = segment.name;
+        switch (segmentName)
         {
-            OnFanSegmentClick(segmentID);
+            case "FanSegment":
+                SPO spo = segment.GetComponent<SPO>();
+                int segmentID = spo.ObjectID;
+                OnFanSegmentClick(segmentID);
+                break;
+            case "BackButton":  
+                _fanGenerator.DestroyFanSegments();
+                break;
+            case "DropButton":
+                _model.DropBall();
+                break;
+            default:
+                break;
         }
-        else if (segmentID == nfanSegments)
-        {
-            _fanGenerator.DestroyFanSegments();
-        }
-        else if (segmentID == nfanSegments + 1)
-        {
-            _model.DropBall();
-        }
-
     }
 
     private void OnFanSegmentClick(int segmentID)
