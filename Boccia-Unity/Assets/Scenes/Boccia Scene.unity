@@ -1421,9 +1421,69 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boccia
       objectReference: {fileID: 0}
+    - target: {fileID: 3926594553862451388, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: fanTypeScreen
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: positioningMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7814226423708504148, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: spawnArea
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _nRows
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _theta
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _nColumns
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _innerRadius
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _outerRadius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _elevationRange
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798665786887840363, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: annotationFontSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8856341190636702082, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 8856341190636702082, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.354
+      objectReference: {fileID: 0}
+    - target: {fileID: 8856341190636702082, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8856341190636702082, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8856341190636702082, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
