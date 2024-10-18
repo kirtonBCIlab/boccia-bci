@@ -34,7 +34,10 @@ public class JackPresenter : MonoBehaviour
             Destroy(currentJack);
         }
 
-        spawnArea = GameObject.FindWithTag("JackSpawnArea");
+        if (spawnArea == null)
+        {
+            spawnArea = GameObject.FindWithTag("JackSpawnArea");
+        }
 
         Vector3 randomJackPosition = spawnArea.GetComponent<SpawnArea>().ReturnRandomPosition();
         //Debug.Log(randomJackPosition);
