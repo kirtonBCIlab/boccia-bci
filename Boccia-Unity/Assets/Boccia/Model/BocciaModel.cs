@@ -53,6 +53,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action NavigationChanged;
     public event System.Action BciChanged;
     public event System.Action NewRandomJack;
+    public event System.Action BallResetChanged;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -99,6 +100,11 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         rampController.ResetBar();
         SendRampChangeEvent();
+    }
+
+    public void ResetVirtualBalls()
+    {
+        SendBallResetEvent();
     }
 
     public void RandomColor()
@@ -303,6 +309,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendBciChangeEvent()
     {
         BciChanged?.Invoke();
+    }
+
+    private void SendBallResetEvent()
+    {
+        BallResetChanged?.Invoke();
     }
 
     // MARK: Resetting states to Defaults

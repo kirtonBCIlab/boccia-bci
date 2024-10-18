@@ -12,18 +12,14 @@ public class JackPresenter : MonoBehaviour
     void Start()
     {
         model = BocciaModel.Instance;
-        model.NewRandomJack += ModelChanged;
-        
+        model.NewRandomJack += NewJack;
+        model.BallResetChanged += ResetJackBall;
     }
  
     private void OnDisable()
     {
-        model.NewRandomJack -= ModelChanged;
-    }
-
-    private void ModelChanged()
-    {
-        NewJack();
+        model.NewRandomJack -= NewJack;
+        model.BallResetChanged -= ResetJackBall;
     }
 
     private void NewJack()
@@ -44,7 +40,14 @@ public class JackPresenter : MonoBehaviour
 
         GameObject newJack = Instantiate(jackBall, randomJackPosition, Quaternion.identity, transform);
         newJack.name = "JackBall";
-
     }
 
+    private void ResetJackBall()
+    {
+        GameObject currentJack = GameObject.FindWithTag("JackBall");
+        if (currentJack != null)
+        {
+            Destroy(currentJack);
+        }
+    }
 }

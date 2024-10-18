@@ -15,6 +15,7 @@ public class ExamplePresenter : MonoBehaviour
     public Button moveUpButton;
     public Button moveDownButton;
     public Button resetRampButton;
+    public Button resetBallButton;
     public Button dropBallButton;
     public Button colorButton;
     public Button randomJackButton;
@@ -34,6 +35,7 @@ public class ExamplePresenter : MonoBehaviour
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
         resetRampButton.onClick.AddListener(model.ResetRampPosition);
+        resetBallButton.onClick.AddListener(model.ResetVirtualBalls);
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
         randomJackButton.onClick.AddListener(model.RandomJackBall);
