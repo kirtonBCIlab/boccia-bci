@@ -6,7 +6,7 @@ public class BallPresenter : MonoBehaviour
 {
     public GameObject ball; // The ball prefab
     private GameObject activeBall; // Refers the the ball currently in use for each shot
-    private int ballCount = 1;
+    private int ballCount = 0;
     private Rigidbody ballRigidbody;
 
     private Animator barAnimation;
@@ -19,7 +19,10 @@ public class BallPresenter : MonoBehaviour
     private Vector3 dropPosition;
     private Quaternion dropRotation;
 
+    private Coroutine dropBallCoroutine;
     private Coroutine checkBallCoroutine;
+
+    private bool firstBallDropped = false; // To check if at least one ball has been dropped
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +30,10 @@ public class BallPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
         model.WasChanged += ModelChanged;
+        model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
-        activeBall = ball; // The ball already in the scene
+        activeBall = GameObject.FindWithTag("BocciaBall"); // The ball already in the scene
         InitializeBall();
 
         // Initialize bar animation
@@ -42,6 +46,7 @@ public class BallPresenter : MonoBehaviour
     void OnDisable()
     {
         model.WasChanged -= ModelChanged;
+        model.BallResetChanged -= ResetBocciaBalls;
     }
 
     private void InitializeBall()
@@ -57,8 +62,14 @@ public class BallPresenter : MonoBehaviour
         // Set sleep threshold to minimum so the ball is ready to roll
         ballRigidbody.sleepThreshold = 0.0f;
 
+        // Increment ball count
+        ballCount++;
+
         // Name the ball GameObject in the hierarchy
         activeBall.name = "Ball " + ballCount;
+
+        // Make sure its the right color
+        activeBall.GetComponent<Renderer>().material.color = model.BallColor;
     }
 
     private void ModelChanged()
@@ -93,6 +104,9 @@ public class BallPresenter : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f); 
         checkBallCoroutine = StartCoroutine(CheckBallSpeed());
 
+        // Toggle the ball drop flag
+        firstBallDropped = true;
+
         yield return null;
     }
 
@@ -121,17 +135,59 @@ public class BallPresenter : MonoBehaviour
             checkBallCoroutine = null;
         }
 
-        // Increment ball count
-        ballCount++;
-
         // Create a new ball at the previous ball's drop position and rotation
         // activeBall = Instantiate(ball, dropPosition, dropRotation, transform);
 
         Vector3 newBallPosition = elevationPlate.transform.TransformPoint(dropPosition);
         Quaternion newBallRotation = elevationPlate.transform.rotation * dropRotation;
 
+        if (ball == null)
+        {
+            Debug.LogError("Ball prefab not set");
+            return;
+        }
+
         activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
+    }
+
+    private void ResetBocciaBalls()
+    {
+        // Check if at least one ball has been dropped
+        // since Start or the last reset
+        if (!firstBallDropped)
+        {
+            return;
+        }
+
+        // Stop the coroutines if they are running
+        if (dropBallCoroutine != null)
+        {
+            StopCoroutine(dropBallCoroutine);
+            dropBallCoroutine = null;
+        }
+
+        if (checkBallCoroutine != null) 
+        {
+            StopCoroutine(checkBallCoroutine);
+            checkBallCoroutine = null;
+        }
+
+        // Reset ball count and first drop flag
+        ballCount = 0;
+        firstBallDropped = false;
+
+        // Create a new active ball
+        NewBocciaBall();
+
+        // Remove the old boccia balls
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.CompareTag("BocciaBall") && child.gameObject != activeBall)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
