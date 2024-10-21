@@ -2,6 +2,7 @@ namespace FanNamespace
 {
     public enum BackButtonPositioningMode
     {
+        None,
         Left,
         Right
     }

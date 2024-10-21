@@ -126,6 +126,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.ElevationRange = 100f;
                 backButtonPositioningMode = BackButtonPositioningMode.Left;
                 fanGenerator.GenerateFanShape();
+                fanGenerator.GenerateBackButton(backButtonPositioningMode);
                 fanGenerator.GenerateDropButton();
                 fanInteractions.MakeFanSegmentsInteractable();
                 fanGenerator.GenerateFanAnnotations(0, 50f, backButtonPositioningMode);
