@@ -1668,6 +1668,10 @@ PrefabInstance:
       propertyPath: randomJackButton
       value: 
       objectReference: {fileID: 1803754786}
+    - target: {fileID: 3576948454555312335, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
+      propertyPath: VirtualPlayCamera
+      value: 
+      objectReference: {fileID: 57528124}
     - target: {fileID: 3678344975101463026, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1000
@@ -3373,7 +3377,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScreenCamera: {fileID: 963194227}
-  VirtualPlayCamera: {fileID: 57528124}
   CameraDistance: 8
   RampViewCameraDistance: 5
   CameraSpeed: 5

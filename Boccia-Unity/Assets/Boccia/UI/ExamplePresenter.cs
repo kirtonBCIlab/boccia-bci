@@ -19,6 +19,9 @@ public class ExamplePresenter : MonoBehaviour
     public Button dropBallButton;
     public Button colorButton;
     public Button randomJackButton;
+    public Button toggleCameraButton;
+
+    public Camera VirtualPlayCamera;
 
     private BocciaModel model;
 
@@ -39,6 +42,7 @@ public class ExamplePresenter : MonoBehaviour
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
         randomJackButton.onClick.AddListener(model.RandomJackBall);
+        toggleCameraButton.onClick.AddListener(ToggleCamera);
     }
 
 
@@ -79,6 +83,18 @@ public class ExamplePresenter : MonoBehaviour
     private void MoveDown()
     {
         model.ElevateBy(-1.0f);
+    }
+
+    private void ToggleCamera()
+    {
+        if (VirtualPlayCamera.gameObject.activeSelf)
+        {
+            VirtualPlayCamera.gameObject.SetActive(false);
+        }
+        else
+        {
+            VirtualPlayCamera.gameObject.SetActive(true);
+        }
     }
 
 }
