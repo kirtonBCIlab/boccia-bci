@@ -137,6 +137,9 @@ public class FanGenerator : MonoBehaviour
 
    public void GenerateBackButton(BackButtonPositioningMode positionMode)
    {
+        // If no backbutton, skip method
+        if (positionMode == BackButtonPositioningMode.None) return;
+
         GameObject backButton = new("BackButton");
         backButton.transform.SetParent(this.transform);
         backButton.transform.localPosition = Vector3.zero;
