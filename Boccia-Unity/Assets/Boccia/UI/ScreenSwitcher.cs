@@ -8,6 +8,7 @@ using UnityEngine;
 public class ScreenSwitcher : MonoBehaviour
 {
     public Camera ScreenCamera;
+    public Camera VirtualPlayCamera;
     public float CameraDistance = 600.0f;
     public float RampViewCameraDistance = 5.0f; // Custom distance so the camera will view the ramp
     public float CameraSpeed = 5.0f;
@@ -66,31 +67,38 @@ public class ScreenSwitcher : MonoBehaviour
         {
             case BocciaScreen.PlayMenu:
                 PanCameraToScreen(PlayMenu, RampViewCameraDistance);
+                EnableVirtualPlayCamera(false);
                 break;
                 
             case BocciaScreen.HamburgerMenu:
                 PanCameraToScreen(HamburgerMenuOptions, RampViewCameraDistance);
+                EnableVirtualPlayCamera(false);
                 break;
 
             case BocciaScreen.TrainingScreen:
                 PanCameraToScreen(TrainingScreen, RampViewCameraDistance);
+                EnableVirtualPlayCamera(false);
                 break;
 
             case BocciaScreen.VirtualPlay:
                 PanCameraToScreen(VirtualPlayScreen, RampViewCameraDistance);
+                EnableVirtualPlayCamera(true);
                 break;
 
             case BocciaScreen.GameOptions:
                 PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
+                EnableVirtualPlayCamera(false);
                 break;
 
             case BocciaScreen.BciOptions:
                 PanCameraToScreen(BciOptionsMenu, RampViewCameraDistance);
+                EnableVirtualPlayCamera(false);
                 break;
             
             // For now just switch back to start menu to show switching works
             default:
                 PanCameraToScreen(StartMenu, CameraDistance);
+                EnableVirtualPlayCamera(false);
                 break;
         }
     }
@@ -144,6 +152,13 @@ public class ScreenSwitcher : MonoBehaviour
             yield return null;
         }
         ScreenCamera.transform.rotation = targetRotation;
+    }
+
+    // Helper method to toggle the virtual play camera on or off
+    // VirtualPlayCamera should only be enabled for the virtual play screen
+    private void EnableVirtualPlayCamera(bool isEnabled)
+    {
+        VirtualPlayCamera.gameObject.SetActive(isEnabled);
     }
 
 }
