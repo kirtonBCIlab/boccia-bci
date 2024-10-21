@@ -145,5 +145,4 @@ public class ScreenSwitcher : MonoBehaviour
         }
         ScreenCamera.transform.rotation = targetRotation;
     }
-
 }

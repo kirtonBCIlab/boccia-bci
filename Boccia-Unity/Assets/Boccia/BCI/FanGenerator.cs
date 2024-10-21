@@ -314,6 +314,7 @@ public class FanGenerator : MonoBehaviour
     {
         GameObject textObject = new ("TextAnnotation");
         textObject.transform.SetParent(this.transform);
+        textObject.layer = LayerMask.NameToLayer("VirtualPlayUI");
         textObject.transform.SetLocalPositionAndRotation
         (
             position,

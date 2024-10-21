@@ -19,6 +19,11 @@ public class ExamplePresenter : MonoBehaviour
     public Button dropBallButton;
     public Button colorButton;
     public Button randomJackButton;
+    private List<Button> virtualPlayButtons;
+
+
+    public Button toggleCameraButton;
+    public Camera VirtualPlayCamera;
 
     private BocciaModel model;
 
@@ -28,6 +33,21 @@ public class ExamplePresenter : MonoBehaviour
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
         model.WasChanged += ModelChanged;
+
+        // Create a list of the virtual play buttons
+        // Do not include the camera toggle button
+        virtualPlayButtons = new List<Button>()
+        {
+            rotateLeftButton,
+            rotateRightButton,
+            moveUpButton,
+            moveDownButton,
+            resetRampButton,
+            resetBallButton,
+            dropBallButton,
+            colorButton,
+            randomJackButton,
+        };
 
         // connect buttons to model
         rotateLeftButton.onClick.AddListener(RotateLeft);
@@ -39,6 +59,9 @@ public class ExamplePresenter : MonoBehaviour
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomColor);
         randomJackButton.onClick.AddListener(model.RandomJackBall);
+
+        // Connect the camera toggle button
+        toggleCameraButton.onClick.AddListener(ToggleCamera);
     }
 
 
@@ -81,4 +104,46 @@ public class ExamplePresenter : MonoBehaviour
         model.ElevateBy(-1.0f);
     }
 
+    private void ToggleCamera()
+    {
+        // Check if the camera is enabled, if it is disable it
+        // If it is disabled, enable it
+        if (VirtualPlayCamera.gameObject.activeSelf)
+        {
+            // Disable camera
+            VirtualPlayCamera.gameObject.SetActive(false);
+
+            // Allow virtual play buttons and fan to be interactable
+            ToggleVirtualPlayButtons(true);
+            ToggleFan(true);
+        }
+
+        else
+        {
+            // Enable camera
+            VirtualPlayCamera.gameObject.SetActive(true);
+
+            // Prevent virtual play buttons and fan from being interactable
+            ToggleVirtualPlayButtons(false);
+            ToggleFan(false);
+        }
+    }
+
+    private void ToggleVirtualPlayButtons(bool isInteractable)
+    {
+        virtualPlayButtons.ForEach(colorButton => colorButton.interactable = isInteractable);
+    }
+
+    private void ToggleFan(bool isInteractable)
+    {
+        GameObject[] fanSegments = GameObject.FindGameObjectsWithTag("BCI");
+        foreach (GameObject fanSegment in fanSegments)
+        {
+            MeshCollider segmentCollider = fanSegment.GetComponent<MeshCollider>();
+            if (segmentCollider != null)
+            {
+                segmentCollider.enabled = isInteractable;
+            }
+        }
+    }
 }
