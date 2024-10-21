@@ -227,6 +227,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7029420362845547233, guid: 0a09a675c7fdc9c40884ccfb0e22c2db, type: 3}
   m_PrefabInstance: {fileID: 51956293}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &57528124 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8042703545872246154, guid: 4709d4f0887c783479110c4deab2b320, type: 3}
+  m_PrefabInstance: {fileID: 2466695322583312716}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &126370150
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,6 +3373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScreenCamera: {fileID: 963194227}
+  VirtualPlayCamera: {fileID: 57528124}
   CameraDistance: 8
   RampViewCameraDistance: 5
   CameraSpeed: 5
