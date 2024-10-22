@@ -47,8 +47,15 @@ public class TrainingPresenter : MonoBehaviour
         if (_model.BciTrained == true)
         {
             instructionText.GetComponent<TextMeshProUGUI>().text = "Training complete.";
-            _model.PlayMenu();
+            StartCoroutine(BackToPlayMenu());
         }
+    }
+
+    private IEnumerator BackToPlayMenu()
+    {
+        // Wait before switching to Play Menu so the user can see the text
+        yield return new WaitForSecondsRealtime(5f);
+        _model.PlayMenu();
     }
 
     void Update()
