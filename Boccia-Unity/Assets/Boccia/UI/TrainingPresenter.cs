@@ -65,5 +65,12 @@ public class TrainingPresenter : MonoBehaviour
         {
             instructionText.GetComponent<TextMeshProUGUI>().text = "Training triggered.";
         }
+
+        // Temporary to test setting BciTrained and switching to Play Menu
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _model.SetBciTrained();
+            Debug.Log("BciTrained: " + _model.BciTrained);
+        }
     }
 }
