@@ -257,6 +257,13 @@ public class BocciaModel : Singleton<BocciaModel>
         SendBciChangeEvent();
     }
 
+    // Training status
+    public void SetBciTrained()
+    {
+        BciTrained = true;
+        SendBciChangeEvent();
+    }
+
     // MARK: BCI Setting Defaults
     private void SetDefaultP300Settings()
     // Set default values for P300 settings
