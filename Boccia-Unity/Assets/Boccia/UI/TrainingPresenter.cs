@@ -46,6 +46,7 @@ public class TrainingPresenter : MonoBehaviour
         // Go back to Play Menu when training is done
         if (_model.BciTrained == true)
         {
+            instructionText.GetComponent<TextMeshProUGUI>().text = "Training complete.";
             _model.PlayMenu();
         }
     }

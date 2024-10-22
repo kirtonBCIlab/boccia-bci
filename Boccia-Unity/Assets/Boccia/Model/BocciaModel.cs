@@ -257,7 +257,7 @@ public class BocciaModel : Singleton<BocciaModel>
         SendBciChangeEvent();
     }
 
-    // Training status
+    // Update training status when training is complete
     public void SetBciTrained()
     {
         BciTrained = true;
