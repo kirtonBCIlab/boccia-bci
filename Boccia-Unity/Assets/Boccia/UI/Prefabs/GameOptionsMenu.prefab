@@ -989,6 +989,8 @@ MonoBehaviour:
   rotationRangeSlider: {fileID: 1638828288303969560}
   elevationSpeedSlider: {fileID: 2924849139167696035}
   rotationSpeedSlider: {fileID: 8491921247395821542}
+  doneButton: {fileID: 8675696091033853727}
+  resetDefaultsButton: {fileID: 8509612398931548721}
 --- !u!114 &3254357422855799959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6046,19 +6048,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeElevationRange
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3343014234787340886
 GameObject:
   m_ObjectHideFlags: 0
@@ -6367,19 +6357,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeRotationRange
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3574154417486019315
 GameObject:
   m_ObjectHideFlags: 0
@@ -13576,19 +13554,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeElevationPrecision
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7196327520474393748
 GameObject:
   m_ObjectHideFlags: 0
@@ -15848,19 +15814,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeBallColor
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_AlphaFadeSpeed: 0.15
 --- !u!1 &8372258724176425473
 GameObject:
@@ -16203,19 +16157,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeRotationPrecision
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &8465051704754787817
 GameObject:
   m_ObjectHideFlags: 0
@@ -16976,8 +16918,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6783681638521873422}
   - {fileID: 4441252711501368493}
+  - {fileID: 6783681638521873422}
   m_Father: {fileID: 6865084979333309882}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8637896827254629575
@@ -18165,19 +18107,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeRotationSpeed
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &9128066371031096169
 GameObject:
   m_ObjectHideFlags: 0
@@ -18267,19 +18197,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8443311105216810911}
-        m_TargetAssemblyTypeName: GameOptionsMenuPresenter, Assembly-CSharp
-        m_MethodName: ChangeElevationSpeed
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &9167544954483041671
 GameObject:
   m_ObjectHideFlags: 0
@@ -18512,6 +18430,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3306738760973638474, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
   m_PrefabInstance: {fileID: 1252400823999741285}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8675696091033853727 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7568061992611111546, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
+  m_PrefabInstance: {fileID: 1252400823999741285}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2242545417137649739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18618,3 +18547,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3306738760973638474, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
   m_PrefabInstance: {fileID: 2242545417137649739}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8509612398931548721 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7568061992611111546, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
+  m_PrefabInstance: {fileID: 2242545417137649739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
