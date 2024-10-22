@@ -17,18 +17,6 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Button doneButton;
     public Button resetDefaultsButton;
 
-    private static readonly Dictionary<string, Color> colors = new Dictionary<string, Color>
-    {
-        {"Blue", Color.blue },
-        {"Red", Color.red },
-        {"Green", Color.green },
-        {"Yellow", Color.yellow },
-        {"Black", Color.black },
-        {"Magenta", Color.magenta},
-        {"Grey", Color.grey},
-        {"Cyan", Color.cyan}
-    };
-
     void Start()
     {
         model = BocciaModel.Instance;
@@ -44,29 +32,40 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         // elevationSpeedSlider.onValueChanged.AddListener(ChangeElevationSpeed);
         // rotationSpeedSlider.onValueChanged.AddListener(ChangeRotationSpeed);
 
-        // Add listeners for UI changes
+        // Add listeners for Game Options changes
+        // User options
         ballColorDropdown.onValueChanged.AddListener(OnChangeBallColor);
         elevationPrecisionSlider.onValueChanged.AddListener(OnChangeElevationPrecision);
         elevationRangeSlider.onValueChanged.AddListener(OnChangeElevationRange);
         rotationPrecisionSlider.onValueChanged.AddListener(OnChangeRotationPrecision);
         rotationRangeSlider.onValueChanged.AddListener(OnChangeRotationRange);
+        // Operator options
         elevationSpeedSlider.onValueChanged.AddListener(OnChangeElevationSpeed);
         rotationSpeedSlider.onValueChanged.AddListener(OnChangeRotationSpeed);
+
+        // Add listeners for Reset and Done buttons
         resetDefaultsButton.onClick.AddListener(OnResetDefaultsClicked);
+        doneButton.onClick.AddListener(OnDoneButtonClicked);
     }
 
     void OnEnable()
     {
+        PopulateColorDropdown();
         InitializeValues();
     }
 
     private void InitializeValues()
     {
-        // Convert the color from the model to the corresponding dropdown value (string)
-        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorNameFromModel(model.GameOptions.BallColor));
+        // // Convert the color from the model to the corresponding dropdown value (string)
+        // ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorNameFromModel(model.GameOptions.BallColor));
 
-        // Ball color will not persist if this line is removed
-        OnChangeBallColor(ballColorDropdown.value);
+        // // Ball color will not persist if this line is removed
+        // OnChangeBallColor(ballColorDropdown.value);
+
+        // Ball Color
+        // Ensure the dropdown reflects the current ball color from the model
+        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorName(model.GetCurrentBallColor()));
+
 
         // Initialize other variables from BocciaModel
         // elevationPrecisionSlider.value = model.ElevationPrecision;
@@ -83,16 +82,71 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         rotationSpeedSlider.value = model.GameOptions.RotationSpeed;
     }
 
+    // private void PopulateColorDropdown()
+    // {
+    //     // Clear any existing options
+    //     ballColorDropdown.ClearOptions();
+
+    //     // Extract color names (keys) from the dictionary
+    //     List<string> colorOptions = new List<string>(colors.Keys);
+
+    //     // Add color names to the dropdown
+    //     ballColorDropdown.AddOptions(colorOptions);
+    // }
+
+    // // Populate the dropdown with color names
+    // private void PopulateColorDropdown()
+    // {
+    //     // Clear any existing options
+    //     ballColorDropdown.ClearOptions();
+
+    //     // Extract color names (keys) from the BallColorOptionsDict dictionary
+    //     List<string> colorOptions = new List<string>(model.GameOptions.BallColorOptionsDict.Keys);
+    //     ballColorDropdown.AddOptions(colorOptions);
+    // }
+
     private void PopulateColorDropdown()
     {
         // Clear any existing options
         ballColorDropdown.ClearOptions();
+        
+        // Extract color names (keys) from the BallColorOptionsDict dictionary
+        List<string> colorOptions = new List<string>(model.GameOptions.BallColorOptionsDict.Keys);
 
-        // Extract color names (keys) from the dictionary
-        List<string> colorOptions = new List<string>(colors.Keys);
+        // Debug log to print the number of color options available
+        Debug.Log($"Number of color options available: {colorOptions.Count}");
+
+        // Print each color option to the console for verification
+        foreach (string color in colorOptions)
+        {
+            Debug.Log($"Color option: {color}");
+        }
 
         // Add color names to the dropdown
         ballColorDropdown.AddOptions(colorOptions);
+
+        // Debug log to confirm options are added to the dropdown
+        if (ballColorDropdown.options.Count > 0)
+        {
+            Debug.Log("Dropdown options successfully populated.");
+        }
+        else
+        {
+            Debug.LogError("Dropdown options failed to populate.");
+        }
+    }
+
+    // Helper method to get the color name from the dictionary, given a Color
+    private string GetColorName(Color color)
+    {
+        foreach (var pair in model.BallColorOptionsDict)
+        {
+            if (pair.Value.Equals(color))
+            {
+                return pair.Key;
+            }
+        }
+        return "Blue";  // Default to Blue if not found
     }
 
     // public void ChangeBallColor(int valueIndex)
@@ -111,18 +165,18 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     //     }
     // }
 
-    private string GetColorNameFromModel(Color color)
-    {
-        // Find the color name in the dictionary based on the color value in the model
-        foreach (var pair in colors)
-        {
-            if (pair.Value == color)
-            {
-                return pair.Key;
-            }
-        }
-        return "Blue"; // Default if no match is found
-    }
+    // private string GetColorNameFromModel(Color color)
+    // {
+    //     // Find the color name in the dictionary based on the color value in the model
+    //     foreach (var pair in colors)
+    //     {
+    //         if (pair.Value == color)
+    //         {
+    //             return pair.Key;
+    //         }
+    //     }
+    //     return "Blue"; // Default if no match is found
+    // }
 
     // public void ChangeElevationPrecision(float precisionPercent)
     // {
@@ -154,15 +208,25 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     //     model.SetRotationSpeed(rotationSpeed);
     // }
 
-    // Event handlers for changes to game options
+    // MARK: Event handlers for changes to game options
+    
+    // Event handler for when the user changes the ball color in the dropdown
     public void OnChangeBallColor(int valueIndex)
     {
         string selectedColorName = ballColorDropdown.options[valueIndex].text;
-        if (colors.TryGetValue(selectedColorName, out Color selectedColor))
+        if (model.BallColorOptionsDict.TryGetValue(selectedColorName, out Color selectedColor))
         {
-            model.SetGameOption(ref model.GameOptions.BallColor, selectedColor);
+            model.SetBallColor(selectedColor);
         }
     }
+    // public void OnChangeBallColor(int valueIndex)
+    // {
+    //     string selectedColorName = ballColorDropdown.options[valueIndex].text;
+    //     if (colors.TryGetValue(selectedColorName, out Color selectedColor))
+    //     {
+    //         model.SetGameOption(ref model.GameOptions.BallColor, selectedColor);
+    //     }
+    // }
 
     public void OnChangeElevationPrecision(float value)
     {
@@ -201,7 +265,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         InitializeValues();
     }
 
-    public void NavigatetoStart()
+    public void OnDoneButtonClicked()
     {
         model.ShowPreviousScreen();
     }

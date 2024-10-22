@@ -570,10 +570,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8443311105216810911, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: doneButton
-      value: 
-      objectReference: {fileID: 1701171800}
     - target: {fileID: 8533241150640456240, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1511,17 +1507,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67284b57dff4747ecbe18ccca03cfe89, type: 3}
---- !u!114 &1701171800 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-  m_PrefabInstance: {fileID: 211374066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1776761865 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 407664765047655102, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}

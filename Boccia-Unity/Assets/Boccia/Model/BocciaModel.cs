@@ -28,6 +28,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Expose the GameOptionsContainer via a property
     public GameOptionsContainer GameOptions => bocciaData.GameOptions;
+    // Expose the options for ball colors as a read-only property
+    public IReadOnlyDictionary<string, Color> BallColorOptionsDict => bocciaData.GameOptions.BallColorOptionsDict;
+
     // public Color BallColor => bocciaData.BallColor;
     // public float ElevationPrecision => bocciaData.ElevationPrecision;
     // public float ElevationRange => bocciaData.ElevationRange;
@@ -71,6 +74,9 @@ public class BocciaModel : Singleton<BocciaModel>
             ResetBciState();
             ResetRampHardwareState();
 
+            // Initialize the list of possible ball colors
+            InitializeBallColorOptions();
+
             bocciaData.WasInitialized = true;
         }
 
@@ -90,7 +96,16 @@ public class BocciaModel : Singleton<BocciaModel>
     // Setting default values for Game Options
     private void SetDefaultGameOptions()
     {
-        bocciaData.GameOptions.BallColor = Color.blue;
+        // Set BallColor to the first color in the BallColorOptionsDict dictionary
+        if (BallColorOptionsDict.Count > 0)
+        {
+            GameOptions.BallColor = BallColorOptionsDict.First().Value;  // Set to the first color in the dictionary
+        }
+        else
+        {
+            GameOptions.BallColor = Color.blue;  // Fallback if dictionary is empty (shouldn't happen)
+        }
+
         bocciaData.GameOptions.ElevationPrecision = 0.0f;
         bocciaData.GameOptions.ElevationRange = 0.0f;
         bocciaData.GameOptions.ElevationSpeed = 0.0f;
@@ -108,11 +123,42 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
-    public void ChangeBallColor(Color colorString)
+
+    // MARK: Methods for managing ball color
+    // Initialize and populate the PossibleBallColors dictionary
+    private void InitializeBallColorOptions()
     {
-        bocciaData.GameOptions.BallColor = colorString;
+        bocciaData.GameOptions.BallColorOptionsDict = new Dictionary<string, Color>
+        {
+            {"Blue", Color.blue },
+            {"Red", Color.red },
+            {"Green", Color.green },
+            {"Yellow", Color.yellow },
+            {"Black", Color.black },
+            {"Magenta", Color.magenta},
+            {"Grey", Color.grey},
+            {"Cyan", Color.cyan}
+        };
+    }
+
+    // Get the current ball color
+    public Color GetCurrentBallColor()
+    {
+        return GameOptions.BallColor;
+    }
+
+    // Set a new ball color
+    public void SetBallColor(Color newColor)
+    {
+        GameOptions.BallColor = newColor;
         SendRampChangeEvent();
     }
+
+    // public void ChangeBallColor(Color colorString)
+    // {
+    //     bocciaData.GameOptions.BallColor = colorString;
+    //     SendRampChangeEvent();
+    // }
 
     // public void SetElevationPrecision(float elevationPercent)
     // {

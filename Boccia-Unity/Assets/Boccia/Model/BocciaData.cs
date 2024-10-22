@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum BocciaBciParadigm
@@ -72,6 +73,10 @@ public class GameOptionsContainer
     public float RotationPrecision;
     public float RotationRange;
     public float RotationSpeed;
+
+    // Empty dictionary to hold possible ball colors
+    // Define this list within BocciaModel
+    public Dictionary<string, Color> BallColorOptionsDict = new Dictionary<string, Color>();
 }
 
 /// The P300SettingsContainer class contains training and testing settings specific to the P300 paradigm.
