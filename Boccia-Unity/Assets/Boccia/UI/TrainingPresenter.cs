@@ -22,6 +22,7 @@ public class TrainingPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += ModelChanged;
+        _model.BciChanged += TrainingComplete;
 
         // Generate the fan
         //fanPresenter.GenerateFan();
@@ -38,6 +39,15 @@ public class TrainingPresenter : MonoBehaviour
         // For a presenter, this is usually used to refresh the UI to reflect the
         // state of the model (UI does not store state, it just provides a way
         // to view and change it)
+    }
+
+    private void TrainingComplete()
+    {
+        // Go back to Play Menu when training is done
+        if (_model.BciTrained == true)
+        {
+            _model.PlayMenu();
+        }
     }
 
     void Update()
