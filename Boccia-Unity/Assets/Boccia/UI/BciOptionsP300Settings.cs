@@ -81,6 +81,13 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     void OnEnable()
     {
+        // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
+        if (model == null)
+        {
+            // Debug.LogError("Model is not initialized yet in OnEnable.");
+            return; // Avoid running further code if the model is not ready
+        }
+
         // Initialize UI with current model values every time the panel is enabled/active
         InitializeUI();
     }
