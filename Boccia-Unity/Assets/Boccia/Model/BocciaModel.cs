@@ -69,16 +69,17 @@ public class BocciaModel : Singleton<BocciaModel>
         // If the model is uninitialized, set it up
         if (!bocciaData.WasInitialized)
         {
+            Debug.Log("Initializing BocciaData...");
             ResetNavigationState();
             ResetGameState();
             ResetBciState();
             ResetRampHardwareState();
 
-            // Initialize the list of possible ball colors
-            InitializeBallColorOptions();
-
             bocciaData.WasInitialized = true;
         }
+
+        // Initialize the list of possible ball colors
+        InitializeBallColorOptions();
 
         SendRampChangeEvent();
 
@@ -103,7 +104,7 @@ public class BocciaModel : Singleton<BocciaModel>
         }
         else
         {
-            GameOptions.BallColor = Color.blue;  // Fallback if dictionary is empty (shouldn't happen)
+            GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
         }
 
         bocciaData.GameOptions.ElevationPrecision = 0.0f;
@@ -130,8 +131,8 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         bocciaData.GameOptions.BallColorOptionsDict = new Dictionary<string, Color>
         {
-            {"Blue", Color.blue },
             {"Red", Color.red },
+            {"Blue", Color.blue },
             {"Green", Color.green },
             {"Yellow", Color.yellow },
             {"Black", Color.black },
@@ -212,10 +213,36 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
-    public void RandomColor()
+    // public void RandomBallColor()
+    // {
+    //     bocciaData.GameOptions.BallColor = UnityEngine.Random.ColorHSV();
+    //     SendRampChangeEvent();
+    // }
+
+    public void RandomBallColor()
     {
-        bocciaData.GameOptions.BallColor = UnityEngine.Random.ColorHSV();
-        SendRampChangeEvent();
+        // Get all the keys (color names) from the BallColorOptionsDict
+        List<string> colorKeys = new List<string>(bocciaData.GameOptions.BallColorOptionsDict.Keys);
+
+        // Check if there are any colors in the dictionary
+        if (colorKeys.Count > 0)
+        {
+            // Pick a random index
+            int randomIndex = UnityEngine.Random.Range(0, colorKeys.Count);
+
+            // Get the randomly selected color name
+            string randomColorKey = colorKeys[randomIndex];
+
+            // Set the GameOptions.BallColor to the corresponding color from the dictionary
+            bocciaData.GameOptions.BallColor = bocciaData.GameOptions.BallColorOptionsDict[randomColorKey];
+
+            // Trigger the change event
+            SendRampChangeEvent();
+        }
+        else
+        {
+            Debug.LogError("BallColorOptionsDict is empty. Cannot assign a random ball color.");
+        }
     }
 
     public void RandomJackBall()
@@ -431,25 +458,25 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.SerialPortName = "COM1";
     }
 
-    Color GetColorFromName(string colorName)
-    {
-        switch (colorName.ToLower())
-        {
-            case "red":
-                return Color.red;
-            case "green":
-                return Color.green;
-            case "blue":
-                return Color.blue;
-            case "yellow":
-                return Color.yellow;
-            case "white":
-                return Color.white;
-            case "black":
-                return Color.black;
-            default:
-                return Color.clear;  // Returns a transparent color if not found
-        }
-    }
+    // Color GetColorFromName(string colorName)
+    // {
+    //     switch (colorName.ToLower())
+    //     {
+    //         case "red":
+    //             return Color.red;
+    //         case "green":
+    //             return Color.green;
+    //         case "blue":
+    //             return Color.blue;
+    //         case "yellow":
+    //             return Color.yellow;
+    //         case "white":
+    //             return Color.white;
+    //         case "black":
+    //             return Color.black;
+    //         default:
+    //             return Color.clear;  // Returns a transparent color if not found
+    //     }
+    // }
 }
 

@@ -50,6 +50,13 @@ public class GameOptionsMenuPresenter : MonoBehaviour
 
     void OnEnable()
     {
+        // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
+        if (model == null)
+        {
+            // Debug.LogError("Model is not initialized yet in OnEnable.");
+            return; // Avoid running further code if the model is not ready
+        }
+
         PopulateColorDropdown();
         InitializeValues();
     }
@@ -109,31 +116,38 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         // Clear any existing options
         ballColorDropdown.ClearOptions();
+
+        // if (model.GameOptions.BallColorOptionsDict.Count == 0)
+        // {
+        //     Debug.LogError("BallColorOptionsDict is empty! Make sure InitializeBallColorOptions() is called.");
+        //     return; // Early return if the dictionary is empty
+        // }
+
         
         // Extract color names (keys) from the BallColorOptionsDict dictionary
         List<string> colorOptions = new List<string>(model.GameOptions.BallColorOptionsDict.Keys);
 
-        // Debug log to print the number of color options available
-        Debug.Log($"Number of color options available: {colorOptions.Count}");
+        // // Debug log to print the number of color options available
+        // Debug.Log($"Number of color options available: {colorOptions.Count}");
 
-        // Print each color option to the console for verification
-        foreach (string color in colorOptions)
-        {
-            Debug.Log($"Color option: {color}");
-        }
+        // // Print each color option to the console for verification
+        // foreach (string color in colorOptions)
+        // {
+        //     Debug.Log($"Color option: {color}");
+        // }
 
         // Add color names to the dropdown
         ballColorDropdown.AddOptions(colorOptions);
 
-        // Debug log to confirm options are added to the dropdown
-        if (ballColorDropdown.options.Count > 0)
-        {
-            Debug.Log("Dropdown options successfully populated.");
-        }
-        else
-        {
-            Debug.LogError("Dropdown options failed to populate.");
-        }
+        // // Debug log to confirm options are added to the dropdown
+        // if (ballColorDropdown.options.Count > 0)
+        // {
+        //     Debug.Log("Dropdown options successfully populated.");
+        // }
+        // else
+        // {
+        //     Debug.LogError("Dropdown options failed to populate.");
+        // }
     }
 
     // Helper method to get the color name from the dictionary, given a Color
@@ -146,7 +160,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
                 return pair.Key;
             }
         }
-        return "Blue";  // Default to Blue if not found
+        return "Red";  // Default to Blue if not found
     }
 
     // public void ChangeBallColor(int valueIndex)
