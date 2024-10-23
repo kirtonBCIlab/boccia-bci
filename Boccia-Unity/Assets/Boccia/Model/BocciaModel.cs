@@ -31,14 +31,6 @@ public class BocciaModel : Singleton<BocciaModel>
     // Expose the options for ball colors as a read-only property
     public IReadOnlyDictionary<string, Color> BallColorOptionsDict => bocciaData.GameOptions.BallColorOptionsDict;
 
-    // public Color BallColor => bocciaData.BallColor;
-    // public float ElevationPrecision => bocciaData.ElevationPrecision;
-    // public float ElevationRange => bocciaData.ElevationRange;
-    // public float ElevationSpeed => bocciaData.ElevationSpeed;
-    // public float RotationPrecision => bocciaData.RotationPrecision;
-    // public float RotationRange => bocciaData.RotationRange;
-    // public float RotationSpeed => bocciaData.RotationSpeed;
-
     // BCI
     // Access to the current BCI Paradigm
     public BocciaBciParadigm Paradigm => bocciaData.Paradigm;  // Read-only property
@@ -156,47 +148,6 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
-    // public void ChangeBallColor(Color colorString)
-    // {
-    //     bocciaData.GameOptions.BallColor = colorString;
-    //     SendRampChangeEvent();
-    // }
-
-    // public void SetElevationPrecision(float elevationPercent)
-    // {
-    //     bocciaData.ElevationPrecision = elevationPercent;
-    //     SendRampChangeEvent();
-    // }
-
-    // public void SetElevationRange(float elevationRange)
-    // {
-    //     bocciaData.ElevationRange = elevationRange;
-    //     SendRampChangeEvent();
-    // }
-
-    // public void SetRotationPrecision(float rangeDegree)
-    // {
-    //     bocciaData.RotationPrecision = rangeDegree;
-    //     SendRampChangeEvent();
-    // }
-    // public void SetRotationRange(float rotationRange)
-    // {
-    //     bocciaData.RotationRange = rotationRange;
-    //     SendRampChangeEvent();
-    // }
-
-    // public void SetElevationSpeed(float elevationSpeed)
-    // {
-    //     bocciaData.ElevationSpeed = elevationSpeed;
-    //     SendRampChangeEvent();
-    // }
-
-    // public void SetRotationSpeed(float rotationSpeed)
-    // {
-    //     bocciaData.RotationSpeed = rotationSpeed;
-    //     SendRampChangeEvent();
-    // }
-
     // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
     public void RotateTo(float degrees) => rampController.RotateTo(degrees);
@@ -214,11 +165,6 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
-    // public void RandomBallColor()
-    // {
-    //     bocciaData.GameOptions.BallColor = UnityEngine.Random.ColorHSV();
-    //     SendRampChangeEvent();
-    // }
     public void ResetVirtualBalls()
     {
         SendBallResetEvent();
@@ -467,26 +413,5 @@ public class BocciaModel : Singleton<BocciaModel>
         RampHardwareConnected = false;
         bocciaData.SerialPortName = "COM1";
     }
-
-    // Color GetColorFromName(string colorName)
-    // {
-    //     switch (colorName.ToLower())
-    //     {
-    //         case "red":
-    //             return Color.red;
-    //         case "green":
-    //             return Color.green;
-    //         case "blue":
-    //             return Color.blue;
-    //         case "yellow":
-    //             return Color.yellow;
-    //         case "white":
-    //             return Color.white;
-    //         case "black":
-    //             return Color.black;
-    //         default:
-    //             return Color.clear;  // Returns a transparent color if not found
-    //     }
-    // }
 }
 

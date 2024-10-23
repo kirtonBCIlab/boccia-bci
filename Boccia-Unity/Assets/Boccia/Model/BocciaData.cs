@@ -21,14 +21,6 @@ public class BocciaData
     public bool WasInitialized;
 
     // Game
-    // public Color BallColor;
-    // public float ElevationPrecision;
-    // public float ElevationRange;
-    // public float ElevationSpeed;
-    // public float RotationPrecision;
-    // public float RotationRange;
-    // public float RotationSpeed;
-
     // Game options container for game-related settings
     public GameOptionsContainer GameOptions = new GameOptionsContainer();
 
