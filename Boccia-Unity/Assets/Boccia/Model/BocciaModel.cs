@@ -224,12 +224,6 @@ public class BocciaModel : Singleton<BocciaModel>
         SendBallResetEvent();
     }
 
-    public void RandomColor()
-    {
-        bocciaData.BallColor = UnityEngine.Random.ColorHSV();
-        SendRampChangeEvent();
-    }
-
     public void RandomBallColor()
     {
         // Get all the keys (color names) from the BallColorOptionsDict
