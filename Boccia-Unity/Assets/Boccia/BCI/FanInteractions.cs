@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
 using BCIEssentials.StimulusEffects;
+using FanNamespace;
 
 public class FanInteractions : MonoBehaviour, IPointerClickHandler
 {
@@ -36,6 +37,9 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
         foreach (Transform child in transform)
         {
+            // Change layer to the interacaable layer
+            child.gameObject.layer = gameObject.layer;
+
             // Add a collider to make segment clickable
             MeshCollider meshCollider = child.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = child.GetComponent<MeshFilter>().mesh;
@@ -64,23 +68,23 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     private void OnSegmentClick(Transform segment)
     {
-        SPO spo = segment.GetComponent<SPO>();
-        int segmentID = spo.ObjectID;
-        int nfanSegments = _fanGenerator.NColumns * _fanGenerator.NRows;
-
-        if (segmentID >= 0 && segmentID < nfanSegments)
+        string segmentName = segment.name;
+        switch (segmentName)
         {
-            OnFanSegmentClick(segmentID);
+            case "FanSegment":
+                SPO spo = segment.GetComponent<SPO>();
+                int segmentID = spo.ObjectID;
+                OnFanSegmentClick(segmentID);
+                break;
+            case "BackButton":  
+                _fanGenerator.DestroyFanSegments();
+                break;
+            case "DropButton":
+                _model.DropBall();
+                break;
+            default:
+                break;
         }
-        else if (segmentID == nfanSegments)
-        {
-            _fanGenerator.DestroyFanSegments();
-        }
-        else if (segmentID == nfanSegments + 1)
-        {
-            _model.DropBall();
-        }
-
     }
 
     private void OnFanSegmentClick(int segmentID)
@@ -111,11 +115,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         // Call the appropriate movement based on the positioning mode
         switch (_fanPresenter.positioningMode)
         {
-            case FanPresenter.FanPositioningMode.CenterToRails:
+            case FanPositioningMode.CenterToRails:
                 _model.RotateBy(rotationAngle);
                 _model.ElevateBy(elevation);
                 break;
-            case FanPresenter.FanPositioningMode.CenterToBase:
+            case FanPositioningMode.CenterToBase:
                 _model.RotateTo(rotationAngle);
                 _model.ElevateTo(elevation + 50f); // Add an offset of 50%, since 50% is the starting point of the elevation range
                 break;

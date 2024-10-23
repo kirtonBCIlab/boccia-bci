@@ -8,14 +8,16 @@ TagManager:
   - JackPosition
   - JackBall
   - BocciaBall
+  - BocciaCourt
+  - JackSpawnArea
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactable
   - Water
   - UI
-  - 
+  - VirtualPlayUI
   - 
   - 
   - 
