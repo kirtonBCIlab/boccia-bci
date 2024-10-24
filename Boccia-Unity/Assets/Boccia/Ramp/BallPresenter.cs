@@ -5,38 +5,38 @@ using UnityEngine;
 public class BallPresenter : MonoBehaviour
 {
     public GameObject ball; // The ball prefab
-    private GameObject activeBall; // Refers the the ball currently in use for each shot
-    private int ballCount = 0;
-    private Rigidbody ballRigidbody;
+    private GameObject _activeBall; // Refers the the ball currently in use for each shot
+    private int _ballCount = 0;
+    private Rigidbody _ballRigidbody;
 
-    private Animator barAnimation;
+    private Animator _barAnimation;
     public GameObject dropBar;
     public GameObject elevationPlate;
 
-    private BocciaModel model;
+    private BocciaModel _model;
 
-    private Vector3 dropPosition;
-    private Quaternion dropRotation;
+    private Vector3 _dropPosition;
+    private Quaternion _dropRotation;
 
-    private Coroutine dropBallCoroutine;
-    private Coroutine checkBallCoroutine;
+    private Coroutine _dropBallCoroutine;
+    private Coroutine _checkBallCoroutine;
 
-    private bool firstBallDropped = false; // To check if at least one ball has been dropped
+    private bool _firstBallDropped = false; // To check if at least one ball has been dropped
 
     // Start is called before the first frame update
     void Start()
     {
         // cache model and subscribe for changed event
-        model = BocciaModel.Instance;
-        model.WasChanged += RampChanged;
-        model.BallResetChanged += ResetBocciaBalls;
+        _model = BocciaModel.Instance;
+        _model.WasChanged += RampChanged;
+        _model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
-        activeBall = GameObject.FindWithTag("BocciaBall"); // The ball already in the scene
+        _activeBall = GameObject.FindWithTag("BocciaBall"); // The ball already in the scene
         InitializeBall();
 
         // Initialize bar animation
-        barAnimation = dropBar.GetComponent<Animator>();
+        _barAnimation = dropBar.GetComponent<Animator>();
 
         // initialize to saved data
         RampChanged();
@@ -44,48 +44,48 @@ public class BallPresenter : MonoBehaviour
 
     void OnDisable()
     {
-        model.WasChanged -= RampChanged;
-        model.BallResetChanged -= ResetBocciaBalls;
+        _model.WasChanged -= RampChanged;
+        _model.BallResetChanged -= ResetBocciaBalls;
     }
 
     private void InitializeBall()
     {
         // Make sure the ball is enabled
-        if (!activeBall.activeSelf)
+        if (!_activeBall.activeSelf)
         {
-            activeBall.SetActive(true);
+            _activeBall.SetActive(true);
         }
 
         // Initialize rigidbody 
-        ballRigidbody = activeBall.GetComponent<Rigidbody>();
+        _ballRigidbody = _activeBall.GetComponent<Rigidbody>();
         // Set sleep threshold to minimum so the ball is ready to roll
-        ballRigidbody.sleepThreshold = 0.0f;
+        _ballRigidbody.sleepThreshold = 0.0f;
 
         // Increment ball count
-        ballCount++;
+        _ballCount++;
 
         // Name the ball GameObject in the hierarchy
-        activeBall.name = "Ball " + ballCount;
+        _activeBall.name = "Ball " + _ballCount;
 
         // Make sure its the right color
-        activeBall.GetComponent<Renderer>().material.color = model.GameOptions.BallColor;
+        _activeBall.GetComponent<Renderer>().material.color = _model.GameOptions.BallColor;
     }
 
     private void RampChanged()
     {
         // Updates color if ball color is pressed
-        activeBall.GetComponent<Renderer>().material.color = model.GameOptions.BallColor;
+        _activeBall.GetComponent<Renderer>().material.color = _model.GameOptions.BallColor;
 
         // If model.BarState is true, it means the bar opened (drop ball was pressed)
-        if (model.BarState)
+        if (_model.BarState)
         {
             // Save ball position and rotation right before it is dropped
             //dropPosition = activeBall.transform.position; 
             //dropRotation = activeBall.transform.rotation;
 
             // Convert ball position and rotation to local space of elevationPlate
-            dropPosition = elevationPlate.transform.InverseTransformPoint(activeBall.transform.position);
-            dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * activeBall.transform.rotation;
+            _dropPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
+            _dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
 
             // Start the bar movement animation
             StartCoroutine(DropBall());
@@ -95,17 +95,17 @@ public class BallPresenter : MonoBehaviour
     private IEnumerator DropBall()
     {
         // Bar opening and closing animation
-        barAnimation.SetBool("isOpening", true);
+        _barAnimation.SetBool("isOpening", true);
         yield return new WaitForSecondsRealtime(1f);
-        barAnimation.SetBool("isOpening", false);
-        model.ResetBar(); // Call the method to reset the bar state to false
+        _barAnimation.SetBool("isOpening", false);
+        _model.ResetBar(); // Call the method to reset the bar state to false
 
         // Wait to check speed of ball to avoid NewBocciaBall() happening too early
         yield return new WaitForSecondsRealtime(1f); 
-        checkBallCoroutine = StartCoroutine(CheckBallSpeed());
+        _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
 
         // Toggle the ball drop flag
-        firstBallDropped = true;
+        _firstBallDropped = true;
 
         yield return null;
     }
@@ -113,14 +113,14 @@ public class BallPresenter : MonoBehaviour
     private IEnumerator CheckBallSpeed()
     {
         // Velocity threshold
-        while (ballRigidbody.velocity.magnitude > 0.01f)
+        while (_ballRigidbody.velocity.magnitude > 0.01f)
         {
             yield return new WaitForSecondsRealtime(0.1f); 
         }
 
         // Stop the ball
-        ballRigidbody.velocity = Vector3.zero;
-        ballRigidbody.angularVelocity = Vector3.zero;
+        _ballRigidbody.velocity = Vector3.zero;
+        _ballRigidbody.angularVelocity = Vector3.zero;
 
         // Create a new ball
         NewBocciaBall();
@@ -129,19 +129,19 @@ public class BallPresenter : MonoBehaviour
     private void NewBocciaBall()
     {
         // Make sure the CheckBallSpeed coroutine is stopped
-        if (checkBallCoroutine != null)
+        if (_checkBallCoroutine != null)
         {
-            StopCoroutine(checkBallCoroutine);
-            checkBallCoroutine = null;
+            StopCoroutine(_checkBallCoroutine);
+            _checkBallCoroutine = null;
         }
 
         // Create a new ball at the previous ball's drop position and rotation
         // Convert the drop position and rotation back into to world space
-        Vector3 newBallPosition = elevationPlate.transform.TransformPoint(dropPosition);
-        Quaternion newBallRotation = elevationPlate.transform.rotation * dropRotation;
+        Vector3 newBallPosition = elevationPlate.transform.TransformPoint(_dropPosition);
+        Quaternion newBallRotation = elevationPlate.transform.rotation * _dropRotation;
 
         // Instantiate the new ball
-        activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
+        _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
     }
 
@@ -149,27 +149,27 @@ public class BallPresenter : MonoBehaviour
     {
         // Check if at least one ball has been dropped
         // since Start or the last reset
-        if (!firstBallDropped)
+        if (!_firstBallDropped)
         {
             return;
         }
 
         // Stop the coroutines if they are running
-        if (dropBallCoroutine != null)
+        if (_dropBallCoroutine != null)
         {
-            StopCoroutine(dropBallCoroutine);
-            dropBallCoroutine = null;
+            StopCoroutine(_dropBallCoroutine);
+            _dropBallCoroutine = null;
         }
 
-        if (checkBallCoroutine != null) 
+        if (_checkBallCoroutine != null) 
         {
-            StopCoroutine(checkBallCoroutine);
-            checkBallCoroutine = null;
+            StopCoroutine(_checkBallCoroutine);
+            _checkBallCoroutine = null;
         }
 
         // Reset ball count and first drop flag
-        ballCount = 0;
-        firstBallDropped = false;
+        _ballCount = 0;
+        _firstBallDropped = false;
 
         // Create a new active ball
         NewBocciaBall();
@@ -177,7 +177,7 @@ public class BallPresenter : MonoBehaviour
         // Remove the old boccia balls
         foreach (Transform child in transform)
         {
-            if (child.gameObject.CompareTag("BocciaBall") && child.gameObject != activeBall)
+            if (child.gameObject.CompareTag("BocciaBall") && child.gameObject != _activeBall)
             {
                 Destroy(child.gameObject);
             }
