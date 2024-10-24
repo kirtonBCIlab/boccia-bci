@@ -94,7 +94,7 @@ public class BallPresenter : MonoBehaviour
 
     private IEnumerator DropBall()
     {
-        _model.SetRampMoving(true)
+        _model.SetRampMoving(true);
         // Bar opening and closing animation
         _barAnimation.SetBool("isOpening", true);
         yield return new WaitForSecondsRealtime(1f);
