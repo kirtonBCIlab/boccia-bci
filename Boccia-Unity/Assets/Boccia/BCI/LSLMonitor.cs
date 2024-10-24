@@ -9,12 +9,14 @@ public class LSLMonitor : MonoBehaviour
     private BocciaModel _model;
     private LSLMarkerStream _markerStream;
     private StreamInlet _streamInlet;
+    private Coroutine _sampleStreamCoroutine;
 
     // Start is called before the first frame update
     void Start()
     {
         // cache model
         _model = BocciaModel.Instance;
+        _model.BciChanged += BciChanged;
 
         // Initialize the LSL marker stream
         _markerStream = GetComponent<LSLMarkerStream>();
@@ -27,24 +29,60 @@ public class LSLMonitor : MonoBehaviour
         _streamInlet = new StreamInlet(streamInfo);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
-        // Place to store the stream samples
-        string[] sample = new string[1];
+        _model.BciChanged -= BciChanged;
 
-        // Pull the stream sample
-        double streamSample = _streamInlet.pull_sample(sample, 0.0f);
-
-        // Process the stream sample
-        if (streamSample != 0.0f)
+        // Stop the coroutine if it is running
+        if (_sampleStreamCoroutine != null)
         {
-            // Check for the Training Complete marker
-            if (sample[0].Contains("Training Complete"))
+            StopCoroutine(_sampleStreamCoroutine);
+        }
+    }
+
+    private void BciChanged()
+    {
+        // If training is in progress start sampling the stream
+        if (_model.IsTraining == true && _sampleStreamCoroutine == null)
+        {
+            _sampleStreamCoroutine = StartCoroutine(MonitorStream());
+        }
+    }
+
+    private IEnumerator MonitorStream()
+    {
+        while (true)
+        {
+            if (_model.IsTraining == false)
             {
-                // If training is complete, update BciTrained flag
-                _model.SetBciTrained();
+                // Exit while loop if training state is set to false
+                // This is a fail safe
+                _sampleStreamCoroutine = null;
+                yield break;
             }
+
+            // Place to store the stream samples
+            string[] sample = new string[1];
+
+            // Pull the stream sample
+            double streamSample = _streamInlet.pull_sample(sample, 0.0f);
+
+            // Process the stream sample
+            if (streamSample != 0.0f)
+            {
+                // Check for the Training Complete marker
+                if (sample[0].Contains("Training Complete"))
+                {
+                    // If training is complete, update BciTrained flag
+                    _model.SetBciTrained();
+
+                    // Stop the coroutine
+                    _sampleStreamCoroutine = null;
+                    yield break;
+                }
+            }
+
+            yield return null;
         }
     }
 }

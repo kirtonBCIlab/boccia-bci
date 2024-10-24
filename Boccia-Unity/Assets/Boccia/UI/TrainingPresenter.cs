@@ -77,6 +77,7 @@ public class TrainingPresenter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             instructionText.GetComponent<TextMeshProUGUI>().text = "Training triggered.";
+            _model.TrainingStarted();
         }
     }
 }
