@@ -28,10 +28,21 @@ public class TrainingPresenter : MonoBehaviour
         //fanPresenter.GenerateFan();
     }
 
+    void OnEnable()
+    {
+        // Subscribe to events on enable
+        if (_model != null)
+        {
+            _model.WasChanged += ModelChanged;
+            _model.BciChanged += TrainingComplete;
+        }
+    }
+
 
     void OnDisable()
     {
         _model.WasChanged -= ModelChanged;
+        _model.BciChanged -= TrainingComplete;
     }
 
     private void ModelChanged()
@@ -46,6 +57,7 @@ public class TrainingPresenter : MonoBehaviour
         // Go back to Play Menu when training is done
         if (_model.BciTrained == true)
         {
+            // Update the on screen text
             instructionText.GetComponent<TextMeshProUGUI>().text = "Training complete.";
             StartCoroutine(BackToPlayMenu());
         }
@@ -55,6 +67,7 @@ public class TrainingPresenter : MonoBehaviour
     {
         // Wait before switching to Play Menu so the user can see the text
         yield return new WaitForSecondsRealtime(5f);
+        // Call the method that navigates to Play Menu
         _model.PlayMenu();
     }
 
@@ -64,13 +77,6 @@ public class TrainingPresenter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             instructionText.GetComponent<TextMeshProUGUI>().text = "Training triggered.";
-        }
-
-        // Temporary to test setting BciTrained and switching to Play Menu
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            _model.SetBciTrained();
-            Debug.Log("BciTrained: " + _model.BciTrained);
         }
     }
 }
