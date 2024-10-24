@@ -12,7 +12,7 @@ public class RampPresenter : MonoBehaviour
     public GameObject elevationMechanism; // Elevation Mechanism child component of Shaft and Ramp (the ramp parts that will change elevation in the visualization)
     public GameObject rampAdapter; // To define direction of movement for elevationMechanism
 
-    private BocciaModel model;
+    private BocciaModel _model;
 
     public float rotationSpeed = 5.0f;
     public float elevationSpeed = 5.0f;
@@ -24,8 +24,8 @@ public class RampPresenter : MonoBehaviour
     void Start()
     {
         // cache model and subscribe for changed event
-        model = BocciaModel.Instance;
-        model.WasChanged += ModelChanged;
+        _model = BocciaModel.Instance;
+        _model.WasChanged += ModelChanged;
 
         // Convert rampAdapter z-axis to local space of elevationMechanism parent to get the direction for the elevationMechanism visualization
         Vector3 rampDirection = rampAdapter.transform.forward;
@@ -37,7 +37,7 @@ public class RampPresenter : MonoBehaviour
 
     void OnDisable()
     {
-        model.WasChanged -= ModelChanged;
+        _model.WasChanged -= ModelChanged;
     }
 
 
@@ -51,10 +51,11 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
+        _model.SetRampMoving(true);
         // Smoothly show the rotatation of the ramp to the new position
         Quaternion currentRotation = rotationShaft.transform.localRotation;
         //Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
-        Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, model.RampRotation, rotationShaft.transform.localEulerAngles.z);
+        Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
         //Debug.Log($"model.RampRotation value: {model.RampRotation}");
 
         while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
@@ -65,13 +66,15 @@ public class RampPresenter : MonoBehaviour
         }
 
         rotationShaft.transform.localRotation = targetQuaternion;
+        _model.SetRampMoving(false);
     }
 
     private IEnumerator ElevationVisualization()
     {
+        _model.SetRampMoving(true);
         Vector3 currentElevation = elevationMechanism.transform.localPosition;
         //Debug.Log($"model.RampElevation value: {model.RampElevation}");
-        float elevationScalar = minElevation + (model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
+        float elevationScalar = minElevation + (_model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
         Vector3 targetElevation = elevationDirection * elevationScalar;
 
         while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
@@ -82,6 +85,7 @@ public class RampPresenter : MonoBehaviour
         }
 
         elevationMechanism.transform.localPosition = targetElevation;
+        _model.SetRampMoving(false);
     }
 
 }
