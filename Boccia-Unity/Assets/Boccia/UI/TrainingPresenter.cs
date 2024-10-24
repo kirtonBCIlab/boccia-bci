@@ -22,7 +22,7 @@ public class TrainingPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += ModelChanged;
-        _model.BciChanged += TrainingComplete;
+        _model.BciChanged += BciChanged;
 
         // Generate the fan
         //fanPresenter.GenerateFan();
@@ -34,7 +34,7 @@ public class TrainingPresenter : MonoBehaviour
         if (_model != null)
         {
             _model.WasChanged += ModelChanged;
-            _model.BciChanged += TrainingComplete;
+            _model.BciChanged += BciChanged;
         }
     }
 
@@ -42,7 +42,7 @@ public class TrainingPresenter : MonoBehaviour
     void OnDisable()
     {
         _model.WasChanged -= ModelChanged;
-        _model.BciChanged -= TrainingComplete;
+        _model.BciChanged -= BciChanged;
     }
 
     private void ModelChanged()
@@ -52,7 +52,7 @@ public class TrainingPresenter : MonoBehaviour
         // to view and change it)
     }
 
-    private void TrainingComplete()
+    private void BciChanged()
     {
         // Go back to Play Menu when training is done
         if (_model.BciTrained == true)

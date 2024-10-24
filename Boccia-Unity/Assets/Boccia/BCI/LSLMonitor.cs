@@ -73,8 +73,8 @@ public class LSLMonitor : MonoBehaviour
                 // Check for the Training Complete marker
                 if (sample[0].Contains("Training Complete"))
                 {
-                    // If training is complete, update BciTrained flag
-                    _model.SetBciTrained();
+                    // If training is complete, update the model
+                    _model.TrainingComplete();
 
                     // Stop the coroutine
                     _sampleStreamCoroutine = null;
