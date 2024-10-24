@@ -11,11 +11,11 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     public Button resetDefaultsButton;
     public Button doneButton;
 
-    private BocciaModel model;
+    private BocciaModel _model;
 
     void Start()
     {
-        model = BocciaModel.Instance;
+        _model = BocciaModel.Instance;
 
         // Call the method to populate the paradigm dropdown
         PopulateParadigmDropdown();
@@ -34,7 +34,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     void OnEnable()
     {
         // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
-        if (model == null)
+        if (_model == null)
         {
             // Debug.LogError("Model is not initialized yet in OnEnable.");
             return; // Avoid running further code if the model is not ready
@@ -57,13 +57,13 @@ public class BciOptionsMenuPresenter : MonoBehaviour
         paradigmDropdown.AddOptions(paradigmOptions);
 
         // Set the default value in the dropdown to match the model's current paradigm
-        paradigmDropdown.value = (int)model.Paradigm;
+        paradigmDropdown.value = (int)_model.Paradigm;
     }
 
     // Initialize which paradigm's settings to show on UI load
     private void InitializeActiveParadigmUI()
     {
-        switch (model.Paradigm)  // Use the public property
+        switch (_model.Paradigm)  // Use the public property
         {
             case BocciaBciParadigm.P300:
                 paradigmDropdown.value = 0;
@@ -76,7 +76,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     private void OnParadigmChanged(int selectedIndex)
     {
         // Update the paradigm in the model based on the selected dropdown option
-        model.SetBciParadigm((BocciaBciParadigm)selectedIndex);
+        _model.SetBciParadigm((BocciaBciParadigm)selectedIndex);
 
         // Update the UI to show only the relevant settings for the selected paradigm
         UpdateActiveParadigmUI();
@@ -85,7 +85,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     // Update the active paradigm settings on UI change
     private void UpdateActiveParadigmUI()
     {
-        switch (model.Paradigm)  // Use the public property
+        switch (_model.Paradigm)  // Use the public property
         {
             case BocciaBciParadigm.P300:
                 if (!p300SettingsPanel.activeSelf)
@@ -105,7 +105,7 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     private void OnResetDefaultsClicked()
     {
         // Reset the BCI settings to defaults for the active paradigm
-        model.ResetBciSettingsToDefaults();
+        _model.ResetBciSettingsToDefaults();
 
         // The UI will update automatically when the settings reset due to BciChanged event
     }
@@ -113,6 +113,6 @@ public class BciOptionsMenuPresenter : MonoBehaviour
     // Navigate back to the previous screen when "Done" is clicked
     private void OnDoneButtonClicked()
     {
-        model.ShowPreviousScreen();
+        _model.ShowPreviousScreen();
     }
 }
