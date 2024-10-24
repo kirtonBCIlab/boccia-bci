@@ -24,6 +24,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
+    public bool IsRampMoving => rampController.IsMoving;
     public BocciaBallState BallState;
 
     // Expose the GameOptionsContainer via a property
@@ -210,6 +211,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public float GetRampElevation()
     {
         return rampController.Elevation;
+    }
+
+    public bool SetRampMoving(bool isMoving)
+    {
+        return rampController.IsMoving = isMoving;
     }
 
     // MARK: Navigation control
