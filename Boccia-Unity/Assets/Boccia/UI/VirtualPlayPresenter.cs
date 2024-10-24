@@ -7,7 +7,7 @@ using UnityEngine.UI;
 // This is an example UI presenter.  This could be broken into several smaller scripts
 // that each reference their own local UI element.  Typically there's interaction between
 // UI elements, so can be more convenient to keep the logic in a single presenter.
-public class ExamplePresenter : MonoBehaviour
+public class VirtualPlayPresenter : MonoBehaviour
 {
     // TODO - This is a dummy example, replace with real ramp prefab object, etc
     public Button rotateLeftButton;
