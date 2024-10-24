@@ -13,13 +13,13 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider rotationRangeSlider;
     public Slider elevationSpeedSlider;
     public Slider rotationSpeedSlider;
-    private BocciaModel model;
+    private BocciaModel _model;
     public Button doneButton;
     public Button resetDefaultsButton;
 
     void Start()
     {
-        model = BocciaModel.Instance;
+        _model = BocciaModel.Instance;
         PopulateColorDropdown();
         InitializeValues();
 
@@ -41,11 +41,11 @@ public class GameOptionsMenuPresenter : MonoBehaviour
 
     void OnEnable()
     {
-        // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
-        if (model == null)
+        // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the _model is loaded
+        if (_model == null)
         {
             // Debug.LogError("Model is not initialized yet in OnEnable.");
-            return; // Avoid running further code if the model is not ready
+            return; // Avoid running further code if the _model is not ready
         }
 
         PopulateColorDropdown();
@@ -55,17 +55,17 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     private void InitializeValues()
     {
         // Ball Color
-        // Ensure the dropdown reflects the current ball color from the model
-        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorName(model.GetCurrentBallColor()));
+        // Ensure the dropdown reflects the current ball color from the _model
+        ballColorDropdown.value = ballColorDropdown.options.FindIndex(option => option.text == GetColorName(_model.GetCurrentBallColor()));
 
 
         // Initialize other variables from BocciaModel
-        elevationPrecisionSlider.value = model.GameOptions.ElevationPrecision;
-        elevationRangeSlider.value = model.GameOptions.ElevationRange;
-        elevationSpeedSlider.value = model.GameOptions.ElevationSpeed;
-        rotationPrecisionSlider.value = model.GameOptions.RotationPrecision;
-        rotationRangeSlider.value = model.GameOptions.RotationRange;
-        rotationSpeedSlider.value = model.GameOptions.RotationSpeed;
+        elevationPrecisionSlider.value = _model.GameOptions.ElevationPrecision;
+        elevationRangeSlider.value = _model.GameOptions.ElevationRange;
+        elevationSpeedSlider.value = _model.GameOptions.ElevationSpeed;
+        rotationPrecisionSlider.value = _model.GameOptions.RotationPrecision;
+        rotationRangeSlider.value = _model.GameOptions.RotationRange;
+        rotationSpeedSlider.value = _model.GameOptions.RotationSpeed;
     }
 
     private void PopulateColorDropdown()
@@ -74,7 +74,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         ballColorDropdown.ClearOptions();
 
         // Extract color names (keys) from the BallColorOptionsDict dictionary
-        List<string> colorOptions = new List<string>(model.GameOptions.BallColorOptionsDict.Keys);
+        List<string> colorOptions = new List<string>(_model.GameOptions.BallColorOptionsDict.Keys);
 
         // Add color names to the dropdown
         ballColorDropdown.AddOptions(colorOptions);
@@ -83,7 +83,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     // Helper method to get the color name from the dictionary, given a Color
     private string GetColorName(Color color)
     {
-        foreach (var pair in model.BallColorOptionsDict)
+        foreach (var pair in _model.BallColorOptionsDict)
         {
             if (pair.Value.Equals(color))
             {
@@ -99,51 +99,51 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void OnChangeBallColor(int valueIndex)
     {
         string selectedColorName = ballColorDropdown.options[valueIndex].text;
-        if (model.BallColorOptionsDict.TryGetValue(selectedColorName, out Color selectedColor))
+        if (_model.BallColorOptionsDict.TryGetValue(selectedColorName, out Color selectedColor))
         {
-            model.SetBallColor(selectedColor);
+            _model.SetBallColor(selectedColor);
         }
     }
 
     public void OnChangeElevationPrecision(float value)
     {
-        model.SetGameOption(ref model.GameOptions.ElevationPrecision, value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationPrecision, value);
     }
 
     public void OnChangeElevationRange(float value)
     {
-        model.SetGameOption(ref model.GameOptions.ElevationRange, value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationRange, value);
     }
 
     public void OnChangeRotationPrecision(float value)
     {
-        model.SetGameOption(ref model.GameOptions.RotationPrecision, value);
+        _model.SetGameOption(ref _model.GameOptions.RotationPrecision, value);
     }
 
     public void OnChangeRotationRange(float value)
     {
-        model.SetGameOption(ref model.GameOptions.RotationRange, value);
+        _model.SetGameOption(ref _model.GameOptions.RotationRange, value);
     }
 
     public void OnChangeElevationSpeed(float value)
     {
-        model.SetGameOption(ref model.GameOptions.ElevationSpeed, value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationSpeed, value);
     }
 
     public void OnChangeRotationSpeed(float value)
     {
-        model.SetGameOption(ref model.GameOptions.RotationSpeed, value);
+        _model.SetGameOption(ref _model.GameOptions.RotationSpeed, value);
     }
 
     // Reset game options to defaults
     public void OnResetDefaultsClicked()
     {
-        model.ResetGameOptionsToDefaults();
+        _model.ResetGameOptionsToDefaults();
         InitializeValues();
     }
 
     public void OnDoneButtonClicked()
     {
-        model.ShowPreviousScreen();
+        _model.ShowPreviousScreen();
     }
 }
