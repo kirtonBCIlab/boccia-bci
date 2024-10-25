@@ -3493,11 +3493,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6309822402450792318, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
       propertyPath: m_Name
-      value: BackButton
+      value: CloseButton
       objectReference: {fileID: 0}
     - target: {fileID: 7404354072564664983, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
       propertyPath: m_text
-      value: Back
+      value: Close
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

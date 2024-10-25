@@ -8,7 +8,7 @@ public class RampSetupPresenter : MonoBehaviour
 {
     private BocciaModel _model;
 
-    public Button backButton;
+    public Button closeButton;
     public Button doneButton;
 
     [Header("Serial Port")]
@@ -27,7 +27,7 @@ public class RampSetupPresenter : MonoBehaviour
         _model = BocciaModel.Instance;
 
         // Connect buttons to model
-        backButton.onClick.AddListener(_model.PlayMenu);
+        closeButton.onClick.AddListener(_model.PlayMenu);
         doneButton.onClick.AddListener(_model.Play);
 
         // TODO: populate the serial port dropdown options
