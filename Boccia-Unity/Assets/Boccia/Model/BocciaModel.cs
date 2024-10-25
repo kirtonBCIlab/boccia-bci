@@ -215,7 +215,7 @@ public class BocciaModel : Singleton<BocciaModel>
     
     public void ShowGameOptions() => ShowScreen(BocciaScreen.GameOptions);
     public void ShowBciOptions() => ShowScreen(BocciaScreen.BciOptions);
-    public void ShowRampOptions() => ShowScreen(BocciaScreen.RampOptions);
+    public void ShowRampSetup() => ShowScreen(BocciaScreen.RampSetup);
 
     private void ShowScreen(BocciaScreen screen)
     {

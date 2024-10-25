@@ -263,6 +263,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &134058904 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5646176542977998866, guid: be54f85c6d708194a92c70ee32ed53d5, type: 3}
+  m_PrefabInstance: {fileID: 813397948}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &134999214
 GameObject:
   m_ObjectHideFlags: 0
@@ -3666,6 +3671,7 @@ MonoBehaviour:
   BciOptionsMenu: {fileID: 458797266}
   VirtualPlayScreen: {fileID: 738463301}
   TrainingScreen: {fileID: 1609661544}
+  RampSetupMenu: {fileID: 134058904}
 --- !u!1001 &2466695322583312716
 PrefabInstance:
   m_ObjectHideFlags: 0
