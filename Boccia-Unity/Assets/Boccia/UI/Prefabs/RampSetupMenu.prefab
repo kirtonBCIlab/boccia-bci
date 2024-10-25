@@ -2049,7 +2049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75c1878ae957c9244b819f10cf60ac46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backButton: {fileID: 6120978041309738866}
+  closeButton: {fileID: 6120978041309738866}
   doneButton: {fileID: 7202473333782902054}
   serialPortDropdown: {fileID: 8710134701823947871}
   connectSerialPortButton: {fileID: 3088155911089596836}
