@@ -25,6 +25,10 @@ public class RampSetupPresenter : MonoBehaviour
     {
         // cache model
         _model = BocciaModel.Instance;
+
+        // Connect buttons to model
+        backButton.onClick.AddListener(_model.PlayMenu);
+        doneButton.onClick.AddListener(_model.Play);
     }
 
     // Update is called once per frame
