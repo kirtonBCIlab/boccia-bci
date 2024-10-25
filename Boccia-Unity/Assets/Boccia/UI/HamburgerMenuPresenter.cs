@@ -22,6 +22,7 @@ public class HamburgerMenuPresenter : MonoBehaviour
     {
         // Cache model and subscribe for changed event
         model = BocciaModel.Instance;
+        model.BciChanged += BciChanged;
 
         // Connect buttons to model
         hamburgerButton.onClick.AddListener(model.ShowHamburgerMenu);
@@ -29,5 +30,33 @@ public class HamburgerMenuPresenter : MonoBehaviour
         gameOptionsButton.onClick.AddListener(model.ShowGameOptions); // Need to change this to show game options
         bciOptionsButton.onClick.AddListener(model.ShowBciOptions);  // Need to change this to show BCI options
         quitButton.onClick.AddListener(model.QuitGame);
+    }
+
+    void OnEnable()
+    {
+        if (model != null)
+        {
+            model.BciChanged += BciChanged;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (model != null)  
+        {
+            model.BciChanged -= BciChanged;
+        }
+    }
+
+    private void BciChanged()
+    {
+        if (model.IsTraining == true)
+        {
+            hamburgerButton.interactable = false;
+        }
+        else 
+        {
+            hamburgerButton.interactable = true;
+        }
     }
 }
