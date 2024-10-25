@@ -68,13 +68,13 @@ public class BallPresenter : MonoBehaviour
         activeBall.name = "Ball " + ballCount;
 
         // Make sure its the right color
-        activeBall.GetComponent<Renderer>().material.color = model.BallColor;
+        activeBall.GetComponent<Renderer>().material.color = model.GameOptions.BallColor;
     }
 
     private void RampChanged()
     {
         // Updates color if ball color is pressed
-        activeBall.GetComponent<Renderer>().material.color = model.BallColor;
+        activeBall.GetComponent<Renderer>().material.color = model.GameOptions.BallColor;
 
         // If model.BarState is true, it means the bar opened (drop ball was pressed)
         if (model.BarState)

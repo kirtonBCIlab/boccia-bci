@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -483,41 +483,9 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8443311105216810911, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: doneButton
-      value: 
-      objectReference: {fileID: 1701171800}
     - target: {fileID: 8533241150640456240, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1776761868}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NavigatetoStart
-      objectReference: {fileID: 0}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameOptionsMenuPresenter, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1656,17 +1624,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4818931384772691849, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
   m_PrefabInstance: {fileID: 1825258637}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1701171800 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8675696091033853727, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-  m_PrefabInstance: {fileID: 211374066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1776761865 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 407664765047655102, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
@@ -1677,17 +1634,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5203769967009854219, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
   m_PrefabInstance: {fileID: 211374066}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1776761868 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8443311105216810911, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
-  m_PrefabInstance: {fileID: 211374066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1776761865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91b307d7abdbf7443889b73a738fbc69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1803754785
 PrefabInstance:
   m_ObjectHideFlags: 0

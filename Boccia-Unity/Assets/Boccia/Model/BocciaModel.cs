@@ -25,13 +25,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
     public BocciaBallState BallState;
-    public Color BallColor => bocciaData.BallColor;
-    public float ElevationPrecision => bocciaData.ElevationPrecision;
-    public float ElevationRange => bocciaData.ElevationRange;
-    public float ElevationSpeed => bocciaData.ElevationSpeed;
-    public float RotationPrecision => bocciaData.RotationPrecision;
-    public float RotationRange => bocciaData.RotationRange;
-    public float RotationSpeed => bocciaData.RotationSpeed;
+
+    // Expose the GameOptionsContainer via a property
+    public GameOptionsContainer GameOptions => bocciaData.GameOptions;
+    // Expose the options for ball colors as a read-only property
+    public IReadOnlyDictionary<string, Color> BallColorOptionsDict => bocciaData.GameOptions.BallColorOptionsDict;
 
     // BCI
     // Access to the current BCI Paradigm
@@ -67,6 +65,7 @@ public class BocciaModel : Singleton<BocciaModel>
         // If the model is uninitialized, set it up
         if (!bocciaData.WasInitialized)
         {
+            Debug.Log("Initializing BocciaData...");
             ResetNavigationState();
             ResetGameState();
             ResetBciState();
@@ -74,6 +73,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
             bocciaData.WasInitialized = true;
         }
+
+        // Initialize the list of possible ball colors
+        InitializeBallColorOptions();
 
         SendRampChangeEvent();
 
@@ -87,6 +89,67 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
 
+    // MARK: Game options
+    // Setting default values for Game Options
+    private void SetDefaultGameOptions()
+    {
+        // Set BallColor to the first color in the BallColorOptionsDict dictionary
+        if (BallColorOptionsDict.Count > 0)
+        {
+            GameOptions.BallColor = BallColorOptionsDict.First().Value;  // Set to the first color in the dictionary
+        }
+        else
+        {
+            GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
+        }
+
+        bocciaData.GameOptions.ElevationPrecision = 0.0f;
+        bocciaData.GameOptions.ElevationRange = 0.0f;
+        bocciaData.GameOptions.ElevationSpeed = 0.0f;
+        bocciaData.GameOptions.RotationPrecision = 0.0f;
+        bocciaData.GameOptions.RotationRange = 0.0f;
+        bocciaData.GameOptions.RotationSpeed = 0.0f;
+
+        // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
+    }
+
+    // Generic setter method for changing any game option
+    public void SetGameOption<T>(ref T settingField, T newValue)
+    {
+        settingField = newValue;
+        SendRampChangeEvent();
+    }
+
+
+    // MARK: Methods for managing ball color
+    // Initialize and populate the PossibleBallColors dictionary
+    private void InitializeBallColorOptions()
+    {
+        bocciaData.GameOptions.BallColorOptionsDict = new Dictionary<string, Color>
+        {
+            {"Red", Color.red },
+            {"Blue", Color.blue },
+            {"Green", Color.green },
+            {"Yellow", Color.yellow },
+            {"Black", Color.black },
+            {"Magenta", Color.magenta},
+            {"Grey", Color.grey},
+            {"Cyan", Color.cyan}
+        };
+    }
+
+    // Get the current ball color
+    public Color GetCurrentBallColor()
+    {
+        return GameOptions.BallColor;
+    }
+
+    // Set a new ball color
+    public void SetBallColor(Color newColor)
+    {
+        GameOptions.BallColor = newColor;
+        SendRampChangeEvent();
+    }
 
     // MARK: Game control
     public void RotateBy(float degrees) => rampController.RotateBy(degrees);
@@ -110,16 +173,30 @@ public class BocciaModel : Singleton<BocciaModel>
         SendBallResetEvent();
     }
 
-    public void RandomColor()
+    public void RandomBallColor()
     {
-        bocciaData.BallColor = UnityEngine.Random.ColorHSV();
-        SendRampChangeEvent();
-    }
+        // Get all the keys (color names) from the BallColorOptionsDict
+        List<string> colorKeys = new List<string>(bocciaData.GameOptions.BallColorOptionsDict.Keys);
 
-    public void ChangeBallColor(Color colorString)
-    {
-        bocciaData.BallColor = colorString;
-        SendRampChangeEvent();
+        // Check if there are any colors in the dictionary
+        if (colorKeys.Count > 0)
+        {
+            // Pick a random index
+            int randomIndex = UnityEngine.Random.Range(0, colorKeys.Count);
+
+            // Get the randomly selected color name
+            string randomColorKey = colorKeys[randomIndex];
+
+            // Set the GameOptions.BallColor to the corresponding color from the dictionary
+            bocciaData.GameOptions.BallColor = bocciaData.GameOptions.BallColorOptionsDict[randomColorKey];
+
+            // Trigger the change event
+            SendRampChangeEvent();
+        }
+        else
+        {
+            Debug.LogError("BallColorOptionsDict is empty. Cannot assign a random ball color.");
+        }
     }
 
     public void RandomJackBall()
@@ -127,40 +204,6 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRandomJackEvent();
     }
 
-    public void SetElevationPrecision(float elevationPercent)
-    {
-        bocciaData.ElevationPrecision = elevationPercent;
-        SendRampChangeEvent();
-    }
-
-    public void SetElevationRange(float elevationRange)
-    {
-        bocciaData.ElevationRange = elevationRange;
-        SendRampChangeEvent();
-    }
-
-    public void SetRotationPrecision(float rangeDegree)
-    {
-        bocciaData.RotationPrecision = rangeDegree;
-        SendRampChangeEvent();
-    }
-    public void SetRotationRange(float rotationRange)
-    {
-        bocciaData.RotationRange = rotationRange;
-        SendRampChangeEvent();
-    }
-
-    public void SetElevationSpeed(float elevationSpeed)
-    {
-        bocciaData.ElevationSpeed = elevationSpeed;
-        SendRampChangeEvent();
-    }
-
-    public void SetRotationSpeed(float rotationSpeed)
-    {
-        bocciaData.RotationSpeed = rotationSpeed;
-        SendRampChangeEvent();
-    }
     
     public float GetRampOrientation()
     {
@@ -294,7 +337,9 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.P300Settings.Test.TargetSelectionAnimation = BocciaAnimation.Default;
         bocciaData.P300Settings.Test.StimulusOnDuration = 2.0f;
         bocciaData.P300Settings.Test.StimulusOffDuration = 2.0f;
-        bocciaData.P300Settings.Test.FlashColour = Color.red;  
+        bocciaData.P300Settings.Test.FlashColour = Color.red;
+
+        // Note: SendBciChangeEvent() trigged within ResetBciOptionsToDefaults();
     }
 
     // MARK: Persistence
@@ -345,14 +390,14 @@ public class BocciaModel : Singleton<BocciaModel>
         GameMode = BocciaGameMode.StopPlay;
         BallState = BocciaBallState.Ready;
 
-        bocciaData.BallColor = Color.blue;
-        bocciaData.ElevationPrecision = 0.0f;
-        bocciaData.ElevationRange = 0.0f;
-        bocciaData.ElevationSpeed = 0.0f;
-        bocciaData.RotationPrecision = 0.0f;
-        bocciaData.RotationRange = 0.0f;
-        bocciaData.RotationSpeed = 0.0f;
+        ResetGameOptionsToDefaults();
+        // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
+    }
 
+    public void ResetGameOptionsToDefaults()
+    {
+        SetDefaultGameOptions();
+        SendRampChangeEvent();
     }
 
     private void ResetBciState()
@@ -362,7 +407,7 @@ public class BocciaModel : Singleton<BocciaModel>
         
         // Call the public method to reset the settings
         ResetBciSettingsToDefaults();
-        // SendBciChangeEvent() trigged within ResetBciSettingsToDefaults();
+        // Note: SendBciChangeEvent() trigged within ResetBciSettingsToDefaults();
     }
 
     // This method resets the BCI settings to default without touching the BciTrained state
@@ -384,27 +429,6 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         RampHardwareConnected = false;
         bocciaData.SerialPortName = "COM1";
-    }
-
-    Color GetColorFromName(string colorName)
-    {
-        switch (colorName.ToLower())
-        {
-            case "red":
-                return Color.red;
-            case "green":
-                return Color.green;
-            case "blue":
-                return Color.blue;
-            case "yellow":
-                return Color.yellow;
-            case "white":
-                return Color.white;
-            case "black":
-                return Color.black;
-            default:
-                return Color.clear;  // Returns a transparent color if not found
-        }
     }
 }
 

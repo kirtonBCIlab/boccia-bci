@@ -45,7 +45,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown testStimulusOffDurationDropdown;
     public TMP_Dropdown testFlashColourDropdown;
 
-    private BocciaModel model;
+    private BocciaModel _model;
 
     // Colour options for Flash Colour
     private static readonly Dictionary<string, Color> colours = new Dictionary<string, Color>
@@ -65,10 +65,10 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     void Start()
     {
-        model = BocciaModel.Instance;
+        _model = BocciaModel.Instance;
 
         // Subscribe to BCI change events to keep the UI updated
-        model.BciChanged += OnBciSettingsChanged;
+        _model.BciChanged += OnBciSettingsChanged;
 
         // Add listeners to UI elements
         AddListenersToUI();
@@ -81,6 +81,13 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     void OnEnable()
     {
+        // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
+        if (_model == null)
+        {
+            // Debug.LogError("Model is not initialized yet in OnEnable.");
+            return; // Avoid running further code if the model is not ready
+        }
+
         // Initialize UI with current model values every time the panel is enabled/active
         InitializeUI();
     }
@@ -88,7 +95,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     void OnDestroy()
     {
         // Unsubscribe from BCI events when this object is destroyed to prevent memory leaks
-        model.BciChanged -= OnBciSettingsChanged;
+        _model.BciChanged -= OnBciSettingsChanged;
     }
 
     // This method will be called when the BCI settings are updated in the model
@@ -100,8 +107,8 @@ public class BciOptionsP300Settings : MonoBehaviour
     // Initialize the UI elements with the current P300 settings
     public void InitializeUI()
     {
-        var trainSettings = model.P300Settings.Train;
-        var testSettings = model.P300Settings.Test;
+        var trainSettings = _model.P300Settings.Train;
+        var testSettings = _model.P300Settings.Test;
 
         // Store previous valid values
         previousTrainNumFlashes = trainSettings.NumFlashes;
@@ -279,7 +286,7 @@ public class BciOptionsP300Settings : MonoBehaviour
             numFlashes = Mathf.Clamp(numFlashes, MIN_NUM_FLASHES_TRAIN, MAX_NUM_FLASHES_TRAIN);
 
             // Update the model and previous value
-            model.SetBciOption(ref model.P300Settings.Train.NumFlashes, numFlashes);
+            _model.SetBciOption(ref _model.P300Settings.Train.NumFlashes, numFlashes);
             previousTrainNumFlashes = numFlashes;
         }
         else
@@ -297,7 +304,7 @@ public class BciOptionsP300Settings : MonoBehaviour
             numTrainingWindows = Mathf.Clamp(numTrainingWindows, MIN_NUM_TRAIN_WINDOWS, MAX_NUM_TRAIN_WINDOWS);
 
             // Update the model and previous value
-            model.SetBciOption(ref model.P300Settings.Train.NumTrainingWindows, numTrainingWindows);
+            _model.SetBciOption(ref _model.P300Settings.Train.NumTrainingWindows, numTrainingWindows);
             previousTrainNumTrainingWindows = numTrainingWindows;
         }
         else
@@ -310,37 +317,37 @@ public class BciOptionsP300Settings : MonoBehaviour
     private void OnChangeTrainTargetAnimation(int index)
     {
         var selectedAnimation = (BocciaAnimation)index;
-        model.SetBciOption(ref model.P300Settings.Train.TargetAnimation, selectedAnimation);
+        _model.SetBciOption(ref _model.P300Settings.Train.TargetAnimation, selectedAnimation);
     }
 
     private void OnChangeTrainShamSelectionFeedback(bool isOn)
     {
-        model.SetBciOption(ref model.P300Settings.Train.ShamSelectionFeedback, isOn);
+        _model.SetBciOption(ref _model.P300Settings.Train.ShamSelectionFeedback, isOn);
         UpdateShamSelectionAnimationInteractable(isOn);
     }
 
     private void OnChangeTrainShamSelectionAnimation(int index)
     {
         var selectedAnimation = (BocciaAnimation)index;
-        model.SetBciOption(ref model.P300Settings.Train.ShamSelectionAnimation, selectedAnimation);
+        _model.SetBciOption(ref _model.P300Settings.Train.ShamSelectionAnimation, selectedAnimation);
     }
 
     private void OnChangeTrainStimulusOnDuration(int index)
     {
         var selectedDuration = durationOptions[index];
-        model.SetBciOption(ref model.P300Settings.Train.StimulusOnDuration, selectedDuration);
+        _model.SetBciOption(ref _model.P300Settings.Train.StimulusOnDuration, selectedDuration);
     }
 
     private void OnChangeTrainStimulusOffDuration(int index)
     {
         var selectedDuration = durationOptions[index];
-        model.SetBciOption(ref model.P300Settings.Train.StimulusOffDuration, selectedDuration);
+        _model.SetBciOption(ref _model.P300Settings.Train.StimulusOffDuration, selectedDuration);
     }
 
     private void OnChangeTrainFlashColour(int index)
     {
         var selectedColour = GetColourFromDropdownIndex(index);
-        model.SetBciOption(ref model.P300Settings.Train.FlashColour, selectedColour);
+        _model.SetBciOption(ref _model.P300Settings.Train.FlashColour, selectedColour);
     }
 
     // MARK: Testing Setting Change Handlers
@@ -353,7 +360,7 @@ public class BciOptionsP300Settings : MonoBehaviour
             numFlashes = Mathf.Clamp(numFlashes, MIN_NUM_FLASHES_TEST, MAX_NUM_FLASHES_TEST);
 
             // Update the model and previous value
-            model.SetBciOption(ref model.P300Settings.Test.NumFlashes, numFlashes);
+            _model.SetBciOption(ref _model.P300Settings.Test.NumFlashes, numFlashes);
             previousTestNumFlashes = numFlashes;
         }
         else
@@ -365,31 +372,31 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private void OnChangeTestTargetSelectionFeedback(bool isOn)
     {
-        model.SetBciOption(ref model.P300Settings.Test.TargetSelectionFeedback, isOn);
+        _model.SetBciOption(ref _model.P300Settings.Test.TargetSelectionFeedback, isOn);
         UpdateTargetSelectionAnimationInteractable(isOn);
     }
 
     private void OnChangeTestTargetSelectionAnimation(int index)
     {
         var selectedAnimation = (BocciaAnimation)index;
-        model.SetBciOption(ref model.P300Settings.Test.TargetSelectionAnimation, selectedAnimation);
+        _model.SetBciOption(ref _model.P300Settings.Test.TargetSelectionAnimation, selectedAnimation);
     }
 
     private void OnChangeTestStimulusOnDuration(int index)
     {
         var selectedDuration = durationOptions[index];
-        model.SetBciOption(ref model.P300Settings.Test.StimulusOnDuration, selectedDuration);
+        _model.SetBciOption(ref _model.P300Settings.Test.StimulusOnDuration, selectedDuration);
     }
 
     private void OnChangeTestStimulusOffDuration(int index)
     {
         var selectedDuration = durationOptions[index];
-        model.SetBciOption(ref model.P300Settings.Test.StimulusOffDuration, selectedDuration);
+        _model.SetBciOption(ref _model.P300Settings.Test.StimulusOffDuration, selectedDuration);
     }
 
     private void OnChangeTestFlashColour(int index)
     {
         var selectedColour = GetColourFromDropdownIndex(index);
-        model.SetBciOption(ref model.P300Settings.Test.FlashColour, selectedColour);
+        _model.SetBciOption(ref _model.P300Settings.Test.FlashColour, selectedColour);
     }
 }
