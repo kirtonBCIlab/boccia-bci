@@ -2051,6 +2051,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backButton: {fileID: 6120978041309738866}
   doneButton: {fileID: 7202473333782902054}
+  serialPortDropdown: {fileID: 8710134701823947871}
   connectSerialPortButton: {fileID: 3088155911089596836}
   recalibrateBallDropButton: {fileID: 3716371422157749403}
   recalibrateElevationButton: {fileID: 9209971646745065502}
