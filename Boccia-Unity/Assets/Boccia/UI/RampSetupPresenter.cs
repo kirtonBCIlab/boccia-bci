@@ -28,7 +28,7 @@ public class RampSetupPresenter : MonoBehaviour
 
         // Connect buttons to model
         closeButton.onClick.AddListener(_model.PlayMenu);
-        doneButton.onClick.AddListener(_model.Play);
+        doneButton.onClick.AddListener(_model.VirtualPlay);
 
         // TODO: populate the serial port dropdown options
     }
