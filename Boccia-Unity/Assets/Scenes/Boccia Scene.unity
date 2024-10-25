@@ -409,7 +409,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4537534951723010529, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
       propertyPath: m_Value
-      value: 20.1
+      value: 68.3
       objectReference: {fileID: 0}
     - target: {fileID: 4537534951723010529, guid: 790711e5c732c6143ae08c994d77dca2, type: 3}
       propertyPath: m_MaxValue
@@ -1411,6 +1411,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3939651603642134721, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _coarseFan
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
+    - target: {fileID: 3939651603642134721, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: fanTypeScreen
       value: 9
       objectReference: {fileID: 0}
@@ -1423,12 +1427,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _fineFan
+      value: 
+      objectReference: {fileID: 11400000, guid: fa646aefe576f30429b0ff7334216751, type: 2}
+    - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: _coarseFan
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
+    - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: fanTypeScreen
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: positioningMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4313426254697370136, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: backButtonPositioningMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7814226423708504148, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: spawnArea
@@ -1453,6 +1469,18 @@ PrefabInstance:
     - target: {fileID: 8604982490641367218, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: _outerRadius
       value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617674661766376283, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617674661766376283, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617674661766376283, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8617674661766376283, guid: 1be0eb6300d20d144979fdd1fb66a6e7, type: 3}
       propertyPath: m_LocalPosition.y

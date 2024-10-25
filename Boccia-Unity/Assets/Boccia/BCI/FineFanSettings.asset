@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8ec9deed7acbc409e8a241cd3b84dc, type: 3}
   m_Name: FineFanSettings
   m_EditorClassIdentifier: 
-  columnSpacing: 0
-  rowSpacing: 0
-  _theta: 0
-  _outerRadius: 0
-  _innerRadius: 0
-  _nColumns: 0
-  _nRows: 0
-  _elevationRange: 0
-  _backButtonWidth: 0
-  _dropButtonHeight: 0
-  annotationFontSize: 0
+  columnSpacing: 0.5
+  rowSpacing: 0.1
+  _theta: 69
+  _outerRadius: 6
+  _innerRadius: 3.5
+  _nColumns: 3
+  _nRows: 3
+  _elevationRange: 28
+  _backButtonWidth: 1
+  _dropButtonHeight: 0.5
+  annotationFontSize: 5

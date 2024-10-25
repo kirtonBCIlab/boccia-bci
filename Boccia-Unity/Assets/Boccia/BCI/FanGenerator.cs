@@ -40,6 +40,7 @@ public class FanGenerator : MonoBehaviour
         GameObject segment = new("FanSegment");
         segment.transform.SetParent(transform);
         segment.transform.localPosition = Vector3.zero;
+        segment.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
@@ -62,6 +63,7 @@ public class FanGenerator : MonoBehaviour
         GameObject backButton = new("BackButton");
         backButton.transform.SetParent(transform);
         backButton.transform.localPosition = Vector3.zero;
+        backButton.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
@@ -95,6 +97,7 @@ public class FanGenerator : MonoBehaviour
         GameObject dropButton = new("DropButton");
         dropButton.transform.SetParent(transform);
         dropButton.transform.localPosition = Vector3.zero;
+        dropButton.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = dropButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = dropButton.AddComponent<MeshRenderer>();
