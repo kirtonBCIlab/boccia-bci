@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum BocciaBciParadigm
@@ -20,13 +21,8 @@ public class BocciaData
     public bool WasInitialized;
 
     // Game
-    public Color BallColor;
-    public float ElevationPrecision;
-    public float ElevationRange;
-    public float ElevationSpeed;
-    public float RotationPrecision;
-    public float RotationRange;
-    public float RotationSpeed;
+    // Game options container for game-related settings
+    public GameOptionsContainer GameOptions = new GameOptionsContainer();
 
     // hotkeys?
 
@@ -56,6 +52,23 @@ public class BocciaData
 
     // // Hardware
     public string SerialPortName;
+}
+
+/// Container for game-related settings
+[System.Serializable]
+public class GameOptionsContainer
+{
+    public Color BallColor;
+    public float ElevationPrecision;
+    public float ElevationRange;
+    public float ElevationSpeed;
+    public float RotationPrecision;
+    public float RotationRange;
+    public float RotationSpeed;
+
+    // Empty dictionary to hold possible ball colors
+    // Define this list within BocciaModel
+    public Dictionary<string, Color> BallColorOptionsDict = new Dictionary<string, Color>();
 }
 
 /// The P300SettingsContainer class contains training and testing settings specific to the P300 paradigm.
