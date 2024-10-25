@@ -29,7 +29,7 @@ namespace FanNamespace
 
         private int _maxRows = 7;               // Max number of rows
         public int MaxRows { get { return _maxRows; } }
-        
+
         private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
 
         [SerializeField]
@@ -103,20 +103,6 @@ namespace FanNamespace
 
         [Header("Annotation options")]
         public int annotationFontSize;
-
-        public void CopyPropertiesFrom(FanSettings other)
-        {
-            columnSpacing = other.columnSpacing;
-            rowSpacing = other.rowSpacing;
-            Theta = other.Theta;
-            OuterRadius = other.OuterRadius;
-            InnerRadius = other.InnerRadius;
-            NColumns = other.NColumns;
-            NRows = other.NRows;
-            ElevationRange = other.ElevationRange;
-            BackButtonWidth = other.BackButtonWidth;
-            DropButtonHeight = other.DropButtonHeight;
-        }
 
         private void OnValidate()
         {

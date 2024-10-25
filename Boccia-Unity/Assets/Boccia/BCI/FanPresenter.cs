@@ -40,19 +40,7 @@ public class FanPresenter : MonoBehaviour
 
         _originalRotation = transform.rotation;  
 
-        // Instantiate two fans to keep track of coarse and fine fan settings
-        // if (positioningMode == FanPositioningMode.CenterToBase)
-        // {
-        //     _fineFan = ScriptableObject.CreateInstance<FanSettings>();
-        //     _coarseFan = ScriptableObject.CreateInstance<FanSettings>();
-
-        //     _coarseFan.CopyPropertiesFrom(_coarseFan);
-        //     _fineFan.CopyPropertiesFrom(_coarseFan);            
-        //     UpdateFineFan(); // Update fine fan
-
-        //     // _fineFan.hideFlags = HideFlags.HideInInspector;
-        //     // _coarseFan.hideFlags = HideFlags.HideInInspector;  
-        // }
+        UpdateFineFan(); // Update fine fan
     }
 
     /// <summary>
