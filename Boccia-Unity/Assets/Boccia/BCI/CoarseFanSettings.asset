@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c8ec9deed7acbc409e8a241cd3b84dc, type: 3}
+  m_Name: CoarseFanSettings
+  m_EditorClassIdentifier: 
+  columnSpacing: 0.5
+  rowSpacing: 0.1
+  _theta: 160
+  _outerRadius: 6
+  _innerRadius: 3.5
+  _nColumns: 7
+  _nRows: 5
+  _elevationRange: 100
+  _backButtonWidth: 1
+  _dropButtonHeight: 0.5
+  annotationFontSize: 5
