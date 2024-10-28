@@ -32,6 +32,7 @@ public class PlayMenuPresenter : MonoBehaviour
     private void BciChanged()
     {
         // Turn on Play and Virtual Play buttons only when training is complete
+        /*
         if (_model.BciTrained == true)
         {
             playBocciaButton.interactable = true;
@@ -43,5 +44,6 @@ public class PlayMenuPresenter : MonoBehaviour
             playBocciaButton.interactable = false;
             virtualPlayButton.interactable = false;
         }
+        */
     }
 }
