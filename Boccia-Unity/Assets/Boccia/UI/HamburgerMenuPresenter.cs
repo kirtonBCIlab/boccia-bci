@@ -10,6 +10,7 @@ public class HamburgerMenuPresenter : MonoBehaviour
     public Button playMenuButton;
     public Button gameOptionsButton;
     public Button bciOptionsButton;
+    public Button rampSetupButton;
     public Button quitButton;
 
     [Header("Canvas")]
@@ -28,6 +29,14 @@ public class HamburgerMenuPresenter : MonoBehaviour
         playMenuButton.onClick.AddListener(model.PlayMenu);
         gameOptionsButton.onClick.AddListener(model.ShowGameOptions); // Need to change this to show game options
         bciOptionsButton.onClick.AddListener(model.ShowBciOptions);  // Need to change this to show BCI options
+        rampSetupButton.onClick.AddListener(RampSetupClicked);
         quitButton.onClick.AddListener(model.QuitGame);
+    }
+
+    private void RampSetupClicked()
+    {
+        // Navigate to the ramp setup screen which displays in play menu
+        model.PlayMenu();
+        model.ShowRampSetup();
     }
 }
