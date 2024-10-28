@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1241,18 +1241,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 2146497314}
     m_Modifications:
     - target: {fileID: 1360815048455865100, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1360815048455865100, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1360815048455865100, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1360815048455865100, guid: 478a387523a05364c8d059c19c67e161, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1296,29 +1284,9 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
-    - target: {fileID: 2665614136469950916, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_PlaneDistance
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4402202234184990300, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4844391192083037157, guid: 478a387523a05364c8d059c19c67e161, type: 3}
       propertyPath: m_Name
       value: HamburgerMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 4844391192083037157, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4844391192083037157, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6172515617519091784, guid: 478a387523a05364c8d059c19c67e161, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
