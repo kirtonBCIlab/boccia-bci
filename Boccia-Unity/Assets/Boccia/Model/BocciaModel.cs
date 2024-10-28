@@ -87,6 +87,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // MARK: Game options
     // Setting default values for Game Options
+    // This is triggered by the ResetGameOptionsToDefaults() public method below whenever the "Reset to Default" button is pressed
+    // within the Game Options menu, via the OnResetDefaultsClicked() method in GameOptionsMenuPresenter.cs
     private void SetDefaultGameOptions()
     {
         // Set BallColor to the first color in the BallColorOptionsDict dictionary
@@ -310,6 +312,8 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
     // MARK: BCI Setting Defaults
+    // These is triggered for the active BCI paradigm by the ResetBciSettingsToDefaults() public method below whenever the
+    // "Reset to Default" button is pressed/ within the BCI Options menu, via the OnResetDefaultsClicked() method in BciOptionsMenuPresenter.cs
     private void SetDefaultP300Settings()
     // Set default values for P300 settings
     {
