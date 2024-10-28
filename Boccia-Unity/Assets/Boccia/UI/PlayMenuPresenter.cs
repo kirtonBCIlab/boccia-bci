@@ -9,18 +9,39 @@ public class PlayMenuPresenter : MonoBehaviour
     public Button playBocciaButton;
     public Button virtualPlayButton;
 
-    private BocciaModel model;
+    private BocciaModel _model;
 
     // Start is called before the first frame update
     void Start()
     {
         // cache model and subscribe for changed event
-        model = BocciaModel.Instance;
+        _model = BocciaModel.Instance;
+        _model.BciChanged += BciChanged;
 
         // connect buttons to model
         // Note - need to connect to real model function, start menu is just for test
-        trainingButton.onClick.AddListener(model.Train);
-        playBocciaButton.onClick.AddListener(model.ShowRampSetup);
-        virtualPlayButton.onClick.AddListener(model.VirtualPlay);
+        trainingButton.onClick.AddListener(_model.Train);
+        playBocciaButton.onClick.AddListener(_model.ShowRampSetup);
+        virtualPlayButton.onClick.AddListener(_model.VirtualPlay);
+
+        // Ensure Play Boccia and Virtual Play buttons cannot be clicked yet
+        playBocciaButton.interactable = false;
+        virtualPlayButton.interactable = false;
+    }
+
+    private void BciChanged()
+    {
+        // Turn on Play and Virtual Play buttons only when training is complete
+        if (_model.BciTrained == true)
+        {
+            playBocciaButton.interactable = true;
+            virtualPlayButton.interactable = true;
+        }
+
+        else 
+        {
+            playBocciaButton.interactable = false;
+            virtualPlayButton.interactable = false;
+        }
     }
 }
