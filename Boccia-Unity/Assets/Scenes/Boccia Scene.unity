@@ -3587,6 +3587,7 @@ MonoBehaviour:
   VirtualPlayScreen: {fileID: 738463301}
   TrainingScreen: {fileID: 1609661544}
   RampSetupMenu: {fileID: 134058904}
+  PlayScreen: {fileID: 4705280587221585159}
 --- !u!1001 &2466695322583312716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3644,6 +3645,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4709d4f0887c783479110c4deab2b320, type: 3}
+--- !u!1 &4705280587221585159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7062422457744525498, guid: 61bd1dc80c9f06c45b87ea455ac607ff, type: 3}
+  m_PrefabInstance: {fileID: 5907942768798430780}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5907942768798430780
 PrefabInstance:
   m_ObjectHideFlags: 0
