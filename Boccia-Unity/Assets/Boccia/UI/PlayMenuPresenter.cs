@@ -20,7 +20,7 @@ public class PlayMenuPresenter : MonoBehaviour
         // connect buttons to model
         // Note - need to connect to real model function, start menu is just for test
         trainingButton.onClick.AddListener(model.Train);
-        playBocciaButton.onClick.AddListener(model.Play);
+        playBocciaButton.onClick.AddListener(model.ShowRampSetup);
         virtualPlayButton.onClick.AddListener(model.VirtualPlay);
     }
 }
