@@ -7,6 +7,7 @@ public interface RampController
     public float Rotation { get; }
     public float Elevation { get; }
     public bool IsBarOpen { get; }
+    public bool IsMoving { get; set; }
 
     public void RotateBy(float degrees);
     public void RotateTo(float degrees);

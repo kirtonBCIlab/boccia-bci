@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class FanPresenter : MonoBehaviour
 {
+    [Header("Scripts")]
     public FanGenerator fanGenerator;
     public FanInteractions fanInteractions;
 
@@ -16,23 +17,30 @@ public class FanPresenter : MonoBehaviour
     public FanPositioningMode positioningMode;
     public BackButtonPositioningMode backButtonPositioningMode;
 
+    [Header("Fan settings")]
+    [SerializeField]
+    private FanSettings _fineFan;
+
+    [SerializeField]
+    private FanSettings _coarseFan;
+
     [Header("Fan screen")]
     [Tooltip("The screen that this fan is associated with")]
     public BocciaScreen fanTypeScreen;
     
-
     private BocciaModel _model;
     private Quaternion _originalRotation;
-    private FanGenerator _previousFan;
-    private FanGenerator _currentFan;
     
     // Start is called before the first frame update
     void Start()
     {
         _model = BocciaModel.Instance; 
         _model.NavigationChanged += NavigationChanged;
+        _model.WasChanged += UpdateFineFan;
 
-        _originalRotation = transform.rotation;   
+        _originalRotation = transform.rotation;  
+
+        UpdateFineFan(); // Update fine fan
     }
 
     /// <summary>
@@ -45,7 +53,7 @@ public class FanPresenter : MonoBehaviour
     private void CenterToRails()
     {
         float shaftOrientation = _model.GetRampOrientation();
-        float zOffset = (180 - fanGenerator.Theta)/2 - shaftOrientation;
+        float zOffset = (180 - _fineFan.Theta)/2 - shaftOrientation;
         Quaternion newRotation = Quaternion.Euler(
             _originalRotation.eulerAngles.x,
             _originalRotation.eulerAngles.y,
@@ -59,9 +67,9 @@ public class FanPresenter : MonoBehaviour
     /// as stated in `CenterToOrigin`, and then an offset of half the angle
     /// Theta will be applied in the counter-clockwise direction.
     /// </summary>
-    private void CenterToBase()
+    private void CenterNorth()
     {
-        float zOffset = (180 - fanGenerator.Theta)/2;
+        float zOffset = (180 - _coarseFan.Theta)/2;
         Quaternion newRotation = Quaternion.Euler(
             _originalRotation.eulerAngles.x,
             _originalRotation.eulerAngles.y,
@@ -94,6 +102,18 @@ public class FanPresenter : MonoBehaviour
         }
     }
 
+    private void UpdateFineFan()
+    {
+        // If the model changed and fineFan exists, update it
+        if (_fineFan != null)
+        {
+            _fineFan.Theta = _model.GameOptions.RotationRange;
+            _fineFan.NColumns = (int)_model.GameOptions.RotationPrecision;
+            _fineFan.NRows = (int)_model.GameOptions.ElevationPrecision;
+            _fineFan.ElevationRange = _model.GameOptions.ElevationRange;
+        }
+    }
+
     public void GenerateFanWorkflow()
     {
         StartCoroutine(GenerateFanCoroutine());
@@ -115,31 +135,33 @@ public class FanPresenter : MonoBehaviour
         {
             case FanPositioningMode.CenterToRails:
                 CenterToRails();
-                fanGenerator.GenerateFanShape();
-                fanGenerator.GenerateBackButton(backButtonPositioningMode);
-                fanGenerator.GenerateDropButton();
-                fanInteractions.MakeFanSegmentsInteractable();
-                fanGenerator.GenerateFanAnnotations(_model.RampRotation, _model.RampElevation, backButtonPositioningMode);
+                fanGenerator.GenerateFanShape(_fineFan);
+                fanGenerator.GenerateBackButton(_fineFan, backButtonPositioningMode);
+                fanGenerator.GenerateDropButton(_fineFan);
+                fanInteractions.MakeFanSegmentsInteractable(_fineFan);
+                fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode);
                 break;
             case FanPositioningMode.CenterToBase:
-                CenterToBase();
-                fanGenerator.ElevationRange = 100f;
-                backButtonPositioningMode = BackButtonPositioningMode.Left;
-                fanGenerator.GenerateFanShape();
-                fanGenerator.GenerateBackButton(backButtonPositioningMode);
-                fanGenerator.GenerateDropButton();
-                fanInteractions.MakeFanSegmentsInteractable();
-                fanGenerator.GenerateFanAnnotations(0, 50f, backButtonPositioningMode);
+                CenterNorth();
+                fanGenerator.GenerateFanShape(_coarseFan);
+                fanGenerator.GenerateBackButton(_coarseFan, BackButtonPositioningMode.None);
+                fanGenerator.GenerateDropButton(_coarseFan);
+                fanInteractions.MakeFanSegmentsInteractable(_coarseFan);
+                fanGenerator.GenerateFanAnnotations(_coarseFan, 0, _coarseFan.ElevationRange/2, backButtonPositioningMode);
 
                 // Change settings so that next fan is 
                 // positioningMode = FanPositioningMode.CenterToRails;
                 break;
+            case FanPositioningMode.CenterNorth:
+                CenterNorth();
+                fanGenerator.GenerateFanShape(_coarseFan);
+                fanGenerator.GenerateBackButton(_coarseFan, backButtonPositioningMode);
+                fanGenerator.GenerateDropButton(_coarseFan);
+                fanInteractions.MakeFanSegmentsInteractable(_coarseFan);
+                break;
             case FanPositioningMode.None:
-                fanGenerator.GenerateFanShape();
+                fanGenerator.GenerateFanShape(_coarseFan);
                 break;
         }
-
-        // Save current fan for future reference
-        _currentFan = fanGenerator;
     }
 }

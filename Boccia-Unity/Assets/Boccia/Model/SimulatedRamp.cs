@@ -15,6 +15,7 @@ public class SimulatedRamp : RampController
     public float Rotation { get; private set; }
     public float Elevation { get; private set; }
     public bool IsBarOpen { get; private set;}
+    public bool IsMoving { get; set; }
 
     public SimulatedRamp()
     {

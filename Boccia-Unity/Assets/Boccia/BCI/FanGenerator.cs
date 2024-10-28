@@ -4,111 +4,30 @@ using UnityEngine;
 using BCIEssentials.StimulusObjects;
 using FanNamespace;
 using TMPro;
+using UnityEngine.Rendering;
 
 
 
 public class FanGenerator : MonoBehaviour
 {
-    [Header("Fan Parameters")]
-    public float columnSpacing; // Spacing between columns
-    public float rowSpacing;    // Spacing between rows;
-
-    private int _maxColumns = 7;            // Max number of columns 
-    private int _maxRows = 7;               // Max number of rows
-    private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
-
-    [SerializeField]
-    private float _theta;               // Angle in degrees
-    public float Theta
-    {
-        get { return _theta; }
-        set { _theta = Mathf.Clamp(value, 5, 180); }
-    }
-
-    [SerializeField]
-    private float _outerRadius;          // Outer radius
-    public float OuterRadius
-    {
-        get { return _outerRadius; }
-        set 
-        {
-            _outerRadius = Mathf.Clamp(value, _minRadiusDifference, float.MaxValue); 
-            _innerRadius = Mathf.Clamp(_innerRadius, 0, _outerRadius - _minRadiusDifference);
-        }
-    }
-
-    [SerializeField]
-    private float _innerRadius;          // Inner radius
-    public float InnerRadius
-    {
-        get { return _innerRadius; }
-        set { _innerRadius = Mathf.Clamp(value, 0, OuterRadius-_minRadiusDifference); }
-    }
-   
-    [SerializeField]
-    private int _nColumns;        // Number of columns
-    public int NColumns
-    {
-        get { return _nColumns; }
-        set { _nColumns = Mathf.Clamp(value, 1, _maxColumns); }
-    }
-
-    [SerializeField]
-    private int _nRows;           // Number of rows
-    public int NRows
-    {
-        get { return _nRows; }
-        set { _nRows = Mathf.Clamp(value, 1, _maxRows); }
-    }
-
-    [SerializeField]
-    private float _elevationRange; // Elevation range [%]
-    public float ElevationRange
-    {
-        get { return _elevationRange; }
-        set { _elevationRange = Mathf.Clamp(value, 1, 100); }
-    }
-
-    [Header("Additional Button Parameters")]
-    [SerializeField]
-    private float _backButtonWidth; // Width of the back button
-    public float BackButtonWidth
-    {
-        get { return _backButtonWidth; }
-        set { _backButtonWidth = Mathf.Clamp(value, 1f, float.MaxValue); }
-    }
-
-    [SerializeField]
-    private float _dropButtonHeight; // Width of the back button
-    public float DropButtonHeight
-    {
-        get { return _dropButtonHeight; }
-        set { _dropButtonHeight = Mathf.Clamp(value, 0.5f, float.MaxValue); }
-    }
-
-    [Header("Annotation options")]
-    public int annotationFontSize;
-
-    public void GenerateFanShape()
-    {
-        GameObject fan = gameObject;
-        
-        float angleStep = Theta / NColumns;
-        float radiusStep = (OuterRadius - InnerRadius) / NRows;
+    public void GenerateFanShape(FanSettings fanSettings)
+    {        
+        float angleStep = fanSettings.Theta / fanSettings.NColumns;
+        float radiusStep = (fanSettings.OuterRadius - fanSettings.InnerRadius) / fanSettings.NRows;
 
         // Only have spacing when there are more than 1 column or row
-        if (NColumns > 1) { angleStep = (Theta - (NColumns - 1) * columnSpacing) / NColumns; }
-        if (NRows > 1) { radiusStep = (OuterRadius - InnerRadius - (NRows - 1) * rowSpacing) / NRows; }
+        if (fanSettings.NColumns > 1) { angleStep = (fanSettings.Theta - (fanSettings.NColumns - 1) * fanSettings.columnSpacing) / fanSettings.NColumns; }
+        if (fanSettings.NRows > 1) { radiusStep = (fanSettings.OuterRadius - fanSettings.InnerRadius - (fanSettings.NRows - 1) * fanSettings.rowSpacing) / fanSettings.NRows; }
 
         // Create the fan segments
-        for (int i = 0; i < NColumns; i++)
+        for (int i = 0; i < fanSettings.NColumns; i++)
         {
-            float startAngle = i * (angleStep + columnSpacing);
+            float startAngle = i * (angleStep + fanSettings.columnSpacing);
             float endAngle = startAngle + angleStep;
 
-            for (int j = 0; j < NRows; j++)
+            for (int j = 0; j < fanSettings.NRows; j++)
             {
-                float innerRadius = InnerRadius + j * (radiusStep + rowSpacing);
+                float innerRadius = fanSettings.InnerRadius + j * (radiusStep + fanSettings.rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
                 CreateFanSegment(startAngle, endAngle, innerRadius, outerRadius);
@@ -119,8 +38,9 @@ public class FanGenerator : MonoBehaviour
     public void CreateFanSegment(float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
         GameObject segment = new("FanSegment");
-        segment.transform.SetParent(this.transform);
+        segment.transform.SetParent(transform);
         segment.transform.localPosition = Vector3.zero;
+        segment.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
@@ -135,32 +55,33 @@ public class FanGenerator : MonoBehaviour
         );
     }
 
-   public void GenerateBackButton(BackButtonPositioningMode positionMode)
+   public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
    {
         // If no backbutton, skip method
         if (positionMode == BackButtonPositioningMode.None) return;
 
         GameObject backButton = new("BackButton");
-        backButton.transform.SetParent(this.transform);
+        backButton.transform.SetParent(transform);
         backButton.transform.localPosition = Vector3.zero;
+        backButton.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
         
         float startAngle = 0;
-        float endAngle = BackButtonWidth / OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
+        float endAngle = fanSettings.BackButtonWidth / fanSettings.OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
         int segments = 10; // Number of segments to approximate the arc
-        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, InnerRadius, OuterRadius, segments);
+        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
 
         // Position the back button based on the BackButtonPositioningMode
         float rotationOffset = 0;
         switch (positionMode)
         {
             case BackButtonPositioningMode.Left:
-                rotationOffset = columnSpacing + Theta;
+                rotationOffset = fanSettings.columnSpacing + fanSettings.Theta;
                 break;
             case BackButtonPositioningMode.Right:
-                rotationOffset = -(columnSpacing + endAngle);
+                rotationOffset = -(fanSettings.columnSpacing + endAngle);
                 break;
         }
         
@@ -171,17 +92,18 @@ public class FanGenerator : MonoBehaviour
         );
     }
 
-    public void GenerateDropButton()
+    public void GenerateDropButton(FanSettings fanSettings)
     {
         GameObject dropButton = new("DropButton");
-        dropButton.transform.SetParent(this.transform);
+        dropButton.transform.SetParent(transform);
         dropButton.transform.localPosition = Vector3.zero;
+        dropButton.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = dropButton.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = dropButton.AddComponent<MeshRenderer>();
         
         int segments = 50; // Number of segments to approximate the arc
-        meshFilter.mesh = GenerateFanMesh(0, Theta, InnerRadius-DropButtonHeight, InnerRadius-rowSpacing, segments);
+        meshFilter.mesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius-fanSettings.DropButtonHeight, fanSettings.InnerRadius-fanSettings.rowSpacing, segments);
 
         dropButton.transform.SetLocalPositionAndRotation
         (
@@ -241,30 +163,32 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
-    public void GenerateFanAnnotations(float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode)
+    public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode)
     {   
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
-        Vector3 startPosition = new(Mathf.Cos(startRad) * OuterRadius, Mathf.Sin(startRad) * OuterRadius, 0);
+        Vector3 startPosition = new(Mathf.Cos(startRad) * fanSettings.OuterRadius, Mathf.Sin(startRad) * fanSettings.OuterRadius, 0);
         CreateTextAnnotation
         (
             startPosition,
             rotationAngle: 0,
-            (currentRotation + Theta/2).ToString("F1") + "°",
-            TextAlignmentOptions.BottomRight
+            (currentRotation + fanSettings.Theta/2).ToString("F1") + "°",
+            TextAlignmentOptions.BottomRight,
+            annotationFontSize: fanSettings.annotationFontSize
         );
 
         // Annotation for the end angle
-        float endAngle = Theta;
+        float endAngle = fanSettings.Theta;
         float endRad = Mathf.Deg2Rad * endAngle;        
-        Vector3 endPosition = new (Mathf.Cos(endRad) * OuterRadius, Mathf.Sin(endRad) * OuterRadius, 0);
+        Vector3 endPosition = new (Mathf.Cos(endRad) * fanSettings.OuterRadius, Mathf.Sin(endRad) * fanSettings.OuterRadius, 0);
         CreateTextAnnotation
         (
             position: endPosition,
-            rotationAngle: Theta,
-            (currentRotation - Theta/2).ToString("F1") + "°",
-            TextAlignmentOptions.BottomLeft
+            rotationAngle: fanSettings.Theta,
+            (currentRotation - fanSettings.Theta/2).ToString("F1") + "°",
+            TextAlignmentOptions.BottomLeft,
+            annotationFontSize: fanSettings.annotationFontSize
         );
 
         // Place height anotations according to back button position 
@@ -276,15 +200,15 @@ public class FanGenerator : MonoBehaviour
         switch (backButtonPositioningMode)
         {
             case BackButtonPositioningMode.Right:
-                elevationLowPositionOffset = new(Mathf.Cos(endRad) * InnerRadius, Mathf.Sin(endRad) * InnerRadius + 0.05f, 0);
-                elevationHighPositionOffset = new(Mathf.Cos(endRad) * OuterRadius, Mathf.Sin(endRad) * OuterRadius + 0.05f, 0);
-                elevationRotationOffset = Theta;
+                elevationLowPositionOffset = new(Mathf.Cos(endRad) * fanSettings.InnerRadius, Mathf.Sin(endRad) * fanSettings.InnerRadius + 0.05f, 0);
+                elevationHighPositionOffset = new(Mathf.Cos(endRad) * fanSettings.OuterRadius, Mathf.Sin(endRad) * fanSettings.OuterRadius + 0.05f, 0);
+                elevationRotationOffset = fanSettings.Theta;
                 lowLimitPosition = TextAlignmentOptions.BottomRight;
                 highLimitPosition = TextAlignmentOptions.TopRight;
                 break;
             default:
-                elevationLowPositionOffset = new (InnerRadius, -0.05f, 0);
-                elevationHighPositionOffset = new(OuterRadius, -0.05f, 0);
+                elevationLowPositionOffset = new (fanSettings.InnerRadius, -0.05f, 0);
+                elevationHighPositionOffset = new(fanSettings.OuterRadius, -0.05f, 0);
                 elevationRotationOffset = 0;
                 lowLimitPosition = TextAlignmentOptions.BottomLeft;
                 highLimitPosition = TextAlignmentOptions.TopLeft;
@@ -296,8 +220,9 @@ public class FanGenerator : MonoBehaviour
         (
             position: elevationLowPositionOffset,
             rotationAngle: elevationRotationOffset,
-            text: (currentElevation - ElevationRange/2).ToString() + "%",
-            textAlignment: lowLimitPosition
+            text: (currentElevation - fanSettings.ElevationRange/2).ToString() + "%",
+            textAlignment: lowLimitPosition,
+            annotationFontSize: fanSettings.annotationFontSize
         );
 
         // Annotation for the high elevation limit
@@ -305,15 +230,16 @@ public class FanGenerator : MonoBehaviour
         (
             position: elevationHighPositionOffset,
             rotationAngle: elevationRotationOffset,
-            text: (currentElevation + ElevationRange/2).ToString() + "%",
-            textAlignment: highLimitPosition
+            text: (currentElevation + fanSettings.ElevationRange/2).ToString() + "%",
+            textAlignment: highLimitPosition,
+            annotationFontSize: fanSettings.annotationFontSize
         );
     }
     
-    private void CreateTextAnnotation(Vector3 position, float rotationAngle, string text, TextAlignmentOptions textAlignment)
+    private void CreateTextAnnotation(Vector3 position, float rotationAngle, string text, TextAlignmentOptions textAlignment, float annotationFontSize)
     {
         GameObject textObject = new ("TextAnnotation");
-        textObject.transform.SetParent(this.transform);
+        textObject.transform.SetParent(transform);
         textObject.layer = LayerMask.NameToLayer("VirtualPlayUI");
         textObject.transform.SetLocalPositionAndRotation
         (
@@ -360,17 +286,5 @@ public class FanGenerator : MonoBehaviour
         textMeshPro.color = Color.black;
         textMeshPro.alignment = textAlignment;
         textMeshPro.font = Resources.Load<TMP_FontAsset>("Assets/TextMesh Pro/Fonts/LiberationSans.ttf"); // Replace with your font asset path
-    }
-
-    private void OnValidate()
-    {
-        Theta = _theta;
-        NColumns = _nColumns;
-        NRows = _nRows;
-        InnerRadius = _innerRadius;
-        OuterRadius = _outerRadius;
-        BackButtonWidth = _backButtonWidth;
-        DropButtonHeight = _dropButtonHeight;
-        ElevationRange = _elevationRange;
     }
 }
