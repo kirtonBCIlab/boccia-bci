@@ -1327,7 +1327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7462433658856035897, guid: ac665ac115a02a344af5c3955a46d709, type: 3}
       propertyPath: m_Name
-      value: PlayControlFan
+      value: VirtualPlayControlFan
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
