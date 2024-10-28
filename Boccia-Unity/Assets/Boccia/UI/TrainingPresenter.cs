@@ -76,7 +76,7 @@ public class TrainingPresenter : MonoBehaviour
         // If t is pressed, update the instruction text
         if (Input.GetKeyDown(KeyCode.T))
         {
-            instructionText.GetComponent<TextMeshProUGUI>().text = "Training triggered.";
+            instructionText.GetComponent<TextMeshProUGUI>().text = "Training in progress.";
             _model.TrainingStarted();
         }
     }
