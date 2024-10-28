@@ -43,8 +43,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
 
     // Ramp Hardware
-    public bool RampHardwareConnected;
-    public string SerialPortName => bocciaData.SerialPortName;
+    public HardwareSettingsContainer HardwareSettings => bocciaData.HardwareSettings;
 
     // Change events
     public event System.Action WasChanged;  // Referring to the Ramp. Need to change this in other scripts (e.g. RampPresenter.cs) if we want to make the variable name more informative
@@ -108,6 +107,16 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.GameOptions.RotationSpeed = 0.0f;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
+        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.BaudRate = 9600;
+        bocciaData.HardwareSettings.IsHardwareRampMoving = false;
+        bocciaData.HardwareSettings.IsSerialPortConnected = false;
+        bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
+        {
+            {"Release", false},
+            {"Elevation", false},
+            {"Rotation", false}
+        };
     }
 
     // Generic setter method for changing any game option
@@ -410,8 +419,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void ResetRampHardwareState()
     {
-        RampHardwareConnected = false;
-        bocciaData.SerialPortName = "COM1";
+        bocciaData.HardwareSettings.IsSerialPortConnected = false;
+        bocciaData.HardwareSettings.SerialPort = "";
     }
 }
 
