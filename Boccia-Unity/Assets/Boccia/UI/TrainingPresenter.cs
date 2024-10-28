@@ -22,15 +22,27 @@ public class TrainingPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += ModelChanged;
+        _model.BciChanged += BciChanged;
 
         // Generate the fan
         //fanPresenter.GenerateFan();
+    }
+
+    void OnEnable()
+    {
+        // Subscribe to events on enable
+        if (_model != null)
+        {
+            _model.WasChanged += ModelChanged;
+            _model.BciChanged += BciChanged;
+        }
     }
 
 
     void OnDisable()
     {
         _model.WasChanged -= ModelChanged;
+        _model.BciChanged -= BciChanged;
     }
 
     private void ModelChanged()
@@ -40,12 +52,32 @@ public class TrainingPresenter : MonoBehaviour
         // to view and change it)
     }
 
+    private void BciChanged()
+    {
+        // Go back to Play Menu when training is done
+        if (_model.BciTrained == true)
+        {
+            // Update the on screen text
+            instructionText.GetComponent<TextMeshProUGUI>().text = "Training complete.";
+            StartCoroutine(BackToPlayMenu());
+        }
+    }
+
+    private IEnumerator BackToPlayMenu()
+    {
+        // Wait before switching to Play Menu so the user can see the text
+        yield return new WaitForSecondsRealtime(5f);
+        // Call the method that navigates to Play Menu
+        _model.PlayMenu();
+    }
+
     void Update()
     {
         // If t is pressed, update the instruction text
         if (Input.GetKeyDown(KeyCode.T))
         {
-            instructionText.GetComponent<TextMeshProUGUI>().text = "Training triggered.";
+            instructionText.GetComponent<TextMeshProUGUI>().text = "Training in progress.";
+            _model.TrainingStarted();
         }
     }
 }
