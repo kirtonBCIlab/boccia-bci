@@ -77,6 +77,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // For now, just emit change event if ramp changes
         rampController.RampChanged += SendRampChangeEvent;
+
+        // Set default hardware options
+        SetDefaultHardwareOptions();
     }
 
     private void OnDisable()
@@ -84,6 +87,22 @@ public class BocciaModel : Singleton<BocciaModel>
         rampController.RampChanged -= SendRampChangeEvent;
     }
 
+    // Setting default values for Hardware options
+    // This is triggered each time the application starts
+    private void SetDefaultHardwareOptions()
+    {
+
+        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.BaudRate = 9600;
+        bocciaData.HardwareSettings.IsHardwareRampMoving = false;
+        bocciaData.HardwareSettings.IsSerialPortConnected = false;
+        bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
+        {
+            {"Release", false},
+            {"Elevation", false},
+            {"Rotation", false}
+        };
+    }
 
     // MARK: Game options
     // Setting default values for Game Options
@@ -109,16 +128,6 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.GameOptions.RotationSpeed = 0.0f;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
-        bocciaData.HardwareSettings.SerialPort = "";
-        bocciaData.HardwareSettings.BaudRate = 9600;
-        bocciaData.HardwareSettings.IsHardwareRampMoving = false;
-        bocciaData.HardwareSettings.IsSerialPortConnected = false;
-        bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
-        {
-            {"Release", false},
-            {"Elevation", false},
-            {"Rotation", false}
-        };
     }
 
     // Generic setter method for changing any game option
