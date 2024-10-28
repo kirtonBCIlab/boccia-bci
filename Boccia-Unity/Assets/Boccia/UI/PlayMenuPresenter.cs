@@ -25,23 +25,25 @@ public class PlayMenuPresenter : MonoBehaviour
         virtualPlayButton.onClick.AddListener(_model.VirtualPlay);
 
         // Ensure Play Boccia and Virtual Play buttons cannot be clicked yet
-        playBocciaButton.interactable = false;
-        virtualPlayButton.interactable = false;
+        // TODO: Uncomment this when done development
+        // playBocciaButton.interactable = false;
+        // virtualPlayButton.interactable = false;
     }
 
     private void BciChanged()
     {
         // Turn on Play and Virtual Play buttons only when training is complete
-        if (_model.BciTrained == true)
-        {
-            playBocciaButton.interactable = true;
-            virtualPlayButton.interactable = true;
-        }
+        // TODO: Uncomment this when done development
+        // if (_model.BciTrained == true)
+        // {
+        //     playBocciaButton.interactable = true;
+        //     virtualPlayButton.interactable = true;
+        // }
 
-        else 
-        {
-            playBocciaButton.interactable = false;
-            virtualPlayButton.interactable = false;
-        }
+        // else 
+        // {
+        //     playBocciaButton.interactable = false;
+        //     virtualPlayButton.interactable = false;
+        // }
     }
 }
