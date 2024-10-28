@@ -5,7 +5,7 @@ public enum BocciaScreen
     HamburgerMenu,
     GameOptions,
     BciOptions,
-    RampOptions,
+    RampSetup,
     Train,
     Play,
     VirtualPlay,

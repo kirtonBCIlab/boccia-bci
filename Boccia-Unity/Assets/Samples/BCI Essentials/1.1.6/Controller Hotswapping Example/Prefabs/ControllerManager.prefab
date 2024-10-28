@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 5532972415090187197}
   - component: {fileID: 5532972415090187194}
   - component: {fileID: 5532972415090187195}
+  - component: {fileID: 870782259031274312}
   m_Layer: 0
   m_Name: ControllerManager
   m_TagString: Untagged
@@ -250,6 +251,18 @@ MonoBehaviour:
   _targetStreamName: PythonResponse
   _resolveTimeout: 1
   _pollFrequency: 0
+--- !u!114 &870782259031274312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649985292535673242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e84af0d649a928443b662abe23f64dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1649985293060537292
 GameObject:
   m_ObjectHideFlags: 0
