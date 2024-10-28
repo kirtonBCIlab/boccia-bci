@@ -35,6 +35,9 @@ public class BocciaModel : Singleton<BocciaModel>
     // Access to the current BCI Paradigm
     public BocciaBciParadigm Paradigm => bocciaData.Paradigm;  // Read-only property
 
+    // BCI Training state
+    public bool IsTraining { get; private set; }
+
     // Paradigm agnostic tracker for whether BCI Training has been done
     // get is public, set is private
     public bool BciTrained { get; private set; }
@@ -297,6 +300,20 @@ public class BocciaModel : Singleton<BocciaModel>
     // e.g. settingField = bocciaModel.P300Settings.Train.NumFlashes; newValue = 10;
     {
         settingField = newValue;
+        SendBciChangeEvent();
+    }
+
+    public void TrainingStarted()
+    {
+        IsTraining = true;
+        SendBciChangeEvent();
+    }
+
+    // Update training status when training is complete
+    public void TrainingComplete()
+    {
+        IsTraining = false;
+        BciTrained = true;
         SendBciChangeEvent();
     }
 
