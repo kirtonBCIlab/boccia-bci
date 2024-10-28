@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.EventSystems;
+using System.Reflection;
 
 public class RampSetupPresenter : MonoBehaviour
 {
-    private BocciaModel _model;
-
+    [Header("Buttons")]
     public Button closeButton;
     public Button doneButton;
 
@@ -20,6 +23,8 @@ public class RampSetupPresenter : MonoBehaviour
     public Button recalibrateElevationButton;
     public Button recalibrateRotationButton;
 
+    private BocciaModel _model;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +35,8 @@ public class RampSetupPresenter : MonoBehaviour
         closeButton.onClick.AddListener(_model.PlayMenu);
         doneButton.onClick.AddListener(_model.VirtualPlay);
 
-        // TODO: populate the serial port dropdown options
+        // Populate the serial port dropdown options
+        PopulateSerialPortDropdown();
     }
 
     // TODO: add functionality to the buttons
@@ -40,5 +46,21 @@ public class RampSetupPresenter : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PopulateSerialPortDropdown()
+    {
+        Debug.Log("Populating serial port dropdown");
+        serialPortDropdown.ClearOptions();
+        List<string> options = new(SerialPort.GetPortNames());
+        if (options.Count == 0)
+        {
+            options.Add("No serial ports found");
+        }
+        else
+        {
+            serialPortDropdown.AddOptions(options);
+        }
+        serialPortDropdown.RefreshShownValue();
     }
 }

@@ -838,6 +838,7 @@ GameObject:
   - component: {fileID: 6492310161929581189}
   - component: {fileID: 2341613998285577512}
   - component: {fileID: 8710134701823947871}
+  - component: {fileID: 6262514042679812826}
   m_Layer: 5
   m_Name: SerialPortDropdown
   m_TagString: Untagged
@@ -961,6 +962,35 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &6262514042679812826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975887960964683369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4028785143886766742}
+          m_TargetAssemblyTypeName: RampSetupPresenter, Assembly-CSharp
+          m_MethodName: PopulateSerialPortDropdown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2857475442711254281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,8 +1519,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8976129217528775899}
   - {fileID: 2722729958029590318}
+  - {fileID: 8976129217528775899}
   - {fileID: 7944235782517395604}
   m_Father: {fileID: 1122458901262733576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

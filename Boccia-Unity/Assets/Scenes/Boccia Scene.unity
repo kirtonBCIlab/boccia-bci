@@ -1070,6 +1070,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8710134701823947871, guid: be54f85c6d708194a92c70ee32ed53d5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710134701823947871, guid: be54f85c6d708194a92c70ee32ed53d5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710134701823947871, guid: be54f85c6d708194a92c70ee32ed53d5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1973401942}
+    - target: {fileID: 8710134701823947871, guid: be54f85c6d708194a92c70ee32ed53d5, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3522,6 +3538,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1973401942 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1975887960964683369, guid: be54f85c6d708194a92c70ee32ed53d5, type: 3}
+  m_PrefabInstance: {fileID: 813397948}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2146497313
 GameObject:
   m_ObjectHideFlags: 0
