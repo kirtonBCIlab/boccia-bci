@@ -21,7 +21,6 @@ public class RampSetupPresenter : MonoBehaviour
     public Button recalibrateElevationButton;
     public Button recalibrateRotationButton;
 
-    // Start is called before the first frame update
     void Start()
     {
         // cache model
@@ -47,7 +46,6 @@ public class RampSetupPresenter : MonoBehaviour
     public void PopulateSerialPortDropdown()
     {
         serialPortDropdown.ClearOptions();
-
         List<string> options = new(SerialPort.GetPortNames());
         if (options.Count == 0)
         {
