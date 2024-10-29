@@ -11,8 +11,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     public Color flashOnColor = Color.red;
     public Color flashOffColor = Color.white;
 
-    private FanGenerator _fanGenerator;
     private FanPresenter _fanPresenter;
+    private FanSettings _fanSettings;
 
     private BocciaModel _model;
     
@@ -29,12 +29,12 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// Adds colliders and click event handlers to individual fan segments
     /// </summary>
-    public void MakeFanSegmentsInteractable()
+    public void MakeFanSegmentsInteractable(FanSettings fanSettings)
     {
-        _fanGenerator = GetComponentInParent<FanGenerator>();
         _fanPresenter = GetComponentInParent<FanPresenter>();
-        int segmentID = 0;
+        _fanSettings = fanSettings;
 
+        int segmentID = 0;
         foreach (Transform child in transform)
         {
             // Change layer to the interacaable layer
@@ -75,12 +75,33 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
                 SPO spo = segment.GetComponent<SPO>();
                 int segmentID = spo.ObjectID;
                 OnFanSegmentClick(segmentID);
+
+                // Handle which fan to draw next based on the positioning mode
+                switch (_fanPresenter.positioningMode)
+                {
+                    case FanPositioningMode.CenterToBase:
+                        _fanPresenter.positioningMode = FanPositioningMode.CenterToRails;
+                        _fanPresenter.GenerateFanWorkflow();
+                        break;
+                    case FanPositioningMode.CenterToRails:
+                        _fanPresenter.positioningMode = FanPositioningMode.CenterToRails;
+                        _fanPresenter.GenerateFanWorkflow();
+                        break;
+                }
                 break;
-            case "BackButton":  
-                _fanGenerator.DestroyFanSegments();
+            case "BackButton":
+                if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails)
+                {
+                    _fanPresenter.positioningMode = FanPositioningMode.CenterToBase;
+                    _fanPresenter.GenerateFanWorkflow();
+                }
                 break;
             case "DropButton":
-                _model.DropBall();
+                // Only drop ball in play mode
+                if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
+                {
+                    _model.DropBall();
+                }
                 break;
             default:
                 break;
@@ -89,22 +110,23 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     private void OnFanSegmentClick(int segmentID)
     {
-        int columnIndex = _fanGenerator.NColumns - 1 - (segmentID / _fanGenerator.NRows);
-        int rowIndex = _fanGenerator.NRows - 1 - (segmentID % _fanGenerator.NRows);
+        Debug.Log($"Segment ID: {segmentID}");
+        int columnIndex = _fanSettings.NColumns - 1 - (segmentID / _fanSettings.NRows);
+        int rowIndex = _fanSettings.NRows - 1 - (segmentID % _fanSettings.NRows);
 
         // Initialize values to starting position of the ramp
         float rotationAngle = 0f;
         float elevation = 50f;
 
         // Calculate the rotation angle and elevation based on the number of columns and rows        
-        if (_fanGenerator.NColumns > 1)
+        if (_fanSettings.NColumns > 1)
         {
-            rotationAngle = - _fanGenerator.Theta / 2 + columnIndex * (_fanGenerator.Theta / (_fanGenerator.NColumns - 1));
+            rotationAngle = - _fanSettings.Theta / 2 + columnIndex * (_fanSettings.Theta / (_fanSettings.NColumns - 1));
         }
 
-        if (_fanGenerator.NRows > 1)
+        if (_fanSettings.NRows > 1)
         {
-            elevation = _fanGenerator.ElevationRange/2 - rowIndex * (_fanGenerator.ElevationRange / (_fanGenerator.NRows - 1));
+            elevation = _fanSettings.ElevationRange/2 - rowIndex * (_fanSettings.ElevationRange / (_fanSettings.NRows - 1));
         }
 
         // Round down to nearest integer
@@ -116,10 +138,12 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         switch (_fanPresenter.positioningMode)
         {
             case FanPositioningMode.CenterToRails:
+                Debug.Log($"Relative Rotation: {rotationAngle}, Elevation: {elevation}");
                 _model.RotateBy(rotationAngle);
                 _model.ElevateBy(elevation);
                 break;
             case FanPositioningMode.CenterToBase:
+                Debug.Log($"Absolute Rotation: {rotationAngle}, Elevation: {elevation}");
                 _model.RotateTo(rotationAngle);
                 _model.ElevateTo(elevation + 50f); // Add an offset of 50%, since 50% is the starting point of the elevation range
                 break;

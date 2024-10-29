@@ -51,7 +51,18 @@ public class BocciaData
     // ================================
 
     // // Hardware
-    public string SerialPortName;
+    public HardwareSettingsContainer HardwareSettings = new();
+}
+
+/// Container for hardware-related settings
+[System.Serializable]
+public class HardwareSettingsContainer
+{
+    public string SerialPort;
+    public int BaudRate;
+    public bool IsSerialPortConnected;
+    public bool IsHardwareRampMoving;
+    public Dictionary<string, bool> IsRampCalibrationDone = new();
 }
 
 /// Container for game-related settings

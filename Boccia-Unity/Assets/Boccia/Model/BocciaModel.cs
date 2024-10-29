@@ -24,6 +24,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
+    public bool IsRampMoving => rampController.IsMoving;
     public BocciaBallState BallState;
 
     // Expose the GameOptionsContainer via a property
@@ -46,8 +47,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
 
     // Ramp Hardware
-    public bool RampHardwareConnected;
-    public string SerialPortName => bocciaData.SerialPortName;
+    public HardwareSettingsContainer HardwareSettings => bocciaData.HardwareSettings;
 
     // Change events
     public event System.Action WasChanged;  // Referring to the Ramp. Need to change this in other scripts (e.g. RampPresenter.cs) if we want to make the variable name more informative
@@ -63,6 +63,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public void Start()
     {
         // If the model is uninitialized, set it up
+        // Note: This will not run if a model is being loaded from an existing save state
+        // e.g. Given how saving is setup, it will only run once unless something happens to the save file.
         if (!bocciaData.WasInitialized)
         {
             Debug.Log("Initializing BocciaData...");
@@ -74,6 +76,9 @@ public class BocciaModel : Singleton<BocciaModel>
             bocciaData.WasInitialized = true;
         }
 
+
+        // These will actually run each time the software starts
+
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
@@ -81,6 +86,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // For now, just emit change event if ramp changes
         rampController.RampChanged += SendRampChangeEvent;
+
+        // Set default hardware options
+        SetDefaultHardwareOptions();
     }
 
     private void OnDisable()
@@ -88,9 +96,27 @@ public class BocciaModel : Singleton<BocciaModel>
         rampController.RampChanged -= SendRampChangeEvent;
     }
 
+    // Setting default values for Hardware options
+    // This is triggered each time the application starts
+    private void SetDefaultHardwareOptions()
+    {
+
+        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.BaudRate = 9600;
+        bocciaData.HardwareSettings.IsHardwareRampMoving = false;
+        bocciaData.HardwareSettings.IsSerialPortConnected = false;
+        bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
+        {
+            {"Release", false},
+            {"Elevation", false},
+            {"Rotation", false}
+        };
+    }
 
     // MARK: Game options
     // Setting default values for Game Options
+    // This is triggered by the ResetGameOptionsToDefaults() public method below whenever the "Reset to Default" button is pressed
+    // within the Game Options menu, via the OnResetDefaultsClicked() method in GameOptionsMenuPresenter.cs
     private void SetDefaultGameOptions()
     {
         // Set BallColor to the first color in the BallColorOptionsDict dictionary
@@ -103,11 +129,11 @@ public class BocciaModel : Singleton<BocciaModel>
             GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
         }
 
-        bocciaData.GameOptions.ElevationPrecision = 0.0f;
-        bocciaData.GameOptions.ElevationRange = 0.0f;
+        bocciaData.GameOptions.ElevationPrecision = 3.0f;
+        bocciaData.GameOptions.ElevationRange = 20.0f;
         bocciaData.GameOptions.ElevationSpeed = 0.0f;
-        bocciaData.GameOptions.RotationPrecision = 0.0f;
-        bocciaData.GameOptions.RotationRange = 0.0f;
+        bocciaData.GameOptions.RotationPrecision = 3.0f;
+        bocciaData.GameOptions.RotationRange = 20.0f;
         bocciaData.GameOptions.RotationSpeed = 0.0f;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
@@ -215,6 +241,11 @@ public class BocciaModel : Singleton<BocciaModel>
         return rampController.Elevation;
     }
 
+    public bool SetRampMoving(bool isMoving)
+    {
+        return rampController.IsMoving = isMoving;
+    }
+
     // MARK: Navigation control
     public void StartMenu()
     {
@@ -318,6 +349,8 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
     // MARK: BCI Setting Defaults
+    // These is triggered for the active BCI paradigm by the ResetBciSettingsToDefaults() public method below whenever the
+    // "Reset to Default" button is pressed/ within the BCI Options menu, via the OnResetDefaultsClicked() method in BciOptionsMenuPresenter.cs
     private void SetDefaultP300Settings()
     // Set default values for P300 settings
     {
@@ -427,8 +460,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void ResetRampHardwareState()
     {
-        RampHardwareConnected = false;
-        bocciaData.SerialPortName = "COM1";
+        bocciaData.HardwareSettings.IsSerialPortConnected = false;
+        bocciaData.HardwareSettings.SerialPort = "";
     }
 }
 
