@@ -46,11 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b106698e99b89b4f894e3831e72c92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fanSettings: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
   fanGenerator: {fileID: -6058800571561212690}
   fanInteractions: {fileID: -7705321522961072228}
   positioningMode: 0
-  backButtonPositioningMode: 0
+  backButtonPositioningMode: 1
+  _fineFan: {fileID: 11400000, guid: fa646aefe576f30429b0ff7334216751, type: 2}
+  _coarseFan: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
   fanTypeScreen: 0
 --- !u!114 &-6058800571561212690
 MonoBehaviour:
@@ -64,17 +65,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c0fd8cb5a1624f41b58da45ca099ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columnSpacing: 0.5
-  rowSpacing: 0.1
-  _theta: 5
-  _outerRadius: 1
-  _innerRadius: 0
-  _nColumns: 1
-  _nRows: 1
-  _elevationRange: 1
-  _backButtonWidth: 1
-  _dropButtonHeight: 0.5
-  annotationFontSize: 0
 --- !u!114 &-7705321522961072228
 MonoBehaviour:
   m_ObjectHideFlags: 0
