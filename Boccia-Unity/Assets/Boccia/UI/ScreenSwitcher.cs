@@ -23,6 +23,7 @@ public class ScreenSwitcher : MonoBehaviour
     public GameObject VirtualPlayScreen;
     public GameObject TrainingScreen;
     public GameObject RampSetupMenu;
+    public GameObject PlayScreen;
 
     private BocciaModel model;
     private List<GameObject> screenList;
@@ -57,7 +58,8 @@ public class ScreenSwitcher : MonoBehaviour
             TrainingScreen,
             BciOptionsMenu,
             VirtualPlayScreen,
-            RampSetupMenu
+            RampSetupMenu,
+            PlayScreen
         };
     }
 
@@ -80,6 +82,10 @@ public class ScreenSwitcher : MonoBehaviour
 
             case BocciaScreen.RampSetup:
                 ShowRampSetupMenu(true);
+                break;
+
+            case BocciaScreen.Play:
+                PanCameraToScreen(PlayScreen, RampViewCameraDistance);
                 break;
 
             case BocciaScreen.VirtualPlay:
