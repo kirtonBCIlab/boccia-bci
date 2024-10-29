@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO.Ports;
 using TMPro;
 
 public class RampSetupPresenter : MonoBehaviour
@@ -20,7 +21,6 @@ public class RampSetupPresenter : MonoBehaviour
     public Button recalibrateElevationButton;
     public Button recalibrateRotationButton;
 
-    // Start is called before the first frame update
     void Start()
     {
         // cache model
@@ -30,7 +30,8 @@ public class RampSetupPresenter : MonoBehaviour
         closeButton.onClick.AddListener(_model.PlayMenu);
         doneButton.onClick.AddListener(_model.VirtualPlay);
 
-        // TODO: populate the serial port dropdown options
+        // PopulateSerialPort on start
+        PopulateSerialPortDropdown();
     }
 
     // TODO: add functionality to the buttons
@@ -40,5 +41,21 @@ public class RampSetupPresenter : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PopulateSerialPortDropdown()
+    {
+        serialPortDropdown.ClearOptions();
+        List<string> options = new(SerialPort.GetPortNames());
+        if (options.Count == 0)
+        {
+            options.Add("No serial ports found");
+        }
+        else
+        {
+            serialPortDropdown.AddOptions(options);
+        }
+        
+        serialPortDropdown.RefreshShownValue();
     }
 }
