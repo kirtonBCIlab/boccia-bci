@@ -24,6 +24,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
+    public bool IsRampMoving => rampController.IsMoving;
     public BocciaBallState BallState;
 
     // Expose the GameOptionsContainer via a property
@@ -34,6 +35,9 @@ public class BocciaModel : Singleton<BocciaModel>
     // BCI
     // Access to the current BCI Paradigm
     public BocciaBciParadigm Paradigm => bocciaData.Paradigm;  // Read-only property
+
+    // BCI Training state
+    public bool IsTraining { get; private set; }
 
     // Paradigm agnostic tracker for whether BCI Training has been done
     // get is public, set is private
@@ -125,11 +129,11 @@ public class BocciaModel : Singleton<BocciaModel>
             GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
         }
 
-        bocciaData.GameOptions.ElevationPrecision = 0.0f;
-        bocciaData.GameOptions.ElevationRange = 0.0f;
+        bocciaData.GameOptions.ElevationPrecision = 3.0f;
+        bocciaData.GameOptions.ElevationRange = 20.0f;
         bocciaData.GameOptions.ElevationSpeed = 0.0f;
-        bocciaData.GameOptions.RotationPrecision = 0.0f;
-        bocciaData.GameOptions.RotationRange = 0.0f;
+        bocciaData.GameOptions.RotationPrecision = 3.0f;
+        bocciaData.GameOptions.RotationRange = 20.0f;
         bocciaData.GameOptions.RotationSpeed = 0.0f;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
@@ -237,6 +241,11 @@ public class BocciaModel : Singleton<BocciaModel>
         return rampController.Elevation;
     }
 
+    public bool SetRampMoving(bool isMoving)
+    {
+        return rampController.IsMoving = isMoving;
+    }
+
     // MARK: Navigation control
     public void StartMenu()
     {
@@ -322,6 +331,20 @@ public class BocciaModel : Singleton<BocciaModel>
     // e.g. settingField = bocciaModel.P300Settings.Train.NumFlashes; newValue = 10;
     {
         settingField = newValue;
+        SendBciChangeEvent();
+    }
+
+    public void TrainingStarted()
+    {
+        IsTraining = true;
+        SendBciChangeEvent();
+    }
+
+    // Update training status when training is complete
+    public void TrainingComplete()
+    {
+        IsTraining = false;
+        BciTrained = true;
         SendBciChangeEvent();
     }
 
