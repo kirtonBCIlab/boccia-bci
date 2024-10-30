@@ -22,10 +22,10 @@ public class BocciaModel : Singleton<BocciaModel>
     // Game
     public BocciaGameMode GameMode;
 
+    private RampController rampController = new SimulatedRamp();
     private RampController _simulatedRamp = new SimulatedRamp();
     private RampController _hardwareRamp = new HardwareRamp();
-    
-    private RampController rampController;
+
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
