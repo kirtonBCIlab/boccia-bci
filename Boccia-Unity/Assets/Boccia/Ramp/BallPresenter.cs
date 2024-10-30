@@ -108,14 +108,20 @@ public class BallPresenter : MonoBehaviour
     private IEnumerator BarAnimation()
     {
         _model.SetRampMoving(true);
+
         // Bar opening and closing animation
         _barAnimation.SetBool("isOpening", true);
         yield return new WaitForSecondsRealtime(1f);
         _barAnimation.SetBool("isOpening", false);
-        _model.ResetBar(); // Call the method to reset the bar state to false
+
+        // Call the method to reset the Model's bar state
+        _model.ResetBar();
+
+        // Wait for the bar to fully close
+        yield return new WaitForSecondsRealtime(3f);
+        _model.SetRampMoving(false);
 
         yield return null;
-        _model.SetRampMoving(false);
     }
 
     private IEnumerator CheckBallSpeed()
