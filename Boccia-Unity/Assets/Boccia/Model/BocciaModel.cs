@@ -63,7 +63,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action BallResetChanged;
 
     // Hardware interface
-    // TODO - create this based on game mode (live or sim)
+    // TODO - create this based on game mode (live or sim)    
     public void SetRampControllerBasedOnMode()
     {
         switch (GameMode)
@@ -123,8 +123,9 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SetDefaultHardwareOptions()
     {
 
-        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.COMPort = "";
         bocciaData.HardwareSettings.BaudRate = 9600;
+        bocciaData.HardwareSettings.Serial = null;
         bocciaData.HardwareSettings.IsHardwareRampMoving = false;
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
         bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
@@ -482,8 +483,12 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void ResetRampHardwareState()
     {
+        if (bocciaData.HardwareSettings.Serial != null && bocciaData.HardwareSettings.Serial.IsOpen)
+        {
+            bocciaData.HardwareSettings.Serial.Close();
+        }
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
-        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.COMPort = "";
     }
 }
 
