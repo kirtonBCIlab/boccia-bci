@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 514650632094599693}
   - component: {fileID: 6744055110612752849}
   - component: {fileID: 8996746463622245752}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Small Boccia Ball
   m_TagString: BocciaBall
   m_Icon: {fileID: 0}
