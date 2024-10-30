@@ -115,6 +115,7 @@ public class BallPresenter : MonoBehaviour
         _barAnimation.SetBool("isOpening", false);
 
         // Call the method to reset the Model's bar state
+        // This is different from the states in the animator
         _model.ResetBar();
 
         // Wait for the bar to fully close
@@ -122,6 +123,12 @@ public class BallPresenter : MonoBehaviour
         _model.SetRampMoving(false);
 
         yield return null;
+    }
+
+    private bool IsBarClosed()
+    {
+        // Bool to check if the animation is complete
+        return _barAnimation.GetCurrentAnimatorStateInfo(0).IsName("DropBarClosed");
     }
 
     private IEnumerator CheckBallSpeed()
@@ -138,6 +145,12 @@ public class BallPresenter : MonoBehaviour
         // Stop the ball
         _ballRigidbody.velocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
+
+        // Do not instantiate a new ball unless the bar is currently closed
+        while (!IsBarClosed())
+        {
+            yield return null;
+        }
 
         // Create a new ball
         NewBocciaBall();
