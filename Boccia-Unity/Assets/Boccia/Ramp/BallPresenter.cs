@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class BallPresenter : MonoBehaviour
 {
+    // Model reference
+    private BocciaModel _model;
+
+    // References for the Boccia balls
     public GameObject ball; // The ball prefab
     private GameObject _activeBall; // Refers the the ball currently in use for each shot
     private int _ballCount = 0;
     private Rigidbody _ballRigidbody;
 
+    // References for the bar and elevation mechanism
     private Animator _barAnimation;
     public GameObject dropBar;
     public GameObject elevationPlate;
 
-    private BocciaModel _model;
-
+    // Variables for storing the ball transform
     private Vector3 _dropPosition;
     private Quaternion _dropRotation;
 
+    // Coroutines
     private Coroutine _barCoroutine;
     private Coroutine _checkBallCoroutine;
 
+    // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
 
     // Start is called before the first frame update
@@ -28,7 +34,7 @@ public class BallPresenter : MonoBehaviour
     {
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
-        _model.WasChanged += RampChanged;
+        _model.WasChanged += ModelChanged;
         _model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
@@ -38,19 +44,19 @@ public class BallPresenter : MonoBehaviour
         // Initialize bar animation
         _barAnimation = dropBar.GetComponent<Animator>();
 
-        // initialize to saved data
-        RampChanged();
+        // Initialize to saved data
+        ModelChanged();
     }
 
     void OnDisable()
     {
-        _model.WasChanged -= RampChanged;
+        _model.WasChanged -= ModelChanged;
         _model.BallResetChanged -= ResetBocciaBalls;
     }
 
     private void InitializeBall()
     {
-        // Make sure the ball is enabled
+        // Make sure the ball objectis enabled
         if (!_activeBall.activeSelf)
         {
             _activeBall.SetActive(true);
@@ -67,21 +73,22 @@ public class BallPresenter : MonoBehaviour
         // Name the ball GameObject in the hierarchy
         _activeBall.name = "Ball " + _ballCount;
 
-        // Make sure its the right color
+        // Make sure it is the right color
         _activeBall.GetComponent<Renderer>().material.color = _model.GameOptions.BallColor;
     }
 
-    private void RampChanged()
+    private void ModelChanged()
     {
-        // Updates color if ball color is pressed
+        // Updates color if ball color button is pressed
         _activeBall.GetComponent<Renderer>().material.color = _model.GameOptions.BallColor;
 
-        // If model.BarState is true, it means the bar opened (drop ball was pressed)
+        // If model.BarState is true, it means the bar opened (drop ball button was pressed)
         if (_model.BarState)
         {
             // Start the bar movement animation
             _barCoroutine = StartCoroutine(BarAnimation());
 
+            // Only execute the ball drop code if the Model's ball state is Ready
             if (_model.BallState == BocciaBallState.Ready)
             {
                 DropBall();
@@ -163,7 +170,6 @@ public class BallPresenter : MonoBehaviour
         {
             StopActiveCoroutines();
         } 
-
 
         // Create a new ball at the previous ball's drop position and rotation
         // Convert the drop position and rotation back into to world space
