@@ -79,16 +79,17 @@ public class BallPresenter : MonoBehaviour
         // If model.BarState is true, it means the bar opened (drop ball was pressed)
         if (_model.BarState)
         {
-            // Save ball position and rotation right before it is dropped
-            //dropPosition = activeBall.transform.position; 
-            //dropRotation = activeBall.transform.rotation;
-
             // Convert ball position and rotation to local space of elevationPlate
             _dropPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
             _dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
 
+            // Toggle the ball drop flag
+            _firstBallDropped = true;
+
             // Start the bar movement animation
-            StartCoroutine(DropBall());
+            _dropBallCoroutine = StartCoroutine(DropBall());
+
+            _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
         }
     }
 
@@ -101,19 +102,15 @@ public class BallPresenter : MonoBehaviour
         _barAnimation.SetBool("isOpening", false);
         _model.ResetBar(); // Call the method to reset the bar state to false
 
-        // Wait to check speed of ball to avoid NewBocciaBall() happening too early
-        yield return new WaitForSecondsRealtime(1f); 
-        _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
-
-        // Toggle the ball drop flag
-        _firstBallDropped = true;
-
         yield return null;
         _model.SetRampMoving(false);
     }
 
     private IEnumerator CheckBallSpeed()
     {
+        // Wait a bit for the ball to fully get rolling
+        yield return new WaitForSecondsRealtime(3f);
+
         // Velocity threshold
         while (_ballRigidbody.velocity.magnitude > 0.01f)
         {
