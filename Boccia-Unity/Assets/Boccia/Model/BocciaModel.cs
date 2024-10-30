@@ -63,19 +63,19 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action BallResetChanged;
 
     // Hardware interface
-    // TODO - create this based on game mode (live or sim)    
+    // TODO - create this based on game mode (live or sim)
     public void SetRampControllerBasedOnMode()
     {
         switch (GameMode)
         {
-            case BocciaGameMode.Play:
+            case BocciaGameMode.Play:  // Real ramp
                 rampController.RampChanged -= SendRampChangeEvent;
-                rampController = _hardwareRamp;                
+                rampController = _hardwareRamp;
                 rampController.RampChanged += SendRampChangeEvent;
                 break;
-            default:
+            default:  // Simulated ramp
                 rampController.RampChanged -= SendRampChangeEvent;
-                rampController = _simulatedRamp;                
+                rampController = _simulatedRamp;
                 rampController.RampChanged += SendRampChangeEvent;
                 break;     
         }   
@@ -107,7 +107,6 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Initialize controller to _simulatedRamp
         rampController = _simulatedRamp;
-        // SetRampControllerBasedOnMode();
 
         // Set default hardware options
         SetDefaultHardwareOptions();
@@ -122,10 +121,9 @@ public class BocciaModel : Singleton<BocciaModel>
     // This is triggered each time the application starts
     private void SetDefaultHardwareOptions()
     {
-
         bocciaData.HardwareSettings.COMPort = "";
         bocciaData.HardwareSettings.BaudRate = 9600;
-        bocciaData.HardwareSettings.Serial = null;
+        bocciaData.HardwareSettings.Serial = null;  // Need to have so that serial port connection to hardware persists even if we switch away from the hardware ramp
         bocciaData.HardwareSettings.IsHardwareRampMoving = false;
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
         bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
