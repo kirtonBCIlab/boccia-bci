@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using UnityEngine;
 
-public class HardwareRamp : RampController
+public class HardwareRamp : RampController, ISerialController
 {
     public event Action RampChanged;
 
@@ -11,10 +11,7 @@ public class HardwareRamp : RampController
     public float Elevation { get; private set; }
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
-    
-    public string COMPort { get; private set; }
-    public int BaudRate { get; private set; }
-    
+        
     private SerialPort _serial;
     public string SerialCommand { get; private set; }
 
@@ -86,20 +83,22 @@ public class HardwareRamp : RampController
         SendChangeEvent();
     }
 
-    public void ConnectToSerialPort()
+    public bool ConnectToSerialPort(string comPort, int baudRate)
     {
+        bool serialEnabled = false;
+
         try      
         {
-            _serial = new SerialPort(COMPort, BaudRate)
+            _serial = new SerialPort(comPort, baudRate)
             {
                 Encoding = System.Text.Encoding.UTF8,
                 DtrEnable = true
             };
             
             _serial.Open();
-            // Debug.Log("Connected to port: " + COMPort);
+            // Debug.Log("Connected to port: " + comPort);
             
-            SerialEnabled = true;
+            serialEnabled = true;
         }
 
         catch (Exception ex)
@@ -107,6 +106,8 @@ public class HardwareRamp : RampController
             Debug.Log(ex.Message);
             SerialEnabled = false;
         }
+
+        return serialEnabled;
     }
 
     public void DisconnectFromSerialPort()
@@ -115,7 +116,7 @@ public class HardwareRamp : RampController
         {
             _serial.Close();
             // Debug.Log("Disconnected from port: " + COMPort);
-        }
+        }        
     }
 
     private void SendChangeEvent()

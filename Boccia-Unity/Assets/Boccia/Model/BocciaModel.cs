@@ -24,7 +24,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private RampController rampController = new SimulatedRamp();
     private RampController _simulatedRamp = new SimulatedRamp();
-    private RampController _hardwareRamp = new HardwareRamp();
+    private HardwareRamp _hardwareRamp = new();
 
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
@@ -107,6 +107,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Initialize controller to _simulatedRamp
         rampController = _simulatedRamp;
+        SetRampControllerBasedOnMode();
 
         // Set default hardware options
         SetDefaultHardwareOptions();
@@ -207,6 +208,14 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
     public void DropBall() => rampController.DropBall();
+
+    public void ConnectToSerialPort() 
+    { 
+        bocciaData.HardwareSettings.IsSerialPortConnected = _hardwareRamp.ConnectToSerialPort(
+            bocciaData.HardwareSettings.COMPort,
+            bocciaData.HardwareSettings.BaudRate
+            ); 
+    }  
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()

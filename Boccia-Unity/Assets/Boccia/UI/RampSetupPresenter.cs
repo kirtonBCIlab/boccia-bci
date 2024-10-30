@@ -30,6 +30,10 @@ public class RampSetupPresenter : MonoBehaviour
         closeButton.onClick.AddListener(_model.PlayMenu);
         doneButton.onClick.AddListener(_model.Play);
 
+        // Connect serial port buttons to model
+        serialPortDropdown.onValueChanged.AddListener(delegate { SaveCOMPortToModel(); });
+        connectSerialPortButton.onClick.AddListener(_model.ConnectToSerialPort);
+        
         // PopulateSerialPort on start
         PopulateSerialPortDropdown();
     }
@@ -58,4 +62,10 @@ public class RampSetupPresenter : MonoBehaviour
         
         serialPortDropdown.RefreshShownValue();
     }
+
+    public void SaveCOMPortToModel()
+    {
+        _model.HardwareSettings.COMPort = serialPortDropdown.options[serialPortDropdown.value].text;
+    }
+
 }
