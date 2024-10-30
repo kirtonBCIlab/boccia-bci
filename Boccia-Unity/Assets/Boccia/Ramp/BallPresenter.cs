@@ -18,7 +18,7 @@ public class BallPresenter : MonoBehaviour
     private Vector3 _dropPosition;
     private Quaternion _dropRotation;
 
-    private Coroutine _dropBallCoroutine;
+    private Coroutine _barCoroutine;
     private Coroutine _checkBallCoroutine;
 
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
@@ -80,7 +80,7 @@ public class BallPresenter : MonoBehaviour
         if (_model.BarState)
         {
             // Start the bar movement animation
-            _dropBallCoroutine = StartCoroutine(DropBall());
+            _barCoroutine = StartCoroutine(BarAnimation());
 
             if (_model.BallState == BocciaBallState.Ready)
             {
@@ -99,7 +99,7 @@ public class BallPresenter : MonoBehaviour
         }
     }
 
-    private IEnumerator DropBall()
+    private IEnumerator BarAnimation()
     {
         _model.SetRampMoving(true);
         // Bar opening and closing animation
@@ -163,10 +163,10 @@ public class BallPresenter : MonoBehaviour
         }
 
         // Stop the coroutines if they are running
-        if (_dropBallCoroutine != null)
+        if (_barCoroutine != null)
         {
-            StopCoroutine(_dropBallCoroutine);
-            _dropBallCoroutine = null;
+            StopCoroutine(_barCoroutine);
+            _barCoroutine = null;
         }
 
         if (_checkBallCoroutine != null) 
