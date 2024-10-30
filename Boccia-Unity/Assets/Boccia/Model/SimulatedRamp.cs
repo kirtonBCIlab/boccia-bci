@@ -22,31 +22,34 @@ public class SimulatedRamp : RampController
         Rotation = 0.0f;
         Elevation = 50.0f;
         IsBarOpen = false; // Initialize the bar state as closed
+        IsMoving = false;
     }
 
     public void RotateBy(float degrees)
     {
         Rotation += degrees;
-        //Debug.Log($"Rotation: {Rotation}");
+        // Debug.Log($"Simulated rotation by: {Rotation}");
         SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
         Rotation = degrees;
+        // Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
     }
 
     public void ElevateBy(float elevation)
     {
         Elevation += elevation;
-        //Debug.Log($"Elevation: {Elevation}");
+        //Debug.Log($"Simulated elevation by: {Elevation}");
         SendChangeEvent();
     }
 
     public void ElevateTo(float elevation)
     {
         Elevation = elevation;
+        // Debug.Log($"Simulated elevation to: {Elevation}");
         SendChangeEvent();
     }
 

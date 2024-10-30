@@ -105,6 +105,9 @@ public class ScreenSwitcher : MonoBehaviour
                 PanCameraToScreen(StartMenu, CameraDistance);
                 break;
         }
+
+        // Maybe this call is expensive, could look into calling only on the appropriate screens
+        model.SetRampControllerBasedOnMode();
     }
 
     // Pans the camera to show the new screen, hides all others
