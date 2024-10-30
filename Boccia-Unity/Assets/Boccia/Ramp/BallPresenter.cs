@@ -79,17 +79,23 @@ public class BallPresenter : MonoBehaviour
         // If model.BarState is true, it means the bar opened (drop ball was pressed)
         if (_model.BarState)
         {
-            // Convert ball position and rotation to local space of elevationPlate
-            _dropPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
-            _dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
-
-            // Toggle the ball drop flag
-            _firstBallDropped = true;
-
             // Start the bar movement animation
             _dropBallCoroutine = StartCoroutine(DropBall());
 
-            _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
+            if (_model.BallState == BocciaBallState.Ready)
+            {
+                // Convert ball position and rotation to local space of elevationPlate
+                _dropPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
+                _dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
+
+                // Toggle the ball drop flag
+                _firstBallDropped = true;
+
+                _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
+
+                // Set the ball state to released
+                _model.SetBallStateReleased();
+            }
         }
     }
 
@@ -142,6 +148,9 @@ public class BallPresenter : MonoBehaviour
         // Instantiate the new ball
         _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
+
+        // Set the ball state to ready
+        _model.SetBallStateReady();
     }
 
     private void ResetBocciaBalls()
