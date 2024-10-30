@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO.Ports;
 
 public enum BocciaBciParadigm
 {
@@ -58,8 +59,9 @@ public class BocciaData
 [System.Serializable]
 public class HardwareSettingsContainer
 {
-    public string SerialPort;
+    public string COMPort;
     public int BaudRate;
+    public SerialPort Serial; 
     public bool IsSerialPortConnected;
     public bool IsHardwareRampMoving;
     public Dictionary<string, bool> IsRampCalibrationDone = new();

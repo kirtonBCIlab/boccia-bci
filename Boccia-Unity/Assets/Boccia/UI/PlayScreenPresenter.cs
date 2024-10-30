@@ -13,8 +13,7 @@ public class PlayScreenPresenter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _model = BocciaModel.Instance;
-        _model.WasChanged += ModelChanged;
+        // _model = BocciaModel.Instance;
 
         // connect buttons to model
         resetRampButton.onClick.AddListener(_model.ResetRampPosition);
@@ -25,6 +24,20 @@ public class PlayScreenPresenter : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void OnEnable()
+    {
+        if (_model == null)
+        {
+            _model = BocciaModel.Instance;
+        }
+        _model.WasChanged += ModelChanged;
+    }
+
+    void OnDisable()
+    {
+        _model.WasChanged -= ModelChanged;
     }
 
     private void ModelChanged()
