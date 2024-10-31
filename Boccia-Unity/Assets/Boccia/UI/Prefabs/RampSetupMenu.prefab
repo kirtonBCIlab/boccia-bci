@@ -2083,9 +2083,13 @@ MonoBehaviour:
   doneButton: {fileID: 7202473333782902054}
   serialPortDropdown: {fileID: 8710134701823947871}
   connectSerialPortButton: {fileID: 3088155911089596836}
+  calibrateAllButton: {fileID: 8849980544662501865}
   recalibrateBallDropButton: {fileID: 3716371422157749403}
   recalibrateElevationButton: {fileID: 9209971646745065502}
   recalibrateRotationButton: {fileID: 12769432986039559}
+  dropCheck: {fileID: 5252338004115151960}
+  elevationCheck: {fileID: 6962031341541439869}
+  rotationCheck: {fileID: 8593570168219441220}
 --- !u!1 &6671347422174894776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3304,6 +3308,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3306738760973638474, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
   m_PrefabInstance: {fileID: 1429429035859024787}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8849980544662501865 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7568061992611111546, guid: 1b76e374a2c2db841a59b92ea3cb206b, type: 3}
+  m_PrefabInstance: {fileID: 1429429035859024787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1645867899754175076
 PrefabInstance:
   m_ObjectHideFlags: 0
