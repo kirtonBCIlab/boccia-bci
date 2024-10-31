@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7697471108653858993}
   - component: {fileID: 7628221105401001540}
   - component: {fileID: 7489905980737200750}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Large Boccia Ball
-  m_TagString: Untagged
+  m_TagString: BocciaBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

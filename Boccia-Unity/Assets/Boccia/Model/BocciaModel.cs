@@ -21,10 +21,16 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Game
     public BocciaGameMode GameMode;
+
+    private RampController rampController = new SimulatedRamp();
+    private RampController _simulatedRamp = new SimulatedRamp();
+    private RampController _hardwareRamp = new HardwareRamp();
+
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
     public bool BarState => rampController.IsBarOpen;
     public bool IsRampMoving => rampController.IsMoving;
+    
     public BocciaBallState BallState;
 
     // Expose the GameOptionsContainer via a property
@@ -58,7 +64,22 @@ public class BocciaModel : Singleton<BocciaModel>
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
-    private RampController rampController = new SimulatedRamp();
+    public void SetRampControllerBasedOnMode()
+    {
+        switch (GameMode)
+        {
+            case BocciaGameMode.Play:  // Real ramp
+                rampController.RampChanged -= SendRampChangeEvent;
+                rampController = _hardwareRamp;
+                rampController.RampChanged += SendRampChangeEvent;
+                break;
+            default:  // Simulated ramp
+                rampController.RampChanged -= SendRampChangeEvent;
+                rampController = _simulatedRamp;
+                rampController.RampChanged += SendRampChangeEvent;
+                break;     
+        }   
+    }
 
     public void Start()
     {
@@ -84,8 +105,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
         SendRampChangeEvent();
 
-        // For now, just emit change event if ramp changes
-        rampController.RampChanged += SendRampChangeEvent;
+        // Initialize controller to _simulatedRamp
+        rampController = _simulatedRamp;
 
         // Set default hardware options
         SetDefaultHardwareOptions();
@@ -100,9 +121,9 @@ public class BocciaModel : Singleton<BocciaModel>
     // This is triggered each time the application starts
     private void SetDefaultHardwareOptions()
     {
-
-        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.COMPort = "";
         bocciaData.HardwareSettings.BaudRate = 9600;
+        bocciaData.HardwareSettings.Serial = null;  // Need to have so that serial port connection to hardware persists even if we switch away from the hardware ramp
         bocciaData.HardwareSettings.IsHardwareRampMoving = false;
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
         bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
@@ -259,33 +280,33 @@ public class BocciaModel : Singleton<BocciaModel>
     // MARK: Navigation control
     public void StartMenu()
     {
+        GameMode = BocciaGameMode.StopPlay;
         ShowScreen(BocciaScreen.StartMenu);
-        // GameMode = BocciaGameMode.Stop;
     }
 
     public void PlayMenu()
     {
+        GameMode = BocciaGameMode.StopPlay;
         ShowScreen(BocciaScreen.PlayMenu);
-        // GameMode = BocciaGameMode.Stop;
     }
 
     public void Train()
     {
+        GameMode = BocciaGameMode.Train;
         ShowScreen(BocciaScreen.TrainingScreen);
         // start training, hamburger -> menu = stop?
-        // GameMode = BocciaGameMode.Train;
     }
 
     public void Play()
     {
+        GameMode = BocciaGameMode.Play;
         ShowScreen(BocciaScreen.Play);
-        // GameMode = BocciaGameMode.Play;
     }
 
     public void VirtualPlay()
     {
+        GameMode = BocciaGameMode.Virtual;
         ShowScreen(BocciaScreen.VirtualPlay);
-        // GameMode = BocciaGameMode.Virtual;
     }
 
     public void ShowHamburgerMenu()
@@ -470,8 +491,12 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void ResetRampHardwareState()
     {
+        if (bocciaData.HardwareSettings.Serial != null && bocciaData.HardwareSettings.Serial.IsOpen)
+        {
+            bocciaData.HardwareSettings.Serial.Close();
+        }
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
-        bocciaData.HardwareSettings.SerialPort = "";
+        bocciaData.HardwareSettings.COMPort = "";
     }
 }
 

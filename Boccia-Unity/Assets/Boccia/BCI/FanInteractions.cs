@@ -110,7 +110,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     private void OnFanSegmentClick(int segmentID)
     {
-        Debug.Log($"Segment ID: {segmentID}");
+        // Debug.Log($"Segment ID: {segmentID}");
         int columnIndex = _fanSettings.NColumns - 1 - (segmentID / _fanSettings.NRows);
         int rowIndex = _fanSettings.NRows - 1 - (segmentID % _fanSettings.NRows);
 
@@ -138,12 +138,12 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         switch (_fanPresenter.positioningMode)
         {
             case FanPositioningMode.CenterToRails:
-                Debug.Log($"Relative Rotation: {rotationAngle}, Elevation: {elevation}");
+                // Debug.Log($"Relative Rotation: {rotationAngle}, Elevation: {elevation}");
                 _model.RotateBy(rotationAngle);
                 _model.ElevateBy(elevation);
                 break;
             case FanPositioningMode.CenterToBase:
-                Debug.Log($"Absolute Rotation: {rotationAngle}, Elevation: {elevation}");
+                // Debug.Log($"Absolute Rotation: {rotationAngle}, Elevation: {elevation}");
                 _model.RotateTo(rotationAngle);
                 _model.ElevateTo(elevation + 50f); // Add an offset of 50%, since 50% is the starting point of the elevation range
                 break;
