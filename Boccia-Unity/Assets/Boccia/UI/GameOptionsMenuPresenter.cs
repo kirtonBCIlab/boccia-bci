@@ -51,17 +51,8 @@ public class GameOptionsMenuPresenter : MonoBehaviour
             return; // Avoid running further code if the _model is not ready
         }
 
-        // Ensure RampControlFan is active when the Game Options menu is shown
-        if (rampControlFan != null && !rampControlFan.activeInHierarchy)
-        {
-            rampControlFan.SetActive(true);
-        }
-
         PopulateColorDropdown();
         InitializeValues();
-
-        // Ensure the fan is generated when the Game Options menu is opened
-        // GenerateFanForOptions();
     }
 
     private void InitializeValues()
@@ -163,16 +154,16 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         _model.ShowPreviousScreen();
     }
 
-   // Method to ensure the fan UI is generated when Game Options is loaded
+   // Method to Generate the fine fan again whenever the options are updated
     private void GenerateFanForOptions()
     {
-        Debug.Log("Running GenerateFanForOptions() method");
+        // Debug.Log("Running GenerateFanForOptions() method");
         if (rampControlFan != null && rampControlFan.activeInHierarchy)
         {
             FanPresenter fanPresenter = rampControlFan.GetComponent<FanPresenter>();
             if (fanPresenter != null)
             {
-                Debug.Log("Running fanPresenter.GenerateFanWorkflow()");
+                // Debug.Log("Running fanPresenter.GenerateFanWorkflow()");
                 fanPresenter.GenerateFanWorkflow();
             }
             else
