@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 // BocciaModel implements the "business logic" for the game.  The BocciaModel 
@@ -211,6 +212,10 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public bool ConnectToSerialPort(string comPort, int baudRate) => _hardwareRamp.ConnectToSerialPort(comPort, baudRate);
     public bool DisconnectFromSerialPort() => _hardwareRamp.DisconnectFromSerialPort();
+    public string ReadSerialCommand() => _hardwareRamp.ReadSerialCommand();
+    public void AddSerialCommandToList(string command) => _hardwareRamp.AddSerialCommandToList(command);
+    public void SendSerialCommandList() => _hardwareRamp.SendSerialCommandList();
+    public void ResetSerialCommands() => _hardwareRamp.ResetSerialCommands();
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()

@@ -11,13 +11,18 @@ public class HardwareRamp : RampController, ISerialController
     public float Elevation { get; private set; }
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
-        
-    private SerialPort _serial;
-    public string SerialCommand { get; private set; }
 
-    public bool SerialEnabled { get; private set; }
-    
-    private List<string> _serialCommands;
+    public bool SerialEnabled { get; private set; }    
+
+    private SerialPort _serial;
+    private List<string> _serialCommandsList;
+    private string _serialCommand;
+    private readonly Dictionary<string, string> _calibrationCodes = new Dictionary<string, string>
+    {
+        { "CalibrateRotation", "rc" },
+        { "CalibrateElevation", "ec" },
+        { "CalibrateDrop", "dd-70" }
+    };
 
     public HardwareRamp()
     {
@@ -25,14 +30,14 @@ public class HardwareRamp : RampController, ISerialController
         Elevation = 50.0f;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
-        SerialCommand = "";
-        _serialCommands = new List<string>();
+        _serialCommand = "";
+        _serialCommandsList = new List<string>();
     }
 
     public void RotateBy(float degrees)
     {
         Rotation += degrees;
-        _serialCommands.Add($"rr{degrees}");
+        AddSerialCommandToList($"rr{degrees}");
         // Debug.Log($"Hardware rote by: {Rotation}");
         SendChangeEvent();
     }
@@ -40,7 +45,7 @@ public class HardwareRamp : RampController, ISerialController
     public void RotateTo(float degrees)
     {
         Rotation = degrees;
-        _serialCommands.Add($"ra{degrees}");
+        AddSerialCommandToList($"ra{degrees}");
         // Debug.Log($"Hardware rote to: {Rotation}");
         SendChangeEvent();
     }
@@ -48,7 +53,7 @@ public class HardwareRamp : RampController, ISerialController
     public void ElevateBy(float elevation)
     {
         Elevation += elevation;
-        _serialCommands.Add($"er{elevation}");
+        AddSerialCommandToList($"er{elevation}");
         // Debug.Log($"Hardware elevate by: {Elevation}");
         SendChangeEvent();
     }
@@ -56,7 +61,7 @@ public class HardwareRamp : RampController, ISerialController
     public void ElevateTo(float elevation)
     {
         Elevation = elevation;
-        _serialCommands.Add($"ea{elevation}");
+        AddSerialCommandToList($"ea{elevation}");
         // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
     }
@@ -65,15 +70,15 @@ public class HardwareRamp : RampController, ISerialController
     {
         Rotation = 0.0f;
         Elevation = 50.0f;
-        _serialCommands.Add("ra0");
-        _serialCommands.Add("ea50");
+        _serialCommandsList.Add("ra0");
+        _serialCommandsList.Add("ea50");
         SendChangeEvent();
     }
 
     public void DropBall()
     {
         IsBarOpen = true; // Toggle bar state
-        _serialCommands.Add("dd-70");
+        _serialCommandsList.Add("dd-70");
         SendChangeEvent();
     }
 
@@ -129,19 +134,43 @@ public class HardwareRamp : RampController, ISerialController
         return serialEnabled;
     }
 
-    private void SendChangeEvent()
+    public string ReadSerialCommand()
     {
-        RampChanged?.Invoke();
-    }
+        string message = null;
+        
+        // Make sure we have a serial port and that the connection is open
+        if (_serial != null && _serial.IsOpen)
+        {
+            message = _serial.ReadLine();
+        }
 
-    public void SendSerialCommand()
+        return message;
+    }
+    
+    public void SendSerialCommandList()
     {
-        SerialCommand = string.Join(">", _serialCommands);
+        _serialCommand = string.Join(">", _serialCommandsList);
 
         if (_serial != null && _serial.IsOpen)
         {
-            _serial.WriteLine(SerialCommand);
-            _serialCommands.Clear();
+            _serial.WriteLine(_serialCommand);
+            ResetSerialCommands();
         }
+    }
+
+    public void AddSerialCommandToList(string command)
+    {
+        _serialCommandsList.Add(command);
+    }
+
+    public void ResetSerialCommands()
+    {
+        _serialCommandsList.Clear();
+        _serialCommand = "";
+    }
+
+    private void SendChangeEvent()
+    {
+        RampChanged?.Invoke();
     }
 }

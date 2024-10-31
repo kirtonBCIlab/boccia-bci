@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO.Ports;
 using TMPro;
 using UnityEngine.Rendering;
+using UnityEditor.VersionControl;
 
 public class RampSetupPresenter : MonoBehaviour
 {
@@ -17,10 +18,20 @@ public class RampSetupPresenter : MonoBehaviour
     public TMP_Dropdown serialPortDropdown;
     public Button connectSerialPortButton;
 
-    [Header("Calibrate")]
+    [Header("Calibration buttons")]
+    public Button calibrateAllButton;
     public Button recalibrateBallDropButton;
     public Button recalibrateElevationButton;
     public Button recalibrateRotationButton;
+
+    [Header("Calibration checks")]
+    public GameObject dropCheck;
+    public GameObject elevationCheck;
+    public GameObject rotationCheck;
+
+    private bool _rampIsCalibrating = false;
+    private List<string> _calibratingMotors = new();
+    private Dictionary<string, GameObject> _calibrationChecks = new Dictionary<string, GameObject>();
 
     void Start()
     {
@@ -37,6 +48,26 @@ public class RampSetupPresenter : MonoBehaviour
         
         // PopulateSerialPort on start
         PopulateSerialPortDropdown();
+
+        // Connect calibration buttons to model
+        calibrateAllButton.onClick.AddListener(CalibrationHandler);
+        recalibrateBallDropButton.onClick.AddListener(CalibrationHandler);
+        recalibrateElevationButton.onClick.AddListener(CalibrationHandler);
+        recalibrateRotationButton.onClick.AddListener(CalibrationHandler);
+
+        // Start with done button enabled until calibration done
+        doneButton.interactable = false;
+
+        // Initialize dictionaty to access check marks
+        _calibrationChecks = new Dictionary<string, GameObject>
+        {
+            { "Drop", dropCheck },
+            { "Elevation", elevationCheck },
+            { "Rotation", rotationCheck }
+        };
+
+        // Set all calibration checks to false
+        UnsetCalibrationCheck();
     }
 
     // TODO: add functionality to the buttons
@@ -44,8 +75,7 @@ public class RampSetupPresenter : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {        
     }
 
     public void PopulateSerialPortDropdown()
@@ -124,6 +154,102 @@ public class RampSetupPresenter : MonoBehaviour
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Connect";
             connectSerialPortButton.GetComponent<Image>().color = Color.green;
             serialPortDropdown.enabled = true;
+            doneButton.interactable = false;
         }
+    }
+
+    private void CalibrationHandler()
+    {
+        Button callingButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        _rampIsCalibrating = true;
+
+        // Set calibration commands based on button pressed
+        if (callingButton == calibrateAllButton)
+        {
+            _model.AddSerialCommandToList("dd-70");
+            _model.AddSerialCommandToList("ec");
+            _model.AddSerialCommandToList("rc");
+            _model.SendSerialCommandList();
+
+            _calibratingMotors.Add("Drop");
+            _calibratingMotors.Add("Elevation");
+            _calibratingMotors.Add("Rotation");   
+        }
+        else if (callingButton == recalibrateBallDropButton)
+        {
+            _model.AddSerialCommandToList("dd-70");
+            _model.SendSerialCommandList();
+
+            _calibratingMotors.Add("Drop");
+        }
+        else if (callingButton == recalibrateElevationButton)
+        {
+            _model.AddSerialCommandToList("ec");
+            _model.SendSerialCommandList();
+
+            _calibratingMotors.Add("Elevation");
+        }
+        else if (callingButton == recalibrateRotationButton)
+        {
+            _model.AddSerialCommandToList("rc");
+            _model.SendSerialCommandList();
+
+            _calibratingMotors.Add("Rotation");
+        }
+
+        // Iterate through each motor and check if calibration is complete
+        while (_rampIsCalibrating)
+        {
+            string message = _model.ReadSerialCommand();
+            if (!string.IsNullOrEmpty(message))
+            {
+                foreach (string motor in _calibratingMotors)
+                {
+                    if (SetCalibrationCheck(message, motor))
+                    {
+                        _calibratingMotors.Remove(motor);
+                    }
+                }
+
+                if (_calibratingMotors.Count == 0)
+                {
+                    _rampIsCalibrating = false;
+                    doneButton.interactable = true;
+                }
+            }
+        }
+    }
+
+    private bool SetCalibrationCheck(string message, string motor)
+    {
+        if (message == $"{motor} calibration complete")
+        {
+            if (_calibrationChecks.ContainsKey(motor))
+            {
+                _calibrationChecks[motor].SetActive(true);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void UnsetCalibrationCheck()
+    {
+        // If list is empty, reset to all motors
+        if (_calibratingMotors.Count == 0)
+        {
+            _calibratingMotors.AddRange(new List<string> { "Drop", "Elevation", "Rotation" });
+        }
+        
+        // Inactivate motors check marks
+        foreach (string motor in _calibratingMotors)
+        {   
+            if (_calibrationChecks.ContainsKey(motor))
+            {
+                _calibrationChecks[motor].SetActive(false);
+            }
+        }
+
     }
 }
