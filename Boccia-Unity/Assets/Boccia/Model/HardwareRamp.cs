@@ -134,7 +134,7 @@ public class HardwareRamp : RampController, ISerialController
         RampChanged?.Invoke();
     }
 
-    public void sendSerialCommand()
+    public void SendSerialCommand()
     {
         SerialCommand = string.Join(">", _serialCommands);
 

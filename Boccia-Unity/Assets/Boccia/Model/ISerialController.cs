@@ -6,7 +6,7 @@ public interface ISerialController
 
     public bool ConnectToSerialPort(string comPort, int baudRate);
     public bool DisconnectFromSerialPort();
-    public void sendSerialCommand();
+    public void SendSerialCommand();
 
     // add remaining methods like calibration, test, reset
 }
