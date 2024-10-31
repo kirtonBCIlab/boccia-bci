@@ -25,6 +25,7 @@ public class BallPresenter : MonoBehaviour
     // Coroutines
     private Coroutine _barCoroutine;
     private Coroutine _checkBallCoroutine;
+    private Coroutine _ballResetCoroutine;
 
     // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
@@ -156,7 +157,7 @@ public class BallPresenter : MonoBehaviour
         _ballRigidbody.velocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
 
-        // Do not instantiate a new ball unless the bar is currently closed
+        // If the bar is NOT closed, wait before creating a new ball
         while (!IsBarClosed())
         {
             yield return null;
@@ -208,7 +209,19 @@ public class BallPresenter : MonoBehaviour
         _ballCount = 0;
         _firstBallDropped = false;
 
-        // Create a new active ball
+        // Call the method to create a new ball
+        StartCoroutine(BallResetCoroutine());
+    }
+
+    private IEnumerator BallResetCoroutine()
+    {
+        // If the bar is NOT closed, wait before creating a new ball
+        while (!IsBarClosed())
+        {
+            yield return null;
+        }
+
+        // Create a new ball
         NewBocciaBall();
 
         // Remove the old boccia balls
