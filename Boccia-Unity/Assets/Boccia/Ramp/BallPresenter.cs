@@ -30,6 +30,8 @@ public class BallPresenter : MonoBehaviour
     // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
 
+    
+    // MARK: Initialization
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +80,8 @@ public class BallPresenter : MonoBehaviour
         _activeBall.GetComponent<Renderer>().material.color = _model.GameOptions.BallColor;
     }
 
+
+    // MARK: Model event handler
     private void ModelChanged()
     {
         // Updates color if ball color button is pressed
@@ -99,22 +103,7 @@ public class BallPresenter : MonoBehaviour
         }
     }
 
-    private void DropBall()
-    {
-        // Convert ball position and rotation to local space of elevationPlate
-        _dropPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
-        _dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
-
-        // Set the ball state to released
-        _model.SetBallStateReleased();
-
-        // Start the coroutine to check the ball speed
-        _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
-
-        // Toggle the ball drop flag
-        _firstBallDropped = true;
-    }
-
+    // MARK: Bar Animation
     private IEnumerator BarAnimation()
     {
         _model.SetRampMoving(true);
@@ -142,6 +131,24 @@ public class BallPresenter : MonoBehaviour
         return _barAnimation.GetCurrentAnimatorStateInfo(0).IsName("DropBarClosed");
     }
 
+    
+    // MARK: Ball Drop
+    private void DropBall()
+    {
+        // Convert ball position and rotation to local space of elevationPlate
+        _dropPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
+        _dropRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
+
+        // Set the ball state to released
+        _model.SetBallStateReleased();
+
+        // Start the coroutine to check the ball speed
+        _checkBallCoroutine = StartCoroutine(CheckBallSpeed());
+
+        // Toggle the ball drop flag
+        _firstBallDropped = true;
+    }
+
     private IEnumerator CheckBallSpeed()
     {
         // Wait a bit for the ball to fully get rolling
@@ -167,6 +174,8 @@ public class BallPresenter : MonoBehaviour
         NewBocciaBall();
     }
 
+
+    // MARK: Ball Instantiation
     private void NewBocciaBall()
     {
         // Stop the check ball coroutine if it is running
@@ -189,6 +198,8 @@ public class BallPresenter : MonoBehaviour
         _model.SetBallStateReady();
     }
 
+    
+    // MARK: Virtual Play Ball Reset
     private void ResetBocciaBalls()
     {
         // Check if at least one ball has been dropped
