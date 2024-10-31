@@ -165,10 +165,11 @@ public class BallPresenter : MonoBehaviour
 
     private void NewBocciaBall()
     {
-        // Stop the coroutines if they are running
-        if (_barCoroutine != null && _checkBallCoroutine != null)
+        // Stop the check ball coroutine if it is running
+        if (_checkBallCoroutine != null)
         {
-            StopActiveCoroutines();
+            StopCoroutine(_checkBallCoroutine);
+            _checkBallCoroutine = null;
         } 
 
         // Create a new ball at the previous ball's drop position and rotation
@@ -193,10 +194,11 @@ public class BallPresenter : MonoBehaviour
             return;
         }
 
-        // Stop the coroutines if they are running
-        if (_barCoroutine != null && _checkBallCoroutine != null)
+        // Stop the check ball coroutine if it is running
+        if (_checkBallCoroutine != null)
         {
-            StopActiveCoroutines();
+            StopCoroutine(_checkBallCoroutine);
+            _checkBallCoroutine = null;
         } 
 
         // Reset ball count and first drop flag
@@ -214,15 +216,6 @@ public class BallPresenter : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
-    }
-
-    private void StopActiveCoroutines()
-    {
-        StopCoroutine(_barCoroutine);
-        _barCoroutine = null;
-
-        StopCoroutine(_checkBallCoroutine);
-        _checkBallCoroutine = null;
     }
 
     /*
