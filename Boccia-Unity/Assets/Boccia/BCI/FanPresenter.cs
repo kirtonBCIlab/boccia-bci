@@ -133,47 +133,25 @@ public class FanPresenter : MonoBehaviour
 
     public void GenerateFanWorkflow()
     {
-        // Wait until the GameObject is active
-        // if (fanTypeScreen == BocciaScreen.GameOptions)
-        // {
-        //     private GameObject GameOptionsMenu; // Reference to GameOptionsMenu
-        //     GameOptionsMenu.SetActive(true);
-        //     // yield return null; // Wait for the next frame
-        //     Debug.Log(fanTypeScreen);
-        // }
-        // if (_model.CurrentScreen == BocciaScreen.GameOptions)
-        // {
-        //     return;
-        // }
-        // else
-        // {
-        //     StartCoroutine(GenerateFanCoroutine());
-        // }
+        // For generating fan on GameOptionsMenu, run it serially, not as a coroutine
+        // Otherwise, the coroutine will try to run before GameOptionsMenu is active, due to the way navigation and camera are handled, which will result in the coroutine failing for BocciaScreen.GameOptions
         if (fanTypeScreen == BocciaScreen.GameOptions)
         {
                 Debug.Log("Generating fan for GameOptionsMenu");
                 fanGenerator.DestroyFanSegments();
-                // yield return null;
                 CenterToOrigin();
                 CenterGameOptionsMenu();
                 fanGenerator.GenerateFanShape(_fineFan);
         }
+        // For all other cases, generate fan with a coroutine
         else
         {
             StartCoroutine(GenerateFanCoroutine());
         }
-        // StartCoroutine(GenerateFanCoroutine());
     }
 
     private IEnumerator GenerateFanCoroutine()
     {
-        // Wait until the GameObject is active
-        // while (!gameObject.activeInHierarchy)
-        // {
-        //     yield return null; // Wait for the next frame
-        // }
-
-        Debug.Log("FanPresenter.GenerateFanCoroutine() started");
         fanGenerator.DestroyFanSegments();
 
         // Force a frame to force fan segments destruction complete before generating the fan shape
@@ -211,13 +189,6 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateDropButton(_coarseFan);
                 fanInteractions.MakeFanSegmentsInteractable(_coarseFan);
                 break;
-            // case FanPositioningMode.GameOptionsMenu:
-            //     Debug.Log("FanPresenter.GenerateFanCoroutine() case: GameOptionsMenu");
-            //     // CenterNorth();
-            //     CenterGameOptionsMenu();
-            //     fanGenerator.GenerateFanShape(_fineFan);
-            //     // fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode);
-            //     break;
             case FanPositioningMode.None:
                 fanGenerator.GenerateFanShape(_coarseFan);
                 break;
