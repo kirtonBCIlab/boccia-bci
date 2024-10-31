@@ -50,18 +50,21 @@ public class RampSetupPresenter : MonoBehaviour
 
     public void PopulateSerialPortDropdown()
     {
-        serialPortDropdown.ClearOptions();
-        List<string> options = new(SerialPort.GetPortNames());
-        if (options.Count == 0)
+        if (serialPortDropdown.enabled)
         {
-            options.Add("No serial ports found");
+            serialPortDropdown.ClearOptions();
+            List<string> options = new(SerialPort.GetPortNames());
+            if (options.Count == 0)
+            {
+                options.Add("No serial ports found");
+            }
+            else
+            {
+                serialPortDropdown.AddOptions(options);
+            }
+            
+            serialPortDropdown.RefreshShownValue();    
         }
-        else
-        {
-            serialPortDropdown.AddOptions(options);
-        }
-        
-        serialPortDropdown.RefreshShownValue();
     }
 
     public void SaveCOMPortToModel()
