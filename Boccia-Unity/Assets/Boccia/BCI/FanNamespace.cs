@@ -80,7 +80,7 @@ namespace FanNamespace
         private float _elevationRange; // Elevation range [%]
         public float ElevationRange
         {
-            get { return _elevationRange; }
+            get { return _elevationRange; } //There is some bug where the value is not being clamped. Going to do this on return now.
             set { _elevationRange = Mathf.Clamp(value, 1, 100); }
         }
 
