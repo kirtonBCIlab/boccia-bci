@@ -209,13 +209,8 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void DropBall() => rampController.DropBall();
 
-    public void ConnectToSerialPort() 
-    { 
-        bocciaData.HardwareSettings.IsSerialPortConnected = _hardwareRamp.ConnectToSerialPort(
-            bocciaData.HardwareSettings.COMPort,
-            bocciaData.HardwareSettings.BaudRate
-            ); 
-    }  
+    public bool ConnectToSerialPort(string comPort, int baudRate) => _hardwareRamp.ConnectToSerialPort(comPort, baudRate);
+    public bool DisconnectFromSerialPort() => _hardwareRamp.DisconnectFromSerialPort();
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()

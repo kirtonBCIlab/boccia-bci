@@ -85,7 +85,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public bool ConnectToSerialPort(string comPort, int baudRate)
     {
-        bool serialEnabled = false;
+        bool serialEnabled;
 
         try      
         {
@@ -95,28 +95,38 @@ public class HardwareRamp : RampController, ISerialController
                 DtrEnable = true
             };
             
-            _serial.Open();
-            // Debug.Log("Connected to port: " + comPort);
-            
+            _serial.Open();            
             serialEnabled = true;
         }
 
         catch (Exception ex)
         {
             Debug.Log(ex.Message);
-            SerialEnabled = false;
+            serialEnabled = false;
         }
 
         return serialEnabled;
     }
 
-    public void DisconnectFromSerialPort()
+    public bool DisconnectFromSerialPort()
     {
+        bool serialEnabled = false;
         if (_serial != null && _serial.IsOpen)
         {
-            _serial.Close();
-            // Debug.Log("Disconnected from port: " + COMPort);
+            try     
+            {
+                _serial.Close();
+                serialEnabled = false;
+            }
+
+            catch (Exception ex)
+            {
+                Debug.Log(ex.Message);
+                serialEnabled = true;
+            }
         }        
+
+        return serialEnabled;
     }
 
     private void SendChangeEvent()
