@@ -85,8 +85,6 @@ public class RampSetupPresenter : MonoBehaviour
     private void ConnectToSerialPort()
     {
         _model.HardwareSettings.COMPort = serialPortDropdown.options[serialPortDropdown.value].text;
-        Debug.Log("Selected COM port: " + _model.HardwareSettings.COMPort);
-
         _model.HardwareSettings.IsSerialPortConnected = _model.ConnectToSerialPort(
             _model.HardwareSettings.COMPort,
             _model.HardwareSettings.BaudRate
