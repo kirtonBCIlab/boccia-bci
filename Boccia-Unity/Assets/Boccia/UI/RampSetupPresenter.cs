@@ -94,14 +94,14 @@ public class RampSetupPresenter : MonoBehaviour
 
         if (_model.HardwareSettings.IsSerialPortConnected)
         {
-            Debug.Log("Connected to serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Connected to serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Disconnect";
             connectSerialPortButton.GetComponent<Image>().color = Color.red;
             serialPortDropdown.enabled = false;
         }
         else
         {
-            Debug.Log("Failed to connect to serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Failed to connect to serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Error";
             connectSerialPortButton.GetComponent<Image>().color = Color.yellow;
         }
@@ -113,13 +113,13 @@ public class RampSetupPresenter : MonoBehaviour
         
         if (_model.HardwareSettings.IsSerialPortConnected)
         {
-            Debug.Log("Failed to disconnect from serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Failed to disconnect from serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Error";
             connectSerialPortButton.GetComponent<Image>().color = Color.yellow;
         }
         else
         {
-            Debug.Log("Disconnected from serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Disconnected from serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Connect";
             connectSerialPortButton.GetComponent<Image>().color = Color.green;
             serialPortDropdown.enabled = true;
