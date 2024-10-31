@@ -82,7 +82,7 @@ public class BallPresenter : MonoBehaviour
         // Updates color if ball color button is pressed
         _activeBall.GetComponent<Renderer>().material.color = _model.GameOptions.BallColor;
 
-        // If model.BarState is true, it means the bar opened (drop ball button was pressed)
+        // If model.BarState is true, it means the drop ball button was pressed
         if (_model.BarState)
         {
             // Start the bar movement animation
@@ -91,6 +91,8 @@ public class BallPresenter : MonoBehaviour
             // Only execute the ball drop code if the Model's ball state is Ready
             if (_model.BallState == BocciaBallState.Ready)
             {
+                // Call the method to log the drop position and rotation
+                // and the rest of the ball drop code
                 DropBall();
             }
         }
@@ -126,6 +128,7 @@ public class BallPresenter : MonoBehaviour
         _model.ResetBar();
 
         // Wait for the bar to fully close
+        // Before setting the ramp to not moving
         yield return new WaitForSecondsRealtime(3f);
         _model.SetRampMoving(false);
 
