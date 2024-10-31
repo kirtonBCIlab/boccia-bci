@@ -13,6 +13,9 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider rotationRangeSlider;
     public Slider elevationSpeedSlider;
     public Slider rotationSpeedSlider;
+
+    public GameObject rampControlFan;
+
     private BocciaModel _model;
     public Button doneButton;
     public Button resetDefaultsButton;
@@ -48,8 +51,17 @@ public class GameOptionsMenuPresenter : MonoBehaviour
             return; // Avoid running further code if the _model is not ready
         }
 
+        // Ensure RampControlFan is active when the Game Options menu is shown
+        if (rampControlFan != null && !rampControlFan.activeInHierarchy)
+        {
+            rampControlFan.SetActive(true);
+        }
+
         PopulateColorDropdown();
         InitializeValues();
+
+        // Ensure the fan is generated when the Game Options menu is opened
+        // GenerateFanForOptions();
     }
 
     private void InitializeValues()
@@ -108,21 +120,25 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void OnChangeElevationPrecision(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.ElevationPrecision, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeElevationRange(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.ElevationRange, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeRotationPrecision(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.RotationPrecision, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeRotationRange(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.RotationRange, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeElevationSpeed(float value)
@@ -145,5 +161,28 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void OnDoneButtonClicked()
     {
         _model.ShowPreviousScreen();
+    }
+
+   // Method to ensure the fan UI is generated when Game Options is loaded
+    private void GenerateFanForOptions()
+    {
+        Debug.Log("Running GenerateFanForOptions() method");
+        if (rampControlFan != null && rampControlFan.activeInHierarchy)
+        {
+            FanPresenter fanPresenter = rampControlFan.GetComponent<FanPresenter>();
+            if (fanPresenter != null)
+            {
+                Debug.Log("Running fanPresenter.GenerateFanWorkflow()");
+                fanPresenter.GenerateFanWorkflow();
+            }
+            else
+            {
+                Debug.LogError("FanPresenter component is missing on RampControlFan.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("RampControlFan is inactive or null when trying to generate fan.");
+        }
     }
 }
