@@ -79,6 +79,23 @@ public class FanPresenter : MonoBehaviour
     }
 
     /// <summary>
+    /// Center the fan to the Game Options Menu. The fine fan is oriented to 
+    /// the vertical axis of the game options menu, and offset by half of the
+    /// fineFan theta so it is centered
+    /// </summary>
+    private void CenterGameOptionsMenu()
+    {
+        // float _originalRotation = transform.localRotation;
+        float zOffset = (180 - _fineFan.Theta)/2;// - _originalRotation;
+        Quaternion newRotation = Quaternion.Euler(
+            _originalRotation.eulerAngles.x,
+            _originalRotation.eulerAngles.y,
+            _originalRotation.eulerAngles.z + zOffset
+            );
+        transform.localRotation = newRotation;
+    }
+
+    /// <summary>
     /// Reset the fan to the original rotation. The fan will be generated
     /// in the XY plane, counting the degrees in counter clock mode from
     /// the +X axis.
@@ -116,12 +133,47 @@ public class FanPresenter : MonoBehaviour
 
     public void GenerateFanWorkflow()
     {
-        StartCoroutine(GenerateFanCoroutine());
+        // Wait until the GameObject is active
+        // if (fanTypeScreen == BocciaScreen.GameOptions)
+        // {
+        //     private GameObject GameOptionsMenu; // Reference to GameOptionsMenu
+        //     GameOptionsMenu.SetActive(true);
+        //     // yield return null; // Wait for the next frame
+        //     Debug.Log(fanTypeScreen);
+        // }
+        // if (_model.CurrentScreen == BocciaScreen.GameOptions)
+        // {
+        //     return;
+        // }
+        // else
+        // {
+        //     StartCoroutine(GenerateFanCoroutine());
+        // }
+        if (fanTypeScreen == BocciaScreen.GameOptions)
+        {
+                Debug.Log("Generating fan for GameOptionsMenu");
+                fanGenerator.DestroyFanSegments();
+                // yield return null;
+                CenterToOrigin();
+                CenterGameOptionsMenu();
+                fanGenerator.GenerateFanShape(_fineFan);
+        }
+        else
+        {
+            StartCoroutine(GenerateFanCoroutine());
+        }
+        // StartCoroutine(GenerateFanCoroutine());
     }
 
     private IEnumerator GenerateFanCoroutine()
     {
-        
+        // Wait until the GameObject is active
+        // while (!gameObject.activeInHierarchy)
+        // {
+        //     yield return null; // Wait for the next frame
+        // }
+
+        Debug.Log("FanPresenter.GenerateFanCoroutine() started");
         fanGenerator.DestroyFanSegments();
 
         // Force a frame to force fan segments destruction complete before generating the fan shape
@@ -159,6 +211,13 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateDropButton(_coarseFan);
                 fanInteractions.MakeFanSegmentsInteractable(_coarseFan);
                 break;
+            // case FanPositioningMode.GameOptionsMenu:
+            //     Debug.Log("FanPresenter.GenerateFanCoroutine() case: GameOptionsMenu");
+            //     // CenterNorth();
+            //     CenterGameOptionsMenu();
+            //     fanGenerator.GenerateFanShape(_fineFan);
+            //     // fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode);
+            //     break;
             case FanPositioningMode.None:
                 fanGenerator.GenerateFanShape(_coarseFan);
                 break;
