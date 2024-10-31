@@ -57,7 +57,7 @@ public class HardwareRamp : RampController, ISerialController
     {
         Elevation = elevation;
         _serialCommands.Add($"ea{elevation}");
-        Debug.Log($"Hardware elevate to: {Elevation}");
+        // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
     }
 
