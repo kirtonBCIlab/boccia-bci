@@ -79,6 +79,23 @@ public class FanPresenter : MonoBehaviour
     }
 
     /// <summary>
+    /// Center the fan to the Game Options Menu. The fine fan is oriented to 
+    /// the vertical axis of the game options menu, and offset by half of the
+    /// fineFan theta so it is centered
+    /// </summary>
+    private void CenterGameOptionsMenu()
+    {
+        // float _originalRotation = transform.localRotation;
+        float zOffset = (180 - _fineFan.Theta)/2;// - _originalRotation;
+        Quaternion newRotation = Quaternion.Euler(
+            _originalRotation.eulerAngles.x,
+            _originalRotation.eulerAngles.y,
+            _originalRotation.eulerAngles.z + zOffset
+            );
+        transform.localRotation = newRotation;
+    }
+
+    /// <summary>
     /// Reset the fan to the original rotation. The fan will be generated
     /// in the XY plane, counting the degrees in counter clock mode from
     /// the +X axis.
@@ -116,12 +133,25 @@ public class FanPresenter : MonoBehaviour
 
     public void GenerateFanWorkflow()
     {
-        StartCoroutine(GenerateFanCoroutine());
+        // For generating fan on GameOptionsMenu, run it serially, not as a coroutine
+        // Otherwise, the coroutine will try to run before GameOptionsMenu is active, due to the way navigation and camera are handled, which will result in the coroutine failing for BocciaScreen.GameOptions
+        if (fanTypeScreen == BocciaScreen.GameOptions)
+        {
+                Debug.Log("Generating fan for GameOptionsMenu");
+                fanGenerator.DestroyFanSegments();
+                CenterToOrigin();
+                CenterGameOptionsMenu();
+                fanGenerator.GenerateFanShape(_fineFan);
+        }
+        // For all other cases, generate fan with a coroutine
+        else
+        {
+            StartCoroutine(GenerateFanCoroutine());
+        }
     }
 
     private IEnumerator GenerateFanCoroutine()
     {
-        
         fanGenerator.DestroyFanSegments();
 
         // Force a frame to force fan segments destruction complete before generating the fan shape

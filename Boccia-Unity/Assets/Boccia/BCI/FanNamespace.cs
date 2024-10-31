@@ -15,6 +15,7 @@ namespace FanNamespace
         CenterToRails,
         CenterToBase,
         CenterNorth,
+        GameOptionsMenu
     }
 
     [CreateAssetMenu(fileName = "FanSettings", menuName = "Fan/FanSettings")]
