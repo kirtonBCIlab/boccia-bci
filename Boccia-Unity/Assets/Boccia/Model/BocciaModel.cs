@@ -215,6 +215,16 @@ public class BocciaModel : Singleton<BocciaModel>
         SendRampChangeEvent();
     }
 
+    public void SetBallStateReady()
+    {
+        BallState = BocciaBallState.Ready;
+    }
+
+    public void SetBallStateReleased()
+    {
+        BallState = BocciaBallState.Released;
+    }
+
     public void ResetVirtualBalls()
     {
         SendBallResetEvent();
