@@ -60,6 +60,9 @@ public class RampSetupPresenter : MonoBehaviour
         // Start with done button enabled until calibration done
         doneButton.interactable = false;
 
+        // Disable calibration buttons on start
+        EnableCalibrateButtons(false);
+
         // Initialize dictionaty to access check marks
         _calibrationCheckmarks = new Dictionary<string, GameObject>
         {
@@ -139,7 +142,7 @@ public class RampSetupPresenter : MonoBehaviour
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Disconnect";
             connectSerialPortButton.GetComponent<Image>().color = Color.red;
             serialPortDropdown.enabled = false;
-            ResetCalibrationStatus();
+            EnableCalibrateButtons(true);
         }
         else
         {
@@ -167,7 +170,8 @@ public class RampSetupPresenter : MonoBehaviour
             serialPortDropdown.enabled = true;
             doneButton.interactable = false;
             _rampIsCalibrating = false;
-            
+            EnableCalibrateButtons(false);
+            ResetCalibrationStatus();
         }
     }
 
@@ -222,6 +226,7 @@ public class RampSetupPresenter : MonoBehaviour
     {
         while (_rampIsCalibrating)
         {
+            EnableCalibrateButtons(false);
             var messageTask = _model.ReadSerialCommandAsync();
             yield return new WaitUntil(() => messageTask.IsCompleted);
 
@@ -248,6 +253,7 @@ public class RampSetupPresenter : MonoBehaviour
                 {
                     _rampIsCalibrating = false;
                     doneButton.interactable = true;
+                    EnableCalibrateButtons(true);
                     // Debug.Log("Calibration done");
                 }
             }
@@ -306,5 +312,13 @@ public class RampSetupPresenter : MonoBehaviour
         {
             _motorsToCalibrate.Clear();
         }
+    }
+
+    private void EnableCalibrateButtons(bool enable)
+    {
+        calibrateAllButton.interactable = enable;
+        recalibrateBallDropButton.interactable = enable;
+        recalibrateElevationButton.interactable = enable;
+        recalibrateRotationButton.interactable = enable;
     }
 }

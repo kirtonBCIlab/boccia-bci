@@ -99,7 +99,6 @@ public class HardwareRamp : RampController, ISerialController
                 RtsEnable = true,
             };
             
-            Debug.Log("Serial port connected succesfully");
             _serial.Open();            
             serialEnabled = true;
         }
