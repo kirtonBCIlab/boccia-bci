@@ -201,6 +201,12 @@ public class BallPresenter : MonoBehaviour
         {
             ResetBocciaBalls();
         }
+
+        // When the game switches to Virtual Play screen, reset balls
+        if (_model.CurrentScreen == BocciaScreen.VirtualPlay)
+        {
+            ResetBocciaBalls();
+        }
     }
 
     /*
