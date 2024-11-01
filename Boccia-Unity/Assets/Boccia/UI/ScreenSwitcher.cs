@@ -114,7 +114,6 @@ public class ScreenSwitcher : MonoBehaviour
     private void PanCameraToScreen(GameObject screenToShow, float distance)
     {
         screenToShow.SetActive(true);
-        PanCameraTo(screenToShow, distance);
 
         foreach (var screen in screenList)
         {
@@ -123,6 +122,8 @@ public class ScreenSwitcher : MonoBehaviour
                 screen.SetActive(false);
             }
         }
+
+        PanCameraTo(screenToShow, distance);
     }
 
     private void PanCameraTo(GameObject screenToShow, float distance)

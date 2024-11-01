@@ -13,6 +13,9 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Slider rotationRangeSlider;
     public Slider elevationSpeedSlider;
     public Slider rotationSpeedSlider;
+
+    public GameObject rampControlFan;
+
     private BocciaModel _model;
     public Button doneButton;
     public Button resetDefaultsButton;
@@ -108,21 +111,25 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void OnChangeElevationPrecision(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.ElevationPrecision, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeElevationRange(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.ElevationRange, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeRotationPrecision(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.RotationPrecision, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeRotationRange(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.RotationRange, value);
+        GenerateFanForOptions();
     }
 
     public void OnChangeElevationSpeed(float value)
@@ -145,5 +152,28 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void OnDoneButtonClicked()
     {
         _model.ShowPreviousScreen();
+    }
+
+   // Method to Generate the fine fan again whenever the options are updated
+    private void GenerateFanForOptions()
+    {
+        // Debug.Log("Running GenerateFanForOptions() method");
+        if (rampControlFan != null && rampControlFan.activeInHierarchy)
+        {
+            FanPresenter fanPresenter = rampControlFan.GetComponent<FanPresenter>();
+            if (fanPresenter != null)
+            {
+                // Debug.Log("Running fanPresenter.GenerateFanWorkflow()");
+                fanPresenter.GenerateFanWorkflow();
+            }
+            else
+            {
+                Debug.LogError("FanPresenter component is missing on RampControlFan.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("RampControlFan is inactive or null when trying to generate fan.");
+        }
     }
 }
