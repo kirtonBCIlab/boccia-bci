@@ -6,6 +6,8 @@ using System.IO.Ports;
 using TMPro;
 using UnityEngine.Rendering;
 using UnityEditor.VersionControl;
+using System.Threading.Tasks;
+using System.Linq;
 
 public class RampSetupPresenter : MonoBehaviour
 {
@@ -76,6 +78,10 @@ public class RampSetupPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
+        // if (_model.HardwareSettings.IsSerialPortConnected)
+        // {
+        //    Debug.Log( _model.ReadSerialCommand() );
+        // }
     }
 
     public void PopulateSerialPortDropdown()
@@ -100,6 +106,7 @@ public class RampSetupPresenter : MonoBehaviour
     public void SaveCOMPortToModel()
     {
         _model.HardwareSettings.COMPort = serialPortDropdown.options[serialPortDropdown.value].text;
+        Debug.Log("COM port set to: " + _model.HardwareSettings.COMPort);
     }
 
     private void SerialConnectionHandler()
@@ -117,22 +124,24 @@ public class RampSetupPresenter : MonoBehaviour
 
     private void ConnectToSerialPort()
     {
-        _model.HardwareSettings.COMPort = serialPortDropdown.options[serialPortDropdown.value].text;
+        // _model.HardwareSettings.COMPort = serialPortDropdown.options[serialPortDropdown.value].text;
+        SaveCOMPortToModel();
         _model.HardwareSettings.IsSerialPortConnected = _model.ConnectToSerialPort(
             _model.HardwareSettings.COMPort,
             _model.HardwareSettings.BaudRate
             );
 
+        Debug.Log("Connecting to serial port: " + _model.HardwareSettings.COMPort + " connection is " + _model.HardwareSettings.IsSerialPortConnected);
         if (_model.HardwareSettings.IsSerialPortConnected)
         {
-            // Debug.Log("Connected to serial port: " + _model.HardwareSettings.COMPort);
+            Debug.Log("Connected to serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Disconnect";
             connectSerialPortButton.GetComponent<Image>().color = Color.red;
             serialPortDropdown.enabled = false;
         }
         else
         {
-            // Debug.Log("Failed to connect to serial port: " + _model.HardwareSettings.COMPort);
+            Debug.Log("Failed to connect to serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Error";
             connectSerialPortButton.GetComponent<Image>().color = Color.yellow;
         }
@@ -144,13 +153,13 @@ public class RampSetupPresenter : MonoBehaviour
         
         if (_model.HardwareSettings.IsSerialPortConnected)
         {
-            // Debug.Log("Failed to disconnect from serial port: " + _model.HardwareSettings.COMPort);
+            Debug.Log("Failed to disconnect from serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Error";
             connectSerialPortButton.GetComponent<Image>().color = Color.yellow;
         }
         else
         {
-            // Debug.Log("Disconnected from serial port: " + _model.HardwareSettings.COMPort);
+            Debug.Log("Disconnected from serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Connect";
             connectSerialPortButton.GetComponent<Image>().color = Color.green;
             serialPortDropdown.enabled = true;
@@ -197,27 +206,31 @@ public class RampSetupPresenter : MonoBehaviour
             _calibratingMotors.Add("Rotation");
         }
 
+        Debug.Log("Calibration started");
         // Iterate through each motor and check if calibration is complete
-        while (_rampIsCalibrating)
+        System.Threading.Tasks.Task.Run(async () => 
         {
-            string message = _model.ReadSerialCommand();
-            if (!string.IsNullOrEmpty(message))
+            while (_rampIsCalibrating)
             {
-                foreach (string motor in _calibratingMotors)
+                var message = await _model.ReadSerialCommandAsync();
+                if (!string.IsNullOrEmpty(message))
                 {
-                    if (SetCalibrationCheck(message, motor))
+                    foreach (string motor in _calibratingMotors.ToList())
                     {
-                        _calibratingMotors.Remove(motor);
+                        if (SetCalibrationCheck(message, motor))
+                        {
+                            _calibratingMotors.Remove(motor);
+                        }
+                    }
+
+                    if (_calibratingMotors.Count == 0)
+                    {
+                        _rampIsCalibrating = false;
+                        doneButton.interactable = true;
                     }
                 }
-
-                if (_calibratingMotors.Count == 0)
-                {
-                    _rampIsCalibrating = false;
-                    doneButton.interactable = true;
-                }
             }
-        }
+        });
     }
 
     private bool SetCalibrationCheck(string message, string motor)

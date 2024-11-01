@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class HardwareRamp : RampController, ISerialController
 {
@@ -142,6 +143,26 @@ public class HardwareRamp : RampController, ISerialController
         if (_serial != null && _serial.IsOpen)
         {
             message = _serial.ReadLine();
+        }
+
+        return message;
+    }
+
+    // ReadSerialCommandAsync
+    public async Task<string> ReadSerialCommandAsync()
+    {
+        string message = null;
+
+        if (_serial != null && _serial.IsOpen)
+        {
+            try
+            {
+                message = await Task.Run(() => _serial.ReadLine());
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex.Message);
+            }
         }
 
         return message;

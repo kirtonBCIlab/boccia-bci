@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
@@ -216,6 +217,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public void AddSerialCommandToList(string command) => _hardwareRamp.AddSerialCommandToList(command);
     public void SendSerialCommandList() => _hardwareRamp.SendSerialCommandList();
     public void ResetSerialCommands() => _hardwareRamp.ResetSerialCommands();
+    public Task<string> ReadSerialCommandAsync() => _hardwareRamp.ReadSerialCommandAsync();
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()
