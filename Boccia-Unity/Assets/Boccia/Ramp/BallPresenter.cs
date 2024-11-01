@@ -29,6 +29,7 @@ public class BallPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += RampChanged;
+        _model.NavigationChanged += NavigationChanged;
         _model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
@@ -190,6 +191,15 @@ public class BallPresenter : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+        }
+    }
+
+    private void NavigationChanged()
+    {
+        // When the game switches to Play screen, reset balls
+        if (_model.CurrentScreen == BocciaScreen.Play)
+        {
+            ResetBocciaBalls();
         }
     }
 
