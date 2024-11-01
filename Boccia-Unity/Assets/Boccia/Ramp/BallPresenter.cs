@@ -14,18 +14,16 @@ public class BallPresenter : MonoBehaviour
     private Rigidbody _ballRigidbody;
 
     // References for the bar and elevation mechanism
-    private Animator _barAnimation;
     public GameObject dropBar;
     public GameObject elevationPlate;
+    private Animator _barAnimation;
 
     // Variables for storing the ball transform
     private Vector3 _dropPosition;
     private Quaternion _dropRotation;
 
     // Coroutines
-    private Coroutine _barCoroutine;
     private Coroutine _checkBallCoroutine;
-    private Coroutine _ballResetCoroutine;
 
     // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
@@ -91,7 +89,7 @@ public class BallPresenter : MonoBehaviour
         if (_model.BarState)
         {
             // Start the bar movement animation
-            _barCoroutine = StartCoroutine(BarAnimation());
+            StartCoroutine(BarAnimation());
 
             // Only execute the ball drop code if the Model's ball state is Ready
             if (_model.BallState == BocciaBallState.Ready)
