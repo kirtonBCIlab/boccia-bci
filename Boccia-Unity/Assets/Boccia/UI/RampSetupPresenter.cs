@@ -32,8 +32,8 @@ public class RampSetupPresenter : MonoBehaviour
     public GameObject rotationCheck;
 
     private bool _rampIsCalibrating = false;
-    private List<string> _calibratingMotors = new();
-    private Dictionary<string, GameObject> _calibrationChecks = new Dictionary<string, GameObject>();
+    private List<string> _motorsToCalibrate = new();
+    private Dictionary<string, GameObject> _calibrationCheckmarks = new Dictionary<string, GameObject>();
 
     void Start()
     {
@@ -61,7 +61,7 @@ public class RampSetupPresenter : MonoBehaviour
         doneButton.interactable = false;
 
         // Initialize dictionaty to access check marks
-        _calibrationChecks = new Dictionary<string, GameObject>
+        _calibrationCheckmarks = new Dictionary<string, GameObject>
         {
             { "Drop", dropCheck },
             { "Elevation", elevationCheck },
@@ -69,7 +69,7 @@ public class RampSetupPresenter : MonoBehaviour
         };
 
         // Set all calibration checks to false
-        UnsetCalibrationCheck();
+        ResetCalibrationStatus();
     }
 
     // TODO: add functionality to the buttons
@@ -106,7 +106,7 @@ public class RampSetupPresenter : MonoBehaviour
     public void SaveCOMPortToModel()
     {
         _model.HardwareSettings.COMPort = serialPortDropdown.options[serialPortDropdown.value].text;
-        Debug.Log("COM port set to: " + _model.HardwareSettings.COMPort);
+        // Debug.Log("COM port set to: " + _model.HardwareSettings.COMPort);
     }
 
     private void SerialConnectionHandler()
@@ -131,17 +131,19 @@ public class RampSetupPresenter : MonoBehaviour
             _model.HardwareSettings.BaudRate
             );
 
-        Debug.Log("Connecting to serial port: " + _model.HardwareSettings.COMPort + " connection is " + _model.HardwareSettings.IsSerialPortConnected);
+        // Debug.Log("Connecting to serial port: " + _model.HardwareSettings.COMPort + " connection is " + _model.HardwareSettings.IsSerialPortConnected);
+        // Debug.Log("Baud rate: " + _model.HardwareSettings.BaudRate);
         if (_model.HardwareSettings.IsSerialPortConnected)
         {
-            Debug.Log("Connected to serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Connected to serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Disconnect";
             connectSerialPortButton.GetComponent<Image>().color = Color.red;
             serialPortDropdown.enabled = false;
+            ResetCalibrationStatus();
         }
         else
         {
-            Debug.Log("Failed to connect to serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Failed to connect to serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Error";
             connectSerialPortButton.GetComponent<Image>().color = Color.yellow;
         }
@@ -153,25 +155,29 @@ public class RampSetupPresenter : MonoBehaviour
         
         if (_model.HardwareSettings.IsSerialPortConnected)
         {
-            Debug.Log("Failed to disconnect from serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Failed to disconnect from serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Error";
             connectSerialPortButton.GetComponent<Image>().color = Color.yellow;
         }
         else
         {
-            Debug.Log("Disconnected from serial port: " + _model.HardwareSettings.COMPort);
+            // Debug.Log("Disconnected from serial port: " + _model.HardwareSettings.COMPort);
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Connect";
             connectSerialPortButton.GetComponent<Image>().color = Color.green;
             serialPortDropdown.enabled = true;
             doneButton.interactable = false;
+            _rampIsCalibrating = false;
+            
         }
     }
 
     private void CalibrationHandler()
     {
+        _model.ResetSerialCommands();
+
         Button callingButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         _rampIsCalibrating = true;
-
+        
         // Set calibration commands based on button pressed
         if (callingButton == calibrateAllButton)
         {
@@ -180,89 +186,125 @@ public class RampSetupPresenter : MonoBehaviour
             _model.AddSerialCommandToList("rc");
             _model.SendSerialCommandList();
 
-            _calibratingMotors.Add("Drop");
-            _calibratingMotors.Add("Elevation");
-            _calibratingMotors.Add("Rotation");   
+            _motorsToCalibrate.Add("Drop");
+            _motorsToCalibrate.Add("Elevation");
+            _motorsToCalibrate.Add("Rotation");   
         }
         else if (callingButton == recalibrateBallDropButton)
         {
             _model.AddSerialCommandToList("dd-70");
             _model.SendSerialCommandList();
 
-            _calibratingMotors.Add("Drop");
+            _motorsToCalibrate.Add("Drop");
         }
         else if (callingButton == recalibrateElevationButton)
         {
             _model.AddSerialCommandToList("ec");
             _model.SendSerialCommandList();
 
-            _calibratingMotors.Add("Elevation");
+            _motorsToCalibrate.Add("Elevation");
         }
         else if (callingButton == recalibrateRotationButton)
         {
             _model.AddSerialCommandToList("rc");
             _model.SendSerialCommandList();
 
-            _calibratingMotors.Add("Rotation");
+            _motorsToCalibrate.Add("Rotation");
         }
 
-        Debug.Log("Calibration started");
-        // Iterate through each motor and check if calibration is complete
-        System.Threading.Tasks.Task.Run(async () => 
-        {
-            while (_rampIsCalibrating)
-            {
-                var message = await _model.ReadSerialCommandAsync();
-                if (!string.IsNullOrEmpty(message))
-                {
-                    foreach (string motor in _calibratingMotors.ToList())
-                    {
-                        if (SetCalibrationCheck(message, motor))
-                        {
-                            _calibratingMotors.Remove(motor);
-                        }
-                    }
+        // Debug.Log("Calibration started");
+        ResetCalibrationStatus();
+        StartCoroutine(WaitForMotorsToCalibrate());
 
-                    if (_calibratingMotors.Count == 0)
+    }
+
+    private IEnumerator WaitForMotorsToCalibrate()
+    {
+        while (_rampIsCalibrating)
+        {
+            var messageTask = _model.ReadSerialCommandAsync();
+            yield return new WaitUntil(() => messageTask.IsCompleted);
+
+            var message = messageTask.Result;
+            if (!string.IsNullOrEmpty(message))
+            {
+                // Debug.Log("Serial received: " + message);
+
+                string motorToRemove = null;
+                foreach (string motor in _motorsToCalibrate)
+                {
+                    if (SetCalibrationStatus(message, motor))
                     {
-                        _rampIsCalibrating = false;
-                        doneButton.interactable = true;
+                        motorToRemove = motor;
                     }
                 }
+
+                if (motorToRemove != null)
+                {
+                    _motorsToCalibrate.Remove(motorToRemove);
+                }
+
+                if (_motorsToCalibrate.Count == 0)
+                {
+                    _rampIsCalibrating = false;
+                    doneButton.interactable = true;
+                    // Debug.Log("Calibration done");
+                }
             }
-        });
+
+            // Debug.Log("Calibrating...");
+            yield return new WaitForSeconds(1);
+        }
     }
 
-    private bool SetCalibrationCheck(string message, string motor)
+    private bool SetCalibrationStatus(string message, string motor)
     {
+        bool motorCalibrated = false;
         if (message == $"{motor} calibration complete")
         {
-            if (_calibrationChecks.ContainsKey(motor))
+            if (_calibrationCheckmarks.ContainsKey(motor))
             {
-                _calibrationChecks[motor].SetActive(true);
-                return true;
+                if (_calibrationCheckmarks[motor] != null)
+                {
+                    _model.HardwareSettings.IsRampCalibrationDone[motor] = true;
+                    _calibrationCheckmarks[motor].SetActive(_model.HardwareSettings.IsRampCalibrationDone[motor]);
+                }
+                else
+                {
+                    Debug.LogError($"Calibration check GameObject for {motor} not found.");
+                }
+                motorCalibrated = true;
             }
         }
 
-        return false;
+        return motorCalibrated;
     }
 
-    private void UnsetCalibrationCheck()
+    private void ResetCalibrationStatus()
     {
-        // If list is empty, reset to all motors
-        if (_calibratingMotors.Count == 0)
+        doneButton.interactable = false;
+
+        // In case there are no motors to calibrate, reset all motors
+        bool reset_all = false;
+        if (_motorsToCalibrate.Count == 0)
         {
-            _calibratingMotors.AddRange(new List<string> { "Drop", "Elevation", "Rotation" });
+            reset_all = true;
+            _motorsToCalibrate.AddRange(new List<string> { "Drop", "Elevation", "Rotation" });
         }
         
-        // Inactivate motors check marks
-        foreach (string motor in _calibratingMotors)
+        // Inactivate motors check marks and reset their status in the model
+        foreach (string motor in _motorsToCalibrate)
         {   
-            if (_calibrationChecks.ContainsKey(motor))
+            if (_calibrationCheckmarks.ContainsKey(motor))
             {
-                _calibrationChecks[motor].SetActive(false);
+                _model.HardwareSettings.IsRampCalibrationDone[motor] = false;
+                _calibrationCheckmarks[motor].SetActive(_model.HardwareSettings.IsRampCalibrationDone[motor]);
             }
         }
 
+        if (reset_all)
+        {
+            _motorsToCalibrate.Clear();
+        }
     }
 }
