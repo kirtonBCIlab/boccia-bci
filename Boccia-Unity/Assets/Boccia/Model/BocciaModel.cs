@@ -131,7 +131,7 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
         bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
         {
-            {"Release", false},
+            {"Drop", false},
             {"Elevation", false},
             {"Rotation", false}
         };
