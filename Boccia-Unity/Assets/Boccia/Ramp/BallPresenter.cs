@@ -142,6 +142,13 @@ public class BallPresenter : MonoBehaviour
         Vector3 newBallPosition = elevationPlate.transform.TransformPoint(_dropPosition);
         Quaternion newBallRotation = elevationPlate.transform.rotation * _dropRotation;
 
+        // If this is Play mode, remove the previous ball
+        if (_model.GameMode == BocciaGameMode.Play)
+        {
+            GameObject previousBall = _activeBall;
+            Destroy(previousBall);
+        }
+
         // Instantiate the new ball
         _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
