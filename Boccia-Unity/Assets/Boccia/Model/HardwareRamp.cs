@@ -18,12 +18,6 @@ public class HardwareRamp : RampController, ISerialController
     private SerialPort _serial;
     private List<string> _serialCommandsList;
     private string _serialCommand;
-    private readonly Dictionary<string, string> _calibrationCodes = new Dictionary<string, string>
-    {
-        { "CalibrateRotation", "rc" },
-        { "CalibrateElevation", "ec" },
-        { "CalibrateDrop", "dd-70" }
-    };
 
     public HardwareRamp()
     {
@@ -98,9 +92,14 @@ public class HardwareRamp : RampController, ISerialController
             _serial = new SerialPort(comPort, baudRate)
             {
                 Encoding = System.Text.Encoding.UTF8,
-                DtrEnable = true
+                DtrEnable = true,
+                DataBits = 8,
+                StopBits = StopBits.One,
+                Parity = Parity.None,
+                RtsEnable = true,
             };
             
+            Debug.Log("Serial port connected succesfully");
             _serial.Open();            
             serialEnabled = true;
         }
@@ -148,7 +147,6 @@ public class HardwareRamp : RampController, ISerialController
         return message;
     }
 
-    // ReadSerialCommandAsync
     public async Task<string> ReadSerialCommandAsync()
     {
         string message = null;
@@ -170,7 +168,7 @@ public class HardwareRamp : RampController, ISerialController
     
     public void SendSerialCommandList()
     {
-        _serialCommand = string.Join(">", _serialCommandsList);
+        _serialCommand = string.Join(">", _serialCommandsList) + "\n";
 
         if (_serial != null && _serial.IsOpen)
         {
