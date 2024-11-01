@@ -226,6 +226,7 @@ public class RampSetupPresenter : MonoBehaviour
     {
         while (_rampIsCalibrating)
         {
+            connectSerialPortButton.interactable = false;
             EnableCalibrateButtons(false);
             var messageTask = _model.ReadSerialCommandAsync();
             yield return new WaitUntil(() => messageTask.IsCompleted);
@@ -253,6 +254,7 @@ public class RampSetupPresenter : MonoBehaviour
                 {
                     _rampIsCalibrating = false;
                     doneButton.interactable = true;
+                    connectSerialPortButton.interactable = true;
                     EnableCalibrateButtons(true);
                     // Debug.Log("Calibration done");
                 }
