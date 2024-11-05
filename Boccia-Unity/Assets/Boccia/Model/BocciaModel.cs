@@ -150,12 +150,15 @@ public class BocciaModel : Singleton<BocciaModel>
             GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
         }
 
+        // User values
         bocciaData.GameOptions.ElevationPrecision = 3.0f;
         bocciaData.GameOptions.ElevationRange = 20.0f;
-        bocciaData.GameOptions.ElevationSpeed = 0.0f;
         bocciaData.GameOptions.RotationPrecision = 3.0f;
         bocciaData.GameOptions.RotationRange = 20.0f;
-        bocciaData.GameOptions.RotationSpeed = 0.0f;
+
+        // Operator values
+        bocciaData.GameOptions.ElevationSpeed = 5.0f;
+        bocciaData.GameOptions.RotationSpeed = 5.0f;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
     }
