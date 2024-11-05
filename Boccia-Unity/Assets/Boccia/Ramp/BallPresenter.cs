@@ -28,6 +28,9 @@ public class BallPresenter : MonoBehaviour
     // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
 
+    // Game mode
+    private BocciaGameMode _gameMode;
+
     
     // MARK: Initialization
     // Start is called before the first frame update
@@ -48,6 +51,9 @@ public class BallPresenter : MonoBehaviour
 
         // Initialize to saved data
         ModelChanged();
+
+        // Initialize gameMode
+        _gameMode = _model.GameMode;
     }
 
     void OnDisable()
@@ -253,15 +259,11 @@ public class BallPresenter : MonoBehaviour
 
     private void NavigationChanged()
     {
-        // When the game switches to Play screen, reset balls
-        if (_model.CurrentScreen == BocciaScreen.Play)
+        // Reset balls every time the game mode is changed
+        BocciaGameMode currentGameMode = _model.GameMode;
+        if (currentGameMode != _gameMode)
         {
-            ResetBocciaBalls();
-        }
-
-        // When the game switches to Virtual Play screen, reset balls
-        if (_model.CurrentScreen == BocciaScreen.VirtualPlay)
-        {
+            _gameMode = currentGameMode;
             ResetBocciaBalls();
         }
     }
