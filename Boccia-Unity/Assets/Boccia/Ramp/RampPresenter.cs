@@ -14,8 +14,8 @@ public class RampPresenter : MonoBehaviour
 
     private BocciaModel _model;
 
-    public float rotationSpeed = 5.0f;
-    public float elevationSpeed = 5.0f;
+    [SerializeField] private float elevationSpeed;
+    [SerializeField] private float rotationSpeed;
     public float minElevation = 0.0026f; 
     public float maxElevation = 0.43f; 
 
@@ -43,6 +43,14 @@ public class RampPresenter : MonoBehaviour
 
     private void ModelChanged()
     {
+        // Pull elevation and rotation speeds from _model
+        // As GameOptionsMenuPresenter uses BocciaModel.SetGameOption() to update model values
+        // from the UI, which triggers BocciaModel.SendRampChangeEvent(), which this method will respond to,
+        // Then, this method will run any time the User changes these values, ensuring the
+        // elevation and rotation speeds are kept in sync with the model
+        elevationSpeed = _model.GameOptions.ElevationSpeed;
+        rotationSpeed = _model.GameOptions.RotationSpeed;
+
         // Ramp is a digital twin, so we just match visualization with model data
         //Debug.Log(model.RampRotation);
         StartCoroutine(RotationVisualization());
