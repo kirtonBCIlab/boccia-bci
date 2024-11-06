@@ -28,6 +28,9 @@ public class BallPresenter : MonoBehaviour
     // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
 
+    // Game mode
+    private BocciaGameMode _gameMode;
+
     
     // MARK: Initialization
     // Start is called before the first frame update
@@ -36,6 +39,7 @@ public class BallPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += ModelChanged;
+        _model.NavigationChanged += NavigationChanged;
         _model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
@@ -47,6 +51,9 @@ public class BallPresenter : MonoBehaviour
 
         // Initialize to saved data
         ModelChanged();
+
+        // Initialize gameMode
+        _gameMode = _model.GameMode;
     }
 
     void OnDisable()
@@ -188,6 +195,13 @@ public class BallPresenter : MonoBehaviour
         Vector3 newBallPosition = elevationPlate.transform.TransformPoint(_dropPosition);
         Quaternion newBallRotation = elevationPlate.transform.rotation * _dropRotation;
 
+        // If this is Play mode, remove the previous ball
+        if (_model.GameMode == BocciaGameMode.Play)
+        {
+            GameObject previousBall = _activeBall;
+            Destroy(previousBall);
+        }
+
         // Instantiate the new ball
         _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
@@ -240,6 +254,17 @@ public class BallPresenter : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+        }
+    }
+
+    private void NavigationChanged()
+    {
+        // Reset balls every time the game mode is changed
+        BocciaGameMode currentGameMode = _model.GameMode;
+        if (currentGameMode != _gameMode)
+        {
+            _gameMode = currentGameMode;
+            ResetBocciaBalls();
         }
     }
 
