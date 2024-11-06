@@ -31,6 +31,9 @@ public class BallPresenter : MonoBehaviour
     // Flags
     private bool _firstBallDropped = false; // To check if at least one ball has been dropped
 
+    // Game mode
+    private BocciaGameMode _gameMode;
+
     
     // MARK: Initialization
     // Start is called before the first frame update
@@ -39,6 +42,7 @@ public class BallPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += ModelChanged;
+        _model.NavigationChanged += NavigationChanged;
         _model.BallResetChanged += ResetBocciaBalls;
 
         // Initialize ball
@@ -54,6 +58,9 @@ public class BallPresenter : MonoBehaviour
 
         // Initialize to saved data
         ModelChanged();
+
+        // Initialize gameMode
+        _gameMode = _model.GameMode;
     }
 
     void OnDisable()
@@ -195,6 +202,13 @@ public class BallPresenter : MonoBehaviour
         Vector3 newBallPosition = elevationPlate.transform.TransformPoint(_dropPosition);
         Quaternion newBallRotation = elevationPlate.transform.rotation * _dropRotation;
 
+        // If this is Play mode, remove the previous ball
+        if (_model.GameMode == BocciaGameMode.Play)
+        {
+            GameObject previousBall = _activeBall;
+            Destroy(previousBall);
+        }
+
         // Instantiate the new ball
         _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
@@ -250,6 +264,17 @@ public class BallPresenter : MonoBehaviour
         }
     }
 
+    private void NavigationChanged()
+    {
+        // Reset balls every time the game mode is changed
+        BocciaGameMode currentGameMode = _model.GameMode;
+        if (currentGameMode != _gameMode)
+        {
+            _gameMode = currentGameMode;
+            ResetBocciaBalls();
+        }
+    }
+
     void Update()
     {
         if (_model.BallState == BocciaBallState.Ready)
@@ -257,11 +282,9 @@ public class BallPresenter : MonoBehaviour
             // Check if the ball fell off the ramp
             if (_activeBall.transform.position.y <= _ballFallingThreshold)
             {
-                //Debug.Log("Ball fell off the ramp");
                 // Reset the ball back onto the ramp
                 _activeBall.transform.position = elevationPlate.transform.TransformPoint(_defaultBallPosition);
                 _activeBall.transform.rotation = elevationPlate.transform.rotation * _defaultBallRotation;
-                //Debug.Log("Ball placed back on the ramp");
             }
         }
     }
