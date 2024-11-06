@@ -9,6 +9,8 @@ public class HardwareRamp : RampController
 
     public float Rotation { get; private set; }
     public float Elevation { get; private set; }
+    private float MaxElevation { get;} = 100.0f;
+    private float MinElevation { get; } = 0.0f;
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
     
@@ -50,7 +52,10 @@ public class HardwareRamp : RampController
 
     public void ElevateBy(float elevation)
     {
-        Elevation += elevation;
+        //Old Way
+        // Elevation += elevation;
+        // Clamped to Max/Min Elevation
+        Elevation = Mathf.Clamp(Elevation + elevation, MinElevation, MaxElevation);
         _serialCommands.Add($"er{elevation}");
         // Debug.Log($"Hardware elevate by: {Elevation}");
         SendChangeEvent();
@@ -58,7 +63,10 @@ public class HardwareRamp : RampController
 
     public void ElevateTo(float elevation)
     {
-        Elevation = elevation;
+        //Old Way
+        // Elevation = elevation;
+        // Clamped to Max/Min Elevation
+        Elevation = Mathf.Clamp(elevation, MinElevation, MaxElevation);
         _serialCommands.Add($"ea{elevation}");
         Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
