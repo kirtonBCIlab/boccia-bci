@@ -112,9 +112,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
 
     public void OnChangeElevationRange(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.ElevationRange, value);
-        Debug.Log("~~~~Elevation Range: " + _model.GameOptions.ElevationRange);
-        
+        _model.SetGameOption(ref _model.GameOptions.ElevationRange, value);        
     }
 
     public void OnChangeRotationPrecision(float value)
@@ -125,7 +123,6 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public void OnChangeRotationRange(float value)
     {
         _model.SetGameOption(ref _model.GameOptions.RotationRange, value);
-        Debug.Log("~~~~Rotation Range: " + _model.GameOptions.RotationRange);
     }
 
     public void OnChangeElevationSpeed(float value)

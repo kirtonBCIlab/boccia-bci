@@ -110,8 +110,7 @@ public class FanPresenter : MonoBehaviour
             _fineFan.Theta = _model.GameOptions.RotationRange;
             _fineFan.NColumns = (int)_model.GameOptions.RotationPrecision;
             _fineFan.NRows = (int)_model.GameOptions.ElevationPrecision;
-            //Obviously, clamping in the scriptable object case isn't working, so I'm going to force it here
-            _fineFan.ElevationRange = Mathf.Clamp(_model.GameOptions.ElevationRange,1,100);
+            _fineFan.ElevationRange = _model.GameOptions.ElevationRange;
         }
     }
 
