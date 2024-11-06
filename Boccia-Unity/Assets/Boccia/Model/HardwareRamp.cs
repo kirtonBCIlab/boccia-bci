@@ -8,6 +8,8 @@ public class HardwareRamp : RampController
     public event Action RampChanged;
 
     public float Rotation { get; private set; }
+    private float MaxRotation { get; } = 85.0f;
+    private float MinRotation { get; } = -85.0f;
     public float Elevation { get; private set; }
     private float MaxElevation { get;} = 100.0f;
     private float MinElevation { get; } = 0.0f;
@@ -36,7 +38,8 @@ public class HardwareRamp : RampController
 
     public void RotateBy(float degrees)
     {
-        Rotation += degrees;
+        // Rotation += degrees;
+        Rotation = Mathf.Clamp(Rotation+degrees, MinRotation, MaxRotation);
         _serialCommands.Add($"rr{degrees}");
         // Debug.Log($"Hardware rote by: {Rotation}");
         SendChangeEvent();
@@ -44,7 +47,8 @@ public class HardwareRamp : RampController
 
     public void RotateTo(float degrees)
     {
-        Rotation = degrees;
+        // Rotation = degrees;
+        Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
         _serialCommands.Add($"ra{degrees}");
         // Debug.Log($"Hardware rote to: {Rotation}");
         SendChangeEvent();

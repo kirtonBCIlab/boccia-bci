@@ -13,6 +13,8 @@ public class SimulatedRamp : RampController
     public event System.Action RampChanged;
 
     public float Rotation { get; private set; }
+    private float MaxRotation { get; } = 85.0f;
+    private float MinRotation { get; } = -85.0f;
     public float Elevation { get; private set; }
     private float MaxElevation { get;} = 100.0f;
     private float MinElevation { get; } = 0.0f;
@@ -29,15 +31,17 @@ public class SimulatedRamp : RampController
 
     public void RotateBy(float degrees)
     {
-        Rotation += degrees;
-        // Debug.Log($"Simulated rotation by: {Rotation}");
+        // Rotation += degrees;
+        Rotation = Mathf.Clamp(Rotation+degrees, MinRotation, MaxRotation);
+        //Debug.Log($"Simulated rotation by: {Rotation}");
         SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
-        Rotation = degrees;
-        // Debug.Log($"Simulated rotation to: {Rotation}");
+        // Rotation = degrees;
+        Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
+        //Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
     }
 
