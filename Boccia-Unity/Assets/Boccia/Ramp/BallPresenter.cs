@@ -12,6 +12,7 @@ public class BallPresenter : MonoBehaviour
     private GameObject _activeBall; // Refers the the ball currently in use for each shot
     private int _ballCount = 0;
     private Rigidbody _ballRigidbody;
+    private float _ballFallingThreshold = -2.0f;
 
     // References for the bar and elevation mechanism
     public GameObject dropBar;
@@ -21,6 +22,8 @@ public class BallPresenter : MonoBehaviour
     // Variables for storing the ball transform
     private Vector3 _dropPosition;
     private Quaternion _dropRotation;
+    private Vector3 _defaultBallPosition;
+    private Quaternion _defaultBallRotation;
 
     // Coroutines
     private Coroutine _checkBallCoroutine;
@@ -41,6 +44,10 @@ public class BallPresenter : MonoBehaviour
         // Initialize ball
         _activeBall = GameObject.FindWithTag("BocciaBall"); // The ball already in the scene
         InitializeBall();
+
+        // Calculate default ball position and rotation
+        _defaultBallPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
+        _defaultBallRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
 
         // Initialize bar animation
         _barAnimation = dropBar.GetComponent<Animator>();
@@ -239,6 +246,22 @@ public class BallPresenter : MonoBehaviour
             if (child.gameObject.CompareTag("BocciaBall") && child.gameObject != _activeBall)
             {
                 Destroy(child.gameObject);
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (_model.BallState == BocciaBallState.Ready)
+        {
+            // Check if the ball fell off the ramp
+            if (_activeBall.transform.position.y <= _ballFallingThreshold)
+            {
+                //Debug.Log("Ball fell off the ramp");
+                // Reset the ball back onto the ramp
+                _activeBall.transform.position = elevationPlate.transform.TransformPoint(_defaultBallPosition);
+                _activeBall.transform.rotation = elevationPlate.transform.rotation * _defaultBallRotation;
+                //Debug.Log("Ball placed back on the ramp");
             }
         }
     }
