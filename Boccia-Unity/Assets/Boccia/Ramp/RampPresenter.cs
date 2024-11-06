@@ -12,12 +12,13 @@ public class RampPresenter : MonoBehaviour
     public GameObject elevationMechanism; // Elevation Mechanism child component of Shaft and Ramp (the ramp parts that will change elevation in the visualization)
     public GameObject rampAdapter; // To define direction of movement for elevationMechanism
 
-    private BocciaModel _model;
-
-    [SerializeField] private float elevationSpeed;
-    [SerializeField] private float rotationSpeed;
     public float minElevation = 0.0026f; 
     public float maxElevation = 0.43f; 
+
+    private BocciaModel _model;
+
+    [SerializeField] private float _elevationSpeed;
+    [SerializeField] private float _rotationSpeed;
 
     private Vector3 elevationDirection; // Vector to define the direction of motion of the elevationMechanism visualization
 
@@ -48,8 +49,8 @@ public class RampPresenter : MonoBehaviour
         // from the UI, which triggers BocciaModel.SendRampChangeEvent(), which this method will respond to,
         // Then, this method will run any time the User changes these values, ensuring the
         // elevation and rotation speeds are kept in sync with the model
-        elevationSpeed = _model.GameOptions.ElevationSpeed;
-        rotationSpeed = _model.GameOptions.RotationSpeed;
+        _elevationSpeed = _model.GameOptions.ElevationSpeed;
+        _rotationSpeed = _model.GameOptions.RotationSpeed;
 
         // Ramp is a digital twin, so we just match visualization with model data
         //Debug.Log(model.RampRotation);
@@ -68,7 +69,7 @@ public class RampPresenter : MonoBehaviour
 
         while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
         {
-            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, rotationSpeed * Time.deltaTime);
+            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, _rotationSpeed * Time.deltaTime);
             rotationShaft.transform.localRotation = currentRotation;
             yield return null;
         }
@@ -87,7 +88,7 @@ public class RampPresenter : MonoBehaviour
 
         while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
         {
-            currentElevation = Vector3.Lerp(currentElevation, targetElevation, elevationSpeed * Time.deltaTime);
+            currentElevation = Vector3.Lerp(currentElevation, targetElevation, _elevationSpeed * Time.deltaTime);
             elevationMechanism.transform.localPosition = currentElevation;
             yield return null;
         }
