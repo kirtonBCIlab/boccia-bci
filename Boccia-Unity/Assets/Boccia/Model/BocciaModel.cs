@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 // BocciaModel implements the "business logic" for the game.  The BocciaModel 
@@ -24,7 +26,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private RampController rampController = new SimulatedRamp();
     private RampController _simulatedRamp = new SimulatedRamp();
-    private RampController _hardwareRamp = new HardwareRamp();
+    private HardwareRamp _hardwareRamp = new();
 
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
@@ -107,6 +109,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Initialize controller to _simulatedRamp
         rampController = _simulatedRamp;
+        SetRampControllerBasedOnMode();
 
         // Set default hardware options
         SetDefaultHardwareOptions();
@@ -128,7 +131,7 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.HardwareSettings.IsSerialPortConnected = false;
         bocciaData.HardwareSettings.IsRampCalibrationDone = new Dictionary<string, bool>
         {
-            {"Release", false},
+            {"Drop", false},
             {"Elevation", false},
             {"Rotation", false}
         };
@@ -210,6 +213,14 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
     public void DropBall() => rampController.DropBall();
+
+    public bool ConnectToSerialPort(string comPort, int baudRate) => _hardwareRamp.ConnectToSerialPort(comPort, baudRate);
+    public bool DisconnectFromSerialPort() => _hardwareRamp.DisconnectFromSerialPort();
+    public string ReadSerialCommand() => _hardwareRamp.ReadSerialCommand();
+    public void AddSerialCommandToList(string command) => _hardwareRamp.AddSerialCommandToList(command);
+    public void SendSerialCommandList() => _hardwareRamp.SendSerialCommandList();
+    public void ResetSerialCommands() => _hardwareRamp.ResetSerialCommands();
+    public Task<string> ReadSerialCommandAsync() => _hardwareRamp.ReadSerialCommandAsync();
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()
