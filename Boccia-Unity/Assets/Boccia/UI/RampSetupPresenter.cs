@@ -21,6 +21,8 @@ public class RampSetupPresenter : MonoBehaviour
     public Button connectSerialPortButton;
 
     [Header("Calibration buttons")]
+    [Tooltip("Enable to actually connect to ramp and calibrate. Disable for development.")]
+    public bool calibrationNeeded = false;
     public Button calibrateAllButton;
     public Button recalibrateBallDropButton;
     public Button recalibrateElevationButton;
@@ -73,6 +75,8 @@ public class RampSetupPresenter : MonoBehaviour
 
         // Set all calibration checks to false
         ResetCalibrationStatus();
+
+        if (!calibrationNeeded) { doneButton.interactable = true; }
     }
 
     // TODO: add functionality to the buttons
