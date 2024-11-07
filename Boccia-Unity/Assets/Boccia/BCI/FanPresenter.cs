@@ -137,7 +137,7 @@ public class FanPresenter : MonoBehaviour
         // Otherwise, the coroutine will try to run before GameOptionsMenu is active, due to the way navigation and camera are handled, which will result in the coroutine failing for BocciaScreen.GameOptions
         if (fanTypeScreen == BocciaScreen.GameOptions)
         {
-                Debug.Log("Generating fan for GameOptionsMenu");
+                // Debug.Log("Generating fan for GameOptionsMenu");
                 fanGenerator.DestroyFanSegments();
                 CenterToOrigin();
                 CenterGameOptionsMenu();
