@@ -12,12 +12,13 @@ public class BallPresenter : MonoBehaviour
     private GameObject _activeBall; // Refers the the ball currently in use for each shot
     private int _ballCount = 0;
     private Rigidbody _ballRigidbody;
-    private float _ballFallingThreshold = -2.0f;
+    private float _ballHeightThreshold = 1.0f;
 
-    // References for the bar and elevation mechanism
+    // References for the ramp components
     public GameObject dropBar;
     public GameObject elevationPlate;
     private Animator _barAnimation;
+    public GameObject rampBase;
 
     // Variables for storing the ball transform
     private Vector3 _dropPosition;
@@ -275,12 +276,15 @@ public class BallPresenter : MonoBehaviour
         }
     }
 
+
+    // MARK: Update
     void Update()
     {
         if (_model.BallState == BocciaBallState.Ready)
         {
             // Check if the ball fell off the ramp
-            if (_activeBall.transform.position.y <= _ballFallingThreshold)
+            // by calculating the distance between the ball and the ramp's base
+            if ((_activeBall.transform.position.y - rampBase.transform.position.y) <= _ballHeightThreshold)
             {
                 // Reset the ball back onto the ramp
                 _activeBall.transform.position = elevationPlate.transform.TransformPoint(_defaultBallPosition);

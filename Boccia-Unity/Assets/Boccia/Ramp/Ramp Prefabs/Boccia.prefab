@@ -534,10 +534,10 @@ MonoBehaviour:
   rotationShaft: {fileID: 8310897335574750232}
   elevationMechanism: {fileID: 1447192591350278973}
   rampAdapter: {fileID: 5816064425209161337}
-  rotationSpeed: 10
-  elevationSpeed: 5
   minElevation: 0.0026
   maxElevation: 0.43
+  _elevationSpeed: 5
+  _rotationSpeed: 5
 --- !u!114 &2165396535546456436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,6 +553,7 @@ MonoBehaviour:
   ball: {fileID: 7128455000201345065, guid: 909aeb7dd77e06c47a10435a47f700a9, type: 3}
   dropBar: {fileID: 8448552161599435182}
   elevationPlate: {fileID: 9152734532760075096}
+  rampBase: {fileID: 1217801544389857873}
 --- !u!114 &7814226423708504148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1503,6 +1504,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
+--- !u!1 &1217801544389857873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4870174590861315370, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
+  m_PrefabInstance: {fileID: 6012540737330847611}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1447192591350278973 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5144694137087931462, guid: 81f3d8291e8cd084d97df6102502d270, type: 3}
