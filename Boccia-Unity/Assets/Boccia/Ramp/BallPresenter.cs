@@ -12,7 +12,7 @@ public class BallPresenter : MonoBehaviour
     private GameObject _activeBall; // Refers the the ball currently in use for each shot
     private int _ballCount = 0;
     private Rigidbody _ballRigidbody;
-    private float _ballHeightThreshold = 1.0f;
+    //private float _ballHeightThreshold = 1.0f;
 
     // References for the ramp components
     public GameObject dropBar;
@@ -45,6 +45,7 @@ public class BallPresenter : MonoBehaviour
         _model.WasChanged += ModelChanged;
         _model.NavigationChanged += NavigationChanged;
         _model.BallResetChanged += ResetBocciaBalls;
+        _model.BallFallingChanged += HandleBallFalling;
 
         // Initialize ball
         _activeBall = GameObject.FindWithTag("BocciaBall"); // The ball already in the scene
@@ -219,7 +220,7 @@ public class BallPresenter : MonoBehaviour
     }
 
     
-    // MARK: Virtual Play Ball Reset
+    // MARK: Ball Reset
     private void ResetBocciaBalls()
     {
         // Check if at least one ball has been dropped
@@ -276,22 +277,13 @@ public class BallPresenter : MonoBehaviour
         }
     }
 
-
-    // MARK: Update
-    void Update()
+    public void HandleBallFalling()
     {
-        if (_model.BallState == BocciaBallState.ReadyToRelease)
-        {
-            // Check if the ball fell off the ramp
-            // by calculating the distance between the ball and the ramp's base
-            if ((_activeBall.transform.position.y - rampBase.transform.position.y) <= _ballHeightThreshold)
-            {
-                // Reset the ball back onto the ramp
-                _activeBall.transform.position = elevationPlate.transform.TransformPoint(_defaultBallPosition);
-                _activeBall.transform.rotation = elevationPlate.transform.rotation * _defaultBallRotation;
-            }
-        }
+        // Reset the ball back onto the ramp
+        _activeBall.transform.position = elevationPlate.transform.TransformPoint(_defaultBallPosition);
+        _activeBall.transform.rotation = elevationPlate.transform.rotation * _defaultBallRotation;
     }
+
 
     /*
     private void OnTriggerExit(Collider other)
