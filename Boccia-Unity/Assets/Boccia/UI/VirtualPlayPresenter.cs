@@ -155,6 +155,23 @@ public class VirtualPlayPresenter : MonoBehaviour
 
     private void NavigationChanged()
     {
-        
+        if (model.CurrentScreen != BocciaScreen.VirtualPlay)
+        {
+            // Disable court view camera if it is on
+            if (VirtualPlayCamera.gameObject.activeSelf)
+            {
+                VirtualPlayCamera.gameObject.SetActive(false);
+            }
+        }
+
+        if (model.CurrentScreen == BocciaScreen.VirtualPlay)
+        {
+            // Check if the court view was on before
+            if (isCourtViewOn)
+            {
+                // Re-enable court view camera
+                VirtualPlayCamera.gameObject.SetActive(true);
+            }
+        }
     }
 }
