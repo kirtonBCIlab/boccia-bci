@@ -120,6 +120,12 @@ public class BallPresenter : MonoBehaviour
     // MARK: Bar Animation
     private IEnumerator BarAnimation()
     {
+        // Wait for the ramp to stop moving
+        while (_model.IsRampMoving)
+        {
+            yield return null;
+        }
+
         _model.SetRampMoving(true);
 
         // Bar opening and closing animation
@@ -165,8 +171,11 @@ public class BallPresenter : MonoBehaviour
 
     private IEnumerator CheckBallSpeed()
     {
-        // Wait a bit for the ball to fully get rolling
-        yield return new WaitForSecondsRealtime(3f);
+        // Wait for the bar animation to finish
+        while (_barAnimation.GetCurrentAnimatorStateInfo(0).IsName("DropBarClosed"))
+        {
+            yield return null;
+        }
 
         // Velocity threshold
         while (_ballRigidbody.velocity.magnitude > 0.01f)

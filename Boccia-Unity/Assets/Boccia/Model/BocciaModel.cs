@@ -224,6 +224,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public void SendSerialCommandList() => _hardwareRamp.SendSerialCommandList();
     public void ResetSerialCommands() => _hardwareRamp.ResetSerialCommands();
     public Task<string> ReadSerialCommandAsync() => _hardwareRamp.ReadSerialCommandAsync();
+    public void RandomBallDrop(int randomRotation, int randomElevation) => _hardwareRamp.RandomBallDrop(randomRotation, randomElevation);
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()

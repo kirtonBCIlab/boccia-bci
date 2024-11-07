@@ -82,6 +82,13 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
+    public void RandomBallDrop(int randomRotation, int randomElevation)
+    {
+        RotateTo(randomRotation);
+        ElevateTo(randomElevation);
+        DropBall();
+    }
+
     public void DropBall()
     {
         IsBarOpen = true; // Toggle bar state

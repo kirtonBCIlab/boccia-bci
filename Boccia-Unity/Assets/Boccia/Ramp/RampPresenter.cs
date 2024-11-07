@@ -60,8 +60,22 @@ public class RampPresenter : MonoBehaviour
 
         // Ramp is a digital twin, so we just match visualization with model data
         //Debug.Log(model.RampRotation);
-        StartCoroutine(RotationVisualization());
-        StartCoroutine(ElevationVisualization());
+        StartCoroutine(RampVisualization());
+    }
+
+    private IEnumerator RampVisualization()
+    {
+        // Wait for ramp to stop moving before visualizing
+        while (_model.IsRampMoving)
+        {
+            yield return null;
+        }
+
+        // Visualize the ramp moving, first rotate, then elevate
+        _model.SetRampMoving(true);
+        yield return StartCoroutine(RotationVisualization());
+        yield return StartCoroutine(ElevationVisualization());
+        _model.SetRampMoving(false);
     }
 
     private void NavigationChanged()
@@ -72,7 +86,6 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
-        _model.SetRampMoving(true);
         // Smoothly show the rotatation of the ramp to the new position
         Quaternion currentRotation = rotationShaft.transform.localRotation;
         //Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
@@ -87,12 +100,10 @@ public class RampPresenter : MonoBehaviour
         }
 
         rotationShaft.transform.localRotation = targetQuaternion;
-        _model.SetRampMoving(false);
     }
 
     private IEnumerator ElevationVisualization()
     {
-        _model.SetRampMoving(true);
         Vector3 currentElevation = elevationMechanism.transform.localPosition;
         //Debug.Log($"model.RampElevation value: {model.RampElevation}");
         float elevationScalar = minElevation + (_model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
@@ -110,7 +121,6 @@ public class RampPresenter : MonoBehaviour
         }
 
         elevationMechanism.transform.localPosition = targetElevation;
-        _model.SetRampMoving(false);
     }
 
     private void ResetRampWhenPlayModeChanges()
