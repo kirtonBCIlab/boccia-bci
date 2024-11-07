@@ -12,15 +12,19 @@ public class BallPresenter : MonoBehaviour
     private GameObject _activeBall; // Refers the the ball currently in use for each shot
     private int _ballCount = 0;
     private Rigidbody _ballRigidbody;
+    //private float _ballHeightThreshold = 1.0f;
 
-    // References for the bar and elevation mechanism
+    // References for the ramp components
     public GameObject dropBar;
     public GameObject elevationPlate;
     private Animator _barAnimation;
+    public GameObject rampBase;
 
     // Variables for storing the ball transform
     private Vector3 _dropPosition;
     private Quaternion _dropRotation;
+    private Vector3 _defaultBallPosition;
+    private Quaternion _defaultBallRotation;
 
     // Coroutines
     private Coroutine _checkBallCoroutine;
@@ -41,10 +45,15 @@ public class BallPresenter : MonoBehaviour
         _model.WasChanged += ModelChanged;
         _model.NavigationChanged += NavigationChanged;
         _model.BallResetChanged += ResetBocciaBalls;
+        _model.BallFallingChanged += HandleBallFalling;
 
         // Initialize ball
         _activeBall = GameObject.FindWithTag("BocciaBall"); // The ball already in the scene
         InitializeBall();
+
+        // Calculate default ball position and rotation
+        _defaultBallPosition = elevationPlate.transform.InverseTransformPoint(_activeBall.transform.position);
+        _defaultBallRotation = Quaternion.Inverse(elevationPlate.transform.rotation) * _activeBall.transform.rotation;
 
         // Initialize bar animation
         _barAnimation = dropBar.GetComponent<Animator>();
@@ -98,8 +107,8 @@ public class BallPresenter : MonoBehaviour
             // Start the bar movement animation
             StartCoroutine(BarAnimation());
 
-            // Only execute the ball drop code if the Model's ball state is Ready
-            if (_model.BallState == BocciaBallState.Ready)
+            // Only execute the ball drop code if the Model's ball state is ReadyToRelease
+            if (_model.BallState == BocciaBallState.ReadyToRelease)
             {
                 // Call the method to log the drop position and rotation
                 // and the rest of the ball drop code
@@ -211,7 +220,7 @@ public class BallPresenter : MonoBehaviour
     }
 
     
-    // MARK: Virtual Play Ball Reset
+    // MARK: Ball Reset
     private void ResetBocciaBalls()
     {
         // Check if at least one ball has been dropped
@@ -267,6 +276,14 @@ public class BallPresenter : MonoBehaviour
             ResetBocciaBalls();
         }
     }
+
+    public void HandleBallFalling()
+    {
+        // Reset the ball back onto the ramp
+        _activeBall.transform.position = elevationPlate.transform.TransformPoint(_defaultBallPosition);
+        _activeBall.transform.rotation = elevationPlate.transform.rotation * _defaultBallRotation;
+    }
+
 
     /*
     private void OnTriggerExit(Collider other)
