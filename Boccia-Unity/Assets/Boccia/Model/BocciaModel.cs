@@ -72,11 +72,13 @@ public class BocciaModel : Singleton<BocciaModel>
         switch (GameMode)
         {
             case BocciaGameMode.Play:  // Real ramp
+                // Debug.Log("Switching to hardware ramp...");
                 rampController.RampChanged -= SendRampChangeEvent;
                 rampController = _hardwareRamp;
                 rampController.RampChanged += SendRampChangeEvent;
                 break;
-            default:  // Simulated ramp
+            case BocciaGameMode.Virtual:  // Simulated ramp
+                // Debug.Log("Switching to simulated ramp...");
                 rampController.RampChanged -= SendRampChangeEvent;
                 rampController = _simulatedRamp;
                 rampController.RampChanged += SendRampChangeEvent;
