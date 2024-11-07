@@ -87,7 +87,6 @@ public class HardwareRamp : RampController, ISerialController
         RotateTo(randomRotation);
         ElevateTo(randomElevation);
         DropBall();
-        SendChangeEvent();
     }
 
     public void DropBall()
