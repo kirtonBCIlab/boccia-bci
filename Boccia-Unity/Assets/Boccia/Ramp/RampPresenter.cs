@@ -84,8 +84,12 @@ public class RampPresenter : MonoBehaviour
         Vector3 currentElevation = elevationMechanism.transform.localPosition;
         //Debug.Log($"model.RampElevation value: {model.RampElevation}");
         float elevationScalar = minElevation + (_model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
-        Vector3 targetElevation = elevationDirection * elevationScalar;
+        
+        //Make sure the elevation is within the min and max elevation bounds
+        elevationScalar = Mathf.Clamp(elevationScalar, minElevation, maxElevation);
 
+        Vector3 targetElevation = elevationDirection * elevationScalar;   
+        
         while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
         {
             currentElevation = Vector3.Lerp(currentElevation, targetElevation, _elevationSpeed * Time.deltaTime);
