@@ -63,6 +63,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action BciChanged;
     public event System.Action NewRandomJack;
     public event System.Action BallResetChanged;
+    public event System.Action BallFallingChanged;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -71,11 +72,13 @@ public class BocciaModel : Singleton<BocciaModel>
         switch (GameMode)
         {
             case BocciaGameMode.Play:  // Real ramp
+                // Debug.Log("Switching to hardware ramp...");
                 rampController.RampChanged -= SendRampChangeEvent;
                 rampController = _hardwareRamp;
                 rampController.RampChanged += SendRampChangeEvent;
                 break;
-            default:  // Simulated ramp
+            case BocciaGameMode.Virtual:  // Simulated ramp
+                // Debug.Log("Switching to simulated ramp...");
                 rampController.RampChanged -= SendRampChangeEvent;
                 rampController = _simulatedRamp;
                 rampController.RampChanged += SendRampChangeEvent;
@@ -232,12 +235,17 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void SetBallStateReady()
     {
-        BallState = BocciaBallState.Ready;
+        BallState = BocciaBallState.ReadyToRelease;
     }
 
     public void SetBallStateReleased()
     {
         BallState = BocciaBallState.Released;
+    }
+
+    public void HandleBallFalling()
+    {
+        SendBallFallingEvent();
     }
 
     public void ResetVirtualBalls()
@@ -457,6 +465,11 @@ public class BocciaModel : Singleton<BocciaModel>
         BallResetChanged?.Invoke();
     }
 
+    private void SendBallFallingEvent()
+    {
+        BallFallingChanged?.Invoke();
+    }
+
     // MARK: Resetting states to Defaults
     private void ResetNavigationState()
     {
@@ -467,7 +480,7 @@ public class BocciaModel : Singleton<BocciaModel>
     private void ResetGameState()
     {
         GameMode = BocciaGameMode.StopPlay;
-        BallState = BocciaBallState.Ready;
+        BallState = BocciaBallState.ReadyToRelease;
 
         ResetGameOptionsToDefaults();
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();

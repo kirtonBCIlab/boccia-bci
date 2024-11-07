@@ -22,7 +22,7 @@ public enum BocciaGameMode
 
 public enum BocciaBallState
 {
-    Ready,
+    ReadyToRelease,
     Released,
 }
 

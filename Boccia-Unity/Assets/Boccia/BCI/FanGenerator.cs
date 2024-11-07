@@ -10,6 +10,10 @@ using UnityEngine.Rendering;
 
 public class FanGenerator : MonoBehaviour
 {
+    [Tooltip("Should be Sprites-Default")]
+    public Material material;
+    public Color colour = Color.grey;
+
     public void GenerateFanShape(FanSettings fanSettings)
     {        
         float angleStep = fanSettings.Theta / fanSettings.NColumns;
@@ -37,16 +41,9 @@ public class FanGenerator : MonoBehaviour
 
     public void CreateFanSegment(float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
-        GameObject segment = new("FanSegment");
-        segment.transform.SetParent(transform);
-        segment.transform.localPosition = Vector3.zero;
-        segment.transform.localScale = Vector3.one;
-
-        MeshFilter meshFilter = segment.AddComponent<MeshFilter>();
-        MeshRenderer meshRenderer = segment.AddComponent<MeshRenderer>();
-
         int segments = 100; // Number of segments to approximate the arc
-        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
+        Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
+        GameObject segment = CreateMeshObject("FanSegment", fanMesh);
 
         segment.transform.SetLocalPositionAndRotation
         (
@@ -60,18 +57,11 @@ public class FanGenerator : MonoBehaviour
         // If no backbutton, skip method
         if (positionMode == BackButtonPositioningMode.None) return;
 
-        GameObject backButton = new("BackButton");
-        backButton.transform.SetParent(transform);
-        backButton.transform.localPosition = Vector3.zero;
-        backButton.transform.localScale = Vector3.one;
-
-        MeshFilter meshFilter = backButton.AddComponent<MeshFilter>();
-        MeshRenderer meshRenderer = backButton.AddComponent<MeshRenderer>();
-        
         float startAngle = 0;
         float endAngle = fanSettings.BackButtonWidth / fanSettings.OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
         int segments = 10; // Number of segments to approximate the arc
-        meshFilter.mesh = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
+        Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
+        GameObject backButton = CreateMeshObject("BackButton", fanMesh);
 
         // Position the back button based on the BackButtonPositioningMode
         float rotationOffset = 0;
@@ -94,16 +84,9 @@ public class FanGenerator : MonoBehaviour
 
     public void GenerateDropButton(FanSettings fanSettings)
     {
-        GameObject dropButton = new("DropButton");
-        dropButton.transform.SetParent(transform);
-        dropButton.transform.localPosition = Vector3.zero;
-        dropButton.transform.localScale = Vector3.one;
-
-        MeshFilter meshFilter = dropButton.AddComponent<MeshFilter>();
-        MeshRenderer meshRenderer = dropButton.AddComponent<MeshRenderer>();
-        
-        int segments = 50; // Number of segments to approximate the arc
-        meshFilter.mesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius-fanSettings.DropButtonHeight, fanSettings.InnerRadius-fanSettings.rowSpacing, segments);
+        int segments = 10; // Number of segments to approximate the arc
+        Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
+        GameObject dropButton = CreateMeshObject("DropButton", fanMesh);
 
         dropButton.transform.SetLocalPositionAndRotation
         (
@@ -120,14 +103,29 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
+    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh)
+    {
+        GameObject meshObject = new(objectName);
+        meshObject.transform.SetParent(transform);
+        meshObject.transform.localPosition = Vector3.zero;
+        meshObject.transform.localScale = Vector3.one;
+
+        MeshFilter meshFilter = meshObject.AddComponent<MeshFilter>();
+        meshFilter.mesh = generatedMesh;
+
+        MeshRenderer meshRenderer = meshObject.AddComponent<MeshRenderer>();
+        meshRenderer.material = material;
+        meshRenderer.material.color = colour;
+
+        return meshObject;
+    }
+
     private Mesh GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
     {
         Mesh mesh = new();
-        
         int verticesCount = (segments + 1) * 2;
         Vector3[] vertices = new Vector3[verticesCount];
         int[] triangles = new int[segments * 6];
-
         float angleStep = (endAngle - startAngle) / segments;
 
         for (int i = 0; i <= segments; i++)
@@ -168,7 +166,7 @@ public class FanGenerator : MonoBehaviour
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
-        Debug.Log("~~~~Generating new fan with an elevation of " + currentElevation + " and a rotation of " + currentRotation);
+        // Debug.Log("~~~~Generating new fan with an elevation of " + currentElevation + " and a rotation of " + currentRotation);
         Vector3 startPosition = new(Mathf.Cos(startRad) * fanSettings.OuterRadius, Mathf.Sin(startRad) * fanSettings.OuterRadius, 0);
         CreateTextAnnotation
         (

@@ -22,11 +22,14 @@ public class RampPresenter : MonoBehaviour
 
     private Vector3 elevationDirection; // Vector to define the direction of motion of the elevationMechanism visualization
 
+    private BocciaGameMode _lastPlayMode;
+
     void Start()
     {
         // cache model and subscribe for changed event
         _model = BocciaModel.Instance;
         _model.WasChanged += ModelChanged;
+        _model.NavigationChanged += NavigationChanged;
 
         // Convert rampAdapter z-axis to local space of elevationMechanism parent to get the direction for the elevationMechanism visualization
         Vector3 rampDirection = rampAdapter.transform.forward;
@@ -34,6 +37,9 @@ public class RampPresenter : MonoBehaviour
 
         // initialize ramp to saved data
         ModelChanged();
+
+        // Initialize the last play mode as virtual play
+        _lastPlayMode = BocciaGameMode.Virtual;
     }
 
     void OnDisable()
@@ -70,6 +76,12 @@ public class RampPresenter : MonoBehaviour
         yield return StartCoroutine(RotationVisualization());
         yield return StartCoroutine(ElevationVisualization());
         _model.SetRampMoving(false);
+    }
+
+    private void NavigationChanged()
+    {
+        // Reset the ramp if the play mode changes
+        ResetRampWhenPlayModeChanges();
     }
 
     private IEnumerator RotationVisualization()
@@ -109,6 +121,19 @@ public class RampPresenter : MonoBehaviour
         }
 
         elevationMechanism.transform.localPosition = targetElevation;
+    }
+
+    private void ResetRampWhenPlayModeChanges()
+    {
+        BocciaGameMode currentPlayMode = _model.GameMode;
+        bool currentlyInPlayMode = (currentPlayMode == BocciaGameMode.Virtual) || (currentPlayMode == BocciaGameMode.Play);
+
+        if (currentlyInPlayMode && _lastPlayMode != currentPlayMode)
+        {
+            Debug.Log("Resetting ramp position");
+            _model.ResetRampPosition();
+            _lastPlayMode = currentPlayMode;
+        }
     }
 
 }

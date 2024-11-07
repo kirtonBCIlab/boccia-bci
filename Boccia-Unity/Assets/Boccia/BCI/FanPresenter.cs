@@ -30,6 +30,7 @@ public class FanPresenter : MonoBehaviour
     
     private BocciaModel _model;
     private Quaternion _originalRotation;
+    private BocciaGameMode _lastPlayMode;
     
     // Start is called before the first frame update
     void Start()
@@ -108,15 +109,8 @@ public class FanPresenter : MonoBehaviour
     
     private void NavigationChanged()
     {
-        // Enable the fan creation only if it matched the current screen
-        if (fanTypeScreen == _model.CurrentScreen) 
-        { 
-            GenerateFanWorkflow();
-        }
-        else
-        {
-            fanGenerator.DestroyFanSegments();
-        }
+        ResetFanWhenPlayModeChanges();
+        DisplayFanOnCorrespondingScreen();
     }
 
     private void UpdateFineFan()
@@ -137,7 +131,7 @@ public class FanPresenter : MonoBehaviour
         // Otherwise, the coroutine will try to run before GameOptionsMenu is active, due to the way navigation and camera are handled, which will result in the coroutine failing for BocciaScreen.GameOptions
         if (fanTypeScreen == BocciaScreen.GameOptions)
         {
-                Debug.Log("Generating fan for GameOptionsMenu");
+                // Debug.Log("Generating fan for GameOptionsMenu");
                 fanGenerator.DestroyFanSegments();
                 CenterToOrigin();
                 CenterGameOptionsMenu();
@@ -192,6 +186,36 @@ public class FanPresenter : MonoBehaviour
             case FanPositioningMode.None:
                 fanGenerator.GenerateFanShape(_coarseFan);
                 break;
+        }
+    }
+
+    /// <summary>
+    ///  Resets the fan to generate a coarse fan if the gameMode changes
+    /// </summary>
+    private void ResetFanWhenPlayModeChanges()
+    {
+        BocciaGameMode currentPlayMode = _model.GameMode;
+        bool currentlyInPlayMode = (currentPlayMode == BocciaGameMode.Virtual) || (currentPlayMode == BocciaGameMode.Play);
+
+        if (currentlyInPlayMode && _lastPlayMode != currentPlayMode)
+        {
+            positioningMode = FanPositioningMode.CenterToBase;
+            _lastPlayMode = currentPlayMode;
+        }
+    }
+
+    /// <summary>
+    /// Displays the fan only on the the corresponding screen, as set in the inspector
+    /// </summary>
+    private void DisplayFanOnCorrespondingScreen()
+    {
+        if (fanTypeScreen == _model.CurrentScreen) 
+        { 
+            GenerateFanWorkflow();
+        }
+        else
+        {
+            fanGenerator.DestroyFanSegments();
         }
     }
 }
