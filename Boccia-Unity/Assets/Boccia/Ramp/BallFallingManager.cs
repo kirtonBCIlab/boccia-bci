@@ -21,7 +21,7 @@ public class BallFalling : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_model.BallState == BocciaBallState.ReadyToRelease && other.gameObject.tag == "BocciaBall")
+        if (_model.BallState == BocciaBallState.ReadyToRelease && other.gameObject.CompareTag("BocciaBall"))
         {
             _model.HandleBallFalling();
         }
