@@ -55,8 +55,8 @@ public class PlayScreenPresenter : MonoBehaviour
         // Generate random values for the ball drop position
         // add +1 to max to maxe it inclusive
         // TODO: The min and max values should come from the model, not hard coded
-        _randomRotation = Random.Range(5, 181);
-        _randomElevation = Random.Range(1, 101);
+        _randomRotation = Random.Range(-85, 85+1);
+        _randomElevation = Random.Range(0, 100+1);
 
         _model.RandomBallDrop(_randomRotation, _randomElevation);
     }
