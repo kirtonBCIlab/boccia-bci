@@ -106,8 +106,8 @@ public class BallPresenter : MonoBehaviour
             // Start the bar movement animation
             StartCoroutine(BarAnimation());
 
-            // Only execute the ball drop code if the Model's ball state is Ready
-            if (_model.BallState == BocciaBallState.Ready)
+            // Only execute the ball drop code if the Model's ball state is ReadyToRelease
+            if (_model.BallState == BocciaBallState.ReadyToRelease)
             {
                 // Call the method to log the drop position and rotation
                 // and the rest of the ball drop code
@@ -280,7 +280,7 @@ public class BallPresenter : MonoBehaviour
     // MARK: Update
     void Update()
     {
-        if (_model.BallState == BocciaBallState.Ready)
+        if (_model.BallState == BocciaBallState.ReadyToRelease)
         {
             // Check if the ball fell off the ramp
             // by calculating the distance between the ball and the ramp's base

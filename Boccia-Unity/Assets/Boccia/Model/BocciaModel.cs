@@ -231,7 +231,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void SetBallStateReady()
     {
-        BallState = BocciaBallState.Ready;
+        BallState = BocciaBallState.ReadyToRelease;
     }
 
     public void SetBallStateReleased()
@@ -466,7 +466,7 @@ public class BocciaModel : Singleton<BocciaModel>
     private void ResetGameState()
     {
         GameMode = BocciaGameMode.StopPlay;
-        BallState = BocciaBallState.Ready;
+        BallState = BocciaBallState.ReadyToRelease;
 
         ResetGameOptionsToDefaults();
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
