@@ -24,6 +24,7 @@ public class VirtualPlayPresenter : MonoBehaviour
 
     public Button toggleCameraButton;
     public Camera VirtualPlayCamera;
+    private bool isCourtViewOn;
 
     private BocciaModel model;
 
@@ -33,6 +34,7 @@ public class VirtualPlayPresenter : MonoBehaviour
         // cache model and subscribe for changed event
         model = BocciaModel.Instance;
         model.WasChanged += ModelChanged;
+        model.NavigationChanged += NavigationChanged;
 
         // Create a list of the virtual play buttons
         // Do not include the camera toggle button
@@ -116,6 +118,8 @@ public class VirtualPlayPresenter : MonoBehaviour
             // Allow virtual play buttons and fan to be interactable
             ToggleVirtualPlayButtons(true);
             ToggleFan(true);
+
+            isCourtViewOn = false;
         }
 
         else
@@ -126,6 +130,8 @@ public class VirtualPlayPresenter : MonoBehaviour
             // Prevent virtual play buttons and fan from being interactable
             ToggleVirtualPlayButtons(false);
             ToggleFan(false);
+
+            isCourtViewOn = true;
         }
     }
 
@@ -143,6 +149,28 @@ public class VirtualPlayPresenter : MonoBehaviour
             if (segmentCollider != null)
             {
                 segmentCollider.enabled = isInteractable;
+            }
+        }
+    }
+
+    private void NavigationChanged()
+    {
+        if (model.CurrentScreen != BocciaScreen.VirtualPlay)
+        {
+            // Disable court view camera if it is on
+            if (VirtualPlayCamera.gameObject.activeSelf)
+            {
+                VirtualPlayCamera.gameObject.SetActive(false);
+            }
+        }
+
+        if (model.CurrentScreen == BocciaScreen.VirtualPlay)
+        {
+            // Check if the court view was on before
+            if (isCourtViewOn)
+            {
+                // Re-enable court view camera
+                VirtualPlayCamera.gameObject.SetActive(true);
             }
         }
     }
