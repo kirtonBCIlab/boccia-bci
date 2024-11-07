@@ -168,7 +168,7 @@ public class FanGenerator : MonoBehaviour
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
-        Debug.Log("~~~~Generating new fan with an elevation of " + currentElevation + " and a rotation of " + currentRotation);
+        // Debug.Log("~~~~Generating new fan with an elevation of " + currentElevation + " and a rotation of " + currentRotation);
         Vector3 startPosition = new(Mathf.Cos(startRad) * fanSettings.OuterRadius, Mathf.Sin(startRad) * fanSettings.OuterRadius, 0);
         CreateTextAnnotation
         (
