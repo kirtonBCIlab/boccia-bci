@@ -59,5 +59,18 @@ public class PlayScreenPresenter : MonoBehaviour
         _randomElevation = Random.Range(0, 100+1);
 
         _model.RandomBallDrop(_randomRotation, _randomElevation);
+
+        StartCoroutine(WaitForStopBeforeRampReset());
+    }
+
+    private IEnumerator WaitForStopBeforeRampReset()
+    {  
+        while (_model.IsRampMoving)
+        {
+            yield return null;
+        }
+
+        _model.ResetRampPosition();
+
     }
 }
