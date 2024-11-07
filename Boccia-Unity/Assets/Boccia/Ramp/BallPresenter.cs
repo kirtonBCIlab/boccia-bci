@@ -111,6 +111,12 @@ public class BallPresenter : MonoBehaviour
     // MARK: Bar Animation
     private IEnumerator BarAnimation()
     {
+        // Wait for the ramp to stop moving
+        while (_model.IsRampMoving)
+        {
+            yield return null;
+        }
+
         _model.SetRampMoving(true);
 
         // Bar opening and closing animation
