@@ -171,8 +171,11 @@ public class BallPresenter : MonoBehaviour
 
     private IEnumerator CheckBallSpeed()
     {
-        // Wait a bit for the ball to fully get rolling
-        yield return new WaitForSecondsRealtime(3f);
+        // Wait for the bar animation to finish
+        while (_barAnimation.GetCurrentAnimatorStateInfo(0).IsName("DropBarClosed"))
+        {
+            yield return null;
+        }
 
         // Velocity threshold
         while (_ballRigidbody.velocity.magnitude > 0.01f)
