@@ -15,7 +15,7 @@ public class HardwareRamp : RampController, ISerialController
     private float _minRotation;
     private float _maxRotation;
     public float Elevation { get; private set; }
-    private float _originElevation
+    private float _originElevation;
     private float _minElevation;
     private float _maxElevation;
     public bool IsBarOpen { get; private set;}
@@ -35,7 +35,7 @@ public class HardwareRamp : RampController, ISerialController
     }
 
     // Initialize the parameters pulled from RampSettings()
-    InitializeRampSettings()
+    private void InitializeRampSettings()
     {
         _originElevation = _model.RampSettings.ElevationOrigin;
         _originRotation = _model.RampSettings.RotationOrigin;
