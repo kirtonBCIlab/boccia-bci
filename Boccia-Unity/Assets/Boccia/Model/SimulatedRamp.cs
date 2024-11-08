@@ -30,6 +30,11 @@ public class SimulatedRamp : RampController
         _model = BocciaModel.Instance;
 
         InitializeRampSettings();
+
+        Rotation = _originRotation;
+        Elevation = _originElevation;
+        IsBarOpen = false; // Initialize the bar state as closed
+        IsMoving = false;
     }
 
     // Initialize the parameters pulled from RampSettings()
@@ -45,48 +50,54 @@ public class SimulatedRamp : RampController
         _maxRotation = _model.RampSettings.RotationLimitMax;
     }
 
-    public SimulatedRamp()
-    {
-        Rotation = _originRotation;
-        Elevation = _originElevation;
-        IsBarOpen = false; // Initialize the bar state as closed
-        IsMoving = false;
-    }
+    // public SimulatedRamp()
+    // {
+    //     Rotation = _originRotation;
+    //     Elevation = _originElevation;
+    //     IsBarOpen = false; // Initialize the bar state as closed
+    //     IsMoving = false;
+    // }
 
     public void RotateBy(float degrees)
     {
-        // Rotation += degrees;
-        Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
-        //Debug.Log($"Simulated rotation by: {Rotation}");
-        SendChangeEvent();
+        Rotation += degrees;
+        // Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
+        Debug.Log($"Simulated rotation by: {Rotation}");
+        // SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
-        // Rotation = degrees;
-        Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
-        //Debug.Log($"Simulated rotation to: {Rotation}");
+        Rotation = degrees;
+        // Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
+        Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
     }
 
     public void ElevateBy(float elevation)
     {
-        Elevation = Mathf.Clamp(Elevation + elevation, _minElevation, _maxElevation);
-        //Debug.Log($"Simulated elevation by: {Elevation}");
+        // Elevation = Mathf.Clamp(Elevation + elevation, _minElevation, _maxElevation);
+        Elevation += elevation;
+        Debug.Log($"Simulated elevation by: {Elevation}");
+        Debug.Log($"Clamped value would be: {Mathf.Clamp(Elevation, _minElevation, _maxElevation)}");
         SendChangeEvent();
     }
 
     public void ElevateTo(float elevation)
     {
-        Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
-        // Debug.Log($"Simulated elevation to: {Elevation}");
+        // Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
+        Elevation = elevation;
+        Debug.Log($"Simulated elevation to: {Elevation}");
+        Debug.Log($"Elevation Min is: {_minElevation}");
+        Debug.Log($"Elevation Max is: {_maxElevation}");
+        Debug.Log($"Clamped value would be: {Mathf.Clamp(Elevation, _minElevation, _maxElevation)}");
         SendChangeEvent();
     }
 
     public void ResetRampPosition()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
+        Rotation = _originRotation;
+        Elevation = _originElevation;
         SendChangeEvent();
     }
 
