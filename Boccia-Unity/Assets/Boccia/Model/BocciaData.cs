@@ -131,6 +131,7 @@ public class FanSettingsContainer
     public int ElevationPrecisionMax;  // Used to set upper limit of GameOptions.ElevationPrecision
 
     // RotationRange
+    // Also used to set limits of Theta in FanNamespace
     public int RotationRangeMin;  // Used to set lower limit of GameOptions.RotationRange
     public int RotationRangeMax;  // Used to set upper limit of GameOptions.RotationRange
 

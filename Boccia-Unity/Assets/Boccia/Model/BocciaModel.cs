@@ -196,7 +196,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // RotationPrecision
         bocciaData.FanSettings.RotationPrecisionMin = 1;
-        bocciaData.FanSettings.RotationPrecisionMax = 1;
+        bocciaData.FanSettings.RotationPrecisionMax = 7;
     }
 
     // MARK: Game options
