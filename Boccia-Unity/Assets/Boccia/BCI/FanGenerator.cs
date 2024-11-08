@@ -10,7 +10,6 @@ using UnityEngine.Rendering;
 
 public class FanGenerator : MonoBehaviour
 {
-    [Tooltip("Should be Sprites-Default")]
     public Material material;
     public Color colour = Color.grey;
 
@@ -43,13 +42,7 @@ public class FanGenerator : MonoBehaviour
     {
         int segments = 100; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
-        GameObject segment = CreateMeshObject("FanSegment", fanMesh);
-
-        segment.transform.SetLocalPositionAndRotation
-        (
-            new Vector3(segment.transform.localPosition.x, segment.transform.localPosition.y, 0),
-            Quaternion.Euler(0, 0, 0)
-        );
+        CreateMeshObject("FanSegment", fanMesh);
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
@@ -61,7 +54,6 @@ public class FanGenerator : MonoBehaviour
         float endAngle = fanSettings.BackButtonWidth / fanSettings.OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
         int segments = 10; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
-        GameObject backButton = CreateMeshObject("BackButton", fanMesh);
 
         // Position the back button based on the BackButtonPositioningMode
         float rotationOffset = 0;
@@ -74,25 +66,15 @@ public class FanGenerator : MonoBehaviour
                 rotationOffset = -(fanSettings.columnSpacing + endAngle);
                 break;
         }
-        
-        backButton.transform.SetLocalPositionAndRotation
-        (
-            new Vector3(backButton.transform.localPosition.x, backButton.transform.localPosition.y, 0),
-            Quaternion.Euler(0, 0, rotationOffset)
-        );
+
+        CreateMeshObject("BackButton", fanMesh, rotationOffset);
     }
 
     public void GenerateDropButton(FanSettings fanSettings)
     {
         int segments = 10; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
-        GameObject dropButton = CreateMeshObject("DropButton", fanMesh);
-
-        dropButton.transform.SetLocalPositionAndRotation
-        (
-            new Vector3(dropButton.transform.localPosition.x, dropButton.transform.localPosition.y, 0),
-            Quaternion.Euler(0, 0, 0)
-        );
+        CreateMeshObject("DropButton", fanMesh);
     }
 
     public void DestroyFanSegments()
@@ -103,11 +85,12 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh)
+    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh, float eulerRotation = 0)
     {
         GameObject meshObject = new(objectName);
         meshObject.transform.SetParent(transform);
         meshObject.transform.localPosition = Vector3.zero;
+        meshObject.transform.localEulerAngles = new Vector3(0, 0, eulerRotation);
         meshObject.transform.localScale = Vector3.one;
 
         MeshFilter meshFilter = meshObject.AddComponent<MeshFilter>();
