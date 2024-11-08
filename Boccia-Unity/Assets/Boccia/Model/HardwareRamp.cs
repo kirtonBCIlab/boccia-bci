@@ -8,12 +8,16 @@ public class HardwareRamp : RampController, ISerialController
 {
     public event Action RampChanged;
 
+    private BocciaModel _model
+
     public float Rotation { get; private set; }
-    private float MaxRotation { get; } = 85.0f;
-    private float MinRotation { get; } = -85.0f;
+    private float _originRotation;
+    private float _minRotation;
+    private float _maxRotation;
     public float Elevation { get; private set; }
-    private float MaxElevation { get;} = 100.0f;
-    private float MinElevation { get; } = 0.0f;
+    private float _originElevation
+    private float _minElevation;
+    private float _maxElevation;
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
 
@@ -23,10 +27,30 @@ public class HardwareRamp : RampController, ISerialController
     private List<string> _serialCommandsList;
     private string _serialCommand;
 
+    void Start()
+    {
+        _model = BocciaModel.Instance;
+
+        InitializeRampSettings();
+    }
+
+    // Initialize the parameters pulled from RampSettings()
+    InitializeRampSettings()
+    {
+        _originElevation = _model.RampSettings.ElevationOrigin;
+        _originRotation = _model.RampSettings.RotationOrigin;
+
+        _minElevation = _model.RampSettings.ElevationLimitMin;
+        _maxElevation = _model.RampSettings.ElevationLimitMax;
+
+        _minRotation = _model.RampSettings.RotationLimitMin;
+        _maxRotation = _model.RampSettings.RotationLimitMax;
+    }
+
     public HardwareRamp()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
+        Rotation = _originRotation;
+        Elevation = _originElevation;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
         _serialCommand = "";
@@ -36,7 +60,7 @@ public class HardwareRamp : RampController, ISerialController
     public void RotateBy(float degrees)
     {
         // Rotation += degrees;
-        Rotation = Mathf.Clamp(Rotation+degrees, MinRotation, MaxRotation);
+        Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
         AddSerialCommandToList($"rr{degrees}");
         // Debug.Log($"Hardware rote by: {Rotation}");
         SendChangeEvent();
@@ -45,7 +69,7 @@ public class HardwareRamp : RampController, ISerialController
     public void RotateTo(float degrees)
     {
         // Rotation = degrees;
-        Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
+        Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
         AddSerialCommandToList($"ra{degrees}");
         // Debug.Log($"Hardware rote to: {Rotation}");
         SendChangeEvent();
@@ -56,7 +80,7 @@ public class HardwareRamp : RampController, ISerialController
         //Old Way
         // Elevation += elevation;
         // Clamped to Max/Min Elevation
-        Elevation = Mathf.Clamp(Elevation + elevation, MinElevation, MaxElevation);
+        Elevation = Mathf.Clamp(Elevation + elevation, _minElevation, _maxElevation);
         AddSerialCommandToList($"er{elevation}");
         // Debug.Log($"Hardware elevate by: {Elevation}");
         SendChangeEvent();
@@ -67,7 +91,7 @@ public class HardwareRamp : RampController, ISerialController
         //Old Way
         // Elevation = elevation;
         // Clamped to Max/Min Elevation
-        Elevation = Mathf.Clamp(elevation, MinElevation, MaxElevation);
+        Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
         AddSerialCommandToList($"ea{elevation}");
         // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
@@ -75,8 +99,8 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ResetRampPosition()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
+        Rotation = _originRotation;
+        Elevation = _originElevation;
         _serialCommandsList.Add("ra0");
         _serialCommandsList.Add("ea50");
         SendChangeEvent();
