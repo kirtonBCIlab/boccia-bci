@@ -157,14 +157,14 @@ public class BocciaModel : Singleton<BocciaModel>
         }
 
         // User values
-        bocciaData.GameOptions.ElevationPrecision = 3.0f;
-        bocciaData.GameOptions.ElevationRange = 20.0f;
-        bocciaData.GameOptions.RotationPrecision = 3.0f;
-        bocciaData.GameOptions.RotationRange = 20.0f;
+        bocciaData.GameOptions.ElevationPrecision = 3;
+        bocciaData.GameOptions.ElevationRange = 20;
+        bocciaData.GameOptions.RotationPrecision = 3;
+        bocciaData.GameOptions.RotationRange = 20;
 
         // Operator values
-        bocciaData.GameOptions.ElevationSpeed = 5.0f;
-        bocciaData.GameOptions.RotationSpeed = 5.0f;
+        bocciaData.GameOptions.ElevationSpeed = 5;
+        bocciaData.GameOptions.RotationSpeed = 5;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
     }
