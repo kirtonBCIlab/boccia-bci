@@ -151,6 +151,12 @@ public class FanPresenter : MonoBehaviour
         // Force a frame to force fan segments destruction complete before generating the fan shape
         yield return null;
 
+        // If the ramp is moving, wait for it to stop before generating the fan
+        while (_model.IsRampMoving)
+        {
+            yield return null;
+        }
+
         // Reset to original rotation to avoid cumulative effects
         CenterToOrigin();
 
