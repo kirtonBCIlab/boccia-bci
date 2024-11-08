@@ -72,12 +72,12 @@ public class HardwareSettingsContainer
 public class GameOptionsContainer
 {
     public Color BallColor;
-    public float ElevationPrecision;
-    public float ElevationRange;
-    public float ElevationSpeed;
-    public float RotationPrecision;
-    public float RotationRange;
-    public float RotationSpeed;
+    public int ElevationPrecision;
+    public int ElevationRange;
+    public int ElevationSpeed;
+    public int RotationPrecision;
+    public int RotationRange;
+    public int RotationSpeed;
 
     // Empty dictionary to hold possible ball colors
     // Define this list within BocciaModel
