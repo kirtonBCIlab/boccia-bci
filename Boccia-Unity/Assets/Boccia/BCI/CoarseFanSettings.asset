@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columnSpacing: 0.5
   rowSpacing: 0.1
-  _theta: 160
+  _theta: 180
   _outerRadius: 6
   _innerRadius: 3.5
-  _nColumns: 7
+  _nColumns: 5
   _nRows: 5
   _elevationRange: 100
   _backButtonWidth: 1
