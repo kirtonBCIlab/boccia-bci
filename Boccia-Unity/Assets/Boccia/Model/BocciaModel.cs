@@ -57,6 +57,12 @@ public class BocciaModel : Singleton<BocciaModel>
     // Ramp Hardware
     public HardwareSettingsContainer HardwareSettings => bocciaData.HardwareSettings;
 
+    // Ramp settings
+    public RampSettingsContainer RampSettings => bocciaData.RampSettings;
+
+    // Fan settings
+    public FanSettingsContainer FanSettings => bocciaData.FanSettings;
+
     // Change events
     public event System.Action WasChanged;  // Referring to the Ramp. Need to change this in other scripts (e.g. RampPresenter.cs) if we want to make the variable name more informative
     public event System.Action NavigationChanged;
@@ -116,6 +122,10 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Set default hardware options
         SetDefaultHardwareOptions();
+        // Set Ramp Settings
+        SetRampSettings();
+        // Set Fan settings
+        SetFanSettings();
     }
 
     private void OnDisable()
@@ -138,6 +148,50 @@ public class BocciaModel : Singleton<BocciaModel>
             {"Elevation", false},
             {"Rotation", false}
         };
+    }
+
+    // Set RampSettings
+    private void SetRampSettings()
+    {
+        // Ramp movement limits
+        bocciaData.RampSettings.ElevationLimitMin = 0;
+        bocciaData.RampSettings.ElevationLimitMax = 100;
+        bocciaData.RampSettings.RotationLimitMin = -85;
+        bocciaData.RampSettings.RotationLimitMax = 85;
+
+        // Speeds
+        // NOTE: These are values for the hardware that controls the ramp
+        // As pulses/movements per second
+        // !!!!!!!!!!!!!!
+        // A translation will need to be done later for
+        // matching movements in the game world
+        // and for presenting a physical measurement to the user
+        // (e.g. cm/s or deg/s)
+        bocciaData.RampSettings.ElevationSpeedMin = 1;
+        bocciaData.RampSettings.ElevationSpeedMax = 255;
+        bocciaData.RampSettings.RotationSpeedMin = 1;
+        bocciaData.RampSettings.RotationSpeedMax = 1000;
+    }
+
+    // Set FanSettings
+    private void SetFanSettings()
+    {
+        // ElevationRange
+        bocciaData.FanSettings.ElevationRangeMin = 1;
+        bocciaData.FanSettings.ElevationRangeMax = 100;
+
+        // ElevationPrecision
+        bocciaData.FanSettings.ElevationPrecisionMin = 1;
+        bocciaData.FanSettings.ElevationPrecisionMax = 7;
+
+        // RotationRange
+        // Also sets limits on Theta for Fan generation
+        bocciaData.FanSettings.RotationRangeMin = 5;
+        bocciaData.FanSettings.RotationRangeMax = 180;
+
+        // RotationPrecision
+        bocciaData.FanSettings.RotationPrecisionMin = 1;
+        bocciaData.FanSettings.RotationPrecisionMax = 1;
     }
 
     // MARK: Game options
