@@ -94,17 +94,21 @@ public class GameOptionsContainer
 [System.Serializable]
 public class RampSettingsContainer
 {
+    // Origin setting – what rotation and elevation the ramp goes to as default, e.g. on initialization or resetting
+    public float ElevationOrigin;
+    public float RotationOrigin;
+
     // Ramp elevation
     // Used by to set limits of Ramp elevation in Hardwware and Simulated ramp
     // Don't confuse similar name with that in FanSettingsContainer
     // This is for the hardware and simulated ramp
-    public int ElevationLimitMin
-    public int ElevationLimitMax
+    public int ElevationLimitMin;
+    public int ElevationLimitMax;
 
     // Ramp rotation
     // Used by to set limits of Ramp rotation in Hardwware and Simulated ramp
-    public int RotationLimitMin
-    public int RotationLimitMax
+    public int RotationLimitMin;
+    public int RotationLimitMax;
 
     // Ramp speeds
     // These are values for the hardware that controls the ramp
@@ -119,20 +123,20 @@ public class RampSettingsContainer
 public class FanSettingsContainer
 {
     // Elevation range
-    public int ElevationRangeMin  // Used to set lower limit of GameOptions.ElevationRange
-    public int ElevationRangeMax  // Used to set upper limit of GameOptions.ElevationRange
+    public int ElevationRangeMin;  // Used to set lower limit of GameOptions.ElevationRange
+    public int ElevationRangeMax;  // Used to set upper limit of GameOptions.ElevationRange
 
     // ElevationPrecision – Also used to limit the number of rows of the fine fan
-    public int ElevationPrecisionMin  // Used to set lower limit of GameOptions.ElevationPrecision
-    public int ElevationPrecisionMax  // Used to set upper limit of GameOptions.ElevationPrecision
+    public int ElevationPrecisionMin;  // Used to set lower limit of GameOptions.ElevationPrecision
+    public int ElevationPrecisionMax;  // Used to set upper limit of GameOptions.ElevationPrecision
 
     // RotationRange
-    public int RotationRangeMin  // Used to set lower limit of GameOptions.RotationRange
-    public int RotationRangeMax  // Used to set upper limit of GameOptions.RotationRange
+    public int RotationRangeMin;  // Used to set lower limit of GameOptions.RotationRange
+    public int RotationRangeMax;  // Used to set upper limit of GameOptions.RotationRange
 
     // RotationPrecision – Also used to limit the number of columns of the fine fan
-    public int RotationPrecisionMin  // Used to set lower limit of GameOptions.RotationPrecision
-    public int RotationPrecisionMax  // Used to set upper limit of GameOptions.RotationPrecision
+    public int RotationPrecisionMin;  // Used to set lower limit of GameOptions.RotationPrecision
+    public int RotationPrecisionMax;  // Used to set upper limit of GameOptions.RotationPrecision
 }
 
 /// The P300SettingsContainer class contains training and testing settings specific to the P300 paradigm.

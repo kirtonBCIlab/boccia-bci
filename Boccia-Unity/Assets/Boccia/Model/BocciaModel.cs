@@ -153,6 +153,11 @@ public class BocciaModel : Singleton<BocciaModel>
     // Set RampSettings
     private void SetRampSettings()
     {
+        // Ramp origin
+        // Where the ramp starts or is reset to
+        bocciaData.RampSettings.ElevationOrigin = 50.0f;
+        bocciaData.RampSettings.RotationOrigin = 0.0f;
+
         // Ramp movement limits
         bocciaData.RampSettings.ElevationLimitMin = 0;
         bocciaData.RampSettings.ElevationLimitMax = 100;
