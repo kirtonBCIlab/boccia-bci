@@ -8,7 +8,7 @@ public class HardwareRamp : RampController, ISerialController
 {
     public event Action RampChanged;
 
-    private BocciaModel _model
+    private BocciaModel _model;
 
     public float Rotation { get; private set; }
     private float _originRotation;

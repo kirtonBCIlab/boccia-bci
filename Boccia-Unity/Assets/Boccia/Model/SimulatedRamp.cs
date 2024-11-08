@@ -12,6 +12,8 @@ public class SimulatedRamp : RampController
 {
     public event System.Action RampChanged;
 
+    private BocciaModel _model;
+
     public float Rotation { get; private set; }
     private float _originRotation;
     private float _minRotation;
