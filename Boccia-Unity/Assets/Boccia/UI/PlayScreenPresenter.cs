@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayScreenPresenter : MonoBehaviour
 {
     public Button resetRampButton;
     public Button randomBallButton;
+    public GameObject serialStatusIndicator;
 
     private BocciaModel _model;
 
@@ -21,8 +23,6 @@ public class PlayScreenPresenter : MonoBehaviour
         // connect buttons to model
         resetRampButton.onClick.AddListener(_model.ResetRampPosition);
         randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
-        
-        // TODO: see task BOC-90 for what the random ball button should do
     }
 
     // Update is called once per frame
@@ -38,6 +38,8 @@ public class PlayScreenPresenter : MonoBehaviour
             _model = BocciaModel.Instance;
         }
         _model.WasChanged += ModelChanged;
+
+        SerialConnectionStatus();
     }
 
     void OnDisable()
@@ -71,6 +73,20 @@ public class PlayScreenPresenter : MonoBehaviour
         }
 
         _model.ResetRampPosition();
+    }
 
+    private void SerialConnectionStatus()
+    {
+        if (_model.HardwareSettings.IsSerialPortConnected)
+        {
+            serialStatusIndicator.GetComponentInChildren<TextMeshProUGUI>().text = "Serial Connected";
+            serialStatusIndicator.GetComponent<Image>().color = Color.green;
+        }
+
+        if (!_model.HardwareSettings.IsSerialPortConnected)
+        {
+            serialStatusIndicator.GetComponentInChildren<TextMeshProUGUI>().text = "Serial Disconnected";
+            serialStatusIndicator.GetComponent<Image>().color = Color.red;
+        }
     }
 }
