@@ -110,36 +110,36 @@ public class GameOptionsMenuPresenter : MonoBehaviour
 
     public void OnChangeElevationPrecision(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.ElevationPrecision, value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationPrecision, Mathf.RoundToInt(value));
         GenerateFanForOptions();
     }
 
     public void OnChangeElevationRange(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.ElevationRange, value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationRange, Mathf.RoundToInt(value));
         GenerateFanForOptions();
     }
 
     public void OnChangeRotationPrecision(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.RotationPrecision, value);
+        _model.SetGameOption(ref _model.GameOptions.RotationPrecision, Mathf.RoundToInt(value));
         GenerateFanForOptions();
     }
 
     public void OnChangeRotationRange(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.RotationRange, value);
+        _model.SetGameOption(ref _model.GameOptions.RotationRange, Mathf.RoundToInt(value));
         GenerateFanForOptions();
     }
 
     public void OnChangeElevationSpeed(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.ElevationSpeed, value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationSpeed, Mathf.RoundToInt(value));
     }
 
     public void OnChangeRotationSpeed(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.RotationSpeed, value);
+        _model.SetGameOption(ref _model.GameOptions.RotationSpeed, Mathf.RoundToInt(value));
     }
 
     // Reset game options to defaults
