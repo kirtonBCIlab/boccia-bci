@@ -12,6 +12,7 @@ public class PlayScreenPresenter : MonoBehaviour
     public GameObject serialStatusIndicator;
     private bool lastConnectionStatus;
     private Coroutine _checkSerialCoroutine;
+    private float _waitTime = 6f;
 
     private BocciaModel _model;
 
@@ -33,7 +34,7 @@ public class PlayScreenPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnEnable()
@@ -116,22 +117,22 @@ public class PlayScreenPresenter : MonoBehaviour
         // Keep checking the serial connection
         while (true)
         {
+            // Debug.Log("Checking serial connection");
+
             // Check the serial port connection
             bool currentStatus = IsPortConnected(_model.HardwareSettings.COMPort);
-            Debug.Log("Connection status: " + currentStatus);
 
             // If the status has changed since the last check
             // update the indicator
             if (lastConnectionStatus != currentStatus)
             {
                 lastConnectionStatus = currentStatus;
-                Debug.Log("Last connection status: " + lastConnectionStatus);
 
                 IndicateSerialStatus(lastConnectionStatus);
             }
 
             // Check every 6 seconds to reduce computational load
-            yield return new WaitForSecondsRealtime(6f);
+            yield return new WaitForSecondsRealtime(_waitTime);
         }
     }
 
