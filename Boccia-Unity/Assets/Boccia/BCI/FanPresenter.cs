@@ -119,8 +119,8 @@ public class FanPresenter : MonoBehaviour
         if (_fineFan != null)
         {
             _fineFan.Theta = _model.GameOptions.RotationRange;
-            _fineFan.NColumns = (int)_model.GameOptions.RotationPrecision;
-            _fineFan.NRows = (int)_model.GameOptions.ElevationPrecision;
+            _fineFan.NColumns = _model.GameOptions.RotationPrecision;
+            _fineFan.NRows = _model.GameOptions.ElevationPrecision;
             _fineFan.ElevationRange = _model.GameOptions.ElevationRange;
         }
     }
@@ -150,6 +150,12 @@ public class FanPresenter : MonoBehaviour
 
         // Force a frame to force fan segments destruction complete before generating the fan shape
         yield return null;
+
+        // If the ramp is moving, wait for it to stop before generating the fan
+        while (_model.IsRampMoving)
+        {
+            yield return null;
+        }
 
         // Reset to original rotation to avoid cumulative effects
         CenterToOrigin();
