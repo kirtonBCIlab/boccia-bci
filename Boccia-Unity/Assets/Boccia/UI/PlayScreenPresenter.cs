@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,6 +10,8 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button resetRampButton;
     public Button randomBallButton;
     public GameObject serialStatusIndicator;
+    private bool lastConnectionStatus;
+    private Coroutine _checkSerialCoroutine;
 
     private BocciaModel _model;
 
@@ -23,6 +26,8 @@ public class PlayScreenPresenter : MonoBehaviour
         // connect buttons to model
         resetRampButton.onClick.AddListener(_model.ResetRampPosition);
         randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
+
+        _model.NavigationChanged += NavigationChanged;
     }
 
     // Update is called once per frame
@@ -38,19 +43,35 @@ public class PlayScreenPresenter : MonoBehaviour
             _model = BocciaModel.Instance;
         }
         _model.WasChanged += ModelChanged;
+        _model.NavigationChanged += NavigationChanged;
 
-        SerialConnectionStatus();
+        CheckConnectionInPlayMode();
     }
 
     void OnDisable()
     {
         _model.WasChanged -= ModelChanged;
+        _model.NavigationChanged -= NavigationChanged;
     }
 
     private void ModelChanged()
     {
 
     }
+
+    private void NavigationChanged()
+    {
+        // Stop the serial connection coroutine if we leave play mode
+        if (_model.GameMode != BocciaGameMode.Play)
+        {
+            if (_checkSerialCoroutine != null)
+            {
+                StopCoroutine(_checkSerialCoroutine);
+                _checkSerialCoroutine = null;
+            }
+        }
+    }
+
 
     private void SetRandomBallDropPosition()
     {
@@ -75,15 +96,61 @@ public class PlayScreenPresenter : MonoBehaviour
         _model.ResetRampPosition();
     }
 
-    private void SerialConnectionStatus()
+
+    private void CheckConnectionInPlayMode()
     {
-        if (_model.HardwareSettings.IsSerialPortConnected)
+        // Start checking the serial connection if we are in play mode
+        if (_model.GameMode == BocciaGameMode.Play)
+        {
+            // Initialize the indicator
+            lastConnectionStatus = IsPortConnected(_model.HardwareSettings.COMPort);
+            IndicateSerialStatus(lastConnectionStatus);
+
+            // Start the coroutine
+            _checkSerialCoroutine = StartCoroutine(CheckSerialPortConnection());
+        }
+    }
+
+    private IEnumerator CheckSerialPortConnection()
+    {
+        // Keep checking the serial connection
+        while (true)
+        {
+            // Check the serial port connection
+            bool currentStatus = IsPortConnected(_model.HardwareSettings.COMPort);
+            Debug.Log("Connection status: " + currentStatus);
+
+            // If the status has changed since the last check
+            // update the indicator
+            if (lastConnectionStatus != currentStatus)
+            {
+                lastConnectionStatus = currentStatus;
+                Debug.Log("Last connection status: " + lastConnectionStatus);
+
+                IndicateSerialStatus(lastConnectionStatus);
+            }
+
+            // Check every 6 seconds to reduce computational load
+            yield return new WaitForSecondsRealtime(6f);
+        }
+    }
+
+    private bool IsPortConnected(string comPort)
+    {
+        // Return true if the serial port is available
+        return System.Array.Exists(SerialPort.GetPortNames(), port => port == comPort);
+    }
+
+    // Method to update the serial connection status indicator
+    private void IndicateSerialStatus(bool status)
+    {
+        if (status == true)
         {
             serialStatusIndicator.GetComponentInChildren<TextMeshProUGUI>().text = "Serial Connected";
             serialStatusIndicator.GetComponent<Image>().color = Color.green;
         }
 
-        if (!_model.HardwareSettings.IsSerialPortConnected)
+        else if (status == false)
         {
             serialStatusIndicator.GetComponentInChildren<TextMeshProUGUI>().text = "Serial Disconnected";
             serialStatusIndicator.GetComponent<Image>().color = Color.red;
