@@ -112,7 +112,7 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             // Check every 6 seconds to reduce computational load
             yield return new WaitForSecondsRealtime(_waitTime);
-            Debug.Log("Checking serial connection");
+            // Debug.Log("Checking serial connection");
         }
 
         // If disconnected, update the indicator
