@@ -10,7 +10,7 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button resetRampButton;
     public Button randomBallButton;
     public GameObject serialStatusIndicator;
-    private bool lastConnectionStatus;
+    private bool connectionStatus;
     private Coroutine _checkSerialCoroutine;
     private float _waitTime = 6f;
 
@@ -65,7 +65,7 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void NavigationChanged()
     {
-        // Stop the serial connection coroutine if we leave play mode
+        // Make sure the serial connection coroutine is stopped when leaving play mode
         if (_model.GameMode != BocciaGameMode.Play)
         {
             if (_checkSerialCoroutine != null)
@@ -103,27 +103,29 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private IEnumerator CheckSerialPortConnection()
     {
-        // Keep checking the serial connection
-        while (true)
+        // Initialize indicator
+        connectionStatus = IsPortConnected(_model.HardwareSettings.COMPort);
+        IndicateSerialStatus(connectionStatus);
+
+        // Check every 6 seconds while the serial port is connected
+        while (IsPortConnected(_model.HardwareSettings.COMPort))
         {
-            Debug.Log("Checking serial connection");
-
-            // Check the serial port connection
-            bool currentStatus = IsPortConnected(_model.HardwareSettings.COMPort);
-            IndicateSerialStatus(currentStatus);
-
-            // If the status has changed since the last check
-            // update the indicator
-            if (lastConnectionStatus != currentStatus)
-            {
-                lastConnectionStatus = currentStatus;
-
-                IndicateSerialStatus(lastConnectionStatus);
-            }
-
             // Check every 6 seconds to reduce computational load
             yield return new WaitForSecondsRealtime(_waitTime);
+            Debug.Log("Checking serial connection");
         }
+
+        // If disconnected, update the indicator
+        IndicateSerialStatus(false);
+
+        // Wait a bit
+        yield return new WaitForSecondsRealtime(_waitTime);
+
+        // Navigate to the ramp setup screen which displays in play menu
+        _model.PlayMenu();
+        _model.ShowRampSetup();
+
+        yield return null;
     }
 
     private bool IsPortConnected(string comPort)
