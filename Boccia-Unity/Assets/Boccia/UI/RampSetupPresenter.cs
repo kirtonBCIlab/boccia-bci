@@ -41,6 +41,7 @@ public class RampSetupPresenter : MonoBehaviour
     {
         // cache model
         _model = BocciaModel.Instance;
+        _model.NavigationChanged += NavigationChanged;
 
         // Connect buttons to model
         closeButton.onClick.AddListener(_model.PlayMenu);
@@ -89,10 +90,12 @@ public class RampSetupPresenter : MonoBehaviour
         // }
     }
 
-    void OnEnable()
+    void NavigationChanged()
     {
-        // Check connection status to update label when panel is enabled
-        CheckConnectionStatus();
+        if (_model.CurrentScreen == BocciaScreen.RampSetup)
+        {
+            CheckConnectionStatus();
+        }        
     }
 
     public void PopulateSerialPortDropdown()
