@@ -123,6 +123,7 @@ public class PlayScreenPresenter : MonoBehaviour
 
         // Navigate to the ramp setup screen which displays in play menu
         _model.PlayMenu();
+        _model.HardwareSettings.IsSerialPortConnected = false;
         _model.ShowRampSetup();
 
         yield return null;
