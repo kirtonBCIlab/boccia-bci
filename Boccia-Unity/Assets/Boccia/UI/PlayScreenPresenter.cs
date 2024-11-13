@@ -46,7 +46,10 @@ public class PlayScreenPresenter : MonoBehaviour
         _model.WasChanged += ModelChanged;
         _model.NavigationChanged += NavigationChanged;
 
-        CheckConnectionInPlayMode();
+        if (_model.GameMode == BocciaGameMode.Play)
+        {
+            _checkSerialCoroutine = StartCoroutine(CheckSerialPortConnection());
+        }
     }
 
     void OnDisable()
@@ -96,28 +99,14 @@ public class PlayScreenPresenter : MonoBehaviour
 
         _model.ResetRampPosition();
     }
-
-
-    private void CheckConnectionInPlayMode()
-    {
-        // Start checking the serial connection if we are in play mode
-        if (_model.GameMode == BocciaGameMode.Play)
-        {
-            // Initialize the indicator
-            lastConnectionStatus = IsPortConnected(_model.HardwareSettings.COMPort);
-            IndicateSerialStatus(lastConnectionStatus);
-
-            // Start the coroutine
-            _checkSerialCoroutine = StartCoroutine(CheckSerialPortConnection());
-        }
-    }
+    
 
     private IEnumerator CheckSerialPortConnection()
     {
         // Keep checking the serial connection
         while (true)
         {
-            // Debug.Log("Checking serial connection");
+            Debug.Log("Checking serial connection");
 
             // Check the serial port connection
             bool currentStatus = IsPortConnected(_model.HardwareSettings.COMPort);
