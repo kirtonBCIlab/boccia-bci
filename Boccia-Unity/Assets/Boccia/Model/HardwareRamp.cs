@@ -82,6 +82,22 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
+    public float ScaleRotationSpeed(float speed)
+    {
+        float stepsPerRevolution = 800f;        // Steps per revolution: 800 steps/rev
+        float RotationMotorMaxSpeed = 1000f;    // Max speed: 1000 steps/sec according to AccelStepper library
+        float gearRatio = 3f;                   // Gear ratio: 3:1
+        float scaledSpeed = (speed / 100f) * (RotationMotorMaxSpeed / stepsPerRevolution / gearRatio);
+        return scaledSpeed;
+    }
+
+    public float ScaleElevationSpeed(float speed)
+    {
+        float elevationMotorMaxSpeed = 2.0f;    // Max speed: 2 inches/sec at 35 lbs
+        float scaledSpeed = (speed / 100f) * elevationMotorMaxSpeed;
+        return scaledSpeed;
+    }
+
     public void RandomBallDrop(int randomRotation, int randomElevation)
     {
         RotateTo(randomRotation);

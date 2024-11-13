@@ -213,6 +213,9 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
     public void ElevateTo(float elevation) => rampController.ElevateTo(elevation);
 
+    public float ScaleRotationSpeed(float speed) => _hardwareRamp.ScaleRotationSpeed(speed);
+    public float ScaleElevationSpeed(float speed) => _hardwareRamp.ScaleElevationSpeed(speed);
+
     public void ResetRampPosition() => rampController.ResetRampPosition();
 
     public void DropBall() => rampController.DropBall();
