@@ -99,7 +99,7 @@ public class PlayScreenPresenter : MonoBehaviour
 
         _model.ResetRampPosition();
     }
-    
+
 
     private IEnumerator CheckSerialPortConnection()
     {
@@ -110,6 +110,7 @@ public class PlayScreenPresenter : MonoBehaviour
 
             // Check the serial port connection
             bool currentStatus = IsPortConnected(_model.HardwareSettings.COMPort);
+            IndicateSerialStatus(currentStatus);
 
             // If the status has changed since the last check
             // update the indicator
