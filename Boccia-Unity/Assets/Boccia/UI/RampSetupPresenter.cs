@@ -60,7 +60,7 @@ public class RampSetupPresenter : MonoBehaviour
         recalibrateRotationButton.onClick.AddListener(CalibrationHandler);
 
         // Start with done button enabled until calibration done
-        doneButton.interactable = false;
+        doneButton.interactable = !calibrationNeeded;
 
         // Disable calibration buttons on start
         EnableCalibrateButtons(false);
@@ -75,8 +75,6 @@ public class RampSetupPresenter : MonoBehaviour
 
         // Set all calibration checks to false
         ResetCalibrationStatus();
-
-        if (!calibrationNeeded) { doneButton.interactable = true; }
     }
 
     // TODO: add functionality to the buttons
@@ -89,6 +87,12 @@ public class RampSetupPresenter : MonoBehaviour
         // {
         //    Debug.Log( _model.ReadSerialCommand() );
         // }
+    }
+
+    void OnEnable()
+    {
+        // Check connection status to update label when panel is enabled
+        CheckConnectionStatus();
     }
 
     public void PopulateSerialPortDropdown()
@@ -127,6 +131,27 @@ public class RampSetupPresenter : MonoBehaviour
                 ConnectToSerialPort();
                 break;
         }
+    }
+
+    private void CheckConnectionStatus()
+    {
+        if (_model.HardwareSettings.IsSerialPortConnected)
+        {
+            connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Disconnect";
+            connectSerialPortButton.GetComponent<Image>().color = Color.red;
+            serialPortDropdown.enabled = false;
+            EnableCalibrateButtons(true);
+        }
+        else
+        {
+            connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Connect";
+            connectSerialPortButton.GetComponent<Image>().color = Color.green;
+            serialPortDropdown.enabled = true;
+            EnableCalibrateButtons(false);
+        }
+
+        // Enable or disable done button based on whether calibration is needed
+        doneButton.interactable = !calibrationNeeded;
     }
 
     private void ConnectToSerialPort()
@@ -172,7 +197,7 @@ public class RampSetupPresenter : MonoBehaviour
             connectSerialPortButton.GetComponentInChildren<TextMeshProUGUI>().text = "Connect";
             connectSerialPortButton.GetComponent<Image>().color = Color.green;
             serialPortDropdown.enabled = true;
-            doneButton.interactable = false;
+            if (calibrationNeeded) { doneButton.interactable = false; }
             _rampIsCalibrating = false;
             EnableCalibrateButtons(false);
             ResetCalibrationStatus();
@@ -294,7 +319,7 @@ public class RampSetupPresenter : MonoBehaviour
 
     private void ResetCalibrationStatus()
     {
-        doneButton.interactable = false;
+        if (calibrationNeeded) { doneButton.interactable = false; }
 
         // In case there are no motors to calibrate, reset all motors
         bool reset_all = false;
