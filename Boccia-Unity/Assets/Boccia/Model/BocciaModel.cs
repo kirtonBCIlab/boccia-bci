@@ -92,7 +92,6 @@ public class BocciaModel : Singleton<BocciaModel>
         }
     }
 
-    // public void Start()
     public void Awake()
     {
         // If the model is uninitialized, set it up
@@ -108,13 +107,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
             bocciaData.WasInitialized = true;
         }
-
-
-        // These will actually run each time the software starts
-
-        // Initialize the list of possible ball colors
-        InitializeBallColorOptions();
-
+        
         // Set default hardware options
         SetDefaultHardwareOptions();
         // Set Ramp Settings
@@ -132,6 +125,18 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Send the change event after SimulatedRamp is ready
         SendRampChangeEvent();
+    }
+
+    public void Start()
+    {
+
+        // These will actually run each time the software starts
+
+        // Initialize the list of possible ball colors
+        // This will fail to run if put in the Awake() method
+        InitializeBallColorOptions();
+
+
     }
 
     private void OnDisable()
@@ -218,7 +223,7 @@ public class BocciaModel : Singleton<BocciaModel>
         }
         else
         {
-            GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
+            GameOptions.BallColor = Color.blue;  // Fallback if dictionary is empty (shouldn't happen)
         }
 
         // User values
@@ -246,6 +251,7 @@ public class BocciaModel : Singleton<BocciaModel>
     // Initialize and populate the PossibleBallColors dictionary
     private void InitializeBallColorOptions()
     {
+        Debug.Log("Running BocciaModel.InitializeBallColorOptions");
         bocciaData.GameOptions.BallColorOptionsDict = new Dictionary<string, Color>
         {
             {"Red", Color.red },
@@ -257,6 +263,7 @@ public class BocciaModel : Singleton<BocciaModel>
             {"Grey", Color.grey},
             {"Cyan", Color.cyan}
         };
+        Debug.Log("BallColorOptionsDict: " + bocciaData.GameOptions.BallColorOptionsDict);
     }
 
     // Get the current ball color
