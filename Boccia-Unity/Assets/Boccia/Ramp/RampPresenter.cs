@@ -12,8 +12,9 @@ public class RampPresenter : MonoBehaviour
     public GameObject elevationMechanism; // Elevation Mechanism child component of Shaft and Ramp (the ramp parts that will change elevation in the visualization)
     public GameObject rampAdapter; // To define direction of movement for elevationMechanism
 
-    public float minElevation = 0.0026f; 
-    public float maxElevation = 0.43f; 
+    // Max values for animation
+    private float _minElevation = 0.0026f; 
+    private float _maxElevation = 0.43f; 
 
     private BocciaModel _model;
 
@@ -88,9 +89,9 @@ public class RampPresenter : MonoBehaviour
     {
         // Smoothly show the rotatation of the ramp to the new position
         Quaternion currentRotation = rotationShaft.transform.localRotation;
-        //Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
+        Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
         Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
-        //Debug.Log($"model.RampRotation value: {model.RampRotation}");
+        Debug.Log($"model.RampRotation value: {_model.RampRotation}");
 
         while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
         {
@@ -105,11 +106,10 @@ public class RampPresenter : MonoBehaviour
     private IEnumerator ElevationVisualization()
     {
         Vector3 currentElevation = elevationMechanism.transform.localPosition;
-        //Debug.Log($"model.RampElevation value: {model.RampElevation}");
-        float elevationScalar = minElevation + (_model.RampElevation / 100f) * (maxElevation - minElevation); // Convert percent elevation to its scalar value
+        float elevationScalar = _minElevation + (_model.RampElevation / 100f) * (_maxElevation - _minElevation); // Convert percent elevation to its scalar value
         
         //Make sure the elevation is within the min and max elevation bounds
-        elevationScalar = Mathf.Clamp(elevationScalar, minElevation, maxElevation);
+        elevationScalar = Mathf.Clamp(elevationScalar, _minElevation, _maxElevation);
 
         Vector3 targetElevation = elevationDirection * elevationScalar;   
         
