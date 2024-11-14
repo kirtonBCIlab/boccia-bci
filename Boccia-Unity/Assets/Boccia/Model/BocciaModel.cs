@@ -110,13 +110,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
             bocciaData.WasInitialized = true;
         }
-        
-        // Set default hardware options
-        SetDefaultHardwareOptions();
+
         // Set Ramp Settings
         SetRampSettings();
-        // Set Fan settings
-        SetFanSettings();
 
         // Instantiate the ramp controllers after initialization
         _simulatedRamp = new SimulatedRamp();
@@ -132,14 +128,16 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void Start()
     {
-
-        // These will actually run each time the software starts
+        // These will fail to run if put in the Awake() method
 
         // Initialize the list of possible ball colors
-        // This will fail to run if put in the Awake() method
         InitializeBallColorOptions();
 
+        // Set default hardware options
+        SetDefaultHardwareOptions();
 
+        // Set Fan settings
+        SetFanSettings();
     }
 
     private void OnDisable()
