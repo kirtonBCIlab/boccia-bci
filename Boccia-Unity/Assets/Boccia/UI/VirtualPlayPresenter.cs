@@ -114,11 +114,6 @@ public class VirtualPlayPresenter : MonoBehaviour
         {
             // Disable camera
             VirtualPlayCamera.gameObject.SetActive(false);
-
-            // Allow virtual play buttons and fan to be interactable
-            ToggleVirtualPlayButtons(true);
-            ToggleFan(true);
-
             isCourtViewOn = false;
         }
 
@@ -126,11 +121,6 @@ public class VirtualPlayPresenter : MonoBehaviour
         {
             // Enable camera
             VirtualPlayCamera.gameObject.SetActive(true);
-
-            // Prevent virtual play buttons and fan from being interactable
-            ToggleVirtualPlayButtons(false);
-            ToggleFan(false);
-
             isCourtViewOn = true;
         }
     }
