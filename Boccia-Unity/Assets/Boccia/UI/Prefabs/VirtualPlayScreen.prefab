@@ -1266,7 +1266,7 @@ GameObject:
   - component: {fileID: 3931406161124561486}
   - component: {fileID: 5591672340010151945}
   - component: {fileID: 5307156225035156463}
-  - component: {fileID: 611877319385449779}
+  - component: {fileID: 2364165486713040064}
   - component: {fileID: 3249766819828270722}
   m_Layer: 6
   m_Name: RandomJackButton
@@ -1377,7 +1377,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &611877319385449779
+--- !u!114 &2364165486713040064
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1386,10 +1386,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4303601759080381808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7720a1dc0ec4493980b36fef8105f94a, type: 3}
+  m_Script: {fileID: 11500000, guid: 535bf50698404674ead34b338e36e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
+  _renderer: {fileID: 3931406161124561486}
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _startOn: 0
@@ -1410,9 +1410,9 @@ MonoBehaviour:
   StartStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 611877319385449779}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 2364165486713040064}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOn
         m_Mode: 1
         m_Arguments:
@@ -1426,9 +1426,9 @@ MonoBehaviour:
   StopStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 611877319385449779}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 2364165486713040064}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOff
         m_Mode: 1
         m_Arguments:
@@ -1442,9 +1442,9 @@ MonoBehaviour:
   OnSelectedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 611877319385449779}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 2364165486713040064}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 6063160319026526717}
   - component: {fileID: 2847942383612381812}
   - component: {fileID: 8163365981475531111}
-  - component: {fileID: 3305226368716874745}
+  - component: {fileID: 2409295025597468113}
   - component: {fileID: 7511090427285945928}
   m_Layer: 6
   m_Name: BallColorButton
@@ -1911,7 +1911,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3305226368716874745
+--- !u!114 &2409295025597468113
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1920,7 +1920,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5754980578906772579}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7720a1dc0ec4493980b36fef8105f94a, type: 3}
+  m_Script: {fileID: 11500000, guid: 535bf50698404674ead34b338e36e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
@@ -1944,9 +1944,9 @@ MonoBehaviour:
   StartStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3305226368716874745}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 2409295025597468113}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOn
         m_Mode: 1
         m_Arguments:
@@ -1960,9 +1960,9 @@ MonoBehaviour:
   StopStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3305226368716874745}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 2409295025597468113}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOff
         m_Mode: 1
         m_Arguments:
@@ -1976,9 +1976,9 @@ MonoBehaviour:
   OnSelectedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3305226368716874745}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 2409295025597468113}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -2533,7 +2533,7 @@ GameObject:
   - component: {fileID: 8445251991010630657}
   - component: {fileID: 473668909283045256}
   - component: {fileID: 5790848212467436699}
-  - component: {fileID: 5363301401730856394}
+  - component: {fileID: 4005011814417834446}
   - component: {fileID: 4326876296027433403}
   m_Layer: 6
   m_Name: ResetRampButton
@@ -2644,7 +2644,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5363301401730856394
+--- !u!114 &4005011814417834446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2653,7 +2653,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7983456653138342303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7720a1dc0ec4493980b36fef8105f94a, type: 3}
+  m_Script: {fileID: 11500000, guid: 535bf50698404674ead34b338e36e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
@@ -2677,9 +2677,9 @@ MonoBehaviour:
   StartStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5363301401730856394}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 4005011814417834446}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOn
         m_Mode: 1
         m_Arguments:
@@ -2693,9 +2693,9 @@ MonoBehaviour:
   StopStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5363301401730856394}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 4005011814417834446}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOff
         m_Mode: 1
         m_Arguments:
@@ -2709,9 +2709,9 @@ MonoBehaviour:
   OnSelectedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5363301401730856394}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 4005011814417834446}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -2877,7 +2877,7 @@ GameObject:
   - component: {fileID: 1194208003963516333}
   - component: {fileID: 2229748811494752026}
   - component: {fileID: 8216782688655078050}
-  - component: {fileID: 8028214199397407012}
+  - component: {fileID: 3235224418995685258}
   - component: {fileID: 5831516321743215832}
   m_Layer: 6
   m_Name: ResetBallsButton
@@ -2988,7 +2988,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8028214199397407012
+--- !u!114 &3235224418995685258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2997,7 +2997,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8476152213448098857}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7720a1dc0ec4493980b36fef8105f94a, type: 3}
+  m_Script: {fileID: 11500000, guid: 535bf50698404674ead34b338e36e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
@@ -3021,9 +3021,9 @@ MonoBehaviour:
   StartStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8028214199397407012}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 3235224418995685258}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOn
         m_Mode: 1
         m_Arguments:
@@ -3037,9 +3037,9 @@ MonoBehaviour:
   StopStimulusEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8028214199397407012}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 3235224418995685258}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: SetOff
         m_Mode: 1
         m_Arguments:
@@ -3053,9 +3053,9 @@ MonoBehaviour:
   OnSelectedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8028214199397407012}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
-          Bci4Kids.BciEssentials.Runtime
+      - m_Target: {fileID: 3235224418995685258}
+        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
+          Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
