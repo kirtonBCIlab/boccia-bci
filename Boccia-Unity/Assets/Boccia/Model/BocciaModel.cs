@@ -24,9 +24,9 @@ public class BocciaModel : Singleton<BocciaModel>
     // Game
     public BocciaGameMode GameMode;
 
-    private RampController rampController = new SimulatedRamp();
-    private RampController _simulatedRamp = new SimulatedRamp();
-    private HardwareRamp _hardwareRamp = new();
+    private RampController rampController;
+    private RampController _simulatedRamp;
+    private HardwareRamp _hardwareRamp;
 
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
@@ -92,7 +92,8 @@ public class BocciaModel : Singleton<BocciaModel>
         }
     }
 
-    public void Start()
+    // public void Start()
+    public void Awake()
     {
         // If the model is uninitialized, set it up
         // Note: This will not run if a model is being loaded from an existing save state
@@ -121,11 +122,16 @@ public class BocciaModel : Singleton<BocciaModel>
         // Set Fan settings
         SetFanSettings();
 
-        SendRampChangeEvent();
+        // Instantiate the ramp controllers after initialization
+        _simulatedRamp = new SimulatedRamp();
+        _hardwareRamp = new HardwareRamp();
 
         // Initialize controller to _simulatedRamp
         rampController = _simulatedRamp;
         SetRampControllerBasedOnMode();
+
+        // Send the change event after SimulatedRamp is ready
+        SendRampChangeEvent();
     }
 
     private void OnDisable()
