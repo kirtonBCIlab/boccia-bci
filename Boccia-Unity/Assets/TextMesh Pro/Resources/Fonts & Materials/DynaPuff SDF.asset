@@ -168,9 +168,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: DynaPuff SDF
   m_EditorClassIdentifier: 
-  hashCode: -274092434
+  hashCode: 1575822566
   material: {fileID: -7470251019685361148}
-  materialHashCode: -320364786
+  materialHashCode: 138601094
   m_Version: 1.1.0
   m_SourceFontFileGUID: d53a3d6991e65d146a3ebed362ef0a0e
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: d53a3d6991e65d146a3ebed362ef0a0e, type: 3}
@@ -1374,6 +1374,6 @@ MonoBehaviour:
   normalStyle: 0
   normalSpacingOffset: 0
   boldStyle: 0.75
-  boldSpacing: 7
+  boldSpacing: 0
   italicStyle: 35
   tabSize: 10

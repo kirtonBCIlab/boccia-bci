@@ -33,14 +33,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4257854383647560648}
   - {fileID: 7424546197505256441}
+  - {fileID: 4257854383647560648}
   m_Father: {fileID: 7029420362845547233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 640, y: 840}
+  m_SizeDelta: {x: 680, y: 840}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6379013992644674559
 Canvas:
@@ -180,10 +180,10 @@ RectTransform:
   - {fileID: 313944063182200906}
   m_Father: {fileID: 4037351002319768394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -120}
-  m_SizeDelta: {x: 540, y: 540}
+  m_SizeDelta: {x: -100, y: -300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7530160673888337144
 MonoBehaviour:
@@ -365,8 +365,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: BCI Boccia
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1ca3ac2232d921b4a87c637e7b9446f4, type: 2}
-  m_sharedMaterial: {fileID: 7175128702883647656, guid: 1ca3ac2232d921b4a87c637e7b9446f4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: af5aa117d756b4746a28940d43056963, type: 2}
+  m_sharedMaterial: {fileID: -7470251019685361148, guid: af5aa117d756b4746a28940d43056963, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -396,7 +396,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
