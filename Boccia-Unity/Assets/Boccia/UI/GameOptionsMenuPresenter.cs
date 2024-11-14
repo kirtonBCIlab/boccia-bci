@@ -20,9 +20,12 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Button doneButton;
     public Button resetDefaultsButton;
 
-    void Start()
+    void Awake()
     {
         _model = BocciaModel.Instance;
+    }
+    void Start()
+    {
         PopulateColorDropdown();
         SetSliderLimits();
         InitializeValues();
