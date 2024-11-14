@@ -94,6 +94,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void Awake()
     {
+        // Awake() is now used instead of Start() for initializing BocciaData
+        // and setting up the Ramp so that 
+
         // If the model is uninitialized, set it up
         // Note: This will not run if a model is being loaded from an existing save state
         // e.g. Given how saving is setup, it will only run once unless something happens to the save file.
