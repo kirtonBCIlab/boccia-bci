@@ -117,7 +117,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
                 return pair.Key;
             }
         }
-        return "Red";  // Default to Blue if not found
+        return "Red";  // Default to Red if not found
     }
 
     // MARK: Event handlers for changes to game options
