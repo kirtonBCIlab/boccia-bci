@@ -18,14 +18,16 @@ public class SimulatedRamp : RampController
     private float _originRotation;
     private float _minRotation;
     private float _maxRotation;
+
     public float Elevation { get; private set; }
     private float _originElevation;
     private float _minElevation;
     private float _maxElevation;
+
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
 
-    void Start()
+    public SimulatedRamp()
     {
         _model = BocciaModel.Instance;
 
@@ -50,47 +52,35 @@ public class SimulatedRamp : RampController
         _maxRotation = _model.RampSettings.RotationLimitMax;
     }
 
-    // public SimulatedRamp()
-    // {
-    //     Rotation = _originRotation;
-    //     Elevation = _originElevation;
-    //     IsBarOpen = false; // Initialize the bar state as closed
-    //     IsMoving = false;
-    // }
-
     public void RotateBy(float degrees)
     {
-        Rotation += degrees;
-        // Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
-        Debug.Log($"Simulated rotation by: {Rotation}");
-        // SendChangeEvent();
+        // Clamped to Min/Max Rotation
+        Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
+        // Debug.Log($"Simulated rotation by: {Rotation}");
+        SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
-        Rotation = degrees;
-        // Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
-        Debug.Log($"Simulated rotation to: {Rotation}");
+        // Clamped to Min/Max Rotation
+        Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
+        // Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
     }
 
-    public void ElevateBy(float elevation)
+    public void ElevateBy(float height)
     {
-        // Elevation = Mathf.Clamp(Elevation + elevation, _minElevation, _maxElevation);
-        Elevation += elevation;
-        Debug.Log($"Simulated elevation by: {Elevation}");
-        Debug.Log($"Clamped value would be: {Mathf.Clamp(Elevation, _minElevation, _maxElevation)}");
+        // Clamped to Min/Max Elevation
+        Elevation = Mathf.Clamp(Elevation + height, _minElevation, _maxElevation);
+        // Debug.Log($"Simulated elevation by: {Elevation}");
         SendChangeEvent();
     }
 
-    public void ElevateTo(float elevation)
+    public void ElevateTo(float height)
     {
-        // Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
-        Elevation = elevation;
-        Debug.Log($"Simulated elevation to: {Elevation}");
-        Debug.Log($"Elevation Min is: {_minElevation}");
-        Debug.Log($"Elevation Max is: {_maxElevation}");
-        Debug.Log($"Clamped value would be: {Mathf.Clamp(Elevation, _minElevation, _maxElevation)}");
+        // Clamped to Min/Max Elevation
+        Elevation = Mathf.Clamp(height, _minElevation, _maxElevation);
+        // Debug.Log($"Simulated elevation to: {Elevation}");
         SendChangeEvent();
     }
 

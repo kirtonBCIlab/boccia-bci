@@ -14,10 +14,12 @@ public class HardwareRamp : RampController, ISerialController
     private float _originRotation;
     private float _minRotation;
     private float _maxRotation;
+
     public float Elevation { get; private set; }
     private float _originElevation;
     private float _minElevation;
     private float _maxElevation;
+
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
 
@@ -27,11 +29,26 @@ public class HardwareRamp : RampController, ISerialController
     private List<string> _serialCommandsList;
     private string _serialCommand;
 
-    void Start()
+    // void Start()
+    // public HardwareRamp()
+    // {
+    //     _model = BocciaModel.Instance;
+
+    //     InitializeRampSettings();
+    // }
+
+    public HardwareRamp()
     {
         _model = BocciaModel.Instance;
 
         InitializeRampSettings();
+
+        Rotation = _originRotation;
+        Elevation = _originElevation;
+        IsBarOpen = false; // Initialize the bar state as closed
+        IsMoving = false;
+        _serialCommand = "";
+        _serialCommandsList = new List<string>();
     }
 
     // Initialize the parameters pulled from RampSettings()
@@ -47,52 +64,38 @@ public class HardwareRamp : RampController, ISerialController
         _maxRotation = _model.RampSettings.RotationLimitMax;
     }
 
-    public HardwareRamp()
-    {
-        Rotation = _originRotation;
-        Elevation = _originElevation;
-        IsBarOpen = false; // Initialize the bar state as closed
-        IsMoving = false;
-        _serialCommand = "";
-        _serialCommandsList = new List<string>();
-    }
-
     public void RotateBy(float degrees)
     {
-        // Rotation += degrees;
+        // Clamped to Min/Max Rotation
         Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
         AddSerialCommandToList($"rr{degrees}");
-        // Debug.Log($"Hardware rote by: {Rotation}");
+        // Debug.Log($"Hardware rotate by: {Rotation}");
         SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
-        // Rotation = degrees;
+        // Clamped to Min/Max Rotation
         Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
         AddSerialCommandToList($"ra{degrees}");
-        // Debug.Log($"Hardware rote to: {Rotation}");
+        // Debug.Log($"Hardware rotate to: {Rotation}");
         SendChangeEvent();
     }
 
-    public void ElevateBy(float elevation)
+    public void ElevateBy(float height)
     {
-        //Old Way
-        // Elevation += elevation;
-        // Clamped to Max/Min Elevation
-        Elevation = Mathf.Clamp(Elevation + elevation, _minElevation, _maxElevation);
-        AddSerialCommandToList($"er{elevation}");
+        // Clamped to Min/Max Elevation
+        Elevation = Mathf.Clamp(Elevation + height, _minElevation, _maxElevation);
+        AddSerialCommandToList($"er{height}");
         // Debug.Log($"Hardware elevate by: {Elevation}");
         SendChangeEvent();
     }
 
-    public void ElevateTo(float elevation)
+    public void ElevateTo(float height)
     {
-        //Old Way
-        // Elevation = elevation;
-        // Clamped to Max/Min Elevation
-        Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
-        AddSerialCommandToList($"ea{elevation}");
+        // Clamped to Min/Max Elevation
+        Elevation = Mathf.Clamp(height, _minElevation, _maxElevation);
+        AddSerialCommandToList($"ea{height}");
         // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
     }
