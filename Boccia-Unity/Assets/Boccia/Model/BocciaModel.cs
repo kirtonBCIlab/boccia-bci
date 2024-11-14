@@ -88,8 +88,8 @@ public class BocciaModel : Singleton<BocciaModel>
                 rampController.RampChanged -= SendRampChangeEvent;
                 rampController = _simulatedRamp;
                 rampController.RampChanged += SendRampChangeEvent;
-                break;     
-        }   
+                break;
+        }
     }
 
     public void Start()
@@ -114,18 +114,18 @@ public class BocciaModel : Singleton<BocciaModel>
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
-        SendRampChangeEvent();
-
-        // Initialize controller to _simulatedRamp
-        rampController = _simulatedRamp;
-        SetRampControllerBasedOnMode();
-
         // Set default hardware options
         SetDefaultHardwareOptions();
         // Set Ramp Settings
         SetRampSettings();
         // Set Fan settings
         SetFanSettings();
+
+        SendRampChangeEvent();
+
+        // Initialize controller to _simulatedRamp
+        rampController = _simulatedRamp;
+        SetRampControllerBasedOnMode();
     }
 
     private void OnDisable()
