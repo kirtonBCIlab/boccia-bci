@@ -12,12 +12,24 @@ public class SimulatedRamp : RampController
 {
     public event System.Action RampChanged;
 
-    public float Rotation { get; private set; }
-    private float MaxRotation { get; } = 85.0f;
-    private float MinRotation { get; } = -85.0f;
-    public float Elevation { get; private set; }
-    private float MaxElevation { get;} = 100.0f;
-    private float MinElevation { get; } = 0.0f;
+    private float _minRotation = -85.0f;
+    private float _maxRotation = 85.0f;
+    private float _rotation;
+    public float Rotation 
+    { 
+        get { return _rotation; } 
+        set { _rotation = Math.Clamp(value, _minRotation, _maxRotation); }
+    }
+
+    private float _maxElevation = 100.0f;
+    private float _minElevation = 0.0f;
+    private float _elevation;
+    public float Elevation
+    { 
+        get {return _elevation; }
+        set { _elevation = Math.Clamp(value, _minElevation, _maxElevation); }
+    }
+
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
 
@@ -31,30 +43,28 @@ public class SimulatedRamp : RampController
 
     public void RotateBy(float degrees)
     {
-        // Rotation += degrees;
-        Rotation = Mathf.Clamp(Rotation+degrees, MinRotation, MaxRotation);
+        Rotation += degrees;
         //Debug.Log($"Simulated rotation by: {Rotation}");
         SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
-        // Rotation = degrees;
-        Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
+        Rotation = degrees;
         //Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
     }
 
     public void ElevateBy(float elevation)
     {
-        Elevation = Mathf.Clamp(Elevation + elevation, MinElevation, MaxElevation);
+        Elevation += elevation;
         //Debug.Log($"Simulated elevation by: {Elevation}");
         SendChangeEvent();
     }
 
     public void ElevateTo(float elevation)
     {
-        Elevation = Mathf.Clamp(elevation, MinElevation, MaxElevation);
+        Elevation = elevation;
         // Debug.Log($"Simulated elevation to: {Elevation}");
         SendChangeEvent();
     }
