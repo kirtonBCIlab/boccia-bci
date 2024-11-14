@@ -89,9 +89,9 @@ public class RampPresenter : MonoBehaviour
     {
         // Smoothly show the rotatation of the ramp to the new position
         Quaternion currentRotation = rotationShaft.transform.localRotation;
-        Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
+        // Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
         Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
-        Debug.Log($"model.RampRotation value: {_model.RampRotation}");
+        // Debug.Log($"model.RampRotation value: {_model.RampRotation}");
 
         while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
         {
