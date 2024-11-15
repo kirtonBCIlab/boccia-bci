@@ -12,6 +12,8 @@ public class SimulatedRamp : RampController
 {
     public event System.Action RampChanged;
 
+    private BocciaModel _model;
+
     private float _minRotation = -85.0f;
     private float _maxRotation = 85.0f;
     private float _rotation;
@@ -35,8 +37,10 @@ public class SimulatedRamp : RampController
 
     public SimulatedRamp()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
+        _model = BocciaModel.Instance;
+
+        Rotation = _model.RampSettings.RotationOrigin;
+        Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
     }
@@ -55,14 +59,14 @@ public class SimulatedRamp : RampController
         SendChangeEvent();
     }
 
-    public void ElevateBy(float elevation)
+    public void ElevateBy(float height)
     {
         Elevation += elevation;
         //Debug.Log($"Simulated elevation by: {Elevation}");
         SendChangeEvent();
     }
 
-    public void ElevateTo(float elevation)
+    public void ElevateTo(float height)
     {
         Elevation = elevation;
         // Debug.Log($"Simulated elevation to: {Elevation}");
@@ -71,8 +75,8 @@ public class SimulatedRamp : RampController
 
     public void ResetRampPosition()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
+        Rotation = _model.RampSettings.RotationOrigin;
+        Elevation = _model.RampSettings.ElevationOrigin;
         SendChangeEvent();
     }
 

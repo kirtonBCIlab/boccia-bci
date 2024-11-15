@@ -12,9 +12,9 @@ public class RampPresenter : MonoBehaviour
     public GameObject elevationMechanism; // Elevation Mechanism child component of Shaft and Ramp (the ramp parts that will change elevation in the visualization)
     public GameObject rampAdapter; // To define direction of movement for elevationMechanism
 
-    // Max values for animation
-    private float _minElevation = 0.0026f; 
-    private float _maxElevation = 0.43f; 
+    // For visualization only, to prevent elevation mechanism from extending beyond the ramp
+    public float ElevationVisualizationMin = 0.0026f;
+    public float ElevationVisualizationMax = 0.43f;
 
     private BocciaModel _model;
 
@@ -106,10 +106,11 @@ public class RampPresenter : MonoBehaviour
     private IEnumerator ElevationVisualization()
     {
         Vector3 currentElevation = elevationMechanism.transform.localPosition;
-        float elevationScalar = _minElevation + (_model.RampElevation / 100f) * (_maxElevation - _minElevation); // Convert percent elevation to its scalar value
+        //Debug.Log($"model.RampElevation value: {model.RampElevation}");
+        float elevationScalar = ElevationVisualizationMin + (_model.RampElevation / 100f) * (ElevationVisualizationMax - ElevationVisualizationMin); // Convert percent elevation to its scalar value
         
         //Make sure the elevation is within the min and max elevation bounds
-        elevationScalar = Mathf.Clamp(elevationScalar, _minElevation, _maxElevation);
+        elevationScalar = Mathf.Clamp(elevationScalar, ElevationVisualizationMin, ElevationVisualizationMax);
 
         Vector3 targetElevation = elevationDirection * elevationScalar;   
         

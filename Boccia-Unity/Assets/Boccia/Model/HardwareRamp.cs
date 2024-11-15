@@ -9,6 +9,8 @@ public class HardwareRamp : RampController, ISerialController
 {
     public event Action RampChanged;
 
+    private BocciaModel _model;
+
     private float _minRotation = -85.0f;
     private float _maxRotation = 85.0f;
     private float _rotation;
@@ -38,8 +40,10 @@ public class HardwareRamp : RampController, ISerialController
 
     public HardwareRamp()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
+        _model = BocciaModel.Instance;
+
+        Rotation = _model.RampSettings.RotationOrigin;
+        Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
         _serialCommand = "";
@@ -51,7 +55,7 @@ public class HardwareRamp : RampController, ISerialController
         Rotation += degrees;
         // Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
         AddSerialCommandToList($"rr{degrees}");
-        // Debug.Log($"Hardware rote by: {Rotation}");
+        // Debug.Log($"Hardware rotate by: {Rotation}");
         SendChangeEvent();
     }
 
@@ -60,11 +64,11 @@ public class HardwareRamp : RampController, ISerialController
         Rotation = degrees;
         // Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
         AddSerialCommandToList($"ra{degrees}");
-        Debug.Log($"Hardware rotate to: {Rotation}");
+        // Debug.Log($"Hardware rotate to: {Rotation}");
         SendChangeEvent();
     }
 
-    public void ElevateBy(float elevation)
+    public void ElevateBy(float height)
     {
         //Old Way
         Elevation += elevation;
@@ -75,7 +79,7 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
-    public void ElevateTo(float elevation)
+    public void ElevateTo(float height)
     {
         //Old Way
         Elevation = elevation;
@@ -88,10 +92,10 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ResetRampPosition()
     {
-        Rotation = 0.0f;
-        Elevation = 50.0f;
-        _serialCommandsList.Add("ra0");
-        _serialCommandsList.Add("ea50");
+        Rotation = _model.RampSettings.RotationOrigin;
+        Elevation = _model.RampSettings.ElevationOrigin;
+        _serialCommandsList.Add($"ra{Rotation:D}");
+        _serialCommandsList.Add($"ea{Elevation:D}");
         SendChangeEvent();
     }
 

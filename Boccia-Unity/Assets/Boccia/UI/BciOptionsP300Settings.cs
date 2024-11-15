@@ -62,11 +62,13 @@ public class BciOptionsP300Settings : MonoBehaviour
     // List of animations (placeholder)
     private List<string> animationOptions = new List<string> { "Bop it", "Twist it", "Shake it"};
 
+    void Awake()
+    {
+        _model = BocciaModel.Instance;
+    }
 
     void Start()
     {
-        _model = BocciaModel.Instance;
-
         // Subscribe to BCI change events to keep the UI updated
         _model.BciChanged += OnBciSettingsChanged;
 

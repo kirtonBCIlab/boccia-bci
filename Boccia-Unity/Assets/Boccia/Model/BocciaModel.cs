@@ -24,9 +24,9 @@ public class BocciaModel : Singleton<BocciaModel>
     // Game
     public BocciaGameMode GameMode;
 
-    private RampController rampController = new SimulatedRamp();
-    private RampController _simulatedRamp = new SimulatedRamp();
-    private HardwareRamp _hardwareRamp = new();
+    private RampController rampController;
+    private RampController _simulatedRamp;
+    private HardwareRamp _hardwareRamp;
 
     public float RampRotation => rampController.Rotation;
     public float RampElevation => rampController.Elevation;
@@ -57,6 +57,12 @@ public class BocciaModel : Singleton<BocciaModel>
     // Ramp Hardware
     public HardwareSettingsContainer HardwareSettings => bocciaData.HardwareSettings;
 
+    // Ramp settings
+    public RampSettingsContainer RampSettings => bocciaData.RampSettings;
+
+    // Fan settings
+    public FanSettingsContainer FanSettings => bocciaData.FanSettings;
+
     // Change events
     public event System.Action WasChanged;  // Referring to the Ramp. Need to change this in other scripts (e.g. RampPresenter.cs) if we want to make the variable name more informative
     public event System.Action NavigationChanged;
@@ -64,6 +70,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action NewRandomJack;
     public event System.Action BallResetChanged;
     public event System.Action BallFallingChanged;
+    public event System.Action ResetFan;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -82,15 +89,12 @@ public class BocciaModel : Singleton<BocciaModel>
                 rampController.RampChanged -= SendRampChangeEvent;
                 rampController = _simulatedRamp;
                 rampController.RampChanged += SendRampChangeEvent;
-                break;     
-        }   
+                break;
+        }
     }
 
     public void Start()
     {
-        // If the model is uninitialized, set it up
-        // Note: This will not run if a model is being loaded from an existing save state
-        // e.g. Given how saving is setup, it will only run once unless something happens to the save file.
         if (!bocciaData.WasInitialized)
         {
             Debug.Log("Initializing BocciaData...");
@@ -102,20 +106,29 @@ public class BocciaModel : Singleton<BocciaModel>
             bocciaData.WasInitialized = true;
         }
 
-
-        // These will actually run each time the software starts
-
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
-        SendRampChangeEvent();
+        // Set default hardware options
+        SetDefaultHardwareOptions();
+
+        // Set Fan settings
+        SetFanSettings();
+
+        // Set Ramp Settings
+        SetRampSettings();
+
+        // Instantiate the ramp controllers after initialization
+        _simulatedRamp = new SimulatedRamp();
+        _hardwareRamp = new HardwareRamp();
 
         // Initialize controller to _simulatedRamp
         rampController = _simulatedRamp;
         SetRampControllerBasedOnMode();
 
-        // Set default hardware options
-        SetDefaultHardwareOptions();
+        // Send the change event after SimulatedRamp is ready
+        SendRampChangeEvent();
+        // These will fail to run if put in the Awake() method
     }
 
     private void OnDisable()
@@ -140,6 +153,55 @@ public class BocciaModel : Singleton<BocciaModel>
         };
     }
 
+    // Set RampSettings
+    private void SetRampSettings()
+    {
+        // Ramp origin
+        // Where the ramp starts or is reset to
+        bocciaData.RampSettings.ElevationOrigin = 50.0f;
+        bocciaData.RampSettings.RotationOrigin = 0.0f;
+
+        // Ramp movement limits
+        bocciaData.RampSettings.ElevationLimitMin = 0;
+        bocciaData.RampSettings.ElevationLimitMax = 100;
+        bocciaData.RampSettings.RotationLimitMin = -85;
+        bocciaData.RampSettings.RotationLimitMax = 85;
+
+        // Speeds
+        // NOTE: These are values for the hardware that controls the ramp
+        // As pulses/movements per second
+        // !!!!!!!!!!!!!!
+        // A translation will need to be done later for
+        // matching movements in the game world
+        // and for presenting a physical measurement to the user
+        // (e.g. cm/s or deg/s)
+        bocciaData.RampSettings.ElevationSpeedMin = 1;
+        bocciaData.RampSettings.ElevationSpeedMax = 255;
+        bocciaData.RampSettings.RotationSpeedMin = 1;
+        bocciaData.RampSettings.RotationSpeedMax = 1000;
+    }
+
+    // Set FanSettings
+    private void SetFanSettings()
+    {
+        // ElevationRange
+        bocciaData.FanSettings.ElevationRangeMin = 1;
+        bocciaData.FanSettings.ElevationRangeMax = 100;
+
+        // ElevationPrecision
+        bocciaData.FanSettings.ElevationPrecisionMin = 1;
+        bocciaData.FanSettings.ElevationPrecisionMax = 7;
+
+        // RotationRange
+        // Also sets limits on Theta for Fan generation
+        bocciaData.FanSettings.RotationRangeMin = 5;
+        bocciaData.FanSettings.RotationRangeMax = 180;
+
+        // RotationPrecision
+        bocciaData.FanSettings.RotationPrecisionMin = 1;
+        bocciaData.FanSettings.RotationPrecisionMax = 7;
+    }
+
     // MARK: Game options
     // Setting default values for Game Options
     // This is triggered by the ResetGameOptionsToDefaults() public method below whenever the "Reset to Default" button is pressed
@@ -153,7 +215,7 @@ public class BocciaModel : Singleton<BocciaModel>
         }
         else
         {
-            GameOptions.BallColor = Color.red;  // Fallback if dictionary is empty (shouldn't happen)
+            GameOptions.BallColor = Color.blue;  // Fallback if dictionary is empty (shouldn't happen)
         }
 
         // User values
@@ -246,6 +308,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public void HandleBallFalling()
     {
         SendBallFallingEvent();
+    }
+
+    public void ResetFanWhenRampResets()
+    {
+        SendFanResetEvent();
     }
 
     public void ResetVirtualBalls()
@@ -468,6 +535,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendBallFallingEvent()
     {
         BallFallingChanged?.Invoke();
+    }
+
+    private void SendFanResetEvent()
+    {
+        ResetFan?.Invoke();
     }
 
     // MARK: Resetting states to Defaults
