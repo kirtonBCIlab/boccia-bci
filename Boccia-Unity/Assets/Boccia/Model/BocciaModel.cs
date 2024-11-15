@@ -64,6 +64,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action NewRandomJack;
     public event System.Action BallResetChanged;
     public event System.Action BallFallingChanged;
+    public event System.Action ResetFan;
 
     // Hardware interface
     // TODO - create this based on game mode (live or sim)
@@ -246,6 +247,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public void HandleBallFalling()
     {
         SendBallFallingEvent();
+    }
+
+    public void ResetFanWhenRampResets()
+    {
+        SendFanResetEvent();
     }
 
     public void ResetVirtualBalls()
@@ -468,6 +474,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendBallFallingEvent()
     {
         BallFallingChanged?.Invoke();
+    }
+
+    private void SendFanResetEvent()
+    {
+        ResetFan?.Invoke();
     }
 
     // MARK: Resetting states to Defaults
