@@ -59,8 +59,10 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
             spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOn());
             spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOff());
+
             spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
-            spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());                
+            spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());            
+            spo.OnSelectedEvent.AddListener(() => OnSegmentClick(child.transform));                
 
             segmentID++;
         }
