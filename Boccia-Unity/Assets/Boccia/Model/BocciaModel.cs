@@ -95,7 +95,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public void Awake()
     {
         // Awake() is now used instead of Start() for initializing BocciaData
-        // and setting up the Ramp so that 
+        // and setting up the Ramp so that it runs before other events
 
         // If the model is uninitialized, set it up
         // Note: This will not run if a model is being loaded from an existing save state
@@ -112,6 +112,7 @@ public class BocciaModel : Singleton<BocciaModel>
         }
 
         // Set Ramp Settings
+        // This needs to be here for ramp controllers to correctly pull in values
         SetRampSettings();
 
         // Instantiate the ramp controllers after initialization
@@ -130,6 +131,10 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         // These will fail to run if put in the Awake() method
 
+        // Set Ramp Settings
+        // This needs to be run again here for GameOptionsMenuPresenter to correctly pull in values for elevation and rotation speed limits
+        SetRampSettings();
+
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
@@ -138,6 +143,9 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Set Fan settings
         SetFanSettings();
+
+        // Send change event after settings are setup
+        SendRampChangeEvent();
     }
 
     private void OnDisable()
@@ -252,7 +260,6 @@ public class BocciaModel : Singleton<BocciaModel>
     // Initialize and populate the PossibleBallColors dictionary
     private void InitializeBallColorOptions()
     {
-        Debug.Log("Running BocciaModel.InitializeBallColorOptions");
         bocciaData.GameOptions.BallColorOptionsDict = new Dictionary<string, Color>
         {
             {"Red", Color.red },
@@ -264,7 +271,6 @@ public class BocciaModel : Singleton<BocciaModel>
             {"Grey", Color.grey},
             {"Cyan", Color.cyan}
         };
-        Debug.Log("BallColorOptionsDict: " + bocciaData.GameOptions.BallColorOptionsDict);
     }
 
     // Get the current ball color
