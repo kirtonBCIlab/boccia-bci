@@ -19,6 +19,10 @@ public class PlayScreenPresenter : MonoBehaviour
     private int _randomRotation;
     private int _randomElevation;
 
+    [SerializeField]
+    // Set to false for development mode, true for production mode
+    private bool _arduinoIsNeeded = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +50,7 @@ public class PlayScreenPresenter : MonoBehaviour
         _model.WasChanged += ModelChanged;
         _model.NavigationChanged += NavigationChanged;
 
-        if (_model.GameMode == BocciaGameMode.Play)
+        if (_model.GameMode == BocciaGameMode.Play && _arduinoIsNeeded)
         {
             _checkSerialCoroutine = StartCoroutine(CheckSerialPortConnection());
         }
