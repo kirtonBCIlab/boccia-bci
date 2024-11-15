@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
 using UnityEngine;
@@ -10,9 +11,29 @@ public class HardwareRamp : RampController, ISerialController
 
     private BocciaModel _model;
 
-    public float Rotation { get; private set; }
+    private bool _wasRotationClamped;  // flag to know if rotation was clamped
+    private float _rotation;
+    public float Rotation 
+    { 
+        get { return _rotation; } 
+        set 
+        { 
+            _rotation = Math.Clamp(value, _model.RampSettings.RotationLimitMin, _model.RampSettings.RotationLimitMax); 
+            _wasRotationClamped = _rotation != value;
+        }
+    }
 
-    public float Elevation { get; private set; }
+    private bool _wasElevationClamped;  // flag to know if elevation was clamped
+    private float _elevation;
+    public float Elevation
+    { 
+        get {return _elevation; }
+        set 
+        { 
+            _elevation = Math.Clamp(value, _model.RampSettings.ElevationLimitMin, _model.RampSettings.ElevationLimitMax); 
+            _wasElevationClamped = _elevation != value;
+        }
+    }
 
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
@@ -37,36 +58,49 @@ public class HardwareRamp : RampController, ISerialController
 
     public void RotateBy(float degrees)
     {
-        // Clamped to Min/Max Rotation
-        Rotation = Mathf.Clamp(Rotation+degrees, _model.RampSettings.RotationLimitMin, _model.RampSettings.RotationLimitMax);
-        AddSerialCommandToList($"rr{degrees}");
-        // Debug.Log($"Hardware rotate by: {Rotation}");
+        Rotation += degrees;
+        
+        if (_wasRotationClamped) 
+        { 
+            degrees = 0; 
+            _wasRotationClamped = false;
+        }        
+        AddSerialCommandToList($"rr{degrees.ToString("0")}");
+        // Debug.Log($"Hardware rotate by: {degrees}");
         SendChangeEvent();
     }
 
     public void RotateTo(float degrees)
     {
-        // Clamped to Min/Max Rotation
-        Rotation = Mathf.Clamp(degrees, _model.RampSettings.RotationLimitMin, _model.RampSettings.RotationLimitMax);
-        AddSerialCommandToList($"ra{degrees}");
+        Rotation = degrees;
+        // Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
+        AddSerialCommandToList($"ra{Rotation.ToString("0")}");
         // Debug.Log($"Hardware rotate to: {Rotation}");
         SendChangeEvent();
     }
 
-    public void ElevateBy(float height)
+    public void ElevateBy(float elevation)
     {
-        // Clamped to Min/Max Elevation
-        Elevation = Mathf.Clamp(Elevation + height, _model.RampSettings.ElevationLimitMin, _model.RampSettings.ElevationLimitMax);
-        AddSerialCommandToList($"er{height}");
-        // Debug.Log($"Hardware elevate by: {Elevation}");
+        //Old Way
+        Elevation += elevation;
+        
+        if (_wasElevationClamped) 
+        { 
+            elevation = 0; 
+            _wasElevationClamped = false;
+        }
+        AddSerialCommandToList($"er{elevation}");
+        // Debug.Log($"Hardware elevate by: {elevation}");
         SendChangeEvent();
     }
 
-    public void ElevateTo(float height)
+    public void ElevateTo(float elevation)
     {
-        // Clamped to Min/Max Elevation
-        Elevation = Mathf.Clamp(height, _model.RampSettings.ElevationLimitMin, _model.RampSettings.ElevationLimitMax);
-        AddSerialCommandToList($"ea{height}");
+        //Old Way
+        Elevation = elevation;
+        // Clamped to Max/Min Elevation
+        // Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
+        AddSerialCommandToList($"ea{Rotation.ToString("0")}");
         // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
     }
@@ -75,8 +109,8 @@ public class HardwareRamp : RampController, ISerialController
     {
         Rotation = _model.RampSettings.RotationOrigin;
         Elevation = _model.RampSettings.ElevationOrigin;
-        _serialCommandsList.Add($"ra{Rotation:D}");
-        _serialCommandsList.Add($"ea{Elevation:D}");
+        _serialCommandsList.Add($"ra{Rotation.ToString("0")}");
+        _serialCommandsList.Add($"ea{Elevation.ToString("0")}");
         SendChangeEvent();
     }
 
