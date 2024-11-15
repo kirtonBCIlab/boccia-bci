@@ -225,8 +225,8 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.GameOptions.RotationRange = 20;
 
         // Operator values
-        bocciaData.GameOptions.ElevationSpeed = 5;
-        bocciaData.GameOptions.RotationSpeed = 5;
+        bocciaData.GameOptions.ElevationSpeed = bocciaData.RampSettings.ElevationSpeedMax;
+        bocciaData.GameOptions.RotationSpeed = bocciaData.RampSettings.RotationSpeedMax;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
     }
@@ -274,6 +274,9 @@ public class BocciaModel : Singleton<BocciaModel>
     public void RotateTo(float degrees) => rampController.RotateTo(degrees);
     public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
     public void ElevateTo(float elevation) => rampController.ElevateTo(elevation);
+
+    public float ScaleRotationSpeed(float speed) => _hardwareRamp.ScaleRotationSpeed(speed);
+    public float ScaleElevationSpeed(float speed) => _hardwareRamp.ScaleElevationSpeed(speed);
 
     public void ResetRampPosition() => rampController.ResetRampPosition();
 

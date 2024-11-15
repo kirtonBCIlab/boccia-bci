@@ -20,7 +20,7 @@ public class RampPresenter : MonoBehaviour
 
     [SerializeField] private float _elevationSpeed;
     [SerializeField] private float _rotationSpeed;
-
+    
     private Vector3 elevationDirection; // Vector to define the direction of motion of the elevationMechanism visualization
 
     private BocciaGameMode _lastPlayMode;
@@ -87,7 +87,7 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
-        // Smoothly show the rotatation of the ramp to the new position
+        // Smoothly show the rotation of the ramp to the new position
         Quaternion currentRotation = rotationShaft.transform.localRotation;
         // Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
         Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
@@ -95,7 +95,8 @@ public class RampPresenter : MonoBehaviour
 
         while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
         {
-            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, _rotationSpeed * Time.deltaTime);
+            float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, scaledSpeed * Time.deltaTime);
             rotationShaft.transform.localRotation = currentRotation;
             yield return null;
         }
@@ -116,7 +117,10 @@ public class RampPresenter : MonoBehaviour
         
         while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
         {
-            currentElevation = Vector3.Lerp(currentElevation, targetElevation, _elevationSpeed * Time.deltaTime);
+            // Calculate the scaled speed for elevation
+            // Max speed: 2 inches/sec
+            float scaledSpeed = _model.ScaleElevationSpeed(_elevationSpeed);
+            currentElevation = Vector3.Lerp(currentElevation, targetElevation, scaledSpeed * Time.deltaTime);
             elevationMechanism.transform.localPosition = currentElevation;
             yield return null;
         }
