@@ -13,10 +13,13 @@ public class BciOptionsMenuPresenter : MonoBehaviour
 
     private BocciaModel _model;
 
-    void Start()
+    void Awake()
     {
         _model = BocciaModel.Instance;
+    }
 
+    void Start()
+    {
         // Call the method to populate the paradigm dropdown
         PopulateParadigmDropdown();
 
