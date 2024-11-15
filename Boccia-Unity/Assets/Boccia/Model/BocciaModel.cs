@@ -92,14 +92,8 @@ public class BocciaModel : Singleton<BocciaModel>
         }
     }
 
-    public void Awake()
+    public void Start()
     {
-        // Awake() is now used instead of Start() for initializing BocciaData
-        // and setting up the Ramp so that it runs before other events
-
-        // If the model is uninitialized, set it up
-        // Note: This will not run if a model is being loaded from an existing save state
-        // e.g. Given how saving is setup, it will only run once unless something happens to the save file.
         if (!bocciaData.WasInitialized)
         {
             Debug.Log("Initializing BocciaData...");
@@ -111,8 +105,16 @@ public class BocciaModel : Singleton<BocciaModel>
             bocciaData.WasInitialized = true;
         }
 
+        // Initialize the list of possible ball colors
+        InitializeBallColorOptions();
+
+        // Set default hardware options
+        SetDefaultHardwareOptions();
+
+        // Set Fan settings
+        SetFanSettings();
+
         // Set Ramp Settings
-        // This needs to be here for ramp controllers to correctly pull in values
         SetRampSettings();
 
         // Instantiate the ramp controllers after initialization
@@ -125,27 +127,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Send the change event after SimulatedRamp is ready
         SendRampChangeEvent();
-    }
-
-    public void Start()
-    {
         // These will fail to run if put in the Awake() method
-
-        // Set Ramp Settings
-        // This needs to be run again here for GameOptionsMenuPresenter to correctly pull in values for elevation and rotation speed limits
-        SetRampSettings();
-
-        // Initialize the list of possible ball colors
-        InitializeBallColorOptions();
-
-        // Set default hardware options
-        SetDefaultHardwareOptions();
-
-        // Set Fan settings
-        SetFanSettings();
-
-        // Send change event after settings are setup
-        SendRampChangeEvent();
     }
 
     private void OnDisable()
