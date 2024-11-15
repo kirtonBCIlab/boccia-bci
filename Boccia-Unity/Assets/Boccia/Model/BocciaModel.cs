@@ -225,8 +225,8 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.GameOptions.RotationRange = 20;
 
         // Operator values
-        bocciaData.GameOptions.ElevationSpeed = 127; // 50% of max speed
-        bocciaData.GameOptions.RotationSpeed = 500;  // 50% of max speed
+        bocciaData.GameOptions.ElevationSpeed = bocciaData.RampSettings.ElevationSpeedMax;
+        bocciaData.GameOptions.RotationSpeed = bocciaData.RampSettings.RotationSpeedMax;
 
         // Note: SendRampChangeEvent() trigged within ResetGameOptionsToDefaults();
     }
