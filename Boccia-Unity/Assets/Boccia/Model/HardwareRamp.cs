@@ -11,14 +11,8 @@ public class HardwareRamp : RampController, ISerialController
     private BocciaModel _model;
 
     public float Rotation { get; private set; }
-    private float _originRotation;
-    private float _minRotation;
-    private float _maxRotation;
 
     public float Elevation { get; private set; }
-    private float _originElevation;
-    private float _minElevation;
-    private float _maxElevation;
 
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
@@ -29,45 +23,22 @@ public class HardwareRamp : RampController, ISerialController
     private List<string> _serialCommandsList;
     private string _serialCommand;
 
-    // void Start()
-    // public HardwareRamp()
-    // {
-    //     _model = BocciaModel.Instance;
-
-    //     InitializeRampSettings();
-    // }
-
     public HardwareRamp()
     {
         _model = BocciaModel.Instance;
 
-        InitializeRampSettings();
-
-        Rotation = _originRotation;
-        Elevation = _originElevation;
+        Rotation = _model.RampSettings.RotationOrigin;
+        Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
         _serialCommand = "";
         _serialCommandsList = new List<string>();
     }
 
-    // Initialize the parameters pulled from RampSettings()
-    private void InitializeRampSettings()
-    {
-        _originElevation = _model.RampSettings.ElevationOrigin;
-        _originRotation = _model.RampSettings.RotationOrigin;
-
-        _minElevation = _model.RampSettings.ElevationLimitMin;
-        _maxElevation = _model.RampSettings.ElevationLimitMax;
-
-        _minRotation = _model.RampSettings.RotationLimitMin;
-        _maxRotation = _model.RampSettings.RotationLimitMax;
-    }
-
     public void RotateBy(float degrees)
     {
         // Clamped to Min/Max Rotation
-        Rotation = Mathf.Clamp(Rotation+degrees, _minRotation, _maxRotation);
+        Rotation = Mathf.Clamp(Rotation+degrees, _model.RampSettings.RotationLimitMin, _model.RampSettings.RotationLimitMax);
         AddSerialCommandToList($"rr{degrees}");
         // Debug.Log($"Hardware rotate by: {Rotation}");
         SendChangeEvent();
@@ -76,7 +47,7 @@ public class HardwareRamp : RampController, ISerialController
     public void RotateTo(float degrees)
     {
         // Clamped to Min/Max Rotation
-        Rotation = Mathf.Clamp(degrees, _minRotation, _maxRotation);
+        Rotation = Mathf.Clamp(degrees, _model.RampSettings.RotationLimitMin, _model.RampSettings.RotationLimitMax);
         AddSerialCommandToList($"ra{degrees}");
         // Debug.Log($"Hardware rotate to: {Rotation}");
         SendChangeEvent();
@@ -85,7 +56,7 @@ public class HardwareRamp : RampController, ISerialController
     public void ElevateBy(float height)
     {
         // Clamped to Min/Max Elevation
-        Elevation = Mathf.Clamp(Elevation + height, _minElevation, _maxElevation);
+        Elevation = Mathf.Clamp(Elevation + height, _model.RampSettings.ElevationLimitMin, _model.RampSettings.ElevationLimitMax);
         AddSerialCommandToList($"er{height}");
         // Debug.Log($"Hardware elevate by: {Elevation}");
         SendChangeEvent();
@@ -94,7 +65,7 @@ public class HardwareRamp : RampController, ISerialController
     public void ElevateTo(float height)
     {
         // Clamped to Min/Max Elevation
-        Elevation = Mathf.Clamp(height, _minElevation, _maxElevation);
+        Elevation = Mathf.Clamp(height, _model.RampSettings.ElevationLimitMin, _model.RampSettings.ElevationLimitMax);
         AddSerialCommandToList($"ea{height}");
         // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
@@ -102,8 +73,8 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ResetRampPosition()
     {
-        Rotation = _originRotation;
-        Elevation = _originElevation;
+        Rotation = _model.RampSettings.RotationOrigin;
+        Elevation = _model.RampSettings.ElevationOrigin;
         _serialCommandsList.Add("ra0");
         _serialCommandsList.Add("ea50");
         SendChangeEvent();
