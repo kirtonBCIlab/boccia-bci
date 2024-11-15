@@ -19,7 +19,7 @@ public class PlayScreenPresenter : MonoBehaviour
         _model = BocciaModel.Instance;
 
         // connect buttons to model
-        resetRampButton.onClick.AddListener(_model.ResetRampPosition);
+        resetRampButton.onClick.AddListener(ResetRamp);
         randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
         
         // TODO: see task BOC-90 for what the random ball button should do
@@ -72,5 +72,11 @@ public class PlayScreenPresenter : MonoBehaviour
 
         _model.ResetRampPosition();
 
+    }
+
+    private void ResetRamp()
+    {
+        _model.ResetRampPosition();
+        _model.ResetFanWhenRampResets();
     }
 }

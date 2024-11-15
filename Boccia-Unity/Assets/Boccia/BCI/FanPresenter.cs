@@ -38,6 +38,7 @@ public class FanPresenter : MonoBehaviour
         _model = BocciaModel.Instance; 
         _model.NavigationChanged += NavigationChanged;
         _model.WasChanged += UpdateFineFan;
+        _model.ResetFan += ResetFanWhenRampResets;
 
         _originalRotation = transform.rotation;  
 
@@ -207,6 +208,15 @@ public class FanPresenter : MonoBehaviour
         {
             positioningMode = FanPositioningMode.CenterToBase;
             _lastPlayMode = currentPlayMode;
+        }
+    }
+
+    private void ResetFanWhenRampResets()
+    {
+        if (positioningMode == FanPositioningMode.CenterToRails)
+        {
+            positioningMode = FanPositioningMode.CenterToBase;
+            GenerateFanWorkflow();
         }
     }
 
