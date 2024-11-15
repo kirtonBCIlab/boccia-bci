@@ -37,7 +37,7 @@ public class RampPresenter : MonoBehaviour
         elevationDirection = elevationMechanism.transform.parent.InverseTransformDirection(rampDirection) * -1;
 
         // initialize ramp to saved data
-        ModelChanged();
+        // ModelChanged();
 
         // Initialize the last play mode as virtual play
         _lastPlayMode = BocciaGameMode.Virtual;

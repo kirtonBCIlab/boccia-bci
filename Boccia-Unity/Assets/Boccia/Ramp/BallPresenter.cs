@@ -59,7 +59,7 @@ public class BallPresenter : MonoBehaviour
         _barAnimation = dropBar.GetComponent<Animator>();
 
         // Initialize to saved data
-        ModelChanged();
+        // ModelChanged();
 
         // Initialize gameMode
         _gameMode = _model.GameMode;
