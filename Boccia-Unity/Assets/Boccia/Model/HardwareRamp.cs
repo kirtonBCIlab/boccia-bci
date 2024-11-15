@@ -75,8 +75,8 @@ public class HardwareRamp : RampController, ISerialController
     {
         Rotation = _model.RampSettings.RotationOrigin;
         Elevation = _model.RampSettings.ElevationOrigin;
-        _serialCommandsList.Add("ra0");
-        _serialCommandsList.Add("ea50");
+        _serialCommandsList.Add($"ra{Rotation:D}");
+        _serialCommandsList.Add($"ea{Elevation:D}");
         SendChangeEvent();
     }
 
