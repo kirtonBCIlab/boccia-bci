@@ -202,7 +202,7 @@ public class FanGenerator : MonoBehaviour
         (
             position: elevationLowPositionOffset,
             rotationAngle: elevationRotationOffset,
-            text: Mathf.Clamp(currentElevation - fanSettings.ElevationRange/2,0,99).ToString() + "%",
+            text: (currentElevation - fanSettings.ElevationRange/2).ToString() + "%",
             textAlignment: lowLimitPosition,
             annotationFontSize: fanSettings.annotationFontSize
         );
@@ -212,7 +212,7 @@ public class FanGenerator : MonoBehaviour
         (
             position: elevationHighPositionOffset,
             rotationAngle: elevationRotationOffset,
-            text: Mathf.Clamp(currentElevation + fanSettings.ElevationRange/2,1,100).ToString() + "%",
+            text: (currentElevation + fanSettings.ElevationRange/2).ToString() + "%",
             textAlignment: highLimitPosition,
             annotationFontSize: fanSettings.annotationFontSize
         );

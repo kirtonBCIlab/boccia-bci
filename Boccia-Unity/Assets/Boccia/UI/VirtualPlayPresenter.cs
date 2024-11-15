@@ -56,7 +56,7 @@ public class VirtualPlayPresenter : MonoBehaviour
         rotateRightButton.onClick.AddListener(RotateRight);
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
-        resetRampButton.onClick.AddListener(model.ResetRampPosition);
+        resetRampButton.onClick.AddListener(ResetRamp);
         resetBallButton.onClick.AddListener(model.ResetVirtualBalls);
         dropBallButton.onClick.AddListener(model.DropBall);
         colorButton.onClick.AddListener(model.RandomBallColor);
@@ -104,6 +104,12 @@ public class VirtualPlayPresenter : MonoBehaviour
     private void MoveDown()
     {
         model.ElevateBy(-1.0f);
+    }
+
+    private void ResetRamp()
+    {
+        model.ResetRampPosition();
+        model.ResetFanWhenRampResets();
     }
 
     private void ToggleCamera()

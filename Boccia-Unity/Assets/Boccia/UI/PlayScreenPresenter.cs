@@ -19,13 +19,17 @@ public class PlayScreenPresenter : MonoBehaviour
     private int _randomRotation;
     private int _randomElevation;
 
+    [SerializeField]
+    // Set to false for development mode, true for production mode
+    private bool _arduinoIsNeeded = false;
+
     // Start is called before the first frame update
     void Start()
     {
         _model = BocciaModel.Instance;
 
         // connect buttons to model
-        resetRampButton.onClick.AddListener(_model.ResetRampPosition);
+        resetRampButton.onClick.AddListener(ResetRamp);
         randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
 
         _model.NavigationChanged += NavigationChanged;
@@ -46,7 +50,7 @@ public class PlayScreenPresenter : MonoBehaviour
         _model.WasChanged += ModelChanged;
         _model.NavigationChanged += NavigationChanged;
 
-        if (_model.GameMode == BocciaGameMode.Play)
+        if (_model.GameMode == BocciaGameMode.Play && _arduinoIsNeeded)
         {
             _checkSerialCoroutine = StartCoroutine(CheckSerialPortConnection());
         }
@@ -149,5 +153,11 @@ public class PlayScreenPresenter : MonoBehaviour
             serialStatusIndicator.GetComponentInChildren<TextMeshProUGUI>().text = "Serial Disconnected";
             serialStatusIndicator.GetComponent<Image>().color = Color.red;
         }
+    }
+
+    private void ResetRamp()
+    {
+        _model.ResetRampPosition();
+        _model.ResetFanWhenRampResets();
     }
 }
