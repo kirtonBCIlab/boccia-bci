@@ -40,9 +40,26 @@ public class FanPresenter : MonoBehaviour
         _model.WasChanged += UpdateFineFan;
         _model.ResetFan += ResetFanWhenRampResets;
 
-        _originalRotation = transform.rotation;  
+        _originalRotation = transform.rotation;
+
+        // Initialize the fan settings based on centralized model data
+        InitializeFanSettings();
 
         UpdateFineFan(); // Update fine fan
+    }
+
+    private void InitializeFanSettings()
+    {
+        // Set up _fineFan and _coarseFan using the centralized BocciaModel
+        if (_fineFan != null)
+        {
+            _fineFan.Setup(_model);
+        }
+
+        if (_coarseFan != null)
+        {
+            _coarseFan.Setup(_model);
+        }
     }
 
     /// <summary>

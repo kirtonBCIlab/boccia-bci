@@ -18,11 +18,16 @@ public class HamburgerMenuPresenter : MonoBehaviour
 
     private BocciaModel model;
 
+    void Awake()
+    {
+        // Cache the model
+        model = BocciaModel.Instance;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        // Cache model and subscribe for changed event
-        model = BocciaModel.Instance;
+        // Subscribe for changed event
         model.BciChanged += BciChanged;
 
         // Connect buttons to model

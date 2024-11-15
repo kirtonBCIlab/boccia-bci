@@ -20,10 +20,14 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     public Button doneButton;
     public Button resetDefaultsButton;
 
-    void Start()
+    void Awake()
     {
         _model = BocciaModel.Instance;
+    }
+    void Start()
+    {
         PopulateColorDropdown();
+        SetSliderLimits();
         InitializeValues();
 
         // Add listeners for Game Options changes
@@ -52,7 +56,30 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         }
 
         PopulateColorDropdown();
+        SetSliderLimits();
         InitializeValues();
+    }
+
+    // Set the min and max limits of the sliders based on model values
+    private void SetSliderLimits()
+    {
+        elevationPrecisionSlider.minValue = _model.FanSettings.ElevationPrecisionMin;
+        elevationPrecisionSlider.maxValue = _model.FanSettings.ElevationPrecisionMax;
+
+        elevationRangeSlider.minValue = _model.FanSettings.ElevationRangeMin;
+        elevationRangeSlider.maxValue = _model.FanSettings.ElevationRangeMax;
+
+        rotationPrecisionSlider.minValue = _model.FanSettings.RotationPrecisionMin;
+        rotationPrecisionSlider.maxValue = _model.FanSettings.RotationPrecisionMax;
+
+        rotationRangeSlider.minValue = _model.FanSettings.RotationRangeMin;
+        rotationRangeSlider.maxValue = _model.FanSettings.RotationRangeMax;
+
+        elevationSpeedSlider.minValue = _model.RampSettings.ElevationSpeedMin;
+        elevationSpeedSlider.maxValue = _model.RampSettings.ElevationSpeedMax;
+
+        rotationSpeedSlider.minValue = _model.RampSettings.RotationSpeedMin;
+        rotationSpeedSlider.maxValue = _model.RampSettings.RotationSpeedMax;
     }
 
     private void InitializeValues()
@@ -93,7 +120,7 @@ public class GameOptionsMenuPresenter : MonoBehaviour
                 return pair.Key;
             }
         }
-        return "Red";  // Default to Blue if not found
+        return "Red";  // Default to Red if not found
     }
 
     // MARK: Event handlers for changes to game options
