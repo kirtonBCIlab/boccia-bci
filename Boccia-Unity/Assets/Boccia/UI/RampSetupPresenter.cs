@@ -92,7 +92,7 @@ public class RampSetupPresenter : MonoBehaviour
         // }
     }
 
-    void OnEnable()
+    void NavigationChanged()
     {
         // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
         if (_model == null)

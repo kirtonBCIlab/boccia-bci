@@ -114,6 +114,25 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
+    public float ScaleRotationSpeed(float speed)
+    {
+        float stepsPerRevolution = 800f;        // Steps per revolution: 800 steps/rev
+        float RotationMotorMaxSpeed = 1000f;    // Max speed: 1000 steps/sec according to AccelStepper library
+        float gearRatio = 3f;                   // Gear ratio: 3:1
+        float speedPercentage = speed / (_model.RampSettings.RotationSpeedMax - _model.RampSettings.RotationSpeedMin);
+        float scaledSpeed = speedPercentage * (RotationMotorMaxSpeed / stepsPerRevolution / gearRatio);
+        return scaledSpeed;
+    }
+
+    public float ScaleElevationSpeed(float speed)
+    {
+        float elevationMotorMaxSpeed = 2.0f;    // Max speed: 2 inches/sec at 35 lbs
+        float rampScaling = 3;                  // Scaling factor: 3 from the Boccia ramp model in the scene
+        float speedPercentage = speed / (_model.RampSettings.ElevationSpeedMax - _model.RampSettings.ElevationSpeedMin);
+        float scaledSpeed = speedPercentage * elevationMotorMaxSpeed / rampScaling;
+        return scaledSpeed;
+    }
+
     public void RandomBallDrop(int randomRotation, int randomElevation)
     {
         RotateTo(randomRotation);
