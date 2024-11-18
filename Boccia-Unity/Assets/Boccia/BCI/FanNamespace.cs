@@ -25,11 +25,19 @@ namespace FanNamespace
         public float columnSpacing; // Spacing between columns
         public float rowSpacing;    // Spacing between rows;
 
-        private int _maxColumns = 7;            // Max number of columns
+        private int _minColumns;
+        private int _maxColumns;
         public int MaxColumns { get { return _maxColumns; } }
 
-        private int _maxRows = 7;               // Max number of rows
+        private int _minRows;
+        private int _maxRows;
         public int MaxRows { get { return _maxRows; } }
+
+        private int _minTheta;
+        private int _maxTheta;
+
+        private int _minElevationRange;
+        private int _maxElevationRange;
 
         private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
 
@@ -38,7 +46,7 @@ namespace FanNamespace
         public float Theta
         {
             get { return _theta; }
-            set { _theta = Mathf.Clamp(value, 5, 180); }
+            set { _theta = Mathf.Clamp(value, _minTheta, _maxTheta); }
         }
 
         [SerializeField]
@@ -66,7 +74,7 @@ namespace FanNamespace
         public int NColumns
         {
             get { return _nColumns; }
-            set { _nColumns = Mathf.Clamp(value, 1, _maxColumns); }
+            set { _nColumns = Mathf.Clamp(value, _minColumns, _maxColumns); }
         }
 
         [SerializeField]
@@ -74,7 +82,7 @@ namespace FanNamespace
         public int NRows
         {
             get { return _nRows; }
-            set { _nRows = Mathf.Clamp(value, 1, _maxRows); }
+            set { _nRows = Mathf.Clamp(value, _minRows, _maxRows); }
         }
 
         [SerializeField]
@@ -82,7 +90,8 @@ namespace FanNamespace
         public float ElevationRange
         {
             get { return _elevationRange; } //There is some bug where the value is not being clamped. Going to do this on return now.
-            set { _elevationRange = Mathf.Clamp(value, 1, 100); }
+            // set { _elevationRange = Mathf.Clamp(value, 1, 100); }
+            set { _elevationRange = Mathf.Clamp(value, _minElevationRange, _maxElevationRange); }
         }
 
         [Header("Additional Button Parameters")]
@@ -104,6 +113,22 @@ namespace FanNamespace
 
         [Header("Annotation options")]
         public int annotationFontSize;
+
+        public void Setup(BocciaModel model)
+        {
+            // Initialize min and max columns and rows based on centralized model settings
+            _minColumns = model.FanSettings.RotationPrecisionMin;
+            _maxColumns = model.FanSettings.RotationPrecisionMax;
+
+            _minRows = model.FanSettings.ElevationPrecisionMin;
+            _maxRows = model.FanSettings.ElevationPrecisionMax;
+
+            _minTheta = model.FanSettings.RotationRangeMin;
+            _maxTheta = model.FanSettings.RotationRangeMax;
+
+            _minElevationRange = model.FanSettings.ElevationRangeMin;
+            _maxElevationRange = model.FanSettings.ElevationRangeMax;
+        }
 
         private void OnValidate()
         {

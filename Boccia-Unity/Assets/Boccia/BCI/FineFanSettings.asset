@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columnSpacing: 0.5
   rowSpacing: 0.1
-  _theta: 69
+  _theta: 20
   _outerRadius: 6
   _innerRadius: 3.5
   _nColumns: 3
   _nRows: 3
-  _elevationRange: 28
+  _elevationRange: 20
   _backButtonWidth: 1
   _dropButtonHeight: 0.5
   annotationFontSize: 5

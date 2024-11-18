@@ -37,11 +37,14 @@ public class RampSetupPresenter : MonoBehaviour
     private List<string> _motorsToCalibrate = new();
     private Dictionary<string, GameObject> _calibrationCheckmarks = new Dictionary<string, GameObject>();
 
-    void Start()
+    void Awake()
     {
         // cache model
         _model = BocciaModel.Instance;
+    }
 
+    void Start()
+    {
         // Connect buttons to model
         closeButton.onClick.AddListener(_model.PlayMenu);
         doneButton.onClick.AddListener(_model.Play);
@@ -89,8 +92,15 @@ public class RampSetupPresenter : MonoBehaviour
         // }
     }
 
-    void OnEnable()
+    void NavigationChanged()
     {
+        // This check is to avoid NullReferenceExceptions that happen when OnEnable() attempts to run before the game data that contains the model is loaded
+        if (_model == null)
+        {
+            // Debug.LogError("Model is not initialized yet in OnEnable.");
+            return; // Avoid running further code if the model is not ready
+        }
+
         // Check connection status to update label when panel is enabled
         CheckConnectionStatus();
     }

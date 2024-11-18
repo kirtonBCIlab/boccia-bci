@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class JackPresenter : MonoBehaviour
 {
-    private BocciaModel model;
+    private BocciaModel _model;
     public GameObject jackBall; // The ball prefab to use as the jack
     public GameObject spawnArea; // The area in which to spawn the jack
+
+    public BocciaGameMode _gameMode;
 
     // Start is called before the first frame update
     void Start()
     {
-        model = BocciaModel.Instance;
-        model.NewRandomJack += NewJack;
-        model.BallResetChanged += ResetJackBall;
+        _model = BocciaModel.Instance;
+        _model.NewRandomJack += NewJack;
+        _model.BallResetChanged += ResetJackBall;
+        _model.NavigationChanged += NavigationChanged;
+
+        _gameMode = _model.GameMode;
     }
  
     private void OnDisable()
     {
-        model.NewRandomJack -= NewJack;
-        model.BallResetChanged -= ResetJackBall;
+        _model.NewRandomJack -= NewJack;
+        _model.BallResetChanged -= ResetJackBall;
+        _model.NavigationChanged -= NavigationChanged;
     }
 
     private void NewJack()
@@ -48,6 +54,17 @@ public class JackPresenter : MonoBehaviour
         if (currentJack != null)
         {
             Destroy(currentJack);
+        }
+    }
+
+    private void NavigationChanged()
+    {
+        // Reset jack if the game mode changes
+        BocciaGameMode currentGameMode = _model.GameMode;
+        if (currentGameMode != _gameMode)
+        {
+            _gameMode = currentGameMode;
+            ResetJackBall();
         }
     }
 }
