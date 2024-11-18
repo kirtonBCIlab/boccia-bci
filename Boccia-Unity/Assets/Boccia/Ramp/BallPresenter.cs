@@ -35,7 +35,7 @@ public class BallPresenter : MonoBehaviour
     // Game mode
     private BocciaGameMode _gameMode;
 
-    public event System.Action BallSpawned;
+    public event System.Action<GameObject> BallSpawned;
     public event System.Action<GameObject> BallDropped;
     
     // MARK: Initialization
@@ -227,7 +227,7 @@ public class BallPresenter : MonoBehaviour
         _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
 
-        BallSpawned?.Invoke();
+        BallSpawned?.Invoke(_activeBall);
 
         // Set the ball state to ready
         _model.SetBallStateReady();

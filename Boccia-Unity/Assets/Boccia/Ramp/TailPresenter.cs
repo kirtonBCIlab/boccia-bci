@@ -19,7 +19,9 @@ public class TailPresenter : MonoBehaviour
 
     private AttachedTail _jackTail = null;
     private List<AttachedTail> _activeTails = new();
-    private AttachedTail _liveTail = null;
+
+    private AttachedTail _lastSpawnedBallTail = null;
+    private GameObject _activeBall = null;
 
 
     void Start()
@@ -40,13 +42,14 @@ public class TailPresenter : MonoBehaviour
             tail.Update();
     }
 
-    void BallSpawned()
+    void BallSpawned(GameObject newBall)
     {
-        _liveTail = null;
+        _activeBall = newBall;
     }
 
     void BallDropped(GameObject droppedBall)
     {
+        _activeBall = droppedBall;
         if (droppedBall)
             StartCoroutine(SpawnBallTailAfterDelay(droppedBall));
     }
@@ -64,10 +67,10 @@ public class TailPresenter : MonoBehaviour
 
     void ModelChanged()
     {
-        if (_liveTail != null)
+        if (_lastSpawnedBallTail != null && _lastSpawnedBallTail.IsTargetting(_activeBall))
         {
             Color ballColour = _model.GetCurrentBallColor();
-            _liveTail.SetColour(ballColour);
+            _lastSpawnedBallTail.SetColour(ballColour);
         }
     }
 
@@ -82,6 +85,9 @@ public class TailPresenter : MonoBehaviour
             _jackTail.DestroyTail();
             _jackTail = null;
         }
+
+        _activeBall = null;
+        _lastSpawnedBallTail = null;
     }
 
     private IEnumerator SpawnBallTailAfterDelay(GameObject target)
@@ -96,7 +102,7 @@ public class TailPresenter : MonoBehaviour
     {
         AttachedTail newTail = SpawnTail(target, tailMaterial);
         newTail.SetColour(colour);
-        _liveTail = newTail;
+        _lastSpawnedBallTail = newTail;
         return newTail;
     }
 
@@ -179,6 +185,11 @@ public class TailPresenter : MonoBehaviour
             _linkedTransform = newTarget.transform;
             _linkedBody = newTarget.GetComponent<Rigidbody>();
             MoveToBall();
+        }
+
+        public bool IsTargetting(GameObject target)
+        {
+            return target != null && target.transform == _linkedTransform;
         }
 
         public void SetColour(Color colour)
