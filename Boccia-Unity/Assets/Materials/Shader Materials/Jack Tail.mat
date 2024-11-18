@@ -40,12 +40,12 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _BottomRadius: 0.2
-    - _Height: 0.15
+    - _BottomRadius: 0.1
+    - _Height: 4
     - _MaximumY: 1
     - _MinimumY: -1
     - _TopRadius: 0
     m_Colors:
     - _BottomColour: {r: 1, g: 1, b: 1, a: 1}
-    - _TopColour: {r: 1, g: 1, b: 1, a: 0}
+    - _TopColour: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
