@@ -10,6 +10,8 @@ public class JackPresenter : MonoBehaviour
 
     public BocciaGameMode _gameMode;
 
+    public event System.Action<GameObject> JackSpawned;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +48,8 @@ public class JackPresenter : MonoBehaviour
 
         GameObject newJack = Instantiate(jackBall, randomJackPosition, Quaternion.identity, transform);
         newJack.name = "JackBall";
+
+        JackSpawned?.Invoke(newJack);
     }
 
     private void ResetJackBall()
