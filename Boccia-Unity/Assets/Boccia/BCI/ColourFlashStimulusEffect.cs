@@ -23,37 +23,47 @@ public class ColourFlashStimulusEffect : StimulusEffect
 
     public bool IsPlaying => _effectRoutine != null;
 
-    private Renderer _renderer;
+    private Renderer _materialRenderer;
+    private CanvasRenderer _canvasRenderer;
+    private System.Action<Color> SetColor;
+
     private Coroutine _effectRoutine;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
-        if (_renderer == null)
+        _materialRenderer = GetComponent<Renderer>();
+        _canvasRenderer = GetComponent<CanvasRenderer>();
+        if (_materialRenderer == null && _canvasRenderer == null)
         {
             Debug.LogWarning($"No Renderer component found for {name}");
             Destroy(this);
             return;
         }
-        if (_renderer.material == null)
+        if (_materialRenderer != null)
         {
-            Debug.LogWarning($"No material assigned to renderer component on {name}.");
-            Destroy(this);
-            return;
+            SetColor = AssignMaterialColor;
+            if (_materialRenderer.material == null)
+            {
+                Debug.LogWarning($"No material assigned to renderer component on {name}.");
+                Destroy(this);
+                return;
+            }
         }
+        else
+            SetColor = AssignCanvasColor;
 
-        AssignMaterialColor(StartOn ? OnColor : OffColor);
+        SetColor(StartOn ? OnColor : OffColor);
     }
 
     public override void SetOn()
     {
-        AssignMaterialColor(OnColor);
+        SetColor(OnColor);
         IsOn = true;
     }
 
     public override void SetOff()
     {
-        AssignMaterialColor(OffColor);
+        SetColor(OffColor);
         IsOn = false;
     }
 
@@ -88,8 +98,13 @@ public class ColourFlashStimulusEffect : StimulusEffect
         _effectRoutine = null;
     }
 
-    private void AssignMaterialColor(Color color)
+    void AssignMaterialColor(Color color)
     {
-        _renderer.material.color = color;
+        _materialRenderer.material.color = color;
+    }
+
+    void AssignCanvasColor(Color color)
+    {
+        _canvasRenderer.SetColor(color);
     }
 }

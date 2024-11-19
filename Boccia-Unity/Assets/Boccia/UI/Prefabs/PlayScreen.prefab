@@ -222,8 +222,6 @@ GameObject:
   - component: {fileID: 491917470012584253}
   - component: {fileID: 4869450835517760207}
   - component: {fileID: 6748951209935578255}
-  - component: {fileID: 6277914520999626746}
-  - component: {fileID: 679174540274438189}
   m_Layer: 6
   m_Name: ResetRampButton
   m_TagString: BCI
@@ -333,93 +331,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6277914520999626746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1087478738280944160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartStimulusEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 679174540274438189}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
-          Assembly-CSharp
-        m_MethodName: SetOn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopStimulusEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 679174540274438189}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
-          Assembly-CSharp
-        m_MethodName: SetOff
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnSelectedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 679174540274438189}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
-          Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StartTrainingStimulusEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  StopTrainingStimulusEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 0
---- !u!114 &679174540274438189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1087478738280944160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 535bf50698404674ead34b338e36e3b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
-  _startOn: 0
-  _flashDurationSeconds: 0.2
-  _flashAmount: 3
 --- !u!1 &2136889402653620579
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,8 +732,6 @@ GameObject:
   - component: {fileID: 7781101804396931157}
   - component: {fileID: 3243721716787812892}
   - component: {fileID: 3214086637462062914}
-  - component: {fileID: 8358808418726444481}
-  - component: {fileID: 6438268955628440154}
   m_Layer: 6
   m_Name: RandomBallButton
   m_TagString: BCI
@@ -932,93 +841,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8358808418726444481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3915093870228750941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartStimulusEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6438268955628440154}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
-          Assembly-CSharp
-        m_MethodName: SetOn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopStimulusEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6438268955628440154}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
-          Assembly-CSharp
-        m_MethodName: SetOff
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnSelectedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6438268955628440154}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.CanvasColorFlashEffect,
-          Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StartTrainingStimulusEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  StopTrainingStimulusEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 37
---- !u!114 &6438268955628440154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3915093870228750941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 535bf50698404674ead34b338e36e3b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
-  _startOn: 0
-  _flashDurationSeconds: 0.2
-  _flashAmount: 3
 --- !u!1 &7062422457744525498
 GameObject:
   m_ObjectHideFlags: 0
@@ -1067,6 +889,7 @@ MonoBehaviour:
   resetRampButton: {fileID: 6748951209935578255}
   randomBallButton: {fileID: 0}
   serialStatusIndicator: {fileID: 280350794043064211}
+  _arduinoIsNeeded: 0
 --- !u!1 &7973036634516842441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,6 +902,7 @@ GameObject:
   - component: {fileID: 2012786842390971747}
   - component: {fileID: 8343450049659630580}
   - component: {fileID: 3925269101341991042}
+  - component: {fileID: 348274990873547376}
   m_Layer: 6
   m_Name: PlayButtons
   m_TagString: Untagged
@@ -1172,6 +996,22 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &348274990873547376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7973036634516842441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1d08e2ccd43ce4a9953058d3b118e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Buttons:
+  - {fileID: 3915093870228750941}
+  - {fileID: 1087478738280944160}
+  StimulusCategory: 1
 --- !u!1 &8031201558642839039
 GameObject:
   m_ObjectHideFlags: 0
