@@ -118,7 +118,6 @@ public class TailPresenter : MonoBehaviour
     class AttachedTail
     {
         private GameObject _tailObject;
-        private Transform _linkedTransform;
         private Rigidbody _linkedBody;
 
         private Material _instancedTailMaterial;
@@ -167,11 +166,9 @@ public class TailPresenter : MonoBehaviour
 
         void MoveToBall()
         {
-            if (_linkedTransform != null)
+            if (_linkedBody != null)
             {
-                Vector3 body_offset = _linkedBody.centerOfMass;
-                Vector3 position = _linkedTransform.position;
-                _tailObject.transform.position = position + body_offset;
+                _tailObject.transform.position = _linkedBody.worldCenterOfMass;
             }
         }
 
@@ -182,14 +179,13 @@ public class TailPresenter : MonoBehaviour
 
         public void SetTarget(GameObject newTarget)
         {
-            _linkedTransform = newTarget.transform;
             _linkedBody = newTarget.GetComponent<Rigidbody>();
             MoveToBall();
         }
 
         public bool IsTargetting(GameObject target)
         {
-            return target != null && target.transform == _linkedTransform;
+            return target != null && target == _linkedBody.gameObject;
         }
 
         public void SetColour(Color colour)
