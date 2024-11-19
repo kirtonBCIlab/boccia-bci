@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 5744862837208150259}
   - component: {fileID: 3254357422855799959}
   - component: {fileID: 5600891439562022432}
+  - component: {fileID: 1004936596068606844}
   m_Layer: 0
   m_Name: BciOptionsMenu
   m_TagString: Untagged
@@ -170,6 +171,18 @@ MonoBehaviour:
   p300SettingsPanel: {fileID: 4023749827607034847}
   resetDefaultsButton: {fileID: 8509612398931548721}
   doneButton: {fileID: 8675696091033853727}
+--- !u!114 &1004936596068606844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407664765047655102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92332e0b10f636e47ac3989ae8313030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &783538421899614942
 GameObject:
   m_ObjectHideFlags: 0
