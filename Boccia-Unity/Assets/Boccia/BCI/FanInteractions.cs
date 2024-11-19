@@ -46,10 +46,9 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             meshCollider.enabled = true;
 
             // Add Flashing effects component
-            // TODO: We need something to add the color of the SPO segment here
-            ColorFlashEffect colorFlashEffect = child.AddComponent<ColorFlashEffect>();
-            // colorFlashEffect.OnColor = flashOnColor;
-            // colorFlashEffect.OffColor = flashOffColor;
+            ColourFlashStimulusEffect flashEffect = child.AddComponent<ColourFlashStimulusEffect>();
+            flashEffect.OnColor = flashOnColor;
+            flashEffect.OffColor = flashOffColor;
 
             // Add SPO component to make segment selectable with BCI
             child.tag = "BCI";
@@ -57,11 +56,11 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             spo.ObjectID = segmentID;
             spo.Selectable = true;
 
-            spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOn());
-            spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOff());
+            spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColourFlashStimulusEffect>().SetOn());
+            spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColourFlashStimulusEffect>().SetOff());
 
             spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
-            spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());            
+            spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColourFlashStimulusEffect>().Play());            
             spo.OnSelectedEvent.AddListener(() => OnSegmentClick(child.transform));                
 
             segmentID++;

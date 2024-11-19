@@ -38,12 +38,14 @@ public class FanPresenter : MonoBehaviour
         _model = BocciaModel.Instance; 
         _model.NavigationChanged += NavigationChanged;
         _model.WasChanged += UpdateFineFan;
+        _model.BciChanged += BCIChanged;
         _model.ResetFan += ResetFanWhenRampResets;
 
         _originalRotation = transform.rotation;
 
         // Initialize the fan settings based on centralized model data
         InitializeFanSettings();
+        SetFanFlashColour();
 
         UpdateFineFan(); // Update fine fan
     }
@@ -129,6 +131,18 @@ public class FanPresenter : MonoBehaviour
     {
         ResetFanWhenPlayModeChanges();
         DisplayFanOnCorrespondingScreen();
+    }
+
+    private void BCIChanged()
+    {
+        SetFanFlashColour();
+    }
+
+    private void SetFanFlashColour()
+    {
+        Color flashColour = (fanTypeScreen == BocciaScreen.TrainingScreen)?
+            _model.P300Settings.Train.FlashColour: _model.P300Settings.Test.FlashColour;
+        fanInteractions.flashOnColor = flashColour;
     }
 
     private void UpdateFineFan()
