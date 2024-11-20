@@ -35,6 +35,8 @@ public class BallPresenter : MonoBehaviour
     // Game mode
     private BocciaGameMode _gameMode;
 
+    public event System.Action<GameObject> BallSpawned;
+    public event System.Action<GameObject> BallDropped;
     
     // MARK: Initialization
     // Start is called before the first frame update
@@ -113,6 +115,7 @@ public class BallPresenter : MonoBehaviour
                 // Call the method to log the drop position and rotation
                 // and the rest of the ball drop code
                 DropBall();
+                BallDropped?.Invoke(_activeBall);
             }
         }
     }
@@ -223,6 +226,8 @@ public class BallPresenter : MonoBehaviour
         // Instantiate the new ball
         _activeBall = Instantiate(ball, newBallPosition, newBallRotation, transform);
         InitializeBall();
+
+        BallSpawned?.Invoke(_activeBall);
 
         // Set the ball state to ready
         _model.SetBallStateReady();
