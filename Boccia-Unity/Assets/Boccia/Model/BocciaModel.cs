@@ -116,6 +116,8 @@ public class BocciaModel : Singleton<BocciaModel>
         // Set Fan settings
         FanSettings fanSettings = Resources.Load<FanSettings>("FanSettings") ?? ScriptableObject.CreateInstance<FanSettings>();
         SetFanSettings(fanSettings);
+        ScriptableObject.Destroy(fanSettings);
+        
 
         // Set Ramp Settings
         SetRampSettings();
