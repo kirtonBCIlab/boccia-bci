@@ -21,32 +21,52 @@ namespace FanNamespace
     [CreateAssetMenu(fileName = "FanSettings", menuName = "Fan/FanSettings")]
     public class FanSettings : ScriptableObject
     {
+        // Ranges for the fan settings
+        BocciaModel _model; // Reference to the model
+        private readonly int _minColumns = 1;
+        private readonly int _maxColumns = 7;
+        
+        private readonly int _minRows = 1;
+        private readonly int _maxRows = 7;
+        
+        private readonly int _minCoarseTheta = 5 ;
+        private readonly int _maxCoarseTheta = 170;
+
+        private readonly int _minFineTheta = 5;
+        private readonly int _maxFineTheta = 50;
+        
+        private readonly int _minElevationRange = 1;
+        private readonly int _maxElevationRange = 100;        
+
+        private readonly int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
+
+        // Public getters to send to model
+        public int MinColumns { get { return _minColumns; } }
+        public int MaxColumns { get { return _maxColumns; } }
+
+        public int MinRows { get { return _minRows; } }
+        public int MaxRows { get { return _maxRows; } }
+
+        public int MinCoarseTheta { get { return _minCoarseTheta; } }
+        public int MaxCoarseTheta { get { return _maxCoarseTheta; } }
+
+        public int MinFineTheta { get { return _minFineTheta; } }
+        public int MaxFineTheta { get { return _maxFineTheta; } }
+
+        public int MinElevationRange { get { return _minElevationRange; } }
+        public int MaxElevationRange { get { return _maxElevationRange; } }
+
         [Header("Fan Parameters")]
         public float columnSpacing; // Spacing between columns
         public float rowSpacing;    // Spacing between rows;
-
-        private int _minColumns;
-        private int _maxColumns;
-        public int MaxColumns { get { return _maxColumns; } }
-
-        private int _minRows;
-        private int _maxRows;
-        public int MaxRows { get { return _maxRows; } }
-
-        private int _minTheta;
-        private int _maxTheta;
-
-        private int _minElevationRange;
-        private int _maxElevationRange;
-
-        private int _minRadiusDifference = 1;   // Minimum difference between inner and outer radius
-
+       
+        // Conditional sets to stay within ranges
         [SerializeField]
         private float _theta;               // Angle in degrees
         public float Theta
         {
             get { return _theta; }
-            set { _theta = Mathf.Clamp(value, _minTheta, _maxTheta); }
+            set { _theta = Mathf.Clamp(value, _minCoarseTheta, _maxCoarseTheta); }
         }
 
         [SerializeField]
@@ -112,22 +132,6 @@ namespace FanNamespace
 
         [Header("Annotation options")]
         public int annotationFontSize;
-
-        public void Setup(BocciaModel model)
-        {
-            // Initialize min and max columns and rows based on centralized model settings
-            _minColumns = model.FanSettings.RotationPrecisionMin;
-            _maxColumns = model.FanSettings.RotationPrecisionMax;
-
-            _minRows = model.FanSettings.ElevationPrecisionMin;
-            _maxRows = model.FanSettings.ElevationPrecisionMax;
-
-            _minTheta = model.FanSettings.RotationRangeMin;
-            _maxTheta = model.FanSettings.RotationRangeMax;
-
-            _minElevationRange = model.FanSettings.ElevationRangeMin;
-            _maxElevationRange = model.FanSettings.ElevationRangeMax;
-        }
 
         private void OnValidate()
         {
