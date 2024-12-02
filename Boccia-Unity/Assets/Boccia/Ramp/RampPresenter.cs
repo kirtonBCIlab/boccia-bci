@@ -87,21 +87,39 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
-        // Smoothly show the rotation of the ramp to the new position
-        Quaternion currentRotation = rotationShaft.transform.localRotation;
-        // Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
-        Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
-        // Debug.Log($"model.RampRotation value: {_model.RampRotation}");
+        // Store the starting rotation
+        Quaternion startRotation = rotationShaft.transform.localRotation;
+        // Store the target rotation based on the model.RampRotation value
+        Quaternion targetRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
 
-        while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
+        // Calculate the angle between the start and target rotations
+        float rotationAngle = Quaternion.Angle(startRotation, targetRotation);
+
+        // Get the scaled rotation speed and convert it to degrees per second
+        float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+        float convertedSpeed = scaledSpeed * 360f;
+
+        // Calculate the total time it will take to rotate
+        float totalTime = rotationAngle / convertedSpeed;
+        // Variable to store the current time
+        float elapsedTime = 0f;
+
+        // Rotate the ramp
+        while (elapsedTime < totalTime)
         {
-            float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
-            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, scaledSpeed * Time.deltaTime);
-            rotationShaft.transform.localRotation = currentRotation;
+            elapsedTime += Time.deltaTime;
+
+            // Interpolation factor
+            float normalizedProgress = Mathf.Clamp01(elapsedTime / totalTime);
+
+            // Interpolate between the start and target rotation
+            rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, normalizedProgress);
+
             yield return null;
         }
 
-        rotationShaft.transform.localRotation = targetQuaternion;
+        // After the rotation is complete, ensure the ramp is set to the target rotation
+        rotationShaft.transform.localRotation = targetRotation;
     }
 
     private IEnumerator ElevationVisualization()
