@@ -109,8 +109,8 @@ public class RampPresenter : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
 
-            // Interpolation factor
-            float normalizedProgress = Mathf.Clamp01(elapsedTime / totalTime);
+            // Interpolation factor to smooth out the rotation
+            float normalizedProgress = Mathf.SmoothStep(0f, 1f, (Mathf.Clamp01(elapsedTime / totalTime)));
 
             // Interpolate between the start and target rotation
             rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, normalizedProgress);
