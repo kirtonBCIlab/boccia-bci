@@ -97,23 +97,50 @@ public class RampPresenter : MonoBehaviour
 
         // Get the scaled rotation speed and convert it to degrees per second
         float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
-        float convertedSpeed = scaledSpeed * 360f;
+
+        // Define the acceleration in steps/sec² and scale it
+        float scaledAcceleration = _model.ScaleRotationAcceleration();
+        Debug.Log("Scaled acceleration: " + scaledAcceleration);
 
         // Calculate the total time it will take to rotate
-        float totalTime = rotationAngle / convertedSpeed;
+        float totalTime = rotationAngle / scaledSpeed;
+        Debug.Log("Rotation angle: " + rotationAngle);
+        Debug.Log("Scaled speed: " + scaledSpeed);
+        Debug.Log("Total time to rotate: " + totalTime);
         // Variable to store the current time
         float elapsedTime = 0f;
+
+        float currentSpeed = 0f;
+        float currentAngle = 0f;
 
         // Rotate the ramp
         while (elapsedTime < totalTime)
         {
             elapsedTime += Time.deltaTime;
+            float t = elapsedTime / totalTime;
+            // float easeInOutFactor = t * t * (3f - 2f * t); // Smoothstep function
+            // Calculate the current speed with acceleration and deceleration
+            if (t < 0.5f)
+            {
+                // Accelerate
+                currentSpeed += scaledAcceleration * Time.deltaTime;
+            }
+            else
+            {
+                // Decelerate
+                currentSpeed -= scaledAcceleration * Time.deltaTime;
+            }
+            currentSpeed = Mathf.Max(currentSpeed, 0f);
 
-            // Interpolation factor to smooth out the rotation
-            float normalizedProgress = Mathf.SmoothStep(0f, 1f, (Mathf.Clamp01(elapsedTime / totalTime)));
+            // Calculate the current speed with acceleration
+            // float currentSpeed = scaledSpeed * easeInOutFactor;
+            // float currentAngle = currentSpeed * elapsedTime + 0.5f * scaledAcceleration * Mathf.Pow(elapsedTime, 2);
+            currentAngle += currentSpeed * Time.deltaTime;
 
             // Interpolate between the start and target rotation
-            rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, normalizedProgress);
+            Debug.Log("Current angle: " + currentAngle);
+            float normalizedAngle = Mathf.Clamp01(currentAngle / rotationAngle);
+            rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, normalizedAngle);
 
             yield return null;
         }
