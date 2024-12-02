@@ -124,25 +124,45 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator ElevationVisualization()
     {
-        Vector3 currentElevation = elevationMechanism.transform.localPosition;
-        //Debug.Log($"model.RampElevation value: {model.RampElevation}");
-        float elevationScalar = ElevationVisualizationMin + (_model.RampElevation / 100f) * (ElevationVisualizationMax - ElevationVisualizationMin); // Convert percent elevation to its scalar value
-        
-        //Make sure the elevation is within the min and max elevation bounds
+        // Store the starting elevation
+        Vector3 startElevation = elevationMechanism.transform.localPosition;
+
+        // Convert percent elevation from model.RampElevation to its scalar value
+        float elevationScalar = ElevationVisualizationMin + (_model.RampElevation / 100f) * (ElevationVisualizationMax - ElevationVisualizationMin);
+
+        // Make sure the elevation is within the min and max elevation bounds
         elevationScalar = Mathf.Clamp(elevationScalar, ElevationVisualizationMin, ElevationVisualizationMax);
 
-        Vector3 targetElevation = elevationDirection * elevationScalar;   
-        
-        while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
+        // Store the target elevation
+        Vector3 targetElevation = elevationDirection * elevationScalar;
+
+        // Calculate the distance between the start and target elevations
+        float elevationDistance = Vector3.Distance(startElevation, targetElevation);
+
+        // Get the scaled elevation speed and convert it to m/s (from inches/s)
+        float scaledSpeed = _model.ScaleElevationSpeed(_elevationSpeed);
+        float convertedSpeed = scaledSpeed * 0.0254f;
+
+        // Calculate the total time it will take to elevate
+        float totalTime = elevationDistance / convertedSpeed;
+        // Variable to store the time
+        float elapsedTime = 0f;
+
+        // Elevate the ramp
+        while (elapsedTime < totalTime)
         {
-            // Calculate the scaled speed for elevation
-            // Max speed: 2 inches/sec
-            float scaledSpeed = _model.ScaleElevationSpeed(_elevationSpeed);
-            currentElevation = Vector3.Lerp(currentElevation, targetElevation, scaledSpeed * Time.deltaTime);
-            elevationMechanism.transform.localPosition = currentElevation;
+            elapsedTime += Time.deltaTime;
+
+            // Interpolation factor
+            float normalizedProgress = Mathf.Clamp01(elapsedTime / totalTime);
+
+            // Interpolate between the start and target elevation
+            elevationMechanism.transform.localPosition = Vector3.Lerp(startElevation, targetElevation, normalizedProgress);
+
             yield return null;
         }
 
+        // After the elevation is complete, ensure the ramp is set to the target elevation
         elevationMechanism.transform.localPosition = targetElevation;
     }
 
