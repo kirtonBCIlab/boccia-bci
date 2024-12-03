@@ -147,11 +147,16 @@ public class HardwareRamp : RampController, ISerialController
         return scaledAcceleration;
     }
 
+    /// <summary>
+    /// Scales elevation speed for correct visualization
+    /// </summary>
+    /// <param name="speed">8-bit PWM speed </param>
+    /// <returns>Scaled speed [m/s]</returns>
     public float ScaleElevationSpeed(float speed)
     {
         float elevationMotorMaxSpeed = 2.0f;    // Max speed: 2 inches/sec at 35 lbs
         float speedPercentage = speed / (_model.RampSettings.ElevationSpeedMax - _model.RampSettings.ElevationSpeedMin);
-        float scaledSpeed = speedPercentage * elevationMotorMaxSpeed * _rampScaling;
+        float scaledSpeed = speedPercentage * elevationMotorMaxSpeed * _rampScaling * 0.0254f;
         return scaledSpeed;
     }
 
