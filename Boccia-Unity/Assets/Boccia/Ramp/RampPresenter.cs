@@ -87,79 +87,183 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
-        // Store the starting rotation
+        // Starting and ending rotation points
         Quaternion startRotation = rotationShaft.transform.localRotation;
-        Quaternion targetRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
+        Quaternion endRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
+        
+        float startAngle = rotationShaft.transform.localEulerAngles.y;
+        float currentAngle = startAngle;
+        float targetAngle = _model.RampRotation;
+        float deltaAngle = Mathf.DeltaAngle(startAngle, targetAngle);
+        float angle = Mathf.Abs(deltaAngle);
+        float direction = Mathf.Sign(deltaAngle);
+        Debug.Log("Rotation angle: " + angle);
 
-        // Calculate the angle between the start and target rotations
-        float rotationAngle = Quaternion.Angle(startRotation, targetRotation);
+        
+        // Convert speed to [deg/sec] and acceleration to [deg/sec^2]
+        float maxRotationSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+        float acceleration = _model.ScaleRotationAcceleration();
 
-        // Get the scaled rotation speed and convert it to degrees per second
-        float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+        // Calculate movement times
+        float accelTime = maxRotationSpeed / acceleration;
+        float angleInAccelPhase = 0.5f * acceleration * Mathf.Pow(accelTime, 2);
 
-        // Define the acceleration in deg/sec² and scale it
-        float scaledAcceleration = _model.ScaleRotationAcceleration();
-        Debug.Log("Scaled acceleration: " + scaledAcceleration);
-
-        // Calculate the time to reach maximum speed
-        float timeToMaxSpeed = scaledSpeed / scaledAcceleration;
-
-        // Calculate the distance covered during acceleration and deceleration
-        float distanceToMaxSpeed = 0.5f * scaledAcceleration * Mathf.Pow(timeToMaxSpeed, 2);
-
-        // Check if the rotation can reach maximum speed
-        float totalTime;
-        if (rotationAngle < 2 * distanceToMaxSpeed)
+        float angleInConstantPhase = Mathf.Max(0, angle - (2 * angleInAccelPhase));
+        float constantTime = angleInConstantPhase / maxRotationSpeed;
+        
+        // If the angle is too small to reach constant speed, adjust accelTime and decelTime
+        if (angleInConstantPhase == 0)
         {
-            // If the rotation angle is too small to reach max speed, calculate the time needed for a triangular velocity profile
-            totalTime = Mathf.Sqrt(4 * rotationAngle / scaledAcceleration);
-        }
-        else
-        {
-            // If the rotation angle is large enough, calculate the time needed for a trapezoidal velocity profile
-            float distanceAtConstantSpeed = rotationAngle - 2 * distanceToMaxSpeed;
-            float timeAtConstantSpeed = distanceAtConstantSpeed / scaledSpeed;
-            totalTime = 2 * timeToMaxSpeed + timeAtConstantSpeed;
+            accelTime = Mathf.Sqrt(angle / acceleration);
+            constantTime = 0;
         }
 
-        Debug.Log("Rotation angle: " + rotationAngle);
-        Debug.Log("Scaled speed: " + scaledSpeed);
+        float totalTime = (2 * accelTime) + constantTime;
         Debug.Log("Total time to rotate: " + totalTime);
-
-        // Variable to store the current time
         float elapsedTime = 0f;
 
-        float currentSpeed = 0f;
-        float currentAngle = 0f;
-
-        // Rotate the ramp
         while (elapsedTime < totalTime)
         {
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / totalTime;
+            float deltaAngleThisFrame;
 
-            // Calculate the current speed with acceleration and deceleration
-            if (t < 0.5f)
+            // Acceleration phase
+            if (elapsedTime < accelTime)
             {
-                // Accelerate
-                currentSpeed += scaledAcceleration * Time.deltaTime;
+                float currentSpeed = acceleration * elapsedTime * direction;
+                deltaAngleThisFrame = currentSpeed * Time.deltaTime;
             }
+            // Constant speed phase
+            else if (elapsedTime < accelTime + constantTime)
+            {
+                deltaAngleThisFrame = maxRotationSpeed * Time.deltaTime * direction;
+            }
+            // Deceleration phase
             else
             {
-                // Decelerate
-                currentSpeed -= scaledAcceleration * Time.deltaTime;
+                float timeToEnd = totalTime - elapsedTime;
+                float currentSpeed = acceleration * timeToEnd * direction;
+                deltaAngleThisFrame = currentSpeed * Time.deltaTime;
             }
-            currentSpeed = Mathf.Max(currentSpeed, 0f);
 
-            // Calculate the current angle
-            currentAngle += currentSpeed * Time.deltaTime;
+            currentAngle += deltaAngleThisFrame * direction;
+            // currentAngle = Mathf.Clamp(currentAngle, 0, angle);
 
-            // Interpolate between the start and target rotation
-            rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, currentAngle / rotationAngle);
-
+            float t = currentAngle / angle;
+            rotationShaft.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, t);
+            
             yield return null;
+            // Debug.Log("Current angle: " + currentAngle);
         }
+
+        
+
+        // Ensure the final rotation is exactly the end rotation
+        // rotationShaft.transform.localRotation = endRotation;
     }
+
+    // private float SmoothInterpolationFactor(
+    //     float t,
+    //     float totalTime,
+    //     float timeToMaxSpeed,
+    //     float constantSpeedRatio,
+    //     float maxRotationSpeed,
+    //     float acceleration
+    //     )
+    // {
+    //     float accelerationPhase = timeToMaxSpeed / totalTime;
+    //     float decelerationPhase = accelerationPhase;
+    //     float constantSpeedPhase = constantSpeedRatio;
+
+    //     // Acceleration phase
+    //     if (t < accelerationPhase)
+    //     {            
+    //         return 0.5f * acceleration * t * t / (accelerationPhase * accelerationPhase);
+    //     }
+    //     // Constant speed phase
+    //     else if (t < accelerationPhase + constantSpeedPhase)
+    //     {
+    //         return accelerationPhase * 0.5f + (t - accelerationPhase);
+    //     }
+    //     // Deceleration phase
+    //     else
+    //     {            
+    //         float decelerationT = (t - (accelerationPhase + constantSpeedPhase)) / decelerationPhase;
+    //         return (accelerationPhase * 0.5f + constantSpeedPhase) 
+    //                 + (decelerationT - 0.5f * acceleration * decelerationT * decelerationT / (maxRotationSpeed * maxRotationSpeed))
+    //                 * decelerationPhase;
+    //     }
+    // }
+    // private IEnumerator RotationVisualization()
+    // {
+    //     // Compute starting, end, and trajectory rotation
+    //     Quaternion startRotation = rotationShaft.transform.localRotation;
+    //     Quaternion targetRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
+    //     float rotationAngle = Quaternion.Angle(startRotation, targetRotation);
+
+    //     // Convert speed to [deg/sec] and acceleration to [deg/sec^2]
+    //     float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+    //     float scaledAcceleration = _model.ScaleRotationAcceleration();
+        
+    //     // Calculate the time to reach maximum speed
+    //     float timeToMaxSpeed = scaledSpeed / scaledAcceleration;
+
+    //     // Calculate the distance covered during acceleration and deceleration
+    //     float distanceToMaxSpeed = 0.5f * scaledAcceleration * Mathf.Pow(timeToMaxSpeed, 2);
+
+    //     // Check if the rotation can reach maximum speed
+    //     float totalTime;
+    //     if (rotationAngle < 2 * distanceToMaxSpeed)
+    //     {
+    //         // If the rotation angle is too small to reach max speed, calculate the time needed for a triangular velocity profile
+    //         totalTime = Mathf.Sqrt(4 * rotationAngle / scaledAcceleration);
+    //     }
+    //     else
+    //     {
+    //         // If the rotation angle is large enough, calculate the time needed for a trapezoidal velocity profile
+    //         float distanceAtConstantSpeed = rotationAngle - 2 * distanceToMaxSpeed;
+    //         float timeAtConstantSpeed = distanceAtConstantSpeed / scaledSpeed;
+    //         totalTime = 2 * timeToMaxSpeed + timeAtConstantSpeed;
+    //     }
+
+    //     Debug.Log("Rotation angle: " + rotationAngle);
+    //     Debug.Log("Scaled speed: " + scaledSpeed);
+    //     Debug.Log("Total time to rotate: " + totalTime);
+
+    //     // Variable to store the current time
+    //     float elapsedTime = 0f;
+
+    //     float currentSpeed = 0f;
+    //     float currentAngle = 0f;
+
+    //     // Rotate the ramp
+    //     while (elapsedTime < totalTime)
+    //     {
+    //         elapsedTime += Time.deltaTime;
+    //         float t = elapsedTime / totalTime;
+
+    //         // Calculate the current speed with acceleration and deceleration
+    //         if (t < 0.5f)
+    //         {
+    //             // Accelerate
+    //             currentSpeed += scaledAcceleration * Time.deltaTime;
+    //         }
+    //         else
+    //         {
+    //             // Decelerate
+    //             currentSpeed -= scaledAcceleration * Time.deltaTime;
+    //         }
+    //         currentSpeed = Mathf.Max(currentSpeed, 0f);
+
+    //         // Calculate the current angle
+    //         currentAngle += currentSpeed * Time.deltaTime;
+
+    //         // Interpolate between the start and target rotation
+    //         rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, currentAngle / rotationAngle);
+
+    //         yield return null;
+    //     }
+    // }
 
     // private IEnumerator RotationVisualization()
     // {
