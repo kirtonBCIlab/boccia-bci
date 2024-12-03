@@ -130,7 +130,6 @@ public class HardwareRamp : RampController, ISerialController
         // float speedPercentage = speed / _model.RampSettings.RotationSpeedMax;
         float degreesPerStep = 360f / (_stepsPerRevolution * _gearRatio);
         float scaledSpeed = speed * degreesPerStep;
-        // float scaledSpeed = speed * degreesPerStep / _rampScaling; // IDK IF WE NEED SCALING!
         return scaledSpeed;
     }
 
@@ -142,7 +141,6 @@ public class HardwareRamp : RampController, ISerialController
     {
         float degreesPerStep = 360f / (_stepsPerRevolution * _gearRatio);
         float scaledAcceleration = _defaultAcceleration * degreesPerStep;
-        // float scaledAcceleration = _defaultAcceleration * degreesPerStep / _rampScaling;  // IDK IF WE NEED SCALING!
         return scaledAcceleration;
     }
 
@@ -153,10 +151,13 @@ public class HardwareRamp : RampController, ISerialController
     /// <returns>Scaled speed [m/s]</returns>
     public float ScaleElevationSpeed(float speed)
     {
-        float elevationMotorMaxImperialSpeed = 2.0f;    // Max speed: 2 inches/sec at 35 lbs
-        float elevationMotorMaxMetricSpeed = elevationMotorMaxImperialSpeed * 0.0254f; // Convert to meters
-        float speedPercentage = speed / (_model.RampSettings.ElevationSpeedMax - _model.RampSettings.ElevationSpeedMin);
-        float scaledSpeed = speedPercentage * elevationMotorMaxMetricSpeed * _rampScaling;
+        const float MAX_IMPERIAL_SPEED = 2.0f;  // Max speed: 2 inches/sec at 35 lbs
+        const float INCHES_TO_METERS = 0.0254f; 
+        float maxMetricSpeed = MAX_IMPERIAL_SPEED * INCHES_TO_METERS;    // Convert to [m/sec]
+        
+        float speedPercentage = speed / (float)_model.RampSettings.ElevationSpeedMax;
+        float scaledSpeed = speedPercentage * maxMetricSpeed;
+        // float scaledSpeed = speedPercentage * maxMetricSpeed * _rampScaling; // Not sure if we need scaling here
         return scaledSpeed;
     }
 

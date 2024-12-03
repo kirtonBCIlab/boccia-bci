@@ -161,8 +161,6 @@ public class RampPresenter : MonoBehaviour
 
         // Convert percent elevation from model.RampElevation to its scalar value
         float elevationScalar = ElevationVisualizationMin + (_model.RampElevation / 100f) * (ElevationVisualizationMax - ElevationVisualizationMin);
-
-        // Make sure the elevation is within the min and max elevation bounds
         elevationScalar = Mathf.Clamp(elevationScalar, ElevationVisualizationMin, ElevationVisualizationMax);
 
         // Store the target elevation
@@ -171,7 +169,7 @@ public class RampPresenter : MonoBehaviour
         // Calculate the distance between the start and target elevations
         float elevationDistance = Vector3.Distance(startElevation, targetElevation);
 
-        // Get the scaled elevation speed and convert it to m/s (from inches/s)
+        // Get the 8-bit PWM speed and convert it to m/s
         float scaledSpeed = _model.ScaleElevationSpeed(_elevationSpeed);
 
         // Calculate the total time it will take to elevate
@@ -185,7 +183,8 @@ public class RampPresenter : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             // Interpolation factor to smooth out the elevation
-            float normalizedProgress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsedTime / totalTime));
+            // float normalizedProgress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsedTime / totalTime));
+            float normalizedProgress = elapsedTime / totalTime;
 
             // Interpolate between the start and target elevation
             elevationMechanism.transform.localPosition = Vector3.Lerp(startElevation, targetElevation, normalizedProgress);

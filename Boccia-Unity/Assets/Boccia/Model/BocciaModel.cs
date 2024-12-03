@@ -151,6 +151,9 @@ public class BocciaModel : Singleton<BocciaModel>
             {"Elevation", false},
             {"Rotation", false}
         };
+
+        // Movement settings
+        
     }
 
     // Set RampSettings
