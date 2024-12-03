@@ -44,7 +44,6 @@ public class HardwareRamp : RampController, ISerialController
     private float _rampScaling = 3;                 // Scaling factor: 3 from the Boccia ramp model in the scene
     private float _stepsPerRevolution = 800f;       // Steps per revolution [steps/rev]
     private float _defaultAcceleration = 30f;       // Default acceleration [steps/sec^2]
-    private float _RotationMotorMaxSpeed = 1000f;   // Max speed: [steps/sec] according to AccelStepper library
     private float _gearRatio = 3f;                  // Gear ratio: 3:1
 
     private SerialPort _serial;
@@ -154,9 +153,10 @@ public class HardwareRamp : RampController, ISerialController
     /// <returns>Scaled speed [m/s]</returns>
     public float ScaleElevationSpeed(float speed)
     {
-        float elevationMotorMaxSpeed = 2.0f;    // Max speed: 2 inches/sec at 35 lbs
+        float elevationMotorMaxImperialSpeed = 2.0f;    // Max speed: 2 inches/sec at 35 lbs
+        float elevationMotorMaxMetricSpeed = elevationMotorMaxImperialSpeed * 0.0254f; // Convert to meters
         float speedPercentage = speed / (_model.RampSettings.ElevationSpeedMax - _model.RampSettings.ElevationSpeedMin);
-        float scaledSpeed = speedPercentage * elevationMotorMaxSpeed * _rampScaling * 0.0254f;
+        float scaledSpeed = speedPercentage * elevationMotorMaxMetricSpeed * _rampScaling;
         return scaledSpeed;
     }
 
