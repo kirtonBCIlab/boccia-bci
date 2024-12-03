@@ -89,7 +89,6 @@ public class RampPresenter : MonoBehaviour
     {
         // Store the starting rotation
         Quaternion startRotation = rotationShaft.transform.localRotation;
-        // Store the target rotation based on the model.RampRotation value
         Quaternion targetRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
 
         // Calculate the angle between the start and target rotations
@@ -98,15 +97,35 @@ public class RampPresenter : MonoBehaviour
         // Get the scaled rotation speed and convert it to degrees per second
         float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
 
-        // Define the acceleration in steps/sec² and scale it
+        // Define the acceleration in deg/sec² and scale it
         float scaledAcceleration = _model.ScaleRotationAcceleration();
         Debug.Log("Scaled acceleration: " + scaledAcceleration);
 
-        // Calculate the total time it will take to rotate
-        float totalTime = rotationAngle / scaledSpeed;
+        // Calculate the time to reach maximum speed
+        float timeToMaxSpeed = scaledSpeed / scaledAcceleration;
+
+        // Calculate the distance covered during acceleration and deceleration
+        float distanceToMaxSpeed = 0.5f * scaledAcceleration * Mathf.Pow(timeToMaxSpeed, 2);
+
+        // Check if the rotation can reach maximum speed
+        float totalTime;
+        if (rotationAngle < 2 * distanceToMaxSpeed)
+        {
+            // If the rotation angle is too small to reach max speed, calculate the time needed for a triangular velocity profile
+            totalTime = Mathf.Sqrt(4 * rotationAngle / scaledAcceleration);
+        }
+        else
+        {
+            // If the rotation angle is large enough, calculate the time needed for a trapezoidal velocity profile
+            float distanceAtConstantSpeed = rotationAngle - 2 * distanceToMaxSpeed;
+            float timeAtConstantSpeed = distanceAtConstantSpeed / scaledSpeed;
+            totalTime = 2 * timeToMaxSpeed + timeAtConstantSpeed;
+        }
+
         Debug.Log("Rotation angle: " + rotationAngle);
         Debug.Log("Scaled speed: " + scaledSpeed);
         Debug.Log("Total time to rotate: " + totalTime);
+
         // Variable to store the current time
         float elapsedTime = 0f;
 
@@ -118,7 +137,7 @@ public class RampPresenter : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / totalTime;
-            // float easeInOutFactor = t * t * (3f - 2f * t); // Smoothstep function
+
             // Calculate the current speed with acceleration and deceleration
             if (t < 0.5f)
             {
@@ -132,22 +151,77 @@ public class RampPresenter : MonoBehaviour
             }
             currentSpeed = Mathf.Max(currentSpeed, 0f);
 
-            // Calculate the current speed with acceleration
-            // float currentSpeed = scaledSpeed * easeInOutFactor;
-            // float currentAngle = currentSpeed * elapsedTime + 0.5f * scaledAcceleration * Mathf.Pow(elapsedTime, 2);
+            // Calculate the current angle
             currentAngle += currentSpeed * Time.deltaTime;
 
             // Interpolate between the start and target rotation
-            Debug.Log("Current angle: " + currentAngle);
-            float normalizedAngle = Mathf.Clamp01(currentAngle / rotationAngle);
-            rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, normalizedAngle);
+            rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, currentAngle / rotationAngle);
 
             yield return null;
         }
-
-        // After the rotation is complete, ensure the ramp is set to the target rotation
-        rotationShaft.transform.localRotation = targetRotation;
     }
+
+    // private IEnumerator RotationVisualization()
+    // {
+    //     // Store the starting rotation
+    //     Quaternion startRotation = rotationShaft.transform.localRotation;
+    //     // Store the target rotation based on the model.RampRotation value
+    //     Quaternion targetRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
+
+    //     // Calculate the angle between the start and target rotations
+    //     float rotationAngle = Quaternion.Angle(startRotation, targetRotation);
+
+    //     // Get the scaled rotation speed and convert it to degrees per second
+    //     float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+
+    //     // Define the acceleration in steps/sec² and scale it
+    //     float scaledAcceleration = _model.ScaleRotationAcceleration();
+    //     Debug.Log("Scaled acceleration: " + scaledAcceleration);
+
+    //     // Calculate the total time it will take to rotate
+    //     float totalTime = rotationAngle / scaledSpeed;
+    //     Debug.Log("Rotation angle: " + rotationAngle);
+    //     Debug.Log("Scaled speed: " + scaledSpeed);
+    //     Debug.Log("Total time to rotate: " + totalTime);
+    //     // Variable to store the current time
+    //     float elapsedTime = 0f;
+
+    //     float currentSpeed = 0f;
+    //     float currentAngle = 0f;
+
+    //     // Rotate the ramp
+    //     while (elapsedTime < totalTime)
+    //     {
+    //         elapsedTime += Time.deltaTime;
+    //         float t = elapsedTime / totalTime;
+    //         // float easeInOutFactor = t * t * (3f - 2f * t); // Smoothstep function
+    //         // Calculate the current speed with acceleration and deceleration
+    //         if (t < 0.5f)
+    //         {
+    //             // Accelerate
+    //             currentSpeed += scaledAcceleration * Time.deltaTime;
+    //         }
+    //         else
+    //         {
+    //             // Decelerate
+    //             currentSpeed -= scaledAcceleration * Time.deltaTime;
+    //         }
+    //         currentSpeed = Mathf.Max(currentSpeed, 0f);
+
+    //         // Calculate the current speed with acceleration
+    //         // float currentSpeed = scaledSpeed * easeInOutFactor;
+    //         // float currentAngle = currentSpeed * elapsedTime + 0.5f * scaledAcceleration * Mathf.Pow(elapsedTime, 2);
+    //         currentAngle += currentSpeed * Time.deltaTime;
+
+    //         // Interpolate between the start and target rotation
+    //         rotationShaft.transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, currentAngle / _model.RampRotation);
+
+    //         yield return null;
+    //     }
+
+    //     // After the rotation is complete, ensure the ramp is set to the target rotation
+    //     rotationShaft.transform.localRotation = targetRotation;
+    // }
 
     private IEnumerator ElevationVisualization()
     {

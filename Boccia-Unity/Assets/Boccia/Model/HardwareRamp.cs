@@ -130,7 +130,8 @@ public class HardwareRamp : RampController, ISerialController
     {
         // float speedPercentage = speed / _model.RampSettings.RotationSpeedMax;
         float degreesPerStep = 360f / (_stepsPerRevolution * _gearRatio);
-        float scaledSpeed = speed * degreesPerStep / _rampScaling;
+        float scaledSpeed = speed * degreesPerStep;
+        // float scaledSpeed = speed * degreesPerStep / _rampScaling; // IDK IF WE NEED SCALING!
         return scaledSpeed;
     }
 
@@ -141,7 +142,8 @@ public class HardwareRamp : RampController, ISerialController
     public float ScaleRotationAcceleration()
     {
         float degreesPerStep = 360f / (_stepsPerRevolution * _gearRatio);
-        float scaledAcceleration = _defaultAcceleration * degreesPerStep / _rampScaling;
+        float scaledAcceleration = _defaultAcceleration * degreesPerStep;
+        // float scaledAcceleration = _defaultAcceleration * degreesPerStep / _rampScaling;  // IDK IF WE NEED SCALING!
         return scaledAcceleration;
     }
 
