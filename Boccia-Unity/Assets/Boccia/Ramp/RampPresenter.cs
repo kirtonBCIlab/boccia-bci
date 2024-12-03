@@ -88,17 +88,14 @@ public class RampPresenter : MonoBehaviour
     private IEnumerator RotationVisualization()
     {
         // Starting and ending rotation points
-        Quaternion startRotation = rotationShaft.transform.localRotation;
-        Quaternion endRotation = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
-        
-        float startAngle = rotationShaft.transform.localEulerAngles.y;
-        float currentAngle = startAngle;
-        float targetAngle = _model.RampRotation;
-        float deltaAngle = Mathf.DeltaAngle(startAngle, targetAngle);
-        float angle = Mathf.Abs(deltaAngle);
-        float direction = Mathf.Sign(deltaAngle);
-        Debug.Log("Rotation angle: " + angle);
+        Quaternion startQuaternion = rotationShaft.transform.localRotation;
+        Quaternion endQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
 
+        // Calculate the angle between the start and target rotations
+        float startAngle = rotationShaft.transform.localEulerAngles.y;
+        float targetAngle = _model.RampRotation;
+        float deltaAngle = Mathf.Abs(Mathf.DeltaAngle(startAngle, targetAngle));
+        float direction = Mathf.Sign(deltaAngle);
         
         // Convert speed to [deg/sec] and acceleration to [deg/sec^2]
         float maxRotationSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
@@ -108,18 +105,20 @@ public class RampPresenter : MonoBehaviour
         float accelTime = maxRotationSpeed / acceleration;
         float angleInAccelPhase = 0.5f * acceleration * Mathf.Pow(accelTime, 2);
 
-        float angleInConstantPhase = Mathf.Max(0, angle - (2 * angleInAccelPhase));
+        float angleInConstantPhase = Mathf.Max(0, deltaAngle - (2 * angleInAccelPhase));
         float constantTime = angleInConstantPhase / maxRotationSpeed;
         
-        // If the angle is too small to reach constant speed, adjust accelTime and decelTime
+        // If the deltaAngle is too small to reach constant speed, adjust accelTime and decelTime
         if (angleInConstantPhase == 0)
         {
-            accelTime = Mathf.Sqrt(angle / acceleration);
+            accelTime = Mathf.Sqrt(deltaAngle / acceleration);
             constantTime = 0;
         }
 
         float totalTime = (2 * accelTime) + constantTime;
-        Debug.Log("Total time to rotate: " + totalTime);
+        
+        // Initialize relative movement and time variables
+        float currentAngle = 0f; 
         float elapsedTime = 0f;
 
         while (elapsedTime < totalTime)
@@ -146,20 +145,13 @@ public class RampPresenter : MonoBehaviour
                 deltaAngleThisFrame = currentSpeed * Time.deltaTime;
             }
 
-            currentAngle += deltaAngleThisFrame * direction;
-            // currentAngle = Mathf.Clamp(currentAngle, 0, angle);
+            currentAngle += deltaAngleThisFrame;
 
-            float t = currentAngle / angle;
-            rotationShaft.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, t);
+            float t = currentAngle / deltaAngle;
+            rotationShaft.transform.localRotation = Quaternion.Slerp(startQuaternion, endQuaternion, t);
             
             yield return null;
-            // Debug.Log("Current angle: " + currentAngle);
         }
-
-        
-
-        // Ensure the final rotation is exactly the end rotation
-        // rotationShaft.transform.localRotation = endRotation;
     }
 
     // private float SmoothInterpolationFactor(
