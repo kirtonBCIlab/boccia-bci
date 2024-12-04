@@ -146,8 +146,11 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
-    public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode)
+    public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode, FanPositioningMode fanPositioningMode)
     {   
+        // Get scaled font size for Fine Fan based on Fine Fan theta
+        float scaledFontSize = ScaleAnnotationSize(fanSettings, fanPositioningMode);
+
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
@@ -159,7 +162,7 @@ public class FanGenerator : MonoBehaviour
             rotationAngle: 0,
             (currentRotation + fanSettings.Theta/2).ToString("F1") + "°",
             TextAlignmentOptions.BottomRight,
-            annotationFontSize: fanSettings.annotationFontSize
+            annotationFontSize: scaledFontSize
         );
 
         // Annotation for the end angle
@@ -172,7 +175,7 @@ public class FanGenerator : MonoBehaviour
             rotationAngle: fanSettings.Theta,
             (currentRotation - fanSettings.Theta/2).ToString("F1") + "°",
             TextAlignmentOptions.BottomLeft,
-            annotationFontSize: fanSettings.annotationFontSize
+            annotationFontSize: scaledFontSize
         );
 
         // Place height anotations according to back button position 
@@ -268,4 +271,41 @@ public class FanGenerator : MonoBehaviour
             textMeshProComponent.alignment = textAlignment;
         }
     }
-}
+
+
+    // This scales the font size so we can see the annotations (for now)
+    private float ScaleAnnotationSize(FanSettings fanSettings, FanPositioningMode fanPositioningMode)
+    {
+        if (fanPositioningMode == FanPositioningMode.CenterToBase)
+        {
+            return fanSettings.annotationFontSize;
+        }
+
+        float baseFontSize = fanSettings.annotationFontSize;
+        float theta = fanSettings.Theta;
+
+        if (theta > 21)
+        {
+            return baseFontSize;
+        }
+
+        if (15 < theta && theta <= 21)
+        {
+            float scaledFontSize = baseFontSize * 0.8f;
+            return scaledFontSize;
+        }
+
+        else if (12 < theta && theta <= 15)
+        {
+            float scaledFontSize = baseFontSize * 0.6f;
+            return scaledFontSize;
+        }
+
+        else 
+        {
+            float scaledFontSize = baseFontSize * 0.5f;
+            Debug.Log($"Scaled font size: {scaledFontSize}");
+            return scaledFontSize;
+        }
+    }
+}   
