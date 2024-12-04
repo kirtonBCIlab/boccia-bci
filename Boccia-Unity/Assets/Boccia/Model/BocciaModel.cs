@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FanNamespace;
 using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
@@ -113,7 +114,10 @@ public class BocciaModel : Singleton<BocciaModel>
         SetDefaultHardwareOptions();
 
         // Set Fan settings
-        SetFanSettings();
+        FanSettings fanSettings = Resources.Load<FanSettings>("FanSettings") ?? ScriptableObject.CreateInstance<FanSettings>();
+        SetFanSettings(fanSettings);
+        ScriptableObject.Destroy(fanSettings);
+        
 
         // Set Ramp Settings
         SetRampSettings();
@@ -181,25 +185,20 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.RampSettings.RotationSpeedMax = 1000;
     }
 
-    // Set FanSettings
-    private void SetFanSettings()
+    /// <summary>
+    /// Grabs the FanSettings from the FanNamespace and sets them in the model.
+    /// </summary>
+    /// <param name="fanSettings">The FanSettings object containing the settings to be applied.</param>
+    public void SetFanSettings(FanSettings fanSettings)
     {
-        // ElevationRange
-        bocciaData.FanSettings.ElevationRangeMin = 1;
-        bocciaData.FanSettings.ElevationRangeMax = 100;
-
-        // ElevationPrecision
-        bocciaData.FanSettings.ElevationPrecisionMin = 1;
-        bocciaData.FanSettings.ElevationPrecisionMax = 7;
-
-        // RotationRange
-        // Also sets limits on Theta for Fan generation
-        bocciaData.FanSettings.RotationRangeMin = 5;
-        bocciaData.FanSettings.RotationRangeMax = 180;
-
-        // RotationPrecision
-        bocciaData.FanSettings.RotationPrecisionMin = 1;
-        bocciaData.FanSettings.RotationPrecisionMax = 7;
+        bocciaData.FanSettings.RotationPrecisionMin = fanSettings.MinColumns;
+        bocciaData.FanSettings.RotationPrecisionMax = fanSettings.MaxColumns;
+        bocciaData.FanSettings.ElevationPrecisionMin = fanSettings.MinRows;
+        bocciaData.FanSettings.ElevationPrecisionMax = fanSettings.MaxRows;
+        bocciaData.FanSettings.RotationRangeMin = fanSettings.MinFineTheta;
+        bocciaData.FanSettings.RotationRangeMax = fanSettings.MaxFineTheta;
+        bocciaData.FanSettings.ElevationRangeMin = fanSettings.MinElevationRange;
+        bocciaData.FanSettings.ElevationRangeMax = fanSettings.MaxElevationRange;
     }
 
     // MARK: Game options
