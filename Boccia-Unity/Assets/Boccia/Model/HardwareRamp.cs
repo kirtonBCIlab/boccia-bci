@@ -41,7 +41,7 @@ public class HardwareRamp : RampController, ISerialController
     public bool SerialEnabled { get; private set; }    
 
     // Values from Hardware ramp firmware controller
-    private float _rampScaling = 3;                 // Scaling factor: 3 from the Boccia ramp model in the scene
+    //private float _rampScaling = 3;                 // Scaling factor: 3 from the Boccia ramp model in the scene
     private float _stepsPerRevolution = 800f;       // Steps per revolution [steps/rev]
     private float _defaultAcceleration = 30f;       // Default acceleration [steps/sec^2]
     private float _gearRatio = 3f;                  // Gear ratio: 3:1
