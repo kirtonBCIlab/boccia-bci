@@ -31,7 +31,7 @@ public class TailPresenter : MonoBehaviour
         GetComponent<BallPresenter>().BallDropped += BallDropped;
         GetComponent<JackPresenter>().JackSpawned += JackSpawned;
         _model.WasChanged += ModelChanged;
-        _model.BallResetChanged += ResetTails;
+        _model.ResetTails += ResetTails;
     }
 
 

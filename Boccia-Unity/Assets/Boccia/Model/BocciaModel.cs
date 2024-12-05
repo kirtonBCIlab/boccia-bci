@@ -28,7 +28,6 @@ public class BocciaModel : Singleton<BocciaModel>
     private RampController _rampController;
     private RampController _simulatedRamp;
     private HardwareRamp _hardwareRamp;
-    private bool _isInitialized;
 
     public float RampRotation => _rampController.Rotation;
     public float RampElevation => _rampController.Elevation;
@@ -71,6 +70,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action BciChanged;
     public event System.Action NewRandomJack;
     public event System.Action BallResetChanged;
+
+    public event System.Action ResetTails;
     public event System.Action BallFallingChanged;
     public event System.Action ResetFan;
 
@@ -99,17 +100,6 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         base.Awake();
 
-        if (!_isInitialized)
-        {
-            _simulatedRamp = new SimulatedRamp();
-            _hardwareRamp = new HardwareRamp();
-            _rampController = _simulatedRamp; // Default to simulated
-            _isInitialized = true;
-        }
-    }
-
-    public void Start()
-    {
         if (!bocciaData.WasInitialized)
         {
             Debug.Log("Initializing BocciaData...");
@@ -120,7 +110,19 @@ public class BocciaModel : Singleton<BocciaModel>
 
             bocciaData.WasInitialized = true;
         }
+        
+        
+        SetRampSettings();
+        SetDefaultHardwareOptions();
 
+        _simulatedRamp = new SimulatedRamp();
+        _hardwareRamp = new HardwareRamp();
+        _rampController = _simulatedRamp; // Default to simulated
+
+    }
+
+    public void Start()
+    {
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
@@ -327,6 +329,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ResetVirtualBalls()
     {
         SendBallResetEvent();
+    }
+
+    public void ResetBallTails()
+    {
+        SendTailResetEvent();
     }
 
     public void RandomBallColor()
@@ -539,6 +546,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendBallResetEvent()
     {
         BallResetChanged?.Invoke();
+    }
+
+    private void SendTailResetEvent()
+    {
+        ResetTails?.Invoke();
     }
 
     private void SendBallFallingEvent()
