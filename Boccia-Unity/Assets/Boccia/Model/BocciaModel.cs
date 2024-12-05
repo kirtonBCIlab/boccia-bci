@@ -70,6 +70,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action BciChanged;
     public event System.Action NewRandomJack;
     public event System.Action BallResetChanged;
+
+    public event System.Action ResetTails;
     public event System.Action BallFallingChanged;
     public event System.Action ResetFan;
 
@@ -329,6 +331,11 @@ public class BocciaModel : Singleton<BocciaModel>
         SendBallResetEvent();
     }
 
+    public void ResetBallTails()
+    {
+        SendTailResetEvent();
+    }
+
     public void RandomBallColor()
     {
         // Get all the keys (color names) from the BallColorOptionsDict
@@ -539,6 +546,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendBallResetEvent()
     {
         BallResetChanged?.Invoke();
+    }
+
+    private void SendTailResetEvent()
+    {
+        ResetTails?.Invoke();
     }
 
     private void SendBallFallingEvent()

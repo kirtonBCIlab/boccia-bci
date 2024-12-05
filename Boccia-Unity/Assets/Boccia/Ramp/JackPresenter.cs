@@ -58,6 +58,9 @@ public class JackPresenter : MonoBehaviour
         if (currentJack != null)
         {
             Destroy(currentJack);
+
+            // Call the method to remove tail
+            _model.ResetBallTails();
         }
     }
 

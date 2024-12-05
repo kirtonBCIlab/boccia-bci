@@ -221,6 +221,9 @@ public class BallPresenter : MonoBehaviour
         {
             GameObject previousBall = _activeBall;
             Destroy(previousBall);
+            
+            // Call the method to remove the ball tail
+            _model.ResetBallTails();
         }
 
         // Instantiate the new ball
@@ -278,6 +281,9 @@ public class BallPresenter : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+
+        // Call the method to remove the ball tails
+        _model.ResetBallTails();
     }
 
     private void NavigationChanged()
