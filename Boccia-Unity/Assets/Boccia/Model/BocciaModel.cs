@@ -28,7 +28,6 @@ public class BocciaModel : Singleton<BocciaModel>
     private RampController _rampController;
     private RampController _simulatedRamp;
     private HardwareRamp _hardwareRamp;
-    private bool _isInitialized;
 
     public float RampRotation => _rampController.Rotation;
     public float RampElevation => _rampController.Elevation;
@@ -99,17 +98,6 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         base.Awake();
 
-        if (!_isInitialized)
-        {
-            _simulatedRamp = new SimulatedRamp();
-            _hardwareRamp = new HardwareRamp();
-            _rampController = _simulatedRamp; // Default to simulated
-            _isInitialized = true;
-        }
-    }
-
-    public void Start()
-    {
         if (!bocciaData.WasInitialized)
         {
             Debug.Log("Initializing BocciaData...");
@@ -120,7 +108,19 @@ public class BocciaModel : Singleton<BocciaModel>
 
             bocciaData.WasInitialized = true;
         }
+        
+        
+        SetRampSettings();
+        SetDefaultHardwareOptions();
 
+        _simulatedRamp = new SimulatedRamp();
+        _hardwareRamp = new HardwareRamp();
+        _rampController = _simulatedRamp; // Default to simulated
+
+    }
+
+    public void Start()
+    {
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
