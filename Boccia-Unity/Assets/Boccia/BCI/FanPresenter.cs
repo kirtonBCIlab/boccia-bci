@@ -170,7 +170,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateBackButton(_fineFan, backButtonPositioningMode);
                 fanGenerator.GenerateDropButton(_fineFan);
                 fanInteractions.MakeFanSegmentsInteractable(_fineFan);
-                fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode);
+                fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode, positioningMode);
                 break;
             case FanPositioningMode.CenterToBase:
                 CenterNorth();
@@ -178,7 +178,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateBackButton(_coarseFan, BackButtonPositioningMode.None);
                 fanGenerator.GenerateDropButton(_coarseFan);
                 fanInteractions.MakeFanSegmentsInteractable(_coarseFan);
-                fanGenerator.GenerateFanAnnotations(_coarseFan, 0, _coarseFan.ElevationRange/2, backButtonPositioningMode);
+                fanGenerator.GenerateFanAnnotations(_coarseFan, 0, _coarseFan.ElevationRange/2, backButtonPositioningMode, positioningMode);
 
                 // Change settings so that next fan is 
                 // positioningMode = FanPositioningMode.CenterToRails;
