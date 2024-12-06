@@ -275,7 +275,7 @@ public class HardwareRamp : RampController, ISerialController
 
         if (_serial != null && _serial.IsOpen)
         {
-            Debug.Log("Sending serial command: " + _serialCommand);
+            // Debug.Log("Sending serial command: " + _serialCommand);
             _serial.WriteLine(_serialCommand);
             ResetSerialCommands();
         }
