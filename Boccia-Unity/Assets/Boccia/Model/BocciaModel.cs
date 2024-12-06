@@ -193,7 +193,7 @@ public class BocciaModel : Singleton<BocciaModel>
         // (e.g. cm/s or deg/s)
         bocciaData.RampSettings.ElevationSpeedMin = 1;
         bocciaData.RampSettings.ElevationSpeedMax = 255;
-        bocciaData.RampSettings.RotationSpeedMin = 1;
+        bocciaData.RampSettings.RotationSpeedMin = 300;
         bocciaData.RampSettings.RotationSpeedMax = 1000;
     }
 
