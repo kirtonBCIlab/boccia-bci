@@ -13,6 +13,8 @@ public class FanGenerator : MonoBehaviour
     public Material material;
     public Color colour = Color.grey;
 
+    public GameObject fanAnnotations;
+
     public void GenerateFanShape(FanSettings fanSettings)
     {        
         float angleStep = fanSettings.Theta / fanSettings.NColumns;
@@ -144,8 +146,11 @@ public class FanGenerator : MonoBehaviour
         return mesh;
     }
 
-    public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode)
+    public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode, FanPositioningMode fanPositioningMode)
     {   
+        // Get scaled font size for Fine Fan based on Fine Fan theta
+        float scaledFontSize = ScaleAnnotationSize(fanSettings, fanPositioningMode);
+
         // Annotation for the start angle
         float startAngle = 0;
         float startRad = Mathf.Deg2Rad * startAngle;
@@ -157,7 +162,7 @@ public class FanGenerator : MonoBehaviour
             rotationAngle: 0,
             (currentRotation + fanSettings.Theta/2).ToString("F1") + "°",
             TextAlignmentOptions.BottomRight,
-            annotationFontSize: fanSettings.annotationFontSize
+            annotationFontSize: scaledFontSize
         );
 
         // Annotation for the end angle
@@ -170,7 +175,7 @@ public class FanGenerator : MonoBehaviour
             rotationAngle: fanSettings.Theta,
             (currentRotation - fanSettings.Theta/2).ToString("F1") + "°",
             TextAlignmentOptions.BottomLeft,
-            annotationFontSize: fanSettings.annotationFontSize
+            annotationFontSize: scaledFontSize
         );
 
         // Place height anotations according to back button position 
@@ -220,9 +225,9 @@ public class FanGenerator : MonoBehaviour
     
     private void CreateTextAnnotation(Vector3 position, float rotationAngle, string text, TextAlignmentOptions textAlignment, float annotationFontSize)
     {
-        GameObject textObject = new ("TextAnnotation");
-        textObject.transform.SetParent(transform);
-        textObject.layer = LayerMask.NameToLayer("VirtualPlayUI");
+        GameObject textObject = Instantiate(fanAnnotations, transform);
+        textObject.name = "TextAnnotation";
+
         textObject.transform.SetLocalPositionAndRotation
         (
             position,
@@ -230,7 +235,7 @@ public class FanGenerator : MonoBehaviour
         );
 
         // Add and configure RectTransform
-        RectTransform rectTransform = textObject.AddComponent<RectTransform>();
+        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
         switch (textAlignment)
         {
             case TextAlignmentOptions.BottomLeft:
@@ -258,15 +263,49 @@ public class FanGenerator : MonoBehaviour
                 break;
         }
         
-        // rectTransform.anchoredPosition = Vector2.zero;
-        rectTransform.sizeDelta = new Vector2(5, 2);
-
-        // Add and configure TextMeshPro
-        TextMeshPro textMeshPro = textObject.AddComponent<TextMeshPro>();
-        textMeshPro.text = text;
-        textMeshPro.fontSize = annotationFontSize;
-        textMeshPro.color = Color.black;
-        textMeshPro.alignment = textAlignment;
-        textMeshPro.font = Resources.Load<TMP_FontAsset>("Assets/TextMesh Pro/Fonts/LiberationSans.ttf"); // Replace with your font asset path
+        TextMeshPro textMeshProComponent = textObject.GetComponent<TextMeshPro>();
+        if (textMeshProComponent != null)
+        {
+            textMeshProComponent.text = text;
+            textMeshProComponent.fontSize = annotationFontSize;
+            textMeshProComponent.alignment = textAlignment;
+        }
     }
-}
+
+
+    // This scales the font size so we can see the annotations (for now)
+    private float ScaleAnnotationSize(FanSettings fanSettings, FanPositioningMode fanPositioningMode)
+    {
+        if (fanPositioningMode == FanPositioningMode.CenterToBase)
+        {
+            return fanSettings.annotationFontSize;
+        }
+
+        float baseFontSize = fanSettings.annotationFontSize;
+        float theta = fanSettings.Theta;
+
+        if (theta > 21)
+        {
+            return baseFontSize;
+        }
+
+        if (15 < theta && theta <= 21)
+        {
+            float scaledFontSize = baseFontSize * 0.8f;
+            return scaledFontSize;
+        }
+
+        else if (12 < theta && theta <= 15)
+        {
+            float scaledFontSize = baseFontSize * 0.6f;
+            return scaledFontSize;
+        }
+
+        else 
+        {
+            float scaledFontSize = baseFontSize * 0.5f;
+            Debug.Log($"Scaled font size: {scaledFontSize}");
+            return scaledFontSize;
+        }
+    }
+}   

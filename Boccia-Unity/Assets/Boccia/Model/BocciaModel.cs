@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FanNamespace;
 using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
@@ -24,14 +25,14 @@ public class BocciaModel : Singleton<BocciaModel>
     // Game
     public BocciaGameMode GameMode;
 
-    private RampController rampController;
+    private RampController _rampController;
     private RampController _simulatedRamp;
     private HardwareRamp _hardwareRamp;
 
-    public float RampRotation => rampController.Rotation;
-    public float RampElevation => rampController.Elevation;
-    public bool BarState => rampController.IsBarOpen;
-    public bool IsRampMoving => rampController.IsMoving;
+    public float RampRotation => _rampController.Rotation;
+    public float RampElevation => _rampController.Elevation;
+    public bool BarState => _rampController.IsBarOpen;
+    public bool IsRampMoving => _rampController.IsMoving;
     
     public BocciaBallState BallState;
 
@@ -69,6 +70,8 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action BciChanged;
     public event System.Action NewRandomJack;
     public event System.Action BallResetChanged;
+
+    public event System.Action ResetTails;
     public event System.Action BallFallingChanged;
     public event System.Action ResetFan;
 
@@ -80,21 +83,23 @@ public class BocciaModel : Singleton<BocciaModel>
         {
             case BocciaGameMode.Play:  // Real ramp
                 // Debug.Log("Switching to hardware ramp...");
-                rampController.RampChanged -= SendRampChangeEvent;
-                rampController = _hardwareRamp;
-                rampController.RampChanged += SendRampChangeEvent;
+                _rampController.RampChanged -= SendRampChangeEvent;
+                _rampController = _hardwareRamp;
+                _rampController.RampChanged += SendRampChangeEvent;
                 break;
             case BocciaGameMode.Virtual:  // Simulated ramp
                 // Debug.Log("Switching to simulated ramp...");
-                rampController.RampChanged -= SendRampChangeEvent;
-                rampController = _simulatedRamp;
-                rampController.RampChanged += SendRampChangeEvent;
+                _rampController.RampChanged -= SendRampChangeEvent;
+                _rampController = _simulatedRamp;
+                _rampController.RampChanged += SendRampChangeEvent;
                 break;
         }
     }
 
-    public void Start()
+    public override void Awake()
     {
+        base.Awake();
+
         if (!bocciaData.WasInitialized)
         {
             Debug.Log("Initializing BocciaData...");
@@ -105,7 +110,19 @@ public class BocciaModel : Singleton<BocciaModel>
 
             bocciaData.WasInitialized = true;
         }
+        
+        
+        SetRampSettings();
+        SetDefaultHardwareOptions();
 
+        _simulatedRamp = new SimulatedRamp();
+        _hardwareRamp = new HardwareRamp();
+        _rampController = _simulatedRamp; // Default to simulated
+
+    }
+
+    public void Start()
+    {
         // Initialize the list of possible ball colors
         InitializeBallColorOptions();
 
@@ -113,17 +130,13 @@ public class BocciaModel : Singleton<BocciaModel>
         SetDefaultHardwareOptions();
 
         // Set Fan settings
-        SetFanSettings();
+        FanSettings fanSettings = Resources.Load<FanSettings>("FanSettings") ?? ScriptableObject.CreateInstance<FanSettings>();
+        SetFanSettings(fanSettings);
+        ScriptableObject.Destroy(fanSettings);
+        
 
         // Set Ramp Settings
         SetRampSettings();
-
-        // Instantiate the ramp controllers after initialization
-        _simulatedRamp = new SimulatedRamp();
-        _hardwareRamp = new HardwareRamp();
-
-        // Initialize controller to _simulatedRamp
-        rampController = _simulatedRamp;
         SetRampControllerBasedOnMode();
 
         // Send the change event after SimulatedRamp is ready
@@ -133,7 +146,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     private void OnDisable()
     {
-        rampController.RampChanged -= SendRampChangeEvent;
+        _rampController.RampChanged -= SendRampChangeEvent;
     }
 
     // Setting default values for Hardware options
@@ -184,25 +197,20 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.RampSettings.RotationSpeedMax = 1000;
     }
 
-    // Set FanSettings
-    private void SetFanSettings()
+    /// <summary>
+    /// Grabs the FanSettings from the FanNamespace and sets them in the model.
+    /// </summary>
+    /// <param name="fanSettings">The FanSettings object containing the settings to be applied.</param>
+    public void SetFanSettings(FanSettings fanSettings)
     {
-        // ElevationRange
-        bocciaData.FanSettings.ElevationRangeMin = 1;
-        bocciaData.FanSettings.ElevationRangeMax = 100;
-
-        // ElevationPrecision
-        bocciaData.FanSettings.ElevationPrecisionMin = 1;
-        bocciaData.FanSettings.ElevationPrecisionMax = 7;
-
-        // RotationRange
-        // Also sets limits on Theta for Fan generation
-        bocciaData.FanSettings.RotationRangeMin = 5;
-        bocciaData.FanSettings.RotationRangeMax = 180;
-
-        // RotationPrecision
-        bocciaData.FanSettings.RotationPrecisionMin = 1;
-        bocciaData.FanSettings.RotationPrecisionMax = 7;
+        bocciaData.FanSettings.RotationPrecisionMin = fanSettings.MinColumns;
+        bocciaData.FanSettings.RotationPrecisionMax = fanSettings.MaxColumns;
+        bocciaData.FanSettings.ElevationPrecisionMin = fanSettings.MinRows;
+        bocciaData.FanSettings.ElevationPrecisionMax = fanSettings.MaxRows;
+        bocciaData.FanSettings.RotationRangeMin = fanSettings.MinFineTheta;
+        bocciaData.FanSettings.RotationRangeMax = fanSettings.MaxFineTheta;
+        bocciaData.FanSettings.ElevationRangeMin = fanSettings.MinElevationRange;
+        bocciaData.FanSettings.ElevationRangeMax = fanSettings.MaxElevationRange;
     }
 
     // MARK: Game options
@@ -273,18 +281,18 @@ public class BocciaModel : Singleton<BocciaModel>
     }
 
     // MARK: Game control
-    public void RotateBy(float degrees) => rampController.RotateBy(degrees);
-    public void RotateTo(float degrees) => rampController.RotateTo(degrees);
-    public void ElevateBy(float elevation) => rampController.ElevateBy(elevation);
-    public void ElevateTo(float elevation) => rampController.ElevateTo(elevation);
+    public void RotateBy(float degrees) => _rampController.RotateBy(degrees);
+    public void RotateTo(float degrees) => _rampController.RotateTo(degrees);
+    public void ElevateBy(float elevation) => _rampController.ElevateBy(elevation);
+    public void ElevateTo(float elevation) => _rampController.ElevateTo(elevation);
 
     public float ScaleRotationSpeed(float speed) => _hardwareRamp.ScaleRotationSpeed(speed);
     public float ScaleRotationAcceleration() => _hardwareRamp.ScaleRotationAcceleration();
     public float ScaleElevationSpeed(float speed) => _hardwareRamp.ScaleElevationSpeed(speed);
 
-    public void ResetRampPosition() => rampController.ResetRampPosition();
+    public void ResetRampPosition() => _rampController.ResetRampPosition();
 
-    public void DropBall() => rampController.DropBall();
+    public void DropBall() => _rampController.DropBall();
 
     public bool ConnectToSerialPort(string comPort, int baudRate) => _hardwareRamp.ConnectToSerialPort(comPort, baudRate);
     public bool DisconnectFromSerialPort() => _hardwareRamp.DisconnectFromSerialPort();
@@ -298,7 +306,7 @@ public class BocciaModel : Singleton<BocciaModel>
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()
     {
-        rampController.ResetBar();
+        _rampController.ResetBar();
         SendRampChangeEvent();
     }
 
@@ -325,6 +333,11 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ResetVirtualBalls()
     {
         SendBallResetEvent();
+    }
+
+    public void ResetBallTails()
+    {
+        SendTailResetEvent();
     }
 
     public void RandomBallColor()
@@ -361,17 +374,17 @@ public class BocciaModel : Singleton<BocciaModel>
     
     public float GetRampOrientation()
     {
-        return rampController.Rotation;
+        return _rampController.Rotation;
     }
 
     public float GetRampElevation()
     {
-        return rampController.Elevation;
+        return _rampController.Elevation;
     }
 
     public bool SetRampMoving(bool isMoving)
     {
-        return rampController.IsMoving = isMoving;
+        return _rampController.IsMoving = isMoving;
     }
 
     // MARK: Navigation control
@@ -537,6 +550,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendBallResetEvent()
     {
         BallResetChanged?.Invoke();
+    }
+
+    private void SendTailResetEvent()
+    {
+        ResetTails?.Invoke();
     }
 
     private void SendBallFallingEvent()

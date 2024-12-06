@@ -42,24 +42,7 @@ public class FanPresenter : MonoBehaviour
 
         _originalRotation = transform.rotation;
 
-        // Initialize the fan settings based on centralized model data
-        InitializeFanSettings();
-
         UpdateFineFan(); // Update fine fan
-    }
-
-    private void InitializeFanSettings()
-    {
-        // Set up _fineFan and _coarseFan using the centralized BocciaModel
-        if (_fineFan != null)
-        {
-            _fineFan.Setup(_model);
-        }
-
-        if (_coarseFan != null)
-        {
-            _coarseFan.Setup(_model);
-        }
     }
 
     /// <summary>
@@ -187,7 +170,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateBackButton(_fineFan, backButtonPositioningMode);
                 fanGenerator.GenerateDropButton(_fineFan);
                 fanInteractions.MakeFanSegmentsInteractable(_fineFan);
-                fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode);
+                fanGenerator.GenerateFanAnnotations(_fineFan, _model.RampRotation, _model.RampElevation, backButtonPositioningMode, positioningMode);
                 break;
             case FanPositioningMode.CenterToBase:
                 CenterNorth();
@@ -195,7 +178,7 @@ public class FanPresenter : MonoBehaviour
                 fanGenerator.GenerateBackButton(_coarseFan, BackButtonPositioningMode.None);
                 fanGenerator.GenerateDropButton(_coarseFan);
                 fanInteractions.MakeFanSegmentsInteractable(_coarseFan);
-                fanGenerator.GenerateFanAnnotations(_coarseFan, 0, _coarseFan.ElevationRange/2, backButtonPositioningMode);
+                fanGenerator.GenerateFanAnnotations(_coarseFan, 0, _coarseFan.ElevationRange/2, backButtonPositioningMode, positioningMode);
 
                 // Change settings so that next fan is 
                 // positioningMode = FanPositioningMode.CenterToRails;
