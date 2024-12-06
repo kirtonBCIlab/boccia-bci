@@ -75,6 +75,7 @@ public class HardwareRamp : RampController, ISerialController
             _wasRotationClamped = false;
         }        
         AddSerialCommandToList($"rr{degrees.ToString("0")}");
+        _model.SendSerialCommandList();
         // Debug.Log($"Hardware rotate by: {degrees}");
         SendChangeEvent();
     }
@@ -84,6 +85,7 @@ public class HardwareRamp : RampController, ISerialController
         Rotation = degrees;
         // Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
         AddSerialCommandToList($"ra{Rotation.ToString("0")}");
+        _model.SendSerialCommandList();
         // Debug.Log($"Hardware rotate to: {Rotation}");
         SendChangeEvent();
     }
@@ -99,6 +101,7 @@ public class HardwareRamp : RampController, ISerialController
             _wasElevationClamped = false;
         }
         AddSerialCommandToList($"er{elevation}");
+        _model.SendSerialCommandList();
         // Debug.Log($"Hardware elevate by: {elevation}");
         SendChangeEvent();
     }
@@ -109,7 +112,8 @@ public class HardwareRamp : RampController, ISerialController
         Elevation = elevation;
         // Clamped to Max/Min Elevation
         // Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
-        AddSerialCommandToList($"ea{Rotation.ToString("0")}");
+        AddSerialCommandToList($"ea{Elevation.ToString("0")}");
+        _model.SendSerialCommandList();
         // Debug.Log($"Hardware elevate to: {Elevation}");
         SendChangeEvent();
     }
@@ -120,6 +124,7 @@ public class HardwareRamp : RampController, ISerialController
         Elevation = _model.RampSettings.ElevationOrigin;
         _serialCommandsList.Add($"ra{Rotation.ToString("0")}");
         _serialCommandsList.Add($"ea{Elevation.ToString("0")}");
+        _model.SendSerialCommandList();
         SendChangeEvent();
     }
 
@@ -172,6 +177,7 @@ public class HardwareRamp : RampController, ISerialController
     {
         IsBarOpen = true; // Toggle bar state
         _serialCommandsList.Add("dd-70");
+        _model.SendSerialCommandList();
         SendChangeEvent();
     }
 
@@ -269,6 +275,7 @@ public class HardwareRamp : RampController, ISerialController
 
         if (_serial != null && _serial.IsOpen)
         {
+            // Debug.Log("Sending serial command: " + _serialCommand);
             _serial.WriteLine(_serialCommand);
             ResetSerialCommands();
         }
