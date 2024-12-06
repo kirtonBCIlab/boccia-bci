@@ -43,6 +43,7 @@ public class SimulatedRamp : RampController
 
     public void RotateBy(float degrees)
     {
+        // Relative rotation
         Rotation += degrees;
         //Debug.Log($"Simulated rotation by: {Rotation}");
         SendChangeEvent();
@@ -50,6 +51,7 @@ public class SimulatedRamp : RampController
 
     public void RotateTo(float degrees)
     {
+        // Absolute rotation
         Rotation = degrees;
         //Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
@@ -57,6 +59,7 @@ public class SimulatedRamp : RampController
 
     public void ElevateBy(float elevation)
     {
+        // Relative elevation
         Elevation += elevation;
         //Debug.Log($"Simulated elevation by: {Elevation}");
         SendChangeEvent();
@@ -64,6 +67,7 @@ public class SimulatedRamp : RampController
 
     public void ElevateTo(float elevation)
     {
+        // Absolute elevation
         Elevation = elevation;
         // Debug.Log($"Simulated elevation to: {Elevation}");
         SendChangeEvent();
