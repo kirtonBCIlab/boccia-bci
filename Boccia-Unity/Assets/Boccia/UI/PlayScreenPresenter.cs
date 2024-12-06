@@ -7,11 +7,22 @@ using TMPro;
 
 public class PlayScreenPresenter : MonoBehaviour
 {
+    [Header("Buttons")]
     public Button resetRampButton;
     public Button randomBallButton;
+
+    [Header("Debug tools")]
+    public bool echoSerialCommands = true;
+    [SerializeField]
+    // Set to false for development mode, true for production mode
+    private bool _arduinoIsNeeded = false;
+
+    [Header("Serial Connection")]
     public GameObject serialStatusIndicator;
+
     private bool connectionStatus;
     private Coroutine _checkSerialCoroutine;
+    private Coroutine _readSerialCommandCoroutine;
     private float _waitTime = 6f;
 
     private BocciaModel _model;
@@ -19,9 +30,7 @@ public class PlayScreenPresenter : MonoBehaviour
     private int _randomRotation;
     private int _randomElevation;
 
-    [SerializeField]
-    // Set to false for development mode, true for production mode
-    private bool _arduinoIsNeeded = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +47,7 @@ public class PlayScreenPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void OnEnable()
@@ -54,12 +63,29 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             _checkSerialCoroutine = StartCoroutine(CheckSerialPortConnection());
         }
+
+        if (echoSerialCommands && _model.HardwareSettings.IsSerialPortConnected)
+        {
+            _readSerialCommandCoroutine = StartCoroutine(ReadSerialCommand());
+        }
     }
 
     void OnDisable()
     {
         _model.WasChanged -= ModelChanged;
         _model.NavigationChanged -= NavigationChanged;
+
+        if (_checkSerialCoroutine != null)
+        {
+            StopCoroutine(_checkSerialCoroutine);
+            _checkSerialCoroutine = null;
+        }
+
+        if (_readSerialCommandCoroutine != null)
+        {
+            StopCoroutine(_readSerialCommandCoroutine);
+            _readSerialCommandCoroutine = null;
+        }
     }
 
     private void ModelChanged()
@@ -77,6 +103,23 @@ public class PlayScreenPresenter : MonoBehaviour
                 StopCoroutine(_checkSerialCoroutine);
                 _checkSerialCoroutine = null;
             }
+        }
+    }
+
+    private IEnumerator ReadSerialCommand()
+    {
+        while(_model.GameMode == BocciaGameMode.Play)
+        {
+            var messageTask = _model.ReadSerialCommandAsync();
+            yield return new WaitUntil(() => messageTask.IsCompleted);
+
+            var message = messageTask.Result;
+            if (!string.IsNullOrEmpty(message))
+            {
+                Debug.Log("Serial received: " + message);
+            }        
+
+            yield return new WaitForSecondsRealtime(1f);
         }
     }
 

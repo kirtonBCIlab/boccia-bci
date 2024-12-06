@@ -88,7 +88,7 @@ public class RampSetupPresenter : MonoBehaviour
     {        
         // if (_model.HardwareSettings.IsSerialPortConnected)
         // {
-        //    Debug.Log( _model.ReadSerialCommand() );
+        //    Debug.Log( _model.ReadSerialCommandAsync() );
         // }
     }
 
@@ -273,7 +273,7 @@ public class RampSetupPresenter : MonoBehaviour
             var message = messageTask.Result;
             if (!string.IsNullOrEmpty(message))
             {
-                // Debug.Log("Serial received: " + message);
+                Debug.Log("Serial received: " + message);
 
                 string motorToRemove = null;
                 foreach (string motor in _motorsToCalibrate)
