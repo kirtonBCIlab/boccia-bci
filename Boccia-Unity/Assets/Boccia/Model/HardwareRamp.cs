@@ -46,6 +46,9 @@ public class HardwareRamp : RampController, ISerialController
     private float _defaultAcceleration = 30f;       // Default acceleration [steps/sec^2]
     private float _gearRatio = 3f;                  // Gear ratio: 3:1
 
+    const float MAX_IMPERIAL_SPEED = 2.0f;  // Max speed: 2 inches/sec at 35 lbs
+    const float INCHES_TO_METERS = 0.0254f; 
+
     private SerialPort _serial;
     private List<string> _serialCommandsList;
     private string _serialCommand;
@@ -127,7 +130,6 @@ public class HardwareRamp : RampController, ISerialController
     /// <returns>Rotation speed [deg/sec]</returns>
     public float ScaleRotationSpeed(float speed)
     {
-        // float speedPercentage = speed / _model.RampSettings.RotationSpeedMax;
         float degreesPerStep = 360f / (_stepsPerRevolution * _gearRatio);
         float scaledSpeed = speed * degreesPerStep;
         return scaledSpeed;
@@ -151,8 +153,6 @@ public class HardwareRamp : RampController, ISerialController
     /// <returns>Scaled speed [m/s]</returns>
     public float ScaleElevationSpeed(float speed)
     {
-        const float MAX_IMPERIAL_SPEED = 2.0f;  // Max speed: 2 inches/sec at 35 lbs
-        const float INCHES_TO_METERS = 0.0254f; 
         float maxMetricSpeed = MAX_IMPERIAL_SPEED * INCHES_TO_METERS;    // Convert to [m/sec]
         
         float speedPercentage = speed / (float)_model.RampSettings.ElevationSpeedMax;
