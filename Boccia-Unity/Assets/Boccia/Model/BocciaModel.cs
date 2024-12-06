@@ -164,6 +164,9 @@ public class BocciaModel : Singleton<BocciaModel>
             {"Elevation", false},
             {"Rotation", false}
         };
+
+        // Movement settings
+        
     }
 
     // Set RampSettings
@@ -190,7 +193,7 @@ public class BocciaModel : Singleton<BocciaModel>
         // (e.g. cm/s or deg/s)
         bocciaData.RampSettings.ElevationSpeedMin = 1;
         bocciaData.RampSettings.ElevationSpeedMax = 255;
-        bocciaData.RampSettings.RotationSpeedMin = 1;
+        bocciaData.RampSettings.RotationSpeedMin = 300;
         bocciaData.RampSettings.RotationSpeedMax = 1000;
     }
 
@@ -284,6 +287,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public void ElevateTo(float elevation) => _rampController.ElevateTo(elevation);
 
     public float ScaleRotationSpeed(float speed) => _hardwareRamp.ScaleRotationSpeed(speed);
+    public float ScaleRotationAcceleration() => _hardwareRamp.ScaleRotationAcceleration();
     public float ScaleElevationSpeed(float speed) => _hardwareRamp.ScaleElevationSpeed(speed);
 
     public void ResetRampPosition() => _rampController.ResetRampPosition();

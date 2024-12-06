@@ -87,44 +87,115 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
-        // Smoothly show the rotation of the ramp to the new position
-        Quaternion currentRotation = rotationShaft.transform.localRotation;
-        // Debug.Log("Current Rotation: " + currentRotation.eulerAngles);
-        Quaternion targetQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
-        // Debug.Log($"model.RampRotation value: {_model.RampRotation}");
+        // Starting and ending rotation points
+        Quaternion startQuaternion = rotationShaft.transform.localRotation;
+        Quaternion endQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
 
-        while (Quaternion.Angle(currentRotation, targetQuaternion) > 0.01f)
+        // Calculate the angle between the start and target rotations
+        float startAngle = rotationShaft.transform.localEulerAngles.y;
+        float targetAngle = _model.RampRotation;
+        float deltaAngle = Mathf.Abs(Mathf.DeltaAngle(startAngle, targetAngle));
+        float direction = Mathf.Sign(deltaAngle);
+        
+        // Convert speed to [deg/sec] and acceleration to [deg/sec^2]
+        float maxRotationSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
+        float acceleration = _model.ScaleRotationAcceleration();
+
+        // Calculate movement times
+        float accelTime = maxRotationSpeed / acceleration;
+        float angleInAccelPhase = 0.5f * acceleration * Mathf.Pow(accelTime, 2);
+
+        float angleInConstantPhase = Mathf.Max(0, deltaAngle - (2 * angleInAccelPhase));
+        float constantTime = angleInConstantPhase / maxRotationSpeed;
+        
+        // If the deltaAngle is too small to reach constant speed, adjust accelTime and decelTime
+        if (angleInConstantPhase == 0)
         {
-            float scaledSpeed = _model.ScaleRotationSpeed(_rotationSpeed);
-            currentRotation = Quaternion.Lerp(currentRotation, targetQuaternion, scaledSpeed * Time.deltaTime);
-            rotationShaft.transform.localRotation = currentRotation;
+            accelTime = Mathf.Sqrt(deltaAngle / acceleration);
+            constantTime = 0;
+        }
+
+        float totalTime = (2 * accelTime) + constantTime;
+        
+        // Initialize relative movement and time variables
+        float currentAngle = 0f; 
+        float elapsedTime = 0f;
+
+        while (elapsedTime < totalTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float deltaAngleThisFrame;
+
+            // Acceleration phase
+            if (elapsedTime < accelTime)
+            {
+                float currentSpeed = acceleration * elapsedTime * direction;
+                deltaAngleThisFrame = currentSpeed * Time.deltaTime;
+            }
+            // Constant speed phase
+            else if (elapsedTime < accelTime + constantTime)
+            {
+                deltaAngleThisFrame = maxRotationSpeed * Time.deltaTime * direction;
+            }
+            // Deceleration phase
+            else
+            {
+                float timeToEnd = totalTime - elapsedTime;
+                float currentSpeed = acceleration * timeToEnd * direction;
+                deltaAngleThisFrame = currentSpeed * Time.deltaTime;
+            }
+
+            currentAngle += deltaAngleThisFrame;
+
+            float t = currentAngle / deltaAngle;
+            rotationShaft.transform.localRotation = Quaternion.Slerp(startQuaternion, endQuaternion, t);
+            
             yield return null;
         }
 
-        rotationShaft.transform.localRotation = targetQuaternion;
+        // Ensure the final rotation matches exactly
+        rotationShaft.transform.localRotation = endQuaternion;
     }
 
     private IEnumerator ElevationVisualization()
     {
-        Vector3 currentElevation = elevationMechanism.transform.localPosition;
-        //Debug.Log($"model.RampElevation value: {model.RampElevation}");
-        float elevationScalar = ElevationVisualizationMin + (_model.RampElevation / 100f) * (ElevationVisualizationMax - ElevationVisualizationMin); // Convert percent elevation to its scalar value
-        
-        //Make sure the elevation is within the min and max elevation bounds
+        // Store the starting elevation
+        Vector3 startElevation = elevationMechanism.transform.localPosition;
+
+        // Convert percent elevation from model.RampElevation to its scalar value
+        float elevationScalar = ElevationVisualizationMin + (_model.RampElevation / 100f) * (ElevationVisualizationMax - ElevationVisualizationMin);
         elevationScalar = Mathf.Clamp(elevationScalar, ElevationVisualizationMin, ElevationVisualizationMax);
 
-        Vector3 targetElevation = elevationDirection * elevationScalar;   
-        
-        while (Vector3.Distance(currentElevation, targetElevation) > 0.001f)
+        // Store the target elevation
+        Vector3 targetElevation = elevationDirection * elevationScalar;
+
+        // Calculate the distance between the start and target elevations
+        float elevationDistance = Vector3.Distance(startElevation, targetElevation);
+
+        // Get the 8-bit PWM speed and convert it to m/s
+        float scaledSpeed = _model.ScaleElevationSpeed(_elevationSpeed);
+
+        // Calculate the total time it will take to elevate
+        float totalTime = elevationDistance / scaledSpeed;
+        // Variable to store the time
+        float elapsedTime = 0f;
+
+        // Elevate the ramp
+        while (elapsedTime < totalTime)
         {
-            // Calculate the scaled speed for elevation
-            // Max speed: 2 inches/sec
-            float scaledSpeed = _model.ScaleElevationSpeed(_elevationSpeed);
-            currentElevation = Vector3.Lerp(currentElevation, targetElevation, scaledSpeed * Time.deltaTime);
-            elevationMechanism.transform.localPosition = currentElevation;
+            elapsedTime += Time.deltaTime;
+
+            // Interpolation factor to smooth out the elevation
+            // float normalizedProgress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsedTime / totalTime));
+            float normalizedProgress = elapsedTime / totalTime;
+
+            // Interpolate between the start and target elevation
+            elevationMechanism.transform.localPosition = Vector3.Lerp(startElevation, targetElevation, normalizedProgress);
+
             yield return null;
         }
 
+        // Ensure the final elevation matches exactly
         elevationMechanism.transform.localPosition = targetElevation;
     }
 
