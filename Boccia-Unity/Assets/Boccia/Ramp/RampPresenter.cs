@@ -152,6 +152,9 @@ public class RampPresenter : MonoBehaviour
             
             yield return null;
         }
+
+        // Ensure the final rotation matches exactly
+        rotationShaft.transform.localRotation = endQuaternion;
     }
 
     private IEnumerator ElevationVisualization()
@@ -191,6 +194,9 @@ public class RampPresenter : MonoBehaviour
 
             yield return null;
         }
+
+        // Ensure the final elevation matches exactly
+        elevationMechanism.transform.localPosition = targetElevation;
     }
 
     private void ResetRampWhenPlayModeChanges()
