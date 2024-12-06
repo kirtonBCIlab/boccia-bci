@@ -177,6 +177,7 @@ public class HardwareRamp : RampController, ISerialController
     {
         IsBarOpen = true; // Toggle bar state
         _serialCommandsList.Add("dd-70");
+        _model.SendSerialCommandList();
         SendChangeEvent();
     }
 
@@ -274,6 +275,7 @@ public class HardwareRamp : RampController, ISerialController
 
         if (_serial != null && _serial.IsOpen)
         {
+            Debug.Log("Sending serial command: " + _serialCommand);
             _serial.WriteLine(_serialCommand);
             ResetSerialCommands();
         }
