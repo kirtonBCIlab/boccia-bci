@@ -120,10 +120,20 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         float rotationAngle = 0f;
         float elevation = 50f;
 
-        // Calculate the rotation angle and elevation based on the number of columns and rows        
+        float threshold = 1e-5f;
+
+        // Calculate the rotation angle and elevation based on the number of columns and rows       
         if (_fanSettings.NColumns > 1)
         {
-            rotationAngle = - _fanSettings.Theta / 2 + columnIndex * (_fanSettings.Theta / (_fanSettings.NColumns - 1));
+            float segmentAngle = _fanSettings.Theta / _fanSettings.NColumns;
+            // Calculate rotation angle and add half of the segment angle to center the ramp in the segment
+            rotationAngle = (- _fanSettings.Theta / 2) + (columnIndex * segmentAngle) + (segmentAngle / 2);
+            
+            // Avoid unnecessarily small numbers due to rounding
+            if (Mathf.Abs(rotationAngle) < threshold)
+            {
+                rotationAngle = 0f;
+            }
         }
 
         if (_fanSettings.NRows > 1)
