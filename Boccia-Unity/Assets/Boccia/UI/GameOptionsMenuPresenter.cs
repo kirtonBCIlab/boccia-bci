@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class GameOptionsMenuPresenter : MonoBehaviour
@@ -44,6 +45,10 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         // Add listeners for Reset and Done buttons
         resetDefaultsButton.onClick.AddListener(OnResetDefaultsClicked);
         doneButton.onClick.AddListener(OnDoneButtonClicked);
+
+        // Add listeners to send serial commands to the hardware ramp
+        AddEventTriggerListener(elevationSpeedSlider.gameObject, EventTriggerType.PointerUp, SendSpeedOverSerial);
+        AddEventTriggerListener(rotationSpeedSlider.gameObject, EventTriggerType.PointerUp, SendSpeedOverSerial);     
     }
 
     void OnEnable()
@@ -161,12 +166,52 @@ public class GameOptionsMenuPresenter : MonoBehaviour
 
     public void OnChangeElevationSpeed(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.ElevationSpeed, Mathf.RoundToInt(value));
+        int speed = Mathf.RoundToInt(value);
+        _model.SetGameOption(ref _model.GameOptions.ElevationSpeed, speed);
     }
 
     public void OnChangeRotationSpeed(float value)
     {
-        _model.SetGameOption(ref _model.GameOptions.RotationSpeed, Mathf.RoundToInt(value));
+        int speed = Mathf.RoundToInt(value);
+        _model.SetGameOption(ref _model.GameOptions.RotationSpeed, speed);
+    }
+
+    private void AddEventTriggerListener(GameObject target, EventTriggerType eventType, UnityEngine.Events.UnityAction<BaseEventData> callback)
+    {
+        EventTrigger trigger = target.GetComponent<EventTrigger>();
+        if (trigger == null)
+        {
+            trigger = target.AddComponent<EventTrigger>();
+        }
+
+        EventTrigger.Entry entry = new() { eventID = eventType };
+        entry.callback.AddListener(callback);
+        trigger.triggers.Add(entry);
+    }
+
+    public void SendSpeedOverSerial(BaseEventData eventData)
+    {
+        if (eventData is PointerEventData pointerEventData)
+        {
+            string command = null;
+            GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
+
+
+            if (selectedObject.name == elevationSpeedSlider.name)
+            {
+                command = $"ex{Mathf.RoundToInt(elevationSpeedSlider.value)}";
+            }
+            else if (selectedObject.name == rotationSpeedSlider.name)
+            {
+                command = $"rx{Mathf.RoundToInt(rotationSpeedSlider.value)}";
+            }
+
+            if (command != null && _model.HardwareSettings.IsSerialPortConnected)
+            {
+                _model.AddSerialCommandToList(command);
+                _model.SendSerialCommandList();
+            }
+        }
     }
 
     // Reset game options to defaults
@@ -174,6 +219,13 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         _model.ResetGameOptionsToDefaults();
         InitializeValues();
+
+        if (_model.HardwareSettings.IsSerialPortConnected)
+        {
+            _model.AddSerialCommandToList("ex" + _model.GameOptions.ElevationSpeed);
+            _model.AddSerialCommandToList("rx" + _model.GameOptions.RotationSpeed);
+            _model.SendSerialCommandList();
+        }
     }
 
     public void OnDoneButtonClicked()
