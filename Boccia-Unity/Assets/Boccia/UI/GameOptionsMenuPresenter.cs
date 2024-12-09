@@ -47,8 +47,8 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         doneButton.onClick.AddListener(OnDoneButtonClicked);
 
         // Add listeners to send serial commands to the hardware ramp
-        AddEventTriggerListener(elevationPrecisionSlider.gameObject, EventTriggerType.PointerUp, SendSpeedOverSerial);
-        AddEventTriggerListener(rotationPrecisionSlider.gameObject, EventTriggerType.PointerUp, SendSpeedOverSerial);     
+        AddEventTriggerListener(elevationSpeedSlider.gameObject, EventTriggerType.PointerUp, SendSpeedOverSerial);
+        AddEventTriggerListener(rotationSpeedSlider.gameObject, EventTriggerType.PointerUp, SendSpeedOverSerial);     
     }
 
     void OnEnable()
@@ -189,23 +189,24 @@ public class GameOptionsMenuPresenter : MonoBehaviour
         trigger.triggers.Add(entry);
     }
 
-    private void SendSpeedOverSerial(BaseEventData eventData)
+    public void SendSpeedOverSerial(BaseEventData eventData)
     {
         if (eventData is PointerEventData pointerEventData)
         {
             string command = null;
             GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
 
-            if (selectedObject == elevationPrecisionSlider.gameObject)
+
+            if (selectedObject.name == elevationSpeedSlider.name)
             {
-                command = $"ex{Mathf.RoundToInt(elevationPrecisionSlider.value)}";
+                command = $"ex{Mathf.RoundToInt(elevationSpeedSlider.value)}";
             }
-            else if (selectedObject == rotationPrecisionSlider.gameObject)
+            else if (selectedObject.name == rotationSpeedSlider.name)
             {
-                command = $"rx{Mathf.RoundToInt(rotationPrecisionSlider.value)}";
+                command = $"rx{Mathf.RoundToInt(rotationSpeedSlider.value)}";
             }
 
-            if (command != null)
+            if (command != null && _model.HardwareSettings.IsSerialPortConnected)
             {
                 _model.AddSerialCommandToList(command);
                 _model.SendSerialCommandList();
