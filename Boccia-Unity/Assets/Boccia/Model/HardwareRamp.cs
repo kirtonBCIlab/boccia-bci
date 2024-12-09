@@ -67,6 +67,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public void RotateBy(float degrees)
     {
+        // Relative rotation
         Rotation += degrees;
         
         if (_wasRotationClamped) 
@@ -82,6 +83,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public void RotateTo(float degrees)
     {
+        // Absolute rotation
         Rotation = degrees;
         // Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
         AddSerialCommandToList($"ra{Rotation.ToString("0")}");
@@ -92,7 +94,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ElevateBy(float elevation)
     {
-        //Old Way
+        // Relative elevation
         Elevation += elevation;
         
         if (_wasElevationClamped) 
@@ -108,7 +110,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ElevateTo(float elevation)
     {
-        //Old Way
+        // Absolute elevation
         Elevation = elevation;
         // Clamped to Max/Min Elevation
         // Elevation = Mathf.Clamp(elevation, _minElevation, _maxElevation);
