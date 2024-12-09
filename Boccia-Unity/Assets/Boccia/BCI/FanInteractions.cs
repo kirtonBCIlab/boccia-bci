@@ -117,8 +117,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         int rowIndex = _fanSettings.NRows - 1 - (segmentID % _fanSettings.NRows);
 
         // Initialize values to starting position of the ramp
-        float rotationAngle = 0f;
-        float elevation = 50f;
+        float rotationAngle = _model.RampSettings.RotationOrigin;
+        float elevation = _model.RampSettings.ElevationOrigin;
 
         float threshold = 1e-5f;
 
