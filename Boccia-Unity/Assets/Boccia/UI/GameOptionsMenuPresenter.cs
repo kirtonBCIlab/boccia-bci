@@ -218,6 +218,13 @@ public class GameOptionsMenuPresenter : MonoBehaviour
     {
         _model.ResetGameOptionsToDefaults();
         InitializeValues();
+
+        if (_model.HardwareSettings.IsSerialPortConnected)
+        {
+            _model.AddSerialCommandToList("ex" + _model.GameOptions.ElevationSpeed);
+            _model.AddSerialCommandToList("rx" + _model.GameOptions.RotationSpeed);
+            _model.SendSerialCommandList();
+        }
     }
 
     public void OnDoneButtonClicked()
