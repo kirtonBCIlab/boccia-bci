@@ -39,6 +39,7 @@ public class FanPresenter : MonoBehaviour
         _model.NavigationChanged += NavigationChanged;
         _model.WasChanged += UpdateFineFan;
         _model.ResetFan += ResetFanWhenRampResets;
+        _model.RandomBall += HandleFanForRandomBall;
 
         _originalRotation = transform.rotation;
 
@@ -211,13 +212,26 @@ public class FanPresenter : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  Resets the fan positioning mode if needed
+    ///  Generates a coarse fan
+    /// </summary>
     private void ResetFanWhenRampResets()
     {
         if (positioningMode == FanPositioningMode.CenterToRails)
         {
             positioningMode = FanPositioningMode.CenterToBase;
-            GenerateFanWorkflow();
         }
+
+        DisplayFanOnCorrespondingScreen();
+    }
+
+    // <summary>
+    // Remove the fan when the ramp moves to the random position
+    // </summary>
+    private void HandleFanForRandomBall()
+    {
+        fanGenerator.DestroyFanSegments();
     }
 
     /// <summary>
