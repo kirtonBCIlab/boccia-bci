@@ -138,13 +138,13 @@ public class PlayScreenPresenter : MonoBehaviour
     }
 
     private IEnumerator WaitForStopBeforeRampReset()
-    {  
+    { 
         while (_model.IsRampMoving)
         {
             yield return null;
         }
-
-        _model.ResetRampPosition();
+        
+        ResetRamp();
     }
 
 

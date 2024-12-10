@@ -69,6 +69,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public event System.Action NavigationChanged;
     public event System.Action BciChanged;
     public event System.Action NewRandomJack;
+    public event System.Action RandomBall;
     public event System.Action BallResetChanged;
 
     public event System.Action ResetTails;
@@ -301,7 +302,12 @@ public class BocciaModel : Singleton<BocciaModel>
     public void SendSerialCommandList() => _hardwareRamp.SendSerialCommandList();
     public void ResetSerialCommands() => _hardwareRamp.ResetSerialCommands();
     public Task<string> ReadSerialCommandAsync() => _hardwareRamp.ReadSerialCommandAsync();
-    public void RandomBallDrop(int randomRotation, int randomElevation) => _hardwareRamp.RandomBallDrop(randomRotation, randomElevation);
+
+    public void RandomBallDrop(int randomRotation, int randomElevation) 
+    {
+        _hardwareRamp.RandomBallDrop(randomRotation, randomElevation);
+        SendRandomBallEvent();
+    }
 
     // Method to reset the state of the bar after the ball has been dropped
     public void ResetBar()
@@ -535,6 +541,11 @@ public class BocciaModel : Singleton<BocciaModel>
     private void SendRandomJackEvent()
     {
         NewRandomJack?.Invoke();
+    }
+
+    private void SendRandomBallEvent()
+    {
+        RandomBall?.Invoke();
     }
 
     private void SendNavigationChangeEvent()

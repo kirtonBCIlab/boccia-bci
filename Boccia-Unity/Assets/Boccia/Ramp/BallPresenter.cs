@@ -115,7 +115,6 @@ public class BallPresenter : MonoBehaviour
                 // Call the method to log the drop position and rotation
                 // and the rest of the ball drop code
                 DropBall();
-                BallDropped?.Invoke(_activeBall);
             }
         }
     }
@@ -179,6 +178,9 @@ public class BallPresenter : MonoBehaviour
         {
             yield return null;
         }
+
+        // Send the event to spawn the tail now that the ball is rolling
+        BallDropped?.Invoke(_activeBall);
 
         // Velocity threshold
         while (_ballRigidbody.velocity.magnitude > 0.01f)
