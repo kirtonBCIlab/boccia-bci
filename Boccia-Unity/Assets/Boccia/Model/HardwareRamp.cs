@@ -83,7 +83,8 @@ public class HardwareRamp : RampController, ISerialController
         
         if (_wasRotationClamped) 
         { 
-            degrees = 0; 
+            // Difference between the previous and clamped rotation
+            degrees = Rotation - previousRotation; 
             _wasRotationClamped = false;
         }        
         AddSerialCommandToList($"rr{degrees.ToString("0")}");
@@ -129,7 +130,8 @@ public class HardwareRamp : RampController, ISerialController
 
         if (_wasElevationClamped) 
         { 
-            elevation = 0; 
+            // Difference between the previous and clamped elevation
+            elevation = Elevation - previousElevation;
             _wasElevationClamped = false;
         }
         AddSerialCommandToList($"er{elevation}");
