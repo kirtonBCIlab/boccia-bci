@@ -83,6 +83,7 @@ public class HardwareRamp : RampController, ISerialController
         
         if (_wasRotationClamped) 
         { 
+            // Difference between the previous and clamped rotation
             degrees = Rotation - previousRotation; 
             _wasRotationClamped = false;
         }        
