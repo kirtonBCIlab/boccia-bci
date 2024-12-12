@@ -88,7 +88,7 @@ public class HardwareRamp : RampController, ISerialController
         }        
         AddSerialCommandToList($"rr{degrees.ToString("0")}");
         _model.SendSerialCommandList();
-        Debug.Log($"Hardware rotate by: {degrees}");
+        // Debug.Log($"Hardware rotate by: {degrees}");
         SendChangeEvent();
     }
 
@@ -135,7 +135,7 @@ public class HardwareRamp : RampController, ISerialController
         }
         AddSerialCommandToList($"er{elevation}");
         _model.SendSerialCommandList();
-        Debug.Log($"Hardware elevate by: {elevation}");
+        // Debug.Log($"Hardware elevate by: {elevation}");
         SendChangeEvent();
     }
 
