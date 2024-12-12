@@ -67,8 +67,19 @@ public class HardwareRamp : RampController, ISerialController
 
     public void RotateBy(float degrees)
     {
+        // Store the previous rotation
+        float previousRotation = Rotation;
+
         // Relative rotation
         Rotation += degrees;
+
+        // Check if target rotation is the same as the previous rotation
+        if (Mathf.Approximately(Rotation, previousRotation))
+        {
+            // If the new rotation is the same, skip sending the serial command
+            // Debug.Log($"Target rotation is the same as the previous rotation.");
+            return;
+        }
         
         if (_wasRotationClamped) 
         { 
@@ -83,6 +94,14 @@ public class HardwareRamp : RampController, ISerialController
 
     public void RotateTo(float degrees)
     {
+        // Check if target rotation is the same as the previous rotation
+        if (Mathf.Approximately(Rotation, degrees))
+        {
+            // If the new rotation is the same, skip sending the serial command
+            // Debug.Log($"Target rotation is the same as the previous rotation.");
+            return;
+        }
+
         // Absolute rotation
         Rotation = degrees;
         // Rotation = Mathf.Clamp(degrees, MinRotation, MaxRotation);
@@ -94,9 +113,20 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ElevateBy(float elevation)
     {
+        // Store the previous elevation
+        float previousElevation = Elevation;
+
         // Relative elevation
         Elevation += elevation;
-        
+
+        // Check if target elevation is the same as the previous elevation
+        if (Mathf.Approximately(Elevation, previousElevation))
+        {
+            // If the new elevation is the same, skip sending the serial command
+            // Debug.Log($"Target elevation is the same as the previous elevation.");
+            return;
+        }
+
         if (_wasElevationClamped) 
         { 
             elevation = 0; 
@@ -110,6 +140,14 @@ public class HardwareRamp : RampController, ISerialController
 
     public void ElevateTo(float elevation)
     {
+        // Check if target elevation is the same as the previous elevation
+        if (Mathf.Approximately(Elevation, elevation))
+        {
+            // If the new elevation is the same, skip sending the serial command
+            // Debug.Log($"Target elevation is the same as the previous elevation.");
+            return;
+        }
+
         // Absolute elevation
         Elevation = elevation;
         // Clamped to Max/Min Elevation
