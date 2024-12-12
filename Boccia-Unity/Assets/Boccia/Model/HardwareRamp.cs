@@ -129,12 +129,13 @@ public class HardwareRamp : RampController, ISerialController
 
         if (_wasElevationClamped) 
         { 
-            elevation = 0; 
+            // Difference between the previous and clamped elevation
+            elevation = Elevation - previousElevation;
             _wasElevationClamped = false;
         }
         AddSerialCommandToList($"er{elevation}");
         _model.SendSerialCommandList();
-        // Debug.Log($"Hardware elevate by: {elevation}");
+        Debug.Log($"Hardware elevate by: {elevation}");
         SendChangeEvent();
     }
 
