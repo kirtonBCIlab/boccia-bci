@@ -83,12 +83,12 @@ public class HardwareRamp : RampController, ISerialController
         
         if (_wasRotationClamped) 
         { 
-            degrees = 0; 
+            degrees = Rotation - previousRotation; 
             _wasRotationClamped = false;
         }        
         AddSerialCommandToList($"rr{degrees.ToString("0")}");
         _model.SendSerialCommandList();
-        // Debug.Log($"Hardware rotate by: {degrees}");
+        Debug.Log($"Hardware rotate by: {degrees}");
         SendChangeEvent();
     }
 
