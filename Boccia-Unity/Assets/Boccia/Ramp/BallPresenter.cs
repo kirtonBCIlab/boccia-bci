@@ -132,7 +132,7 @@ public class BallPresenter : MonoBehaviour
 
         // Bar opening and closing animation
         _barAnimation.SetBool("isOpening", true);
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(3f);
         _barAnimation.SetBool("isOpening", false);
 
         // Call the method to reset the Model's bar state
