@@ -112,6 +112,31 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
+    public void RotationSweep(int direction)
+    {
+        var rotationLimits = new Dictionary<int, float>
+        {
+            { 0, _model.RampSettings.RotationLimitMin },
+            { 1, _model.RampSettings.RotationLimitMax }
+        };
+
+        if (_model.IsRampMoving)
+        {
+            Rotation = _model.CurrentRotationAngle;
+            Debug.Log($"Ramp rotation is {Rotation}");
+            _model.SetRampMoving(false);
+        }
+        else
+        {
+            Rotation = rotationLimits[direction];
+        }
+        // Sweep direction: 1 for clockwise, 0 for counterclockwise
+        AddSerialCommandToList($"rs{direction}");
+        _model.SendSerialCommandList();
+        Debug.Log($"Hardware rotation sweep: {direction}");
+        SendChangeEvent();
+    }
+
     public void ElevateBy(float elevation)
     {
         // Store the previous elevation
@@ -157,6 +182,15 @@ public class HardwareRamp : RampController, ISerialController
         AddSerialCommandToList($"ea{Elevation.ToString("0")}");
         _model.SendSerialCommandList();
         // Debug.Log($"Hardware elevate to: {Elevation}");
+        SendChangeEvent();
+    }
+
+    public void ElevateSweep(int direction)
+    {
+        // Sweep direction: 1 for up, 0 for down
+        AddSerialCommandToList($"es{direction}");
+        _model.SendSerialCommandList();
+        // Debug.Log($"Hardware elevation sweep: {direction}");
         SendChangeEvent();
     }
 

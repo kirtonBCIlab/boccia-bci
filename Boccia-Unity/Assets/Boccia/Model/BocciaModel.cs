@@ -29,6 +29,8 @@ public class BocciaModel : Singleton<BocciaModel>
     private RampController _simulatedRamp;
     private HardwareRamp _hardwareRamp;
 
+    public float CurrentRotationAngle { get; set; }
+
     public float RampRotation => _rampController.Rotation;
     public float RampElevation => _rampController.Elevation;
     public bool BarState => _rampController.IsBarOpen;
@@ -286,6 +288,9 @@ public class BocciaModel : Singleton<BocciaModel>
     public void RotateTo(float degrees) => _rampController.RotateTo(degrees);
     public void ElevateBy(float elevation) => _rampController.ElevateBy(elevation);
     public void ElevateTo(float elevation) => _rampController.ElevateTo(elevation);
+
+    public void RotationSweep(int direction) => _hardwareRamp.RotationSweep(direction);
+    public void ElevationSweep(int direction) => _hardwareRamp.ElevateSweep(direction);
 
     public float ScaleRotationSpeed(float speed) => _hardwareRamp.ScaleRotationSpeed(speed);
     public float ScaleRotationAcceleration() => _hardwareRamp.ScaleRotationAcceleration();

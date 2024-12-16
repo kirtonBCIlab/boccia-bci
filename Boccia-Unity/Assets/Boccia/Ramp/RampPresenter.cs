@@ -150,11 +150,19 @@ public class RampPresenter : MonoBehaviour
             float t = currentAngle / deltaAngle;
             rotationShaft.transform.localRotation = Quaternion.Slerp(startQuaternion, endQuaternion, t);
             
+            // Update the current rotation angle in the model if it has changed significantly
+            float newRotationAngle = rotationShaft.transform.localEulerAngles.y;
+            if (Mathf.Abs(newRotationAngle - _model.CurrentRotationAngle) > 1f) // Adjust the threshold as needed
+            {
+                _model.CurrentRotationAngle = newRotationAngle;
+            }
+            
             yield return null;
         }
 
         // Ensure the final rotation matches exactly
         rotationShaft.transform.localRotation = endQuaternion;
+        _model.CurrentRotationAngle = rotationShaft.transform.localEulerAngles.y;
     }
 
     private IEnumerator ElevationVisualization()

@@ -47,7 +47,8 @@ public class PlayScreenPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        HandleRotationSweep();
+        HandleElevationSweep();
     }
 
     void OnEnable()
@@ -104,6 +105,43 @@ public class PlayScreenPresenter : MonoBehaviour
                 _checkSerialCoroutine = null;
             }
         }
+    }
+
+    private void HandleRotationSweep()
+    {
+        var keyActions = new Dictionary<KeyCode, int>
+        {
+            { KeyCode.LeftArrow, 0 },
+            { KeyCode.RightArrow, 1 }
+        };
+
+        foreach (var keyAction in keyActions)
+        {
+            if (Input.GetKeyDown(keyAction.Key) || Input.GetKeyUp(keyAction.Key))
+            {
+                _model.RotationSweep(keyAction.Value);
+                Debug.Log("Rotation sweep: " + keyAction.Value);
+            }
+        }
+    }
+
+    private void HandleElevationSweep()
+    {
+        var keyActions = new Dictionary<KeyCode, int>
+        {
+            { KeyCode.UpArrow, 0 },
+            { KeyCode.DownArrow, 1 }
+        };
+
+        foreach (var keyAction in keyActions)
+        {
+            if (Input.GetKeyDown(keyAction.Key) || Input.GetKeyUp(keyAction.Key))
+            {
+                _model.ElevationSweep(keyAction.Value);
+                Debug.Log("Elevation sweep: " + keyAction.Value);
+            }
+        }
+
     }
 
     private IEnumerator ReadSerialCommand()
