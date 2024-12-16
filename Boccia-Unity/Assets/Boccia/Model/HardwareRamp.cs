@@ -266,7 +266,9 @@ public class HardwareRamp : RampController, ISerialController
             try     
             {
                 _serial.Close();
+                _serial.Dispose();
                 serialEnabled = false;
+                // Debug.Log("Serial port closed correctly.");
             }
 
             catch (Exception ex)
@@ -338,5 +340,5 @@ public class HardwareRamp : RampController, ISerialController
     private void SendChangeEvent()
     {
         RampChanged?.Invoke();
-    }
+    }    
 }
