@@ -70,7 +70,6 @@ public class HamburgerMenuPresenter : MonoBehaviour
     private void RampSetupClicked()
     {
         // Navigate to the ramp setup screen which displays in play menu
-        model.PlayMenu();
         model.ShowRampSetup();
     }
 }
