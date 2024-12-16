@@ -457,9 +457,14 @@ public class BocciaModel : Singleton<BocciaModel>
     public void QuitGame()
     {
         UnityEditor.EditorApplication.isPlaying = false;
+        _hardwareRamp.DisconnectFromSerialPort();
         Application.Quit();
     }
 
+    private void OnApplicationQuit()
+    {
+        QuitGame();
+    }
 
     // MARK: BCI control
 
