@@ -12,13 +12,16 @@ public class BallPresenter : MonoBehaviour
     private GameObject _activeBall; // Refers the the ball currently in use for each shot
     private int _ballCount = 0;
     private Rigidbody _ballRigidbody;
-    //private float _ballHeightThreshold = 1.0f;
 
     // References for the ramp components
     public GameObject dropBar;
     public GameObject elevationPlate;
     private Animator _barAnimation;
     public GameObject rampBase;
+
+    // Variables for the bar animation timing
+    private float _dropBarWaitTime = 4f;
+    private float _dropBarClosingTime = 6f;
 
     // Variables for storing the ball transform
     private Vector3 _dropPosition;
@@ -132,7 +135,7 @@ public class BallPresenter : MonoBehaviour
 
         // Bar opening and closing animation
         _barAnimation.SetBool("isOpening", true);
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(_dropBarWaitTime);
         _barAnimation.SetBool("isOpening", false);
 
         // Call the method to reset the Model's bar state
@@ -141,7 +144,7 @@ public class BallPresenter : MonoBehaviour
 
         // Wait for the bar to fully close
         // Before setting the ramp to not moving
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(_dropBarClosingTime);
         _model.SetRampMoving(false);
 
         yield return null;
