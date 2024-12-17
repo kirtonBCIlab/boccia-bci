@@ -81,6 +81,8 @@ public class ScreenSwitcher : MonoBehaviour
                 break;
 
             case BocciaScreen.RampSetup:
+                // First show the play menu since ramp setup displays there
+                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
                 ShowRampSetupMenu(true);
                 break;
 
