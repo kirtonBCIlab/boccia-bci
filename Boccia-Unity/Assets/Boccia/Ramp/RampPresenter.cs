@@ -87,6 +87,10 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
+        // Determine if the rotation visualization started because of a sweeping movement
+        bool RotationDueToSweeping = false;
+        if (_model.IsSweeping) { RotationDueToSweeping = true; }
+
         // Starting and ending rotation points
         Quaternion startQuaternion = rotationShaft.transform.localRotation;
         Quaternion endQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
@@ -156,6 +160,29 @@ public class RampPresenter : MonoBehaviour
             {
                 _model.CurrentRotationAngle = newRotationAngle;
             }
+
+            // If the rotation visualization started do to a sweeping movement
+            if (RotationDueToSweeping)
+            {
+                Debug.Log("Sweeping movement in progress");
+                // - Check if the Sweeping flag is down, if so stop the sweeping movement.
+                if (_model.IsSweeping == false)
+                {
+                    Debug.Log("Sweeping movement stopped");
+                    _model.SetRotation(rotationShaft.transform.localEulerAngles.y);
+
+                    // _model.CurrentRotationAngle = rotationShaft.transform.localEulerAngles.y;
+                    yield break;
+                }
+
+                // - Check if the target has been reached, if so set target to oposite direction to keep sweeping
+                if (Mathf.Abs(_model.CurrentRotationAngle - targetAngle) < 1f)
+                {
+                    Debug.Log("Sweeping movement reached limit");
+                    _model.RotationSweep(ToggleRotationWhileSweeping(targetAngle));
+                    yield break;
+                }   
+            }
             
             yield return null;
         }
@@ -205,6 +232,23 @@ public class RampPresenter : MonoBehaviour
 
         // Ensure the final elevation matches exactly
         elevationMechanism.transform.localPosition = targetElevation;
+    }
+
+    /// <summary>
+    /// Toggles the rotation of the ramp while sweeping
+    /// </summary>
+    /// <param name="targetRotation">Current target rotation</param>
+    /// <returns>Target rotation in the opposite direction</returns>
+    private int ToggleRotationWhileSweeping(float targetRotation)
+    {
+        if (targetRotation == _model.RampSettings.RotationLimitMax)
+        {
+            return 0;
+        }
+        else 
+        {
+            return 1;
+        }
     }
 
     private void ResetRampWhenPlayModeChanges()

@@ -8,9 +8,11 @@ public interface RampController
     public float Elevation { get; }
     public bool IsBarOpen { get; }
     public bool IsMoving { get; set; }
+    public bool IsSweeping { get; set; }
 
     public void RotateBy(float degrees);
     public void RotateTo(float degrees);
+    public void SetRotation(float degrees);
     public void ElevateBy(float elevation);
     public void ElevateTo(float elevation);
     public void ResetRampPosition();

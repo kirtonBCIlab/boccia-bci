@@ -37,6 +37,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
+    public bool IsSweeping { get; set; }
 
     public bool SerialEnabled { get; private set; }    
 
@@ -61,6 +62,7 @@ public class HardwareRamp : RampController, ISerialController
         Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
+        IsSweeping = false;
         _serialCommand = "";
         _serialCommandsList = new List<string>();
     }
@@ -89,7 +91,7 @@ public class HardwareRamp : RampController, ISerialController
         }        
         AddSerialCommandToList($"rr{degrees.ToString("0")}");
         _model.SendSerialCommandList();
-        // Debug.Log($"Hardware rotate by: {degrees}");
+        Debug.Log($"Hardware rotate by: {degrees}");
         SendChangeEvent();
     }
 
@@ -112,6 +114,13 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
+    public void SetRotation(float degrees)
+    {
+        Rotation = degrees;
+        // Debug.Log($"Hardware rotate to: {Rotation}");
+        SendChangeEvent();
+    }
+
     public void RotationSweep(int direction)
     {
         var rotationLimits = new Dictionary<int, float>
@@ -120,16 +129,18 @@ public class HardwareRamp : RampController, ISerialController
             { 1, _model.RampSettings.RotationLimitMax }
         };
 
-        if (_model.IsRampMoving)
-        {
-            Rotation = _model.CurrentRotationAngle;
-            Debug.Log($"Ramp rotation is {Rotation}");
-            _model.SetRampMoving(false);
-        }
-        else
-        {
-            Rotation = rotationLimits[direction];
-        }
+        // if (_model.IsRampMoving)
+        // {
+        //     _model.ToggleSweepingMode();
+        //     Debug.Log($"Ramp rotation is {Rotation}");
+        //     // _model.SetRampMoving(false);
+        // }
+        // else
+        // {
+        //     _model.ToggleSweepingMode();
+        //     Rotation = rotationLimits[direction];
+        // }
+        Rotation = rotationLimits[direction];
         // Sweep direction: 1 for clockwise, 0 for counterclockwise
         AddSerialCommandToList($"rs{direction}");
         _model.SendSerialCommandList();

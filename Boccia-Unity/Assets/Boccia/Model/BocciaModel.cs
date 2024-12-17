@@ -35,6 +35,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public float RampElevation => _rampController.Elevation;
     public bool BarState => _rampController.IsBarOpen;
     public bool IsRampMoving => _rampController.IsMoving;
+    public bool IsSweeping => _rampController.IsSweeping;
     
     public BocciaBallState BallState;
 
@@ -286,6 +287,7 @@ public class BocciaModel : Singleton<BocciaModel>
     // MARK: Game control
     public void RotateBy(float degrees) => _rampController.RotateBy(degrees);
     public void RotateTo(float degrees) => _rampController.RotateTo(degrees);
+    public void SetRotation(float degrees) => _rampController.SetRotation(degrees);
     public void ElevateBy(float elevation) => _rampController.ElevateBy(elevation);
     public void ElevateTo(float elevation) => _rampController.ElevateTo(elevation);
 
@@ -307,6 +309,12 @@ public class BocciaModel : Singleton<BocciaModel>
     public void SendSerialCommandList() => _hardwareRamp.SendSerialCommandList();
     public void ResetSerialCommands() => _hardwareRamp.ResetSerialCommands();
     public Task<string> ReadSerialCommandAsync() => _hardwareRamp.ReadSerialCommandAsync();
+    
+    public void ToggleSweepingMode()
+    {
+        _rampController.IsSweeping = !_rampController.IsSweeping;
+        Debug.Log($"Sweeping mode is: {_rampController.IsSweeping}");
+    }
 
     public void RandomBallDrop(int randomRotation, int randomElevation) 
     {

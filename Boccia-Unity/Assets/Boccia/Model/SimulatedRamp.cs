@@ -30,6 +30,7 @@ public class SimulatedRamp : RampController
 
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
+    public bool IsSweeping { get; set; }
 
     public SimulatedRamp()
     {
@@ -39,6 +40,7 @@ public class SimulatedRamp : RampController
         Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
+        IsSweeping = false;
     }
 
     public void RotateBy(float degrees)
@@ -55,6 +57,12 @@ public class SimulatedRamp : RampController
         Rotation = degrees;
         //Debug.Log($"Simulated rotation to: {Rotation}");
         SendChangeEvent();
+    }
+
+    public void SetRotation(float degrees)
+    {
+        // Set rotation without clamping
+        Rotation = degrees;
     }
 
     public void ElevateBy(float elevation)
