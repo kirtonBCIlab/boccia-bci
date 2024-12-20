@@ -290,6 +290,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public void SetRotation(float degrees) => _rampController.SetRotation(degrees);
     public void ElevateBy(float elevation) => _rampController.ElevateBy(elevation);
     public void ElevateTo(float elevation) => _rampController.ElevateTo(elevation);
+    public void SetElevation(float degrees) => _rampController.SetElevation(degrees);
 
     public void RotationSweep(int direction) => _hardwareRamp.RotationSweep(direction);
     public void ElevationSweep(int direction) => _hardwareRamp.ElevateSweep(direction);

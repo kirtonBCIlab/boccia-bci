@@ -15,6 +15,7 @@ public interface RampController
     public void SetRotation(float degrees);
     public void ElevateBy(float elevation);
     public void ElevateTo(float elevation);
+    public void SetElevation(float elevation);
     public void ResetRampPosition();
     public void DropBall();
     public void ResetBar();

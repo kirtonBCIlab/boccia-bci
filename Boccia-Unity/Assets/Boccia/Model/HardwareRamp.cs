@@ -116,6 +116,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public void SetRotation(float degrees)
     {
+        // Same as RotateTo, without sending the serial command
         Rotation = degrees;
         // Debug.Log($"Hardware rotate to: {Rotation}");
         SendChangeEvent();
@@ -185,12 +186,27 @@ public class HardwareRamp : RampController, ISerialController
         SendChangeEvent();
     }
 
+    public void SetElevation(float elevation)
+    {
+        // Same as ElevateTo, without sending the serial command
+        Elevation = elevation;
+        // Debug.Log($"Hardware elevate to: {Elevation}");
+        SendChangeEvent();
+    }
+
     public void ElevateSweep(int direction)
     {
-        // Sweep direction: 1 for up, 0 for down
+        var elevationLimits = new Dictionary<int, float>
+        {
+            { 0, _model.RampSettings.ElevationLimitMin },
+            { 1, _model.RampSettings.ElevationLimitMax }
+        };
+
+        Elevation = elevationLimits[direction];
+
         AddSerialCommandToList($"es{direction}");
         _model.SendSerialCommandList();
-        // Debug.Log($"Hardware elevation sweep: {direction}");
+
         SendChangeEvent();
     }
 

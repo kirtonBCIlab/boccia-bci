@@ -61,8 +61,9 @@ public class SimulatedRamp : RampController
 
     public void SetRotation(float degrees)
     {
-        // Set rotation without clamping
+        // Same as RotateTo, for consistency with the interface
         Rotation = degrees;
+        SendChangeEvent();
     }
 
     public void ElevateBy(float elevation)
@@ -78,6 +79,13 @@ public class SimulatedRamp : RampController
         // Absolute elevation
         Elevation = elevation;
         // Debug.Log($"Simulated elevation to: {Elevation}");
+        SendChangeEvent();
+    }
+
+    public void SetElevation(float elevation)
+    {
+        // Same as ElevateTo, for consistency with the interface
+        Elevation = elevation;
         SendChangeEvent();
     }
 

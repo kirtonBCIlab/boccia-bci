@@ -194,6 +194,9 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator ElevationVisualization()
     {
+        bool ElevationDueToSweeping = false;
+        if (_model.IsSweeping) { ElevationDueToSweeping = true; }
+
         // Store the starting elevation
         Vector3 startElevation = elevationMechanism.transform.localPosition;
 
@@ -224,6 +227,31 @@ public class RampPresenter : MonoBehaviour
             // float normalizedProgress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsedTime / totalTime));
             float normalizedProgress = elapsedTime / totalTime;
 
+             // If the rotation visualization started do to a sweeping movement
+            if (ElevationDueToSweeping)
+            {
+                // Convert the current local position to a scalar value
+                float currentElevationScalar = Vector3.Dot(elevationMechanism.transform.localPosition, elevationDirection);
+
+                // Normalize the scalar value to a percentage (0 to 1)
+                float normalizedElevation = 100 * (currentElevationScalar - ElevationVisualizationMin) / (ElevationVisualizationMax - ElevationVisualizationMin);
+
+                // - Check if the Sweeping flag is down, if so stop the sweeping movement.
+                if (_model.IsSweeping == false)
+                {                    
+                    // Set rotation without sending serial command
+                    _model.SetElevation(normalizedElevation); 
+                    yield break;
+                }
+
+                // - Check if the target has been reached, if so set target to oposite direction to keep sweeping
+                if (Mathf.Abs(normalizedElevation - _model.RampElevation) < 1f)
+                {
+                    _model.ElevationSweep(ToggleElevationWhileSweeping(_model.RampElevation));
+                    yield break;
+                }   
+            }
+
             // Interpolate between the start and target elevation
             elevationMechanism.transform.localPosition = Vector3.Lerp(startElevation, targetElevation, normalizedProgress);
 
@@ -251,6 +279,23 @@ public class RampPresenter : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggles the elevation of the ramp while sweeping
+    /// </summary>
+    /// <param name="targetElevation">Current target elevation</param>
+    /// <returns></returns>Target elevation in the opposite direction
+    private int ToggleElevationWhileSweeping(float targetElevation)
+    {
+        if (targetElevation == _model.RampSettings.ElevationLimitMax)
+        {
+            return 0;
+        }
+        else 
+        {
+            return 1;
+        }
+    }
+
     private void ResetRampWhenPlayModeChanges()
     {
         BocciaGameMode currentPlayMode = _model.GameMode;
@@ -258,7 +303,7 @@ public class RampPresenter : MonoBehaviour
 
         if (currentlyInPlayMode && _lastPlayMode != currentPlayMode)
         {
-            Debug.Log("Resetting ramp position");
+            // Debug.Log("Resetting ramp position");
             _model.ResetRampPosition();
             _lastPlayMode = currentPlayMode;
         }

@@ -38,8 +38,8 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private Dictionary<KeyCode, int> _elevationActions = new()
     {
-        { KeyCode.UpArrow, 0 },
-        { KeyCode.DownArrow, 1 }
+        { KeyCode.DownArrow, 0 },
+        { KeyCode.UpArrow, 1 }
     };
 
     
@@ -127,7 +127,7 @@ public class PlayScreenPresenter : MonoBehaviour
             {
                 _model.ToggleSweepingMode();
                 _model.RotationSweep(keyAction.Value);
-                Debug.Log("Rotation sweep: " + keyAction.Value);
+                // Debug.Log("Rotation sweep: " + keyAction.Value);
             }
         }
     }
@@ -138,8 +138,9 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             if (Input.GetKeyDown(keyAction.Key) || Input.GetKeyUp(keyAction.Key))
             {
+                _model.ToggleSweepingMode();
                 _model.ElevationSweep(keyAction.Value);
-                Debug.Log("Elevation sweep: " + keyAction.Value);
+                // Debug.Log("Elevation sweep: " + keyAction.Value);
             }
         }
 
