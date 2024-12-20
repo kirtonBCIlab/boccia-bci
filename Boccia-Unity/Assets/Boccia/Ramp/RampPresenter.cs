@@ -164,21 +164,21 @@ public class RampPresenter : MonoBehaviour
             // If the rotation visualization started do to a sweeping movement
             if (RotationDueToSweeping)
             {
-                Debug.Log("Sweeping movement in progress");
+                // Normalize the rotation angle to be between -180 and 180 deg
+                float normalizedStopAngle = rotationShaft.transform.localEulerAngles.y; 
+                normalizedStopAngle = (normalizedStopAngle > 180) ? normalizedStopAngle - 360 : normalizedStopAngle;
+
                 // - Check if the Sweeping flag is down, if so stop the sweeping movement.
                 if (_model.IsSweeping == false)
-                {
-                    Debug.Log("Sweeping movement stopped");
-                    _model.SetRotation(rotationShaft.transform.localEulerAngles.y);
-
-                    // _model.CurrentRotationAngle = rotationShaft.transform.localEulerAngles.y;
+                {                    
+                    // Set rotation without sending serial command
+                    _model.SetRotation(normalizedStopAngle); 
                     yield break;
                 }
 
                 // - Check if the target has been reached, if so set target to oposite direction to keep sweeping
-                if (Mathf.Abs(_model.CurrentRotationAngle - targetAngle) < 1f)
+                if (Mathf.Abs(normalizedStopAngle - targetAngle) < 1f)
                 {
-                    Debug.Log("Sweeping movement reached limit");
                     _model.RotationSweep(ToggleRotationWhileSweeping(targetAngle));
                     yield break;
                 }   
@@ -263,6 +263,5 @@ public class RampPresenter : MonoBehaviour
             _lastPlayMode = currentPlayMode;
         }
     }
-
 }
 

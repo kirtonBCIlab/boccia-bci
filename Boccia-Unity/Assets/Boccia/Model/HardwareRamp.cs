@@ -129,22 +129,11 @@ public class HardwareRamp : RampController, ISerialController
             { 1, _model.RampSettings.RotationLimitMax }
         };
 
-        // if (_model.IsRampMoving)
-        // {
-        //     _model.ToggleSweepingMode();
-        //     Debug.Log($"Ramp rotation is {Rotation}");
-        //     // _model.SetRampMoving(false);
-        // }
-        // else
-        // {
-        //     _model.ToggleSweepingMode();
-        //     Rotation = rotationLimits[direction];
-        // }
         Rotation = rotationLimits[direction];
-        // Sweep direction: 1 for clockwise, 0 for counterclockwise
+        
         AddSerialCommandToList($"rs{direction}");
         _model.SendSerialCommandList();
-        Debug.Log($"Hardware rotation sweep: {direction}");
+        
         SendChangeEvent();
     }
 
