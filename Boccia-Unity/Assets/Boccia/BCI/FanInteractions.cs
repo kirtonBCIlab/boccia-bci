@@ -65,7 +65,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             spo.OnSelectedEvent.AddListener(() => OnSegmentClick(child.transform));  
 
             // Add BCITargetAnimations component to change color when training starts
-            BCITargetAnimations bciTargetAnimations = child.gameObject.AddComponent<BCITargetAnimations>();          
+            BCITargetAnimations bciTargetAnimations = child.gameObject.AddComponent<BCITargetAnimations>();
+            bciTargetAnimations.trainTargetAnimation = TrainTargetAnimations.ColorChange;
 
             segmentID++;
         }
