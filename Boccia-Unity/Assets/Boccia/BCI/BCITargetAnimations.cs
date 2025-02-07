@@ -17,9 +17,15 @@ public class BCITargetAnimations : MonoBehaviour
     {
         spo = GetComponent<SPO>();
         objectRenderer = GetComponent<Renderer>();
+        // Get fan segment color
         if (objectRenderer != null)
         {
             originalColor = objectRenderer.material.color;
+        }
+        // Get UI element color
+        else if (TryGetComponent<UnityEngine.UI.Image>(out var image))
+        {
+            originalColor = image.color;
         }
     }
 
