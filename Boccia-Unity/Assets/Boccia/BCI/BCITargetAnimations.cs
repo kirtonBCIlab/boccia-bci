@@ -13,6 +13,8 @@ public class BCITargetAnimations : MonoBehaviour
     private Renderer objectRenderer;
     private Color originalColor;
 
+    private BocciaModel _model;
+
     private void Awake()
     {
         spo = GetComponent<SPO>();

@@ -509,9 +509,9 @@ public class BocciaModel : Singleton<BocciaModel>
         // Reset P300 Training settings
         bocciaData.P300Settings.Train.NumFlashes = 5;
         bocciaData.P300Settings.Train.NumTrainingWindows = 3;
-        bocciaData.P300Settings.Train.TargetAnimation = BocciaAnimation.Default;
+        bocciaData.P300Settings.Train.TargetAnimation = BocciaAnimation.ColorChange;
         bocciaData.P300Settings.Train.ShamSelectionFeedback = false;
-        bocciaData.P300Settings.Train.ShamSelectionAnimation = BocciaAnimation.Default;
+        bocciaData.P300Settings.Train.ShamSelectionAnimation = BocciaAnimation.ColorChange;
         bocciaData.P300Settings.Train.StimulusOnDuration = 2.0f;
         bocciaData.P300Settings.Train.StimulusOffDuration = 2.0f;
         bocciaData.P300Settings.Train.FlashColour = Color.red;
@@ -519,7 +519,7 @@ public class BocciaModel : Singleton<BocciaModel>
         // Reset P300 Testing settings
         bocciaData.P300Settings.Test.NumFlashes = 5;
         bocciaData.P300Settings.Test.TargetSelectionFeedback = true;
-        bocciaData.P300Settings.Test.TargetSelectionAnimation = BocciaAnimation.Default;
+        bocciaData.P300Settings.Test.TargetSelectionAnimation = BocciaAnimation.ColorChange;
         bocciaData.P300Settings.Test.StimulusOnDuration = 2.0f;
         bocciaData.P300Settings.Test.StimulusOffDuration = 2.0f;
         bocciaData.P300Settings.Test.FlashColour = Color.red;

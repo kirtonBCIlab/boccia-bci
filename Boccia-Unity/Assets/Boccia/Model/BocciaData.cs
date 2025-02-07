@@ -11,7 +11,9 @@ public enum BocciaBciParadigm
 
 public enum BocciaAnimation
 {
-    Default,
+    None,
+    SizeChange,
+    ColorChange
 }
 
 // BocciaData contains state used by BocciaModel.  This is just a dumb container
