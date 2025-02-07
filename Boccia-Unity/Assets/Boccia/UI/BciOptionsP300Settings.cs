@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,8 +60,8 @@ public class BciOptionsP300Settings : MonoBehaviour
     // List of stimulus durations (used for stimulus on and off durations in training and testing)
     private static readonly List<float> durationOptions = new List<float> { 100f, 200f, 300f, 400f, 500f}; // Example durations in milliseconds
 
-    // List of animations (placeholder)
-    private List<string> animationOptions = new List<string> { "Bop it", "Twist it", "Shake it"};
+    // List of animations
+    private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(TrainTargetAnimations)));
 
     void Awake()
     {
