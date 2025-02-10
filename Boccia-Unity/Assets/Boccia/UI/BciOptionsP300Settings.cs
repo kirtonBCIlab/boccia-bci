@@ -63,7 +63,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     };
 
     // List of stimulus durations (used for stimulus on and off durations in training and testing)
-    private static readonly List<float> durationOptions = new List<float> { 100f, 200f, 300f, 400f, 500f}; // Example durations in milliseconds
+    private static readonly List<float> durationOptions = new List<float> { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f}; // Example durations in milliseconds
 
     // List of animations
     private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(BocciaAnimation)));
@@ -162,7 +162,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     private void PopulateDurationDropdowns()
     // All stimulus on or off durations, training and testing
     {
-        List<string> durationTextOptions = durationOptions.Select(d => d + " ms").ToList();
+        List<string> durationTextOptions = durationOptions.Select(d => d + " s").ToList();
 
         trainStimulusOnDurationDropdown.ClearOptions();
         trainStimulusOffDurationDropdown.ClearOptions();
