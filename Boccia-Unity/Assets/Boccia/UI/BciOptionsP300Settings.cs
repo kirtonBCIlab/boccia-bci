@@ -304,6 +304,10 @@ public class BciOptionsP300Settings : MonoBehaviour
             // Revert to previous valid value
             trainNumFlashesInputField.text = previousTrainNumFlashes.ToString();
         }
+
+        // Update the number of flashes in P300ControllerBehavior
+        p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Train.NumFlashes;
+        p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Train.NumFlashes;
     }
 
     private void OnChangeTrainNumTrainingWindows(string value)
@@ -390,6 +394,10 @@ public class BciOptionsP300Settings : MonoBehaviour
             // Revert to previous valid value
             testNumFlashesInputField.text = previousTestNumFlashes.ToString();
         }
+
+        // Update the number of flashes in P300ControllerBehavior
+        p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Test.NumFlashes;
+        p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Test.NumFlashes;
     }
 
     private void OnChangeTestTargetSelectionFeedback(bool isOn)
