@@ -112,6 +112,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     private void OnBciSettingsChanged()
     {
         InitializeUI();
+        UpdateP300Controller();
     }
 
     // Initialize the UI elements with the current P300 settings
@@ -434,5 +435,24 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedColour = GetColourFromDropdownIndex(index);
         _model.SetBciOption(ref _model.P300Settings.Test.FlashColour, selectedColour);
+    }
+
+    // MARK: Update P300 Controller
+    // Set the relevant P300ControllerBehavior values from the current P300 settings in the model
+    private void UpdateP300Controller()
+    {
+        // Number of flashes
+        p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Train.NumFlashes;
+        p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Train.NumFlashes;
+
+        // Number of training windows
+        p300ControllerBehavior.numTrainWindows = _model.P300Settings.Train.NumTrainingWindows;
+
+        // Sham selection feedback
+        p300ControllerBehavior.shamFeedback = _model.P300Settings.Train.ShamSelectionFeedback;
+
+        // Stimulus on and off durations
+        p300ControllerBehavior.onTime = _model.P300Settings.Train.StimulusOnDuration;
+        p300ControllerBehavior.offTime = _model.P300Settings.Train.StimulusOffDuration;
     }
 }
