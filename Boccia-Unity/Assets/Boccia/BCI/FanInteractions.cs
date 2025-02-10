@@ -66,7 +66,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
             // Add BCITargetAnimations component to change color when training starts
             BCITargetAnimations bciTargetAnimations = child.gameObject.AddComponent<BCITargetAnimations>();
-            bciTargetAnimations.trainTargetAnimation = TrainTargetAnimations.ColorChange;
+            // bciTargetAnimations.trainTargetAnimation = TrainTargetAnimations.ColorChange;
+            bciTargetAnimations.bocciaAnimation = _model.P300Settings.Train.TargetAnimation;
 
             segmentID++;
         }

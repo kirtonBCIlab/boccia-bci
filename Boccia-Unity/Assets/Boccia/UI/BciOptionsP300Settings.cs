@@ -66,7 +66,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     private static readonly List<float> durationOptions = new List<float> { 100f, 200f, 300f, 400f, 500f}; // Example durations in milliseconds
 
     // List of animations
-    private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(TrainTargetAnimations)));
+    private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(BocciaAnimation)));
 
     void Awake()
     {
