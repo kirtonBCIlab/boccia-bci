@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BCIEssentials.ControllerBehaviors;
+using BCIEssentials.Controllers;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -48,6 +50,9 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private BocciaModel _model;
 
+    public GameObject bciControllerManager;
+    private P300ControllerBehavior p300ControllerBehavior;
+
     // Colour options for Flash Colour
     private static readonly Dictionary<string, Color> colours = new Dictionary<string, Color>
     {
@@ -66,6 +71,8 @@ public class BciOptionsP300Settings : MonoBehaviour
     void Awake()
     {
         _model = BocciaModel.Instance;
+        bciControllerManager = GameObject.Find("ControllerManager");
+        p300ControllerBehavior = bciControllerManager.GetComponentInChildren<P300ControllerBehavior>();
     }
 
     void Start()
@@ -315,6 +322,9 @@ public class BciOptionsP300Settings : MonoBehaviour
             // Revert to previous valid value
             trainNumTrainingWindowsInputField.text = previousTrainNumTrainingWindows.ToString();
         }
+
+        // Update the number of training windows in P300ControllerBehavior
+        p300ControllerBehavior.numTrainWindows = _model.P300Settings.Train.NumTrainingWindows;
     }
 
     private void OnChangeTrainTargetAnimation(int index)
@@ -327,6 +337,9 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         _model.SetBciOption(ref _model.P300Settings.Train.ShamSelectionFeedback, isOn);
         UpdateShamSelectionAnimationInteractable(isOn);
+
+        // Update the sham selection feedback toggle in P300ControllerBehavior
+        p300ControllerBehavior.shamFeedback = _model.P300Settings.Train.ShamSelectionFeedback;
     }
 
     private void OnChangeTrainShamSelectionAnimation(int index)
@@ -339,12 +352,18 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedDuration = durationOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOnDuration, selectedDuration);
+
+        // Update the training stimulus on duration in P300ControllerBehavior
+        p300ControllerBehavior.onTime = _model.P300Settings.Train.StimulusOnDuration;
     }
 
     private void OnChangeTrainStimulusOffDuration(int index)
     {
         var selectedDuration = durationOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOffDuration, selectedDuration);
+
+        // Update the training stimulus off duration in P300ControllerBehavior
+        p300ControllerBehavior.offTime = _model.P300Settings.Train.StimulusOffDuration;
     }
 
     private void OnChangeTrainFlashColour(int index)
@@ -389,12 +408,18 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedDuration = durationOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOnDuration, selectedDuration);
+
+        // Update the testing stimulus on duration in P300ControllerBehavior
+        p300ControllerBehavior.onTime = _model.P300Settings.Test.StimulusOnDuration;
     }
 
     private void OnChangeTestStimulusOffDuration(int index)
     {
         var selectedDuration = durationOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOffDuration, selectedDuration);
+
+        // Update the testing stimulus off duration in P300ControllerBehavior
+        p300ControllerBehavior.offTime = _model.P300Settings.Test.StimulusOffDuration;
     }
 
     private void OnChangeTestFlashColour(int index)
