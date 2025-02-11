@@ -88,6 +88,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         PopulateDropdowns();
 
         InitializeUI();
+        UpdateP300ControllerTraining(); // Initialize P300ControllerBehavior with training settings
     }
 
     void OnEnable()
