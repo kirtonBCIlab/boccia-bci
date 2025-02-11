@@ -432,6 +432,19 @@ public class BciOptionsP300Settings : MonoBehaviour
     }
 
     // MARK: Update P300 Controller
+    // ================================
+    // Documentation for setting P300ControllerBehavior settings:
+    // --------------------------------
+    // 1. Modifying settings in the BCI Options menu UI updates the P300 training or test settings in the model.
+    //
+    // 2. Clicking the "Reset to Defaults" button will set all P300 Settings to their default values in the model.
+    //
+    // 3. The P300ControllerBehavior script is updated when entering Training, Play, or Virtual Play screens.
+    //    This script is subscribed to the NavigationChanged event and calls the appropriate method to update the P300ControllerBehavior:
+    //    - For Training, UpdateP300ControllerTraining() updates P300ControllerBehavior with the model's current TRAIN settings.
+    //    - For Play & Virtual Play, UpdateP300ControllerTesting() updates P300ControllerBehavior with the model's current TEST settings.
+    // ================================
+
     // Set the relevant P300ControllerBehavior values from the current P300 TRAINING settings in the model
     private void UpdateP300ControllerTraining()
     {
