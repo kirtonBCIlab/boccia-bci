@@ -47,9 +47,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
             // Add Flashing effects component
             // TODO: We need something to add the color of the SPO segment here
-            ColorFlashEffect colorFlashEffect = child.AddComponent<ColorFlashEffect>();
-            // colorFlashEffect.OnColor = flashOnColor;
-            // colorFlashEffect.OffColor = flashOffColor;
+            FanSegmentColorFlashEffect fanSegmentColorFlashEffect = child.AddComponent<FanSegmentColorFlashEffect>();
 
             // Add SPO component to make segment selectable with BCI
             child.tag = "BCI";
@@ -57,16 +55,15 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             spo.ObjectID = segmentID;
             spo.Selectable = true;
 
-            spo.StartStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOn());
-            spo.StopStimulusEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().SetOff());
+            spo.StartStimulusEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOn());
+            spo.StopStimulusEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOff());
 
             spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
-            spo.OnSelectedEvent.AddListener(() => child.GetComponent<ColorFlashEffect>().Play());            
+            spo.OnSelectedEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().Play());            
             spo.OnSelectedEvent.AddListener(() => OnSegmentClick(child.transform));  
 
             // Add BCITargetAnimations component to change color when training starts
             BCITargetAnimations bciTargetAnimations = child.gameObject.AddComponent<BCITargetAnimations>();
-            // bciTargetAnimations.trainTargetAnimation = TrainTargetAnimations.ColorChange;
             bciTargetAnimations.bocciaAnimation = _model.P300Settings.Train.TargetAnimation;
 
             segmentID++;
