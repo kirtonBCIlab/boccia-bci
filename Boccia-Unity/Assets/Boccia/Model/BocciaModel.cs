@@ -508,7 +508,6 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         // Reset P300 Training settings
         bocciaData.P300Settings.Train.NumFlashes = 5;
-        bocciaData.P300Settings.Train.NumTrainingWindows = 3;
         bocciaData.P300Settings.Train.TargetAnimation = BocciaAnimation.ColorChange;
         bocciaData.P300Settings.Train.ShamSelectionFeedback = false;
         bocciaData.P300Settings.Train.ShamSelectionAnimation = BocciaAnimation.ColorChange;
