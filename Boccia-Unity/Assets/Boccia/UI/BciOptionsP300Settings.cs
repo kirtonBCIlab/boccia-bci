@@ -79,6 +79,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         // Subscribe to BCI change events to keep the UI updated
         _model.BciChanged += OnBciSettingsChanged;
+        _model.NavigationChanged += OnNavigationChanged;
 
         // Add listeners to UI elements
         AddListenersToUI();
@@ -104,15 +105,32 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     void OnDestroy()
     {
-        // Unsubscribe from BCI events when this object is destroyed to prevent memory leaks
+        // Unsubscribe from events when this object is destroyed to prevent memory leaks
         _model.BciChanged -= OnBciSettingsChanged;
+        _model.NavigationChanged -= OnNavigationChanged;
     }
 
     // This method will be called when the BCI settings are updated in the model
     private void OnBciSettingsChanged()
     {
         InitializeUI();
-        UpdateP300Controller();
+    }
+
+    private void OnNavigationChanged()
+    {
+        // If we are in Virtual Play or Play screens, enforce testing settings
+        if (_model.CurrentScreen == BocciaScreen.VirtualPlay || _model.CurrentScreen == BocciaScreen.Play)
+        {
+            UpdateP300ControllerTesting();
+            return;
+        }
+
+        // If we are in Training screen, enforce training settings
+        if (_model.CurrentScreen == BocciaScreen.TrainingScreen)
+        {
+            UpdateP300ControllerTraining();
+            return;
+        }
     }
 
     // Initialize the UI elements with the current P300 settings
@@ -438,9 +456,11 @@ public class BciOptionsP300Settings : MonoBehaviour
     }
 
     // MARK: Update P300 Controller
-    // Set the relevant P300ControllerBehavior values from the current P300 settings in the model
-    private void UpdateP300Controller()
+    // Set the relevant P300ControllerBehavior values from the current P300 TRAINING settings in the model
+    private void UpdateP300ControllerTraining()
     {
+        // Debug.Log("Update P300ControllerBehavior for TRAINING");
+
         // Number of flashes
         p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Train.NumFlashes;
         p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Train.NumFlashes;
@@ -454,5 +474,22 @@ public class BciOptionsP300Settings : MonoBehaviour
         // Stimulus on and off durations
         p300ControllerBehavior.onTime = _model.P300Settings.Train.StimulusOnDuration;
         p300ControllerBehavior.offTime = _model.P300Settings.Train.StimulusOffDuration;
+    }
+
+    // Set the relevant P300ControllerBehavior values from the current P300 TESTING settings in the model
+    private void UpdateP300ControllerTesting()
+    {
+        // Debug.Log("Update P300ControllerBehavior for TESTING");
+
+        // Number of flashes
+        p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Test.NumFlashes;
+        p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Test.NumFlashes;
+
+        // Sham selection feedback
+        p300ControllerBehavior.shamFeedback = false;
+
+        // Stimulus on and off durations
+        p300ControllerBehavior.onTime = _model.P300Settings.Test.StimulusOnDuration;
+        p300ControllerBehavior.offTime = _model.P300Settings.Test.StimulusOffDuration;
     }
 }
