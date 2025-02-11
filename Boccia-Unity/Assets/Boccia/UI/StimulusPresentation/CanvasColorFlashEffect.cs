@@ -8,6 +8,8 @@ namespace BCIEssentials.StimulusEffects
     /// </summary>
     public class CanvasColorFlashEffect : StimulusEffect
     {
+        private BocciaModel _model;
+
         [SerializeField]
         [Tooltip("The renderer to assign the material color to")]
         private CanvasRenderer _renderer;
@@ -41,6 +43,8 @@ namespace BCIEssentials.StimulusEffects
 
         private void Awake()
         {
+            _model = BocciaModel.Instance;
+
             if (_renderer == null && !gameObject.TryGetComponent(out _renderer))
             {
                 Debug.LogWarning($"No Renderer component found for {gameObject.name}");
@@ -48,6 +52,32 @@ namespace BCIEssentials.StimulusEffects
             }
 
             AssignMaterialColor(_startOn ? _flashOnColor: _flashOffColor);
+        }
+
+        private void OnEnable()
+        {
+            if (_model != null)
+            {
+                if (_renderer == null && !gameObject.TryGetComponent(out _renderer))
+                {
+                    Debug.LogWarning($"No Renderer component found for {gameObject.name}");
+                    return;
+                }
+                setFlashOnColor();
+            }
+        }
+
+        private void setFlashOnColor()
+        {
+            if (_model.GameMode == BocciaGameMode.Train)
+            {
+                _flashOnColor = _model.P300Settings.Train.FlashColour;
+            }
+
+            else if (_model.GameMode == BocciaGameMode.Play || _model.GameMode == BocciaGameMode.Virtual)
+            {
+                _flashOnColor = _model.P300Settings.Test.FlashColour;
+            } 
         }
 
         public override void SetOn()
