@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using BCIEssentials.ControllerBehaviors;
+using BCIEssentials.Controllers;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,9 +15,9 @@ public class BciOptionsP300Settings : MonoBehaviour
     private const int MIN_NUM_FLASHES_TRAIN = 1;
     private const int MAX_NUM_FLASHES_TRAIN = 20;
 
-    // Training Number of Windows
-    private const int MIN_NUM_TRAIN_WINDOWS = 1;
-    private const int MAX_NUM_TRAIN_WINDOWS = 10;
+    // Training Number of Selections
+    private const int MIN_NUM_TRAIN_SELECTIONS = 1;
+    private const int MAX_NUM_TRAIN_SELECTIONS = 10;
 
     // Testing Number of flashes
     private const int MIN_NUM_FLASHES_TEST = 1;
@@ -22,12 +25,12 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     // Previous valid values to revert to in case of invalid input
     private int previousTrainNumFlashes;
-    private int previousTrainNumTrainingWindows;
+    private int previousTrainNumTrainingSelections;
     private int previousTestNumFlashes;
 
     // UI elements for Training settings
     public TMP_InputField trainNumFlashesInputField;
-    public TMP_InputField trainNumTrainingWindowsInputField;
+    public TMP_InputField trainNumTrainingSelectionsInputField;
     public TMP_Dropdown trainTargetAnimationDropdown;
     public Toggle trainShamSelectionFeedbackToggle;
     public TMP_Dropdown trainShamSelectionAnimationDropdown;
@@ -47,6 +50,9 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private BocciaModel _model;
 
+    public GameObject bciControllerManager;
+    private P300ControllerBehavior p300ControllerBehavior;
+
     // Colour options for Flash Colour
     private static readonly Dictionary<string, Color> colours = new Dictionary<string, Color>
     {
@@ -57,28 +63,41 @@ public class BciOptionsP300Settings : MonoBehaviour
     };
 
     // List of stimulus durations (used for stimulus on and off durations in training and testing)
-    private static readonly List<float> durationOptions = new List<float> { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f }; // Example durations in seconds
+    private static readonly List<float> stimulusOnOptions = new List<float>(); // Durations in seconds
+    private static readonly List<float> stimulusOffOptions = new List<float>(); // Durations in seconds
+    private const float STIMULUS_ON_MIN = 0.05f; // Minimum duration in seconds
+    private const float STIMULUS_ON_MAX = 0.2f; // Maximum duration in seconds
+    private const float STIMULUS_OFF_MIN = 0.05f; // Minimum duration in seconds
+    private const float STIMULUS_OFF_MAX = 0.5f; // Maximum duration in seconds
+    private const float STIMULUS_DURATION_STEP = 0.025f; // Step size for duration values
 
-    // List of animations (placeholder)
-    private List<string> animationOptions = new List<string> { "Bop it", "Twist it", "Shake it"};
+    // List of animations
+    private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(BocciaAnimation)));
 
     void Awake()
     {
         _model = BocciaModel.Instance;
+        bciControllerManager = GameObject.Find("ControllerManager");
+        p300ControllerBehavior = bciControllerManager.GetComponentInChildren<P300ControllerBehavior>();
     }
 
     void Start()
     {
         // Subscribe to BCI change events to keep the UI updated
         _model.BciChanged += OnBciSettingsChanged;
+        _model.NavigationChanged += OnNavigationChanged;
 
         // Add listeners to UI elements
         AddListenersToUI();
 
+        // Initialize the stimulus duration lists
+        InitializeStimulusDurations();
+
         // Populate dropdowns for the first time
         PopulateDropdowns();
 
-        InitializeUI();
+        InitializeUI(); // Initialize UI with current model values
+        UpdateP300ControllerTraining(); // Initialize P300ControllerBehavior with training settings
     }
 
     void OnEnable()
@@ -96,14 +115,47 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     void OnDestroy()
     {
-        // Unsubscribe from BCI events when this object is destroyed to prevent memory leaks
+        // Unsubscribe from events when this object is destroyed to prevent memory leaks
         _model.BciChanged -= OnBciSettingsChanged;
+        _model.NavigationChanged -= OnNavigationChanged;
     }
 
     // This method will be called when the BCI settings are updated in the model
     private void OnBciSettingsChanged()
     {
         InitializeUI();
+    }
+
+    // Update P300ControllerBehavior depending on the screen
+    private void OnNavigationChanged()
+    {
+        // If we are in Virtual Play or Play screens, enforce testing settings
+        if (_model.CurrentScreen == BocciaScreen.VirtualPlay || _model.CurrentScreen == BocciaScreen.Play)
+        {
+            UpdateP300ControllerTesting();
+            return;
+        }
+
+        // If we are in Training screen, enforce training settings
+        if (_model.CurrentScreen == BocciaScreen.TrainingScreen)
+        {
+            UpdateP300ControllerTraining();
+            return;
+        }
+    }
+
+    private void InitializeStimulusDurations()
+    {
+        // Initialize the stimulus duration lists
+        for (float i = STIMULUS_ON_MIN; i <= (STIMULUS_ON_MAX + STIMULUS_DURATION_STEP); i += STIMULUS_DURATION_STEP)
+        {
+            stimulusOnOptions.Add((float)Math.Round(i, 3));
+        }
+
+        for (float i = STIMULUS_OFF_MIN; i <= (STIMULUS_OFF_MAX + STIMULUS_DURATION_STEP); i += STIMULUS_DURATION_STEP)
+        {
+            stimulusOffOptions.Add((float)Math.Round(i, 3));
+        }
     }
 
     // Initialize the UI elements with the current P300 settings
@@ -114,25 +166,25 @@ public class BciOptionsP300Settings : MonoBehaviour
 
         // Store previous valid values
         previousTrainNumFlashes = trainSettings.NumFlashes;
-        previousTrainNumTrainingWindows = trainSettings.NumTrainingWindows;
+        previousTrainNumTrainingSelections = trainSettings.NumTrainingSelections;
         previousTestNumFlashes = testSettings.NumFlashes;
 
         // Set training settings UI
         trainNumFlashesInputField.text = trainSettings.NumFlashes.ToString();
-        trainNumTrainingWindowsInputField.text = trainSettings.NumTrainingWindows.ToString();
+        trainNumTrainingSelectionsInputField.text = trainSettings.NumTrainingSelections.ToString();
         trainTargetAnimationDropdown.value = (int)trainSettings.TargetAnimation;
         trainShamSelectionFeedbackToggle.isOn = trainSettings.ShamSelectionFeedback;
         trainShamSelectionAnimationDropdown.value = (int)trainSettings.ShamSelectionAnimation;
-        trainStimulusOnDurationDropdown.value = GetDurationDropdownIndex(trainSettings.StimulusOnDuration);
-        trainStimulusOffDurationDropdown.value = GetDurationDropdownIndex(trainSettings.StimulusOffDuration);
+        trainStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(trainSettings.StimulusOnDuration);
+        trainStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(trainSettings.StimulusOffDuration);
         trainFlashColourDropdown.value = GetColourDropdownIndex(trainSettings.FlashColour);
 
         // Set testing settings UI
         testNumFlashesInputField.text = testSettings.NumFlashes.ToString();
         testTargetSelectionFeedbackToggle.isOn = testSettings.TargetSelectionFeedback;
         testTargetSelectionAnimationDropdown.value = (int)testSettings.TargetSelectionAnimation;
-        testStimulusOnDurationDropdown.value = GetDurationDropdownIndex(testSettings.StimulusOnDuration);
-        testStimulusOffDurationDropdown.value = GetDurationDropdownIndex(testSettings.StimulusOffDuration);
+        testStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(testSettings.StimulusOnDuration);
+        testStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(testSettings.StimulusOffDuration);
         testFlashColourDropdown.value = GetColourDropdownIndex(testSettings.FlashColour);
 
         // Ensure the animation dropdowns are correctly enabled/disabled based on the feedback toggles
@@ -153,17 +205,18 @@ public class BciOptionsP300Settings : MonoBehaviour
     private void PopulateDurationDropdowns()
     // All stimulus on or off durations, training and testing
     {
-        List<string> durationTextOptions = durationOptions.Select(d => d + " s").ToList();
+        List<string> stimulusOnTextOptions = stimulusOnOptions.Select(d => d + " s").ToList();
+        List<string> stimulusOffTextOptions = stimulusOffOptions.Select(d => d + " s").ToList();
 
         trainStimulusOnDurationDropdown.ClearOptions();
         trainStimulusOffDurationDropdown.ClearOptions();
         testStimulusOnDurationDropdown.ClearOptions();
         testStimulusOffDurationDropdown.ClearOptions();
 
-        trainStimulusOnDurationDropdown.AddOptions(durationTextOptions);
-        trainStimulusOffDurationDropdown.AddOptions(durationTextOptions);
-        testStimulusOnDurationDropdown.AddOptions(durationTextOptions);
-        testStimulusOffDurationDropdown.AddOptions(durationTextOptions);
+        trainStimulusOnDurationDropdown.AddOptions(stimulusOnTextOptions);
+        trainStimulusOffDurationDropdown.AddOptions(stimulusOffTextOptions);
+        testStimulusOnDurationDropdown.AddOptions(stimulusOnTextOptions);
+        testStimulusOffDurationDropdown.AddOptions(stimulusOffTextOptions);
     }
 
     private void PopulateAnimationDropdowns()
@@ -230,7 +283,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         // Training settings listeners
         trainNumFlashesInputField.onEndEdit.AddListener(OnChangeTrainNumFlashes);
-        trainNumTrainingWindowsInputField.onEndEdit.AddListener(OnChangeTrainNumTrainingWindows);
+        trainNumTrainingSelectionsInputField.onEndEdit.AddListener(OnChangeTrainNumTrainingSelections);
         trainTargetAnimationDropdown.onValueChanged.AddListener(OnChangeTrainTargetAnimation);
         trainShamSelectionFeedbackToggle.onValueChanged.AddListener(OnChangeTrainShamSelectionFeedback);
         trainShamSelectionAnimationDropdown.onValueChanged.AddListener(OnChangeTrainShamSelectionAnimation);
@@ -247,10 +300,15 @@ public class BciOptionsP300Settings : MonoBehaviour
         testFlashColourDropdown.onValueChanged.AddListener(OnChangeTestFlashColour);
     }
 
-    // Helper method to get the dropdown index based on duration
-    private int GetDurationDropdownIndex(float duration)
+    // Helper methods to get the dropdown index based on duration
+    private int GetOnDurationDropdownIndex(float duration)
     {
-        return durationOptions.IndexOf(duration);  // Find the index of the duration in the list
+        return stimulusOnOptions.IndexOf(duration);  // Find the index of the duration in the list
+    }
+
+    private int GetOffDurationDropdownIndex(float duration)
+    {
+        return stimulusOffOptions.IndexOf(duration);  // Find the index of the duration in the list
     }
 
     // Helper to get the dropdown index for a colour
@@ -298,21 +356,21 @@ public class BciOptionsP300Settings : MonoBehaviour
         }
     }
 
-    private void OnChangeTrainNumTrainingWindows(string value)
+    private void OnChangeTrainNumTrainingSelections(string value)
     {
-        if (int.TryParse(value, out int numTrainingWindows))
+        if (int.TryParse(value, out int numTrainingSelections))
         {
             // Clamp value within min and max
-            numTrainingWindows = Mathf.Clamp(numTrainingWindows, MIN_NUM_TRAIN_WINDOWS, MAX_NUM_TRAIN_WINDOWS);
+            numTrainingSelections = Mathf.Clamp(numTrainingSelections, MIN_NUM_TRAIN_SELECTIONS, MAX_NUM_TRAIN_SELECTIONS);
 
             // Update the model and previous value
-            _model.SetBciOption(ref _model.P300Settings.Train.NumTrainingWindows, numTrainingWindows);
-            previousTrainNumTrainingWindows = numTrainingWindows;
+            _model.SetBciOption(ref _model.P300Settings.Train.NumTrainingSelections, numTrainingSelections);
+            previousTrainNumTrainingSelections = numTrainingSelections;
         }
         else
         {
             // Revert to previous valid value
-            trainNumTrainingWindowsInputField.text = previousTrainNumTrainingWindows.ToString();
+            trainNumTrainingSelectionsInputField.text = previousTrainNumTrainingSelections.ToString();
         }
     }
 
@@ -336,13 +394,13 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private void OnChangeTrainStimulusOnDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOnOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOnDuration, selectedDuration);
     }
 
     private void OnChangeTrainStimulusOffDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOffOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOffDuration, selectedDuration);
     }
 
@@ -386,13 +444,13 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private void OnChangeTestStimulusOnDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOnOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOnDuration, selectedDuration);
     }
 
     private void OnChangeTestStimulusOffDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOffOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOffDuration, selectedDuration);
     }
 
@@ -400,5 +458,56 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedColour = GetColourFromDropdownIndex(index);
         _model.SetBciOption(ref _model.P300Settings.Test.FlashColour, selectedColour);
+    }
+
+    // MARK: Update P300 Controller
+    // ================================
+    // Documentation for setting P300ControllerBehavior settings:
+    // --------------------------------
+    // 1. Modifying settings in the BCI Options menu UI updates the P300 training or test settings in the model.
+    //
+    // 2. Clicking the "Reset to Defaults" button will set all P300 Settings to their default values in the model.
+    //
+    // 3. The P300ControllerBehavior script is updated when entering Training, Play, or Virtual Play screens.
+    //    This script is subscribed to the NavigationChanged event and calls the appropriate method to update the P300ControllerBehavior:
+    //    - For Training, UpdateP300ControllerTraining() updates P300ControllerBehavior with the model's current TRAIN settings.
+    //    - For Play & Virtual Play, UpdateP300ControllerTesting() updates P300ControllerBehavior with the model's current TEST settings.
+    // ================================
+
+    // Set the relevant P300ControllerBehavior values from the current P300 TRAINING settings in the model
+    private void UpdateP300ControllerTraining()
+    {
+        // Debug.Log("Update P300ControllerBehavior for TRAINING");
+
+        // Number of flashes
+        p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Train.NumFlashes;
+        p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Train.NumFlashes;
+
+        // Number of training Selections
+        p300ControllerBehavior.numTrainingSelections = _model.P300Settings.Train.NumTrainingSelections;
+
+        // Sham selection feedback
+        p300ControllerBehavior.shamFeedback = _model.P300Settings.Train.ShamSelectionFeedback;
+
+        // Stimulus on and off durations
+        p300ControllerBehavior.onTime = _model.P300Settings.Train.StimulusOnDuration;
+        p300ControllerBehavior.offTime = _model.P300Settings.Train.StimulusOffDuration;
+    }
+
+    // Set the relevant P300ControllerBehavior values from the current P300 TESTING settings in the model
+    private void UpdateP300ControllerTesting()
+    {
+        // Debug.Log("Update P300ControllerBehavior for TESTING");
+
+        // Number of flashes
+        p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Test.NumFlashes;
+        p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Test.NumFlashes;
+
+        // Sham selection feedback
+        p300ControllerBehavior.shamFeedback = false;
+
+        // Stimulus on and off durations
+        p300ControllerBehavior.onTime = _model.P300Settings.Test.StimulusOnDuration;
+        p300ControllerBehavior.offTime = _model.P300Settings.Test.StimulusOffDuration;
     }
 }

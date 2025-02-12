@@ -11,7 +11,9 @@ public enum BocciaBciParadigm
 
 public enum BocciaAnimation
 {
-    Default,
+    None,
+    SizeChange,
+    ColorChange
 }
 
 // BocciaData contains state used by BocciaModel.  This is just a dumb container
@@ -152,7 +154,7 @@ public class P300SettingsContainer
     public class TrainSettings
     {
         public int NumFlashes;  // Number of flashes during training
-        public int NumTrainingWindows;  // Number of training windows
+        public int NumTrainingSelections;  // Number of training selections
         public BocciaAnimation TargetAnimation;  // "Training Target Animation"
         public bool ShamSelectionFeedback;  // Sham selection feedback toggle
         public BocciaAnimation ShamSelectionAnimation;  // "Sham Selection Animation". 

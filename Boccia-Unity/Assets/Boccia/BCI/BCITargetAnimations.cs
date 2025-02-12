@@ -5,7 +5,8 @@ using Unity.VisualScripting;
 
 public class BCITargetAnimations : MonoBehaviour
 {
-    public TrainTargetAnimations trainTargetAnimation;
+    // public TrainTargetAnimations trainTargetAnimation;
+    public BocciaAnimation bocciaAnimation;
     private readonly Color targetColor = Color.yellow;  // Color for the color change animation
     private readonly float scalingFactor = 1.4f;        // Scaling factor for the size change animation
 
@@ -13,8 +14,12 @@ public class BCITargetAnimations : MonoBehaviour
     private Renderer objectRenderer;
     private Color originalColor;
 
+    private BocciaModel _model;
+
     private void Awake()
     {
+        _model = BocciaModel.Instance;
+
         spo = GetComponent<SPO>();
         objectRenderer = GetComponent<Renderer>();
         // Get fan segment color
@@ -49,14 +54,14 @@ public class BCITargetAnimations : MonoBehaviour
 
     private void OnTrainingStart()
     {
-        switch (trainTargetAnimation)
+        switch (_model.P300Settings.Train.TargetAnimation)
         {
-            case TrainTargetAnimations.None:
+            case BocciaAnimation.None:
                 break;
-            case TrainTargetAnimations.SizeChange:
+            case BocciaAnimation.SizeChange:
                 StartSizeChange();
                 break;
-            case TrainTargetAnimations.ColorChange:
+            case BocciaAnimation.ColorChange:
                 StartColorChange();
                 break;
         }
@@ -64,14 +69,14 @@ public class BCITargetAnimations : MonoBehaviour
 
     private void OnTrainingStop()
     {
-        switch (trainTargetAnimation)
+        switch (_model.P300Settings.Train.TargetAnimation)
         {
-            case TrainTargetAnimations.None:
+            case BocciaAnimation.None:
                 break;
-            case TrainTargetAnimations.SizeChange:
+            case BocciaAnimation.SizeChange:
                 StopSizeChange();
                 break;
-            case TrainTargetAnimations.ColorChange:
+            case BocciaAnimation.ColorChange:
                 StopColorChange();
                 break;
         }

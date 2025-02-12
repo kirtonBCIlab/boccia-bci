@@ -6,13 +6,13 @@ namespace BCIEssentials.StimulusEffects
     /// <summary>
     /// Assign or Flash a renderers material color.
     /// </summary>
-    public class CanvasColorFlashEffect : StimulusEffect
+    public class FanSegmentColorFlashEffect : StimulusEffect
     {
         private BocciaModel _model;
 
         [SerializeField]
         [Tooltip("The renderer to assign the material color to")]
-        private CanvasRenderer _renderer;
+        private Renderer _renderer;
 
         [Header("Flash Settings")]
         [SerializeField]
@@ -145,7 +145,7 @@ namespace BCIEssentials.StimulusEffects
 
         private void AssignMaterialColor(Color color)
         {
-            _renderer.SetColor(color);
+            _renderer.material.color = color;
         }
     }
 }
