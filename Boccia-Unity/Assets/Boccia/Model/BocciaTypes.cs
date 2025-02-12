@@ -26,10 +26,3 @@ public enum BocciaBallState
     Released,
 }
 
-public enum TrainTargetAnimations
-{
-    None,
-    SizeChange,
-    ColorChange,
-}
-
