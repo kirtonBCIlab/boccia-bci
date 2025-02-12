@@ -57,7 +57,13 @@ public class BciOptionsP300Settings : MonoBehaviour
     };
 
     // List of stimulus durations (used for stimulus on and off durations in training and testing)
-    private static readonly List<float> durationOptions = new List<float> { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f}; // Example durations in milliseconds
+    private static readonly List<float> stimulusOnOptions = new List<float>(); // Durations in seconds
+    private static readonly List<float> stimulusOffOptions = new List<float>(); // Durations in seconds
+    private float stimulusOnMin = 0.05f; // Minimum duration in seconds
+    private float stimulusOnMax = 0.2f; // Maximum duration in seconds
+    private float stimulusOffMin = 0.05f; // Minimum duration in seconds
+    private float stimulusOffMax = 0.5f; // Maximum duration in seconds
+    private float stimulusDurationStep = 0.025f; // Step size for duration values
 
     // List of animations
     private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(BocciaAnimation)));
@@ -78,10 +84,13 @@ public class BciOptionsP300Settings : MonoBehaviour
         // Add listeners to UI elements
         AddListenersToUI();
 
+        // Initialize the stimulus duration lists
+        InitializeStimulusDurations();
+
         // Populate dropdowns for the first time
         PopulateDropdowns();
 
-        InitializeUI();
+        InitializeUI(); // Initialize UI with current model values
         UpdateP300ControllerTraining(); // Initialize P300ControllerBehavior with training settings
     }
 
@@ -129,6 +138,20 @@ public class BciOptionsP300Settings : MonoBehaviour
         }
     }
 
+    private void InitializeStimulusDurations()
+    {
+        // Initialize the stimulus duration lists
+        for (float i = stimulusOnMin; i <= (stimulusOnMax + stimulusDurationStep); i += stimulusDurationStep)
+        {
+            stimulusOnOptions.Add((float)Math.Round(i, 3));
+        }
+
+        for (float i = stimulusOffMin; i <= (stimulusOffMax + stimulusDurationStep); i += stimulusDurationStep)
+        {
+            stimulusOffOptions.Add((float)Math.Round(i, 3));
+        }
+    }
+
     // Initialize the UI elements with the current P300 settings
     public void InitializeUI()
     {
@@ -144,16 +167,16 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainTargetAnimationDropdown.value = (int)trainSettings.TargetAnimation;
         trainShamSelectionFeedbackToggle.isOn = trainSettings.ShamSelectionFeedback;
         trainShamSelectionAnimationDropdown.value = (int)trainSettings.ShamSelectionAnimation;
-        trainStimulusOnDurationDropdown.value = GetDurationDropdownIndex(trainSettings.StimulusOnDuration);
-        trainStimulusOffDurationDropdown.value = GetDurationDropdownIndex(trainSettings.StimulusOffDuration);
+        trainStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(trainSettings.StimulusOnDuration);
+        trainStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(trainSettings.StimulusOffDuration);
         trainFlashColourDropdown.value = GetColourDropdownIndex(trainSettings.FlashColour);
 
         // Set testing settings UI
         testNumFlashesInputField.text = testSettings.NumFlashes.ToString();
         testTargetSelectionFeedbackToggle.isOn = testSettings.TargetSelectionFeedback;
         testTargetSelectionAnimationDropdown.value = (int)testSettings.TargetSelectionAnimation;
-        testStimulusOnDurationDropdown.value = GetDurationDropdownIndex(testSettings.StimulusOnDuration);
-        testStimulusOffDurationDropdown.value = GetDurationDropdownIndex(testSettings.StimulusOffDuration);
+        testStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(testSettings.StimulusOnDuration);
+        testStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(testSettings.StimulusOffDuration);
         testFlashColourDropdown.value = GetColourDropdownIndex(testSettings.FlashColour);
 
         // Ensure the animation dropdowns are correctly enabled/disabled based on the feedback toggles
@@ -174,17 +197,18 @@ public class BciOptionsP300Settings : MonoBehaviour
     private void PopulateDurationDropdowns()
     // All stimulus on or off durations, training and testing
     {
-        List<string> durationTextOptions = durationOptions.Select(d => d + " s").ToList();
+        List<string> stimulusOnTextOptions = stimulusOnOptions.Select(d => d + " s").ToList();
+        List<string> stimulusOffTextOptions = stimulusOffOptions.Select(d => d + " s").ToList();
 
         trainStimulusOnDurationDropdown.ClearOptions();
         trainStimulusOffDurationDropdown.ClearOptions();
         testStimulusOnDurationDropdown.ClearOptions();
         testStimulusOffDurationDropdown.ClearOptions();
 
-        trainStimulusOnDurationDropdown.AddOptions(durationTextOptions);
-        trainStimulusOffDurationDropdown.AddOptions(durationTextOptions);
-        testStimulusOnDurationDropdown.AddOptions(durationTextOptions);
-        testStimulusOffDurationDropdown.AddOptions(durationTextOptions);
+        trainStimulusOnDurationDropdown.AddOptions(stimulusOnTextOptions);
+        trainStimulusOffDurationDropdown.AddOptions(stimulusOffTextOptions);
+        testStimulusOnDurationDropdown.AddOptions(stimulusOnTextOptions);
+        testStimulusOffDurationDropdown.AddOptions(stimulusOffTextOptions);
     }
 
     private void PopulateAnimationDropdowns()
@@ -267,10 +291,15 @@ public class BciOptionsP300Settings : MonoBehaviour
         testFlashColourDropdown.onValueChanged.AddListener(OnChangeTestFlashColour);
     }
 
-    // Helper method to get the dropdown index based on duration
-    private int GetDurationDropdownIndex(float duration)
+    // Helper methods to get the dropdown index based on duration
+    private int GetOnDurationDropdownIndex(float duration)
     {
-        return durationOptions.IndexOf(duration);  // Find the index of the duration in the list
+        return stimulusOnOptions.IndexOf(duration);  // Find the index of the duration in the list
+    }
+
+    private int GetOffDurationDropdownIndex(float duration)
+    {
+        return stimulusOffOptions.IndexOf(duration);  // Find the index of the duration in the list
     }
 
     // Helper to get the dropdown index for a colour
@@ -338,13 +367,13 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private void OnChangeTrainStimulusOnDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOnOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOnDuration, selectedDuration);
     }
 
     private void OnChangeTrainStimulusOffDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOffOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOffDuration, selectedDuration);
     }
 
@@ -388,13 +417,13 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     private void OnChangeTestStimulusOnDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOnOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOnDuration, selectedDuration);
     }
 
     private void OnChangeTestStimulusOffDuration(int index)
     {
-        var selectedDuration = durationOptions[index];
+        var selectedDuration = stimulusOffOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOffDuration, selectedDuration);
     }
 
