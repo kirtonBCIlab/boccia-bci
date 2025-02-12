@@ -517,7 +517,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
         // Reset P300 Testing settings
         bocciaData.P300Settings.Test.NumFlashes = 5;
-        bocciaData.P300Settings.Test.TargetSelectionFeedback = true;
+        bocciaData.P300Settings.Test.TargetSelectionFeedback = false;
         bocciaData.P300Settings.Test.TargetSelectionAnimation = BocciaAnimation.ColorChange;
         bocciaData.P300Settings.Test.StimulusOnDuration = 0.1f;
         bocciaData.P300Settings.Test.StimulusOffDuration = 0.075f;
