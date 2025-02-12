@@ -65,11 +65,11 @@ public class BciOptionsP300Settings : MonoBehaviour
     // List of stimulus durations (used for stimulus on and off durations in training and testing)
     private static readonly List<float> stimulusOnOptions = new List<float>(); // Durations in seconds
     private static readonly List<float> stimulusOffOptions = new List<float>(); // Durations in seconds
-    private float stimulusOnMin = 0.05f; // Minimum duration in seconds
-    private float stimulusOnMax = 0.2f; // Maximum duration in seconds
-    private float stimulusOffMin = 0.05f; // Minimum duration in seconds
-    private float stimulusOffMax = 0.5f; // Maximum duration in seconds
-    private float stimulusDurationStep = 0.025f; // Step size for duration values
+    private const float STIMULUS_ON_MIN = 0.05f; // Minimum duration in seconds
+    private const float STIMULUS_ON_MAX = 0.2f; // Maximum duration in seconds
+    private const float STIMULUS_OFF_MIN = 0.05f; // Minimum duration in seconds
+    private const float STIMULUS_OFF_MAX = 0.5f; // Maximum duration in seconds
+    private const float STIMULUS_DURATION_STEP = 0.025f; // Step size for duration values
 
     // List of animations
     private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(BocciaAnimation)));
@@ -147,12 +147,12 @@ public class BciOptionsP300Settings : MonoBehaviour
     private void InitializeStimulusDurations()
     {
         // Initialize the stimulus duration lists
-        for (float i = stimulusOnMin; i <= (stimulusOnMax + stimulusDurationStep); i += stimulusDurationStep)
+        for (float i = STIMULUS_ON_MIN; i <= (STIMULUS_ON_MAX + STIMULUS_DURATION_STEP); i += STIMULUS_DURATION_STEP)
         {
             stimulusOnOptions.Add((float)Math.Round(i, 3));
         }
 
-        for (float i = stimulusOffMin; i <= (stimulusOffMax + stimulusDurationStep); i += stimulusDurationStep)
+        for (float i = STIMULUS_OFF_MIN; i <= (STIMULUS_OFF_MAX + STIMULUS_DURATION_STEP); i += STIMULUS_DURATION_STEP)
         {
             stimulusOffOptions.Add((float)Math.Round(i, 3));
         }
