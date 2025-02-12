@@ -15,9 +15,9 @@ public class BciOptionsP300Settings : MonoBehaviour
     private const int MIN_NUM_FLASHES_TRAIN = 1;
     private const int MAX_NUM_FLASHES_TRAIN = 20;
 
-    // Training Number of Windows
-    private const int MIN_NUM_TRAIN_WINDOWS = 1;
-    private const int MAX_NUM_TRAIN_WINDOWS = 10;
+    // Training Number of Selections
+    private const int MIN_NUM_TRAIN_SELECTIONS = 1;
+    private const int MAX_NUM_TRAIN_SELECTIONS = 10;
 
     // Testing Number of flashes
     private const int MIN_NUM_FLASHES_TEST = 1;
@@ -25,12 +25,12 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     // Previous valid values to revert to in case of invalid input
     private int previousTrainNumFlashes;
-    private int previousTrainNumTrainingWindows;
+    private int previousTrainNumTrainingSelections;
     private int previousTestNumFlashes;
 
     // UI elements for Training settings
     public TMP_InputField trainNumFlashesInputField;
-    public TMP_InputField trainNumTrainingWindowsInputField;
+    public TMP_InputField trainNumTrainingSelectionsInputField;
     public TMP_Dropdown trainTargetAnimationDropdown;
     public Toggle trainShamSelectionFeedbackToggle;
     public TMP_Dropdown trainShamSelectionAnimationDropdown;
@@ -166,12 +166,12 @@ public class BciOptionsP300Settings : MonoBehaviour
 
         // Store previous valid values
         previousTrainNumFlashes = trainSettings.NumFlashes;
-        previousTrainNumTrainingWindows = trainSettings.NumTrainingWindows;
+        previousTrainNumTrainingSelections = trainSettings.NumTrainingSelections;
         previousTestNumFlashes = testSettings.NumFlashes;
 
         // Set training settings UI
         trainNumFlashesInputField.text = trainSettings.NumFlashes.ToString();
-        trainNumTrainingWindowsInputField.text = trainSettings.NumTrainingWindows.ToString();
+        trainNumTrainingSelectionsInputField.text = trainSettings.NumTrainingSelections.ToString();
         trainTargetAnimationDropdown.value = (int)trainSettings.TargetAnimation;
         trainShamSelectionFeedbackToggle.isOn = trainSettings.ShamSelectionFeedback;
         trainShamSelectionAnimationDropdown.value = (int)trainSettings.ShamSelectionAnimation;
@@ -283,7 +283,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         // Training settings listeners
         trainNumFlashesInputField.onEndEdit.AddListener(OnChangeTrainNumFlashes);
-        trainNumTrainingWindowsInputField.onEndEdit.AddListener(OnChangeTrainNumTrainingWindows);
+        trainNumTrainingSelectionsInputField.onEndEdit.AddListener(OnChangeTrainNumTrainingSelections);
         trainTargetAnimationDropdown.onValueChanged.AddListener(OnChangeTrainTargetAnimation);
         trainShamSelectionFeedbackToggle.onValueChanged.AddListener(OnChangeTrainShamSelectionFeedback);
         trainShamSelectionAnimationDropdown.onValueChanged.AddListener(OnChangeTrainShamSelectionAnimation);
@@ -356,21 +356,21 @@ public class BciOptionsP300Settings : MonoBehaviour
         }
     }
 
-    private void OnChangeTrainNumTrainingWindows(string value)
+    private void OnChangeTrainNumTrainingSelections(string value)
     {
-        if (int.TryParse(value, out int numTrainingWindows))
+        if (int.TryParse(value, out int numTrainingSelections))
         {
             // Clamp value within min and max
-            numTrainingWindows = Mathf.Clamp(numTrainingWindows, MIN_NUM_TRAIN_WINDOWS, MAX_NUM_TRAIN_WINDOWS);
+            numTrainingSelections = Mathf.Clamp(numTrainingSelections, MIN_NUM_TRAIN_SELECTIONS, MAX_NUM_TRAIN_SELECTIONS);
 
             // Update the model and previous value
-            _model.SetBciOption(ref _model.P300Settings.Train.NumTrainingWindows, numTrainingWindows);
-            previousTrainNumTrainingWindows = numTrainingWindows;
+            _model.SetBciOption(ref _model.P300Settings.Train.NumTrainingSelections, numTrainingSelections);
+            previousTrainNumTrainingSelections = numTrainingSelections;
         }
         else
         {
             // Revert to previous valid value
-            trainNumTrainingWindowsInputField.text = previousTrainNumTrainingWindows.ToString();
+            trainNumTrainingSelectionsInputField.text = previousTrainNumTrainingSelections.ToString();
         }
     }
 
@@ -483,8 +483,8 @@ public class BciOptionsP300Settings : MonoBehaviour
         p300ControllerBehavior.numFlashesLowerLimit = _model.P300Settings.Train.NumFlashes;
         p300ControllerBehavior.numFlashesUpperLimit = _model.P300Settings.Train.NumFlashes;
 
-        // Number of training windows
-        p300ControllerBehavior.numTrainWindows = _model.P300Settings.Train.NumTrainingWindows;
+        // Number of training Selections
+        p300ControllerBehavior.numTrainingSelections = _model.P300Settings.Train.NumTrainingSelections;
 
         // Sham selection feedback
         p300ControllerBehavior.shamFeedback = _model.P300Settings.Train.ShamSelectionFeedback;
