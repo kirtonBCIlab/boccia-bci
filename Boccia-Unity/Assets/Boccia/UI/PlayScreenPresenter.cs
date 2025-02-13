@@ -12,6 +12,8 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button randomBallButton;
 
     [Header("Boccia Target Selection")]
+    private bool _targetSelectionEnabled = true;
+    public GameObject bocciaTargetSelection;
     public TMP_Dropdown targetNumberDropdown;
     public TMP_Dropdown rampLocationDropdown;
     private static readonly List<string> _targetNumberOptions = new List<string> { "1", "2", "3", "4", "5", "6" };
@@ -72,6 +74,9 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             _readSerialCommandCoroutine = StartCoroutine(ReadSerialCommand());
         }
+
+        // Enable/Disable the target selection panel
+        bocciaTargetSelection.SetActive(_targetSelectionEnabled);
     }
 
     void OnDisable()
