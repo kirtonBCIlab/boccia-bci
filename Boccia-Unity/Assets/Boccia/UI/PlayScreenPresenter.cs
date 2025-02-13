@@ -11,6 +11,12 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button resetRampButton;
     public Button randomBallButton;
 
+    [Header("Boccia Target Selection")]
+    public TMP_Dropdown targetNumberDropdown;
+    public TMP_Dropdown rampLocationDropdown;
+    private static readonly List<string> _targetNumberOptions = new List<string> { "1", "2", "3", "4", "5", "6" };
+    private static readonly List<string> _rampLocationOptions = new List<string> { "1", "2" };
+
     [Header("Debug tools")]
     public bool echoSerialCommands = true;
     [SerializeField]
@@ -42,6 +48,8 @@ public class PlayScreenPresenter : MonoBehaviour
         randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
 
         _model.NavigationChanged += NavigationChanged;
+
+        PopulateDropdowns();
     }
 
     // Update is called once per frame
@@ -104,6 +112,15 @@ public class PlayScreenPresenter : MonoBehaviour
                 _checkSerialCoroutine = null;
             }
         }
+    }
+
+    private void PopulateDropdowns()
+    {
+        targetNumberDropdown.ClearOptions();
+        rampLocationDropdown.ClearOptions();
+
+        targetNumberDropdown.AddOptions(_targetNumberOptions);
+        rampLocationDropdown.AddOptions(_rampLocationOptions);
     }
 
     private IEnumerator ReadSerialCommand()
