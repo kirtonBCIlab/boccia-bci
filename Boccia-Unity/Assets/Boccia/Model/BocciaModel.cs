@@ -52,6 +52,10 @@ public class BocciaModel : Singleton<BocciaModel>
     // get is public, set is private
     public bool BciTrained { get; private set; }
 
+    // Boccia target information for data collection
+    public string TargetNumber;
+    public string RampLocation;
+
     // Expose the entire P300SettingsContainer via a property
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
 
@@ -464,6 +468,19 @@ public class BocciaModel : Singleton<BocciaModel>
     private void OnApplicationQuit()
     {
         QuitGame();
+    }
+
+    // MARK: Boccia Target Selection
+    // This is to help with data collection for validation
+
+    public void SetTargetNumber(ref string newValue)
+    {
+        TargetNumber = newValue;
+    }
+
+    public void SetRampLocation(ref string newValue)
+    {
+        RampLocation = newValue;
     }
 
     // MARK: BCI control

@@ -239,11 +239,11 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void OnChangeTargetNumber(string value)
     {
-        Debug.Log("New target number");
+        _model.SetTargetNumber(ref value);
     }
 
     private void OnChangeRampLocationNumber(string value)
     {
-        Debug.Log("New ramp location number");
+        _model.SetRampLocation(ref value);
     }
 }
