@@ -43,11 +43,7 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         _model = BocciaModel.Instance;
 
-        // connect buttons to model
-        resetRampButton.onClick.AddListener(ResetRamp);
-        randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
-
-        _model.NavigationChanged += NavigationChanged;
+        AddListenersToUI();
 
         PopulateDropdowns();
     }
@@ -112,6 +108,26 @@ public class PlayScreenPresenter : MonoBehaviour
                 _checkSerialCoroutine = null;
             }
         }
+    }
+
+    private void AddListenersToUI()
+    {
+        // connect buttons to model
+        resetRampButton.onClick.AddListener(ResetRamp);
+        randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
+        
+        // connect dropdowns
+        targetNumberDropdown.onValueChanged.AddListener(index => 
+        {
+            string selectedNumber = targetNumberDropdown.options[index].text;
+            OnChangeTargetNumber(selectedNumber);
+        });
+        
+        rampLocationDropdown.onValueChanged.AddListener(index =>
+        {
+            string selectedLocation = rampLocationDropdown.options[index].text;
+            OnChangeRampLocationNumber(selectedLocation);
+        });
     }
 
     private void PopulateDropdowns()
@@ -219,5 +235,15 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         _model.ResetRampPosition();
         _model.ResetFanWhenRampResets();
+    }
+
+    private void OnChangeTargetNumber(string value)
+    {
+        Debug.Log("New target number");
+    }
+
+    private void OnChangeRampLocationNumber(string value)
+    {
+        Debug.Log("New ramp location number");
     }
 }
