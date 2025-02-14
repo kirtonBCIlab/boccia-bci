@@ -4,6 +4,9 @@ using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using BCIEssentials.StimulusObjects;
+using BCIEssentials.StimulusEffects;
 
 public class PlayScreenPresenter : MonoBehaviour
 {
@@ -36,12 +39,27 @@ public class PlayScreenPresenter : MonoBehaviour
     void Start()
     {
         _model = BocciaModel.Instance;
-
-        // connect buttons to model
-        resetRampButton.onClick.AddListener(ResetRamp);
-        randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
-
         _model.NavigationChanged += NavigationChanged;
+
+        // Add listeners to Play buttons
+        addListenersToPlayButtons();
+    }
+
+    private void addListenersToPlayButtons()
+    {
+        addListenerToButton(resetRampButton, ResetRamp);
+        addListenerToButton(randomBallButton, SetRandomBallDropPosition);
+    }
+
+    private void addListenerToButton(Button button, UnityEngine.Events.UnityAction action)
+    {
+        button.onClick.AddListener(action);
+        SPO buttonSPO = button.GetComponent<SPO>();
+        if (buttonSPO != null)
+        {
+            buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
+            buttonSPO.OnSelectedEvent.AddListener(() => action());
+        }
     }
 
     // Update is called once per frame
