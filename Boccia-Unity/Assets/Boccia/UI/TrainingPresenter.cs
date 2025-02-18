@@ -36,6 +36,9 @@ public class TrainingPresenter : MonoBehaviour
             _model.WasChanged += ModelChanged;
             _model.BciChanged += BciChanged;
         }
+
+        // Set the instruction text
+        instructionText.GetComponent<TextMeshProUGUI>().text = "Press T to start training.";
     }
 
 
