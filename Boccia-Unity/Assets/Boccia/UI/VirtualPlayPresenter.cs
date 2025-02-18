@@ -50,24 +50,24 @@ public class VirtualPlayPresenter : MonoBehaviour
         };
 
         // Add listeners to Virtual Play buttons
-        addListenersToVirtualPlayButtons();
+        AddListenersToVirtualPlayButtons();
 
         // Connect the camera toggle button
         toggleCameraButton.onClick.AddListener(ToggleCamera);
 
         // Connect testing buttons
-        connectTestingButtons();
+        ConnectTestingButtons();
     }
 
-    private void addListenersToVirtualPlayButtons()
+    private void AddListenersToVirtualPlayButtons()
     {
-        addListenerToButton(resetRampButton, ResetRamp);
-        addListenerToButton(resetBallButton, model.ResetVirtualBalls);
-        addListenerToButton(colorButton, model.RandomBallColor);
-        addListenerToButton(randomJackButton, model.RandomJackBall);
+        AddListenerToButton(resetRampButton, ResetRamp);
+        AddListenerToButton(resetBallButton, model.ResetVirtualBalls);
+        AddListenerToButton(colorButton, model.RandomBallColor);
+        AddListenerToButton(randomJackButton, model.RandomJackBall);
     }
 
-    private void addListenerToButton(Button button, UnityEngine.Events.UnityAction action)
+    private void AddListenerToButton(Button button, UnityEngine.Events.UnityAction action)
     {
         button.onClick.AddListener(action);
         SPO buttonSPO = button.GetComponent<SPO>();
@@ -78,7 +78,7 @@ public class VirtualPlayPresenter : MonoBehaviour
         }
     }
 
-    private void connectTestingButtons()
+    private void ConnectTestingButtons()
     {
         rotateLeftButton.onClick.AddListener(RotateLeft);
         rotateRightButton.onClick.AddListener(RotateRight);
