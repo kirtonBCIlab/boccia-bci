@@ -144,6 +144,9 @@ public class BocciaModel : Singleton<BocciaModel>
         SetRampSettings();
         SetRampControllerBasedOnMode();
 
+        // Set default target number and ramp location
+        SetDefaultTargetSelection();
+
         // Send the change event after SimulatedRamp is ready
         SendRampChangeEvent();
         // These will fail to run if put in the Awake() method
@@ -283,6 +286,12 @@ public class BocciaModel : Singleton<BocciaModel>
     {
         GameOptions.BallColor = newColor;
         SendRampChangeEvent();
+    }
+
+    public void SetDefaultTargetSelection()
+    {
+        TargetNumber = "1";
+        RampLocation = "1";
     }
 
     // MARK: Game control
