@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using BCIEssentials.StimulusObjects;
+using BCIEssentials.StimulusEffects;
 
 
 // This is an example UI presenter.  This could be broken into several smaller scripts
@@ -40,30 +43,48 @@ public class VirtualPlayPresenter : MonoBehaviour
         // Do not include the camera toggle button
         virtualPlayButtons = new List<Button>()
         {
-            rotateLeftButton,
-            rotateRightButton,
-            moveUpButton,
-            moveDownButton,
             resetRampButton,
             resetBallButton,
-            dropBallButton,
             colorButton,
             randomJackButton,
         };
 
-        // connect buttons to model
+        // Add listeners to Virtual Play buttons
+        AddListenersToVirtualPlayButtons();
+
+        // Connect the camera toggle button
+        toggleCameraButton.onClick.AddListener(ToggleCamera);
+
+        // Connect testing buttons
+        ConnectTestingButtons();
+    }
+
+    private void AddListenersToVirtualPlayButtons()
+    {
+        AddListenerToButton(resetRampButton, ResetRamp);
+        AddListenerToButton(resetBallButton, model.ResetVirtualBalls);
+        AddListenerToButton(colorButton, model.RandomBallColor);
+        AddListenerToButton(randomJackButton, model.RandomJackBall);
+    }
+
+    private void AddListenerToButton(Button button, UnityEngine.Events.UnityAction action)
+    {
+        button.onClick.AddListener(action);
+        SPO buttonSPO = button.GetComponent<SPO>();
+        if (buttonSPO != null)
+        {
+            buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
+            buttonSPO.OnSelectedEvent.AddListener(() => action());
+        }
+    }
+
+    private void ConnectTestingButtons()
+    {
         rotateLeftButton.onClick.AddListener(RotateLeft);
         rotateRightButton.onClick.AddListener(RotateRight);
         moveUpButton.onClick.AddListener(MoveUp);
         moveDownButton.onClick.AddListener(MoveDown);
-        resetRampButton.onClick.AddListener(ResetRamp);
-        resetBallButton.onClick.AddListener(model.ResetVirtualBalls);
         dropBallButton.onClick.AddListener(model.DropBall);
-        colorButton.onClick.AddListener(model.RandomBallColor);
-        randomJackButton.onClick.AddListener(model.RandomJackBall);
-
-        // Connect the camera toggle button
-        toggleCameraButton.onClick.AddListener(ToggleCamera);
     }
 
 

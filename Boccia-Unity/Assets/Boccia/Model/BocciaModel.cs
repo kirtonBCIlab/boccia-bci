@@ -514,6 +514,7 @@ public class BocciaModel : Singleton<BocciaModel>
 
     public void TrainingStarted()
     {
+        BciTrained = false; // Make sure the training state is false
         IsTraining = true;
         SendBciChangeEvent();
     }

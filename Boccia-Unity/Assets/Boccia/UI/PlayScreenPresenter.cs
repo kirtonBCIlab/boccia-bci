@@ -4,6 +4,9 @@ using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using BCIEssentials.StimulusObjects;
+using BCIEssentials.StimulusEffects;
 
 public class PlayScreenPresenter : MonoBehaviour
 {
@@ -44,10 +47,30 @@ public class PlayScreenPresenter : MonoBehaviour
     void Start()
     {
         _model = BocciaModel.Instance;
+        _model.NavigationChanged += NavigationChanged;
 
-        AddListenersToUI();
+        // Add listeners
+        addListenersToPlayButtons();
+        addListenersToDropdowns();
 
         PopulateDropdowns();
+    }
+
+    private void addListenersToPlayButtons()
+    {
+        addListenerToButton(resetRampButton, ResetRamp);
+        addListenerToButton(randomBallButton, SetRandomBallDropPosition);
+    }
+
+    private void addListenerToButton(Button button, UnityEngine.Events.UnityAction action)
+    {
+        button.onClick.AddListener(action);
+        SPO buttonSPO = button.GetComponent<SPO>();
+        if (buttonSPO != null)
+        {
+            buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
+            buttonSPO.OnSelectedEvent.AddListener(() => action());
+        }
     }
 
     // Update is called once per frame
@@ -115,12 +138,8 @@ public class PlayScreenPresenter : MonoBehaviour
         }
     }
 
-    private void AddListenersToUI()
-    {
-        // connect buttons to model
-        resetRampButton.onClick.AddListener(ResetRamp);
-        randomBallButton.onClick.AddListener(SetRandomBallDropPosition);
-        
+    private void addListenersToDropdowns()
+    {        
         // connect dropdowns
         targetNumberDropdown.onValueChanged.AddListener(index => 
         {
