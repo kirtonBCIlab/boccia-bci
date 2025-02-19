@@ -14,6 +14,14 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button resetRampButton;
     public Button randomBallButton;
 
+    [Header("Boccia Target Selection")]
+    private bool _targetSelectionEnabled = true;
+    public GameObject bocciaTargetSelection;
+    public TMP_Dropdown targetNumberDropdown;
+    public TMP_Dropdown rampLocationDropdown;
+    private static readonly List<string> _targetNumberOptions = new List<string> { "1", "2", "3", "4", "5", "6" };
+    private static readonly List<string> _rampLocationOptions = new List<string> { "1", "2" };
+
     [Header("Debug tools")]
     public bool echoSerialCommands = true;
     [SerializeField]
@@ -41,8 +49,11 @@ public class PlayScreenPresenter : MonoBehaviour
         _model = BocciaModel.Instance;
         _model.NavigationChanged += NavigationChanged;
 
-        // Add listeners to Play buttons
+        // Add listeners
         addListenersToPlayButtons();
+        addListenersToDropdowns();
+
+        PopulateDropdowns();
     }
 
     private void addListenersToPlayButtons()
@@ -86,6 +97,9 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             _readSerialCommandCoroutine = StartCoroutine(ReadSerialCommand());
         }
+
+        // Enable/Disable the target selection panel
+        bocciaTargetSelection.SetActive(_targetSelectionEnabled);
     }
 
     void OnDisable()
@@ -122,6 +136,31 @@ public class PlayScreenPresenter : MonoBehaviour
                 _checkSerialCoroutine = null;
             }
         }
+    }
+
+    private void addListenersToDropdowns()
+    {        
+        // connect dropdowns
+        targetNumberDropdown.onValueChanged.AddListener(index => 
+        {
+            string selectedNumber = targetNumberDropdown.options[index].text;
+            OnChangeTargetNumber(selectedNumber);
+        });
+        
+        rampLocationDropdown.onValueChanged.AddListener(index =>
+        {
+            string selectedLocation = rampLocationDropdown.options[index].text;
+            OnChangeRampLocationNumber(selectedLocation);
+        });
+    }
+
+    private void PopulateDropdowns()
+    {
+        targetNumberDropdown.ClearOptions();
+        rampLocationDropdown.ClearOptions();
+
+        targetNumberDropdown.AddOptions(_targetNumberOptions);
+        rampLocationDropdown.AddOptions(_rampLocationOptions);
     }
 
     private IEnumerator ReadSerialCommand()
@@ -220,5 +259,17 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         _model.ResetRampPosition();
         _model.ResetFanWhenRampResets();
+    }
+
+    private void OnChangeTargetNumber(string value)
+    {
+        _model.SetTargetNumber(ref value);
+        // Debug.Log("Target number changed to: " + value);
+    }
+
+    private void OnChangeRampLocationNumber(string value)
+    {
+        _model.SetRampLocation(ref value);
+        // Debug.Log("Ramp location changed to: " + value);
     }
 }
