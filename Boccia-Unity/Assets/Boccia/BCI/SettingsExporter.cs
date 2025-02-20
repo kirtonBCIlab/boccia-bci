@@ -8,6 +8,11 @@ public class SettingsExporter : MonoBehaviour
 {
     private BocciaModel _model;
 
+    [Header("Trial Settings")]
+    [SerializeField]
+    private int _trialNumber;
+    private string _settingsDir;
+
     [Header("Fan settings")]
     [SerializeField]
     private FanSettings _fineFanSettings;
@@ -19,6 +24,17 @@ public class SettingsExporter : MonoBehaviour
     void Start()
     {
         _model = BocciaModel.Instance;
+
+        // Set directory for saving trial settings
+        _settingsDir = @"C:\Users\Daniella\Documents\BocciaTrials";
+
+        if (!Directory.Exists(_settingsDir))
+        {
+            Directory.CreateDirectory(_settingsDir);
+        }
+
+        // Initialize trial number at 0
+        _trialNumber = 0;
     }
 
     // Update is called once per frame
@@ -28,7 +44,6 @@ public class SettingsExporter : MonoBehaviour
         {
             ExportSettings();
         }
-        
     }
 
     private void ExportSettings()
@@ -39,10 +54,11 @@ public class SettingsExporter : MonoBehaviour
 
         string json = "{\"coarseFanSettings\": " + jsonCoarseFan + ", \"fineFanSettings\": " + jsonFineFan + ", \"P300Settings\": " + jsonP300Settings + "}";
 
-        string path = Path.Combine(Application.persistentDataPath, "TrialSettings.json");
+        string filename = $"TrialSettings_{_trialNumber}.json";
+        string path = Path.Combine(_settingsDir, filename);
 
         File.WriteAllText(path, json);
 
-        Debug.Log($"Exported coarse fan settings to {path}");
+        Debug.Log($"Exported trial {_trialNumber} settings to {path}");
     }
 }
