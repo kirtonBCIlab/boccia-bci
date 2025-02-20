@@ -40,19 +40,21 @@ public class SettingsExporter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.J))
         {
+            _trialNumber++;
             ExportSettings();
         }
     }
 
     private void ExportSettings()
     {
+        string currentDateTime = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
         string jsonCoarseFan = JsonUtility.ToJson(_coarseFanSettings, true);
         string jsonFineFan = JsonUtility.ToJson(_fineFanSettings, true);
         string jsonP300Settings = JsonUtility.ToJson(_model.P300Settings, true);
 
-        string json = "{\"coarseFanSettings\": " + jsonCoarseFan + ", \"fineFanSettings\": " + jsonFineFan + ", \"P300Settings\": " + jsonP300Settings + "}";
+        string json = "{\"trialNumber\": " + _trialNumber + ", \"currentDateTime\": " + currentDateTime + ", \"coarseFanSettings\": " + jsonCoarseFan + ", \"fineFanSettings\": " + jsonFineFan + ", \"P300Settings\": " + jsonP300Settings + "}";
 
         string filename = $"TrialSettings_{_trialNumber}.json";
         string path = Path.Combine(_settingsDir, filename);
