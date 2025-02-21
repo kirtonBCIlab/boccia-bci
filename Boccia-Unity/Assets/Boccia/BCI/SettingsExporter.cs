@@ -56,7 +56,7 @@ public class SettingsExporter : MonoBehaviour
                     ", \"fineFanSettings\": " + jsonFineFan + 
                     ", \"P300Settings\": " + jsonP300Settings + "}";
 
-        string filename = $"TrialSettings_{_trialNumber}.json";
+        string filename = $"{currentDateTime}_Trial_{_trialNumber}_Settings.json";
         string path = Path.Combine(_settingsDir, filename);
 
         File.WriteAllText(path, json);
