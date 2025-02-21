@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,12 +27,7 @@ public class SettingsExporter : MonoBehaviour
         _model = BocciaModel.Instance;
 
         // Set directory for saving trial settings
-        _settingsDir = @"C:\Users\Daniella\Documents\BocciaTrials";
-
-        if (!Directory.Exists(_settingsDir))
-        {
-            Directory.CreateDirectory(_settingsDir);
-        }
+        _settingsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         // Initialize trial number at 0
         _trialNumber = 0;
@@ -54,13 +50,17 @@ public class SettingsExporter : MonoBehaviour
         string jsonFineFan = JsonUtility.ToJson(_fineFanSettings, true);
         string jsonP300Settings = JsonUtility.ToJson(_model.P300Settings, true);
 
-        string json = "{\"trialNumber\": " + _trialNumber + ", \"currentDateTime\": " + currentDateTime + ", \"coarseFanSettings\": " + jsonCoarseFan + ", \"fineFanSettings\": " + jsonFineFan + ", \"P300Settings\": " + jsonP300Settings + "}";
+        string json = "{\"trialNumber\": " + _trialNumber + 
+                    ", \"currentDateTime\": \"" + currentDateTime + "\"" +
+                    ", \"coarseFanSettings\": " + jsonCoarseFan + 
+                    ", \"fineFanSettings\": " + jsonFineFan + 
+                    ", \"P300Settings\": " + jsonP300Settings + "}";
 
         string filename = $"TrialSettings_{_trialNumber}.json";
         string path = Path.Combine(_settingsDir, filename);
 
         File.WriteAllText(path, json);
 
-        Debug.Log($"Exported trial {_trialNumber} settings to {path}");
+        Debug.Log($"Exported Trial {_trialNumber} settings to {path}");
     }
 }
