@@ -15,6 +15,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
     private FanSettings _fanSettings;
 
     private BocciaModel _model;
+
+    private int _segmentID;
     
     private void Start()
     {
@@ -37,7 +39,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         int segmentID = 0;
         foreach (Transform child in transform)
         {
-            // Change layer to the interacaable layer
+            // Change layer to the interacable layer
             child.gameObject.layer = gameObject.layer;
 
             // Add a collider to make segment clickable
@@ -52,7 +54,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             // Add SPO component to make segment selectable with BCI
             child.tag = "BCI";
             SPO spo = child.AddComponent<SPO>();
-            spo.ObjectID = segmentID;
+            spo.ObjectID = -100;
             spo.Selectable = true;
 
             spo.StartStimulusEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOn());
@@ -66,6 +68,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             BCITargetAnimations bciTargetAnimations = child.gameObject.AddComponent<BCITargetAnimations>();
             bciTargetAnimations.bocciaAnimation = _model.P300Settings.Train.TargetAnimation;
 
+            FanSegmentIdentifier segmentIdentifier = child.AddComponent<FanSegmentIdentifier>();
+            segmentIdentifier.SegmentID = segmentID;
             segmentID++;
         }
     }
@@ -76,8 +80,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
         switch (segmentName)
         {
             case "FanSegment":
-                SPO spo = segment.GetComponent<SPO>();
-                int segmentID = spo.ObjectID;
+                FanSegmentIdentifier identifier = segment.GetComponent<FanSegmentIdentifier>();
+                int segmentID = identifier.SegmentID;
                 OnFanSegmentClick(segmentID);
 
                 // Handle which fan to draw next based on the positioning mode
