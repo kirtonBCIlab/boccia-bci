@@ -1608,6 +1608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7764173004061172451}
   - component: {fileID: 3576948454555312335}
+  - component: {fileID: 8716667809871874162}
   m_Layer: 6
   m_Name: VirtualPlayScreen
   m_TagString: Untagged
@@ -1654,6 +1655,20 @@ MonoBehaviour:
   randomJackButton: {fileID: 0}
   toggleCameraButton: {fileID: 22244603314456237}
   VirtualPlayCamera: {fileID: 0}
+--- !u!114 &8716667809871874162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818931384772691849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6918da7c742f07348b0b07714ae8c48f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fineFanSettings: {fileID: 11400000, guid: fa646aefe576f30429b0ff7334216751, type: 2}
+  _coarseFanSettings: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
 --- !u!1 &4999685241904479374
 GameObject:
   m_ObjectHideFlags: 0
