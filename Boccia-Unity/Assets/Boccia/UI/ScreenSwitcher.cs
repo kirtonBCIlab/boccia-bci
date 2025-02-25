@@ -9,7 +9,7 @@ public class ScreenSwitcher : MonoBehaviour
 {
     public Camera ScreenCamera;
     public float CameraDistance = 600.0f;
-    public float RampViewCameraDistance = 5.0f; // Custom distance so the camera will view the ramp
+    public float ScreenDistance = 5.0f; // Distance to view screens
     public float CameraSpeed = 5.0f;
 
     private Vector3 targetPosition;
@@ -69,37 +69,37 @@ public class ScreenSwitcher : MonoBehaviour
         switch (model.CurrentScreen)
         {
             case BocciaScreen.PlayMenu:
-                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
+                PanCameraToScreen(PlayMenu, ScreenDistance);
                 break;
                 
             case BocciaScreen.HamburgerMenu:
-                PanCameraToScreen(HamburgerMenuOptions, RampViewCameraDistance);
+                PanCameraToScreen(HamburgerMenuOptions, ScreenDistance);
                 break;
 
             case BocciaScreen.TrainingScreen:
-                PanCameraToScreen(TrainingScreen, RampViewCameraDistance);
+                PanCameraToScreen(TrainingScreen, ScreenDistance);
                 break;
 
             case BocciaScreen.RampSetup:
                 // First show the play menu since ramp setup displays there
-                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
+                PanCameraToScreen(PlayMenu, ScreenDistance);
                 ShowRampSetupMenu(true);
                 break;
 
             case BocciaScreen.Play:
-                PanCameraToScreen(PlayScreen, RampViewCameraDistance);
+                PanCameraToScreen(PlayScreen, ScreenDistance);
                 break;
 
             case BocciaScreen.VirtualPlay:
-                PanCameraToScreen(VirtualPlayScreen, RampViewCameraDistance);
+                PanCameraToScreen(VirtualPlayScreen, ScreenDistance);
                 break;
 
             case BocciaScreen.GameOptions:
-                PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
+                PanCameraToScreen(GameOptionsMenu, ScreenDistance);
                 break;
 
             case BocciaScreen.BciOptions:
-                PanCameraToScreen(BciOptionsMenu, RampViewCameraDistance);
+                PanCameraToScreen(BciOptionsMenu, ScreenDistance);
                 break;
             
             // For now just switch back to start menu to show switching works
