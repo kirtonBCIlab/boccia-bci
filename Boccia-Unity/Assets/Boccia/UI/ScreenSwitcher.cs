@@ -10,6 +10,7 @@ public class ScreenSwitcher : MonoBehaviour
     public Camera ScreenCamera;
     public float CameraDistance = 600.0f;
     public float ScreenDistance = 5.0f; // Distance to view screens
+    public float RampViewDistance = 3.1f; // Distance to place the camera behind the ramp
     public float CameraSpeed = 5.0f;
 
     private Vector3 targetPosition;
@@ -87,11 +88,11 @@ public class ScreenSwitcher : MonoBehaviour
                 break;
 
             case BocciaScreen.Play:
-                PanCameraToScreen(PlayScreen, ScreenDistance);
+                PanCameraToScreen(PlayScreen, RampViewDistance);
                 break;
 
             case BocciaScreen.VirtualPlay:
-                PanCameraToScreen(VirtualPlayScreen, ScreenDistance);
+                PanCameraToScreen(VirtualPlayScreen, RampViewDistance);
                 break;
 
             case BocciaScreen.GameOptions:
