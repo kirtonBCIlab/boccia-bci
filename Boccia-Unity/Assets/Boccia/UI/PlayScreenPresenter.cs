@@ -47,7 +47,10 @@ public class PlayScreenPresenter : MonoBehaviour
         // Get the VirtualPlayFan's fan presenter component
         _fanPresenter = GameObject.Find("PlayControlFan").GetComponent<FanPresenter>();
 
-        InitializeSeparateButtons();
+        if (_model.UseSeparateButtons)
+        {
+            InitializeSeparateButtons();
+        }
 
         // Add listeners to Play buttons
         addListenersToPlayButtons();
