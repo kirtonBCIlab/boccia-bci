@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
 using BCIEssentials.StimulusEffects;
+using FanNamespace;
 
 
 // This is an example UI presenter.  This could be broken into several smaller scripts
@@ -17,11 +18,15 @@ public class VirtualPlayPresenter : MonoBehaviour
     public Button rotateRightButton;
     public Button moveUpButton;
     public Button moveDownButton;
+
+
     public Button resetRampButton;
     public Button resetBallButton;
     public Button dropBallButton;
     public Button colorButton;
     public Button randomJackButton;
+    public Button separateBackButton;
+    public Button separateDropButton;
     private List<Button> virtualPlayButtons;
 
 
@@ -29,6 +34,7 @@ public class VirtualPlayPresenter : MonoBehaviour
     public Camera VirtualPlayCamera;
     private bool isCourtViewOn;
 
+    private FanPresenter _fanPresenter;
     private BocciaModel model;
 
 
@@ -38,6 +44,9 @@ public class VirtualPlayPresenter : MonoBehaviour
         model = BocciaModel.Instance;
         model.WasChanged += ModelChanged;
         model.NavigationChanged += NavigationChanged;
+
+        // Get the VirtualPlayFan's fan presenter component
+        _fanPresenter = GameObject.Find("VirtualPlayControlFan").GetComponent<FanPresenter>();
 
         // Create a list of the virtual play buttons
         // Do not include the camera toggle button
@@ -49,6 +58,11 @@ public class VirtualPlayPresenter : MonoBehaviour
             randomJackButton,
         };
 
+        if (model.UseSeparateButtons)
+        {
+            InitializeSeparateButtons();
+        }
+
         // Add listeners to Virtual Play buttons
         AddListenersToVirtualPlayButtons();
 
@@ -59,12 +73,29 @@ public class VirtualPlayPresenter : MonoBehaviour
         ConnectTestingButtons();
     }
 
+    private void InitializeSeparateButtons()
+    {
+        separateBackButton.gameObject.SetActive(true);
+        separateDropButton.gameObject.SetActive(true);
+
+        virtualPlayButtons.Add(separateBackButton);
+        virtualPlayButtons.Add(separateDropButton);
+
+        AddListenersToSeparateButtons();
+    }
+
     private void AddListenersToVirtualPlayButtons()
     {
         AddListenerToButton(resetRampButton, ResetRamp);
         AddListenerToButton(resetBallButton, model.ResetVirtualBalls);
         AddListenerToButton(colorButton, model.RandomBallColor);
         AddListenerToButton(randomJackButton, model.RandomJackBall);
+    }
+
+    private void AddListenersToSeparateButtons()
+    {
+        AddListenerToButton(separateBackButton, BackButtonClicked);
+        AddListenerToButton(separateDropButton, DropButtonClicked);
     }
 
     private void AddListenerToButton(Button button, UnityEngine.Events.UnityAction action)
@@ -75,6 +106,23 @@ public class VirtualPlayPresenter : MonoBehaviour
         {
             buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
             buttonSPO.OnSelectedEvent.AddListener(() => action());
+        }
+    }
+
+    private void BackButtonClicked()
+    {
+        if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails)
+        {
+            _fanPresenter.positioningMode = FanPositioningMode.CenterToBase;
+            _fanPresenter.GenerateFanWorkflow();
+        }
+    }
+
+    private void DropButtonClicked()
+    {
+        if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
+        {
+            model.DropBall();
         }
     }
 

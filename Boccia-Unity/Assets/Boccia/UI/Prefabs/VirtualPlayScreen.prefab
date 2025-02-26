@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7917022609935669927
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1999,6 +1999,8 @@ MonoBehaviour:
   dropBallButton: {fileID: 1020736014239196524}
   colorButton: {fileID: 8163365981475531111}
   randomJackButton: {fileID: 0}
+  separateBackButton: {fileID: 4466053698674061760}
+  separateDropButton: {fileID: 8608258752606995615}
   toggleCameraButton: {fileID: 22244603314456237}
   VirtualPlayCamera: {fileID: 0}
 --- !u!114 &8716667809871874162
@@ -2782,7 +2784,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3873688616874597760
 RectTransform:
   m_ObjectHideFlags: 0

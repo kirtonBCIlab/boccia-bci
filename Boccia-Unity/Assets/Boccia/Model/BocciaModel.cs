@@ -22,6 +22,9 @@ public class BocciaModel : Singleton<BocciaModel>
     public BocciaScreen CurrentScreen;
     private BocciaScreen PreviousScreen;
 
+    // Fan segment testing
+    public bool UseSeparateButtons { get; private set; }
+
     // Game
     public BocciaGameMode GameMode;
 
@@ -143,6 +146,8 @@ public class BocciaModel : Singleton<BocciaModel>
         // Send the change event after SimulatedRamp is ready
         SendRampChangeEvent();
         // These will fail to run if put in the Awake() method
+
+        UseSeparateButtons = true;
     }
 
     private void OnDisable()

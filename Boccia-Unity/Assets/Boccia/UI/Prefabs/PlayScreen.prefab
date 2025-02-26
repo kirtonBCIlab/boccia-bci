@@ -1307,7 +1307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8726474406035192916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1517,7 +1517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1080350261981266307
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1754,6 +1754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetRampButton: {fileID: 6748951209935578255}
   randomBallButton: {fileID: 0}
+  separateBackButton: {fileID: 2995823401303632973}
+  separateDropButton: {fileID: 8047045176369070776}
   echoSerialCommands: 1
   _arduinoIsNeeded: 0
   serialStatusIndicator: {fileID: 280350794043064211}

@@ -7,12 +7,15 @@ using TMPro;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
 using BCIEssentials.StimulusEffects;
+using FanNamespace;
 
 public class PlayScreenPresenter : MonoBehaviour
 {
     [Header("Buttons")]
     public Button resetRampButton;
     public Button randomBallButton;
+    public Button separateBackButton;
+    public Button separateDropButton;
 
     [Header("Debug tools")]
     public bool echoSerialCommands = true;
@@ -33,7 +36,7 @@ public class PlayScreenPresenter : MonoBehaviour
     private int _randomRotation;
     private int _randomElevation;
 
-    
+    private FanPresenter _fanPresenter;
 
     // Start is called before the first frame update
     void Start()
@@ -41,14 +44,33 @@ public class PlayScreenPresenter : MonoBehaviour
         _model = BocciaModel.Instance;
         _model.NavigationChanged += NavigationChanged;
 
+        // Get the VirtualPlayFan's fan presenter component
+        _fanPresenter = GameObject.Find("PlayControlFan").GetComponent<FanPresenter>();
+
+        InitializeSeparateButtons();
+
         // Add listeners to Play buttons
         addListenersToPlayButtons();
+    }
+
+    private void InitializeSeparateButtons()
+    {
+        separateBackButton.gameObject.SetActive(true);
+        separateDropButton.gameObject.SetActive(true);
+
+        addListenersToSeparateButtons();
     }
 
     private void addListenersToPlayButtons()
     {
         addListenerToButton(resetRampButton, ResetRamp);
         addListenerToButton(randomBallButton, SetRandomBallDropPosition);
+    }
+
+    private void addListenersToSeparateButtons()
+    {
+        addListenerToButton(separateBackButton, BackButtonClicked);
+        addListenerToButton(separateDropButton, DropButtonClicked);
     }
 
     private void addListenerToButton(Button button, UnityEngine.Events.UnityAction action)
@@ -59,6 +81,23 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
             buttonSPO.OnSelectedEvent.AddListener(() => action());
+        }
+    }
+
+    private void BackButtonClicked()
+    {
+        if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails)
+        {
+            _fanPresenter.positioningMode = FanPositioningMode.CenterToBase;
+            _fanPresenter.GenerateFanWorkflow();
+        }
+    }
+
+    private void DropButtonClicked()
+    {
+        if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
+        {
+            _model.DropBall();
         }
     }
 

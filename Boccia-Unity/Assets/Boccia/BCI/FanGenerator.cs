@@ -15,6 +15,13 @@ public class FanGenerator : MonoBehaviour
 
     public GameObject fanAnnotations;
 
+    private BocciaModel _model;
+
+    void Start()
+    {
+        _model = BocciaModel.Instance;
+    }
+
     public void GenerateFanShape(FanSettings fanSettings)
     {        
         float angleStep = fanSettings.Theta / fanSettings.NColumns;
@@ -49,7 +56,10 @@ public class FanGenerator : MonoBehaviour
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
    {
-        // If no backbutton, skip method
+        // If using separate Back button, skip method
+        if (_model.UseSeparateButtons) return;
+        
+        // If no backbutton (i.e. for the coarse fan), skip method
         if (positionMode == BackButtonPositioningMode.None) return;
 
         float startAngle = 0;
@@ -74,6 +84,9 @@ public class FanGenerator : MonoBehaviour
 
     public void GenerateDropButton(FanSettings fanSettings)
     {
+        // If using separate Drop button, skip method
+        if (_model.UseSeparateButtons) return;
+
         int segments = 10; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
         CreateMeshObject("DropButton", fanMesh);
