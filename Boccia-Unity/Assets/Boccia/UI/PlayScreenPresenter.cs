@@ -43,6 +43,7 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         _model = BocciaModel.Instance;
         _model.NavigationChanged += NavigationChanged;
+        _model.FanChanged += FanTypeChanged;
 
         // Get the VirtualPlayFan's fan presenter component
         _fanPresenter = GameObject.Find("PlayControlFan").GetComponent<FanPresenter>();
@@ -58,7 +59,7 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void InitializeSeparateButtons()
     {
-        separateBackButton.gameObject.SetActive(true);
+        separateBackButton.gameObject.SetActive(false); // False since we start with coarse fan
         separateDropButton.gameObject.SetActive(true);
 
         addListenersToSeparateButtons();
@@ -89,11 +90,18 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void BackButtonClicked()
     {
+        if (_model.IsRampMoving)
+        {
+            return;
+        }
+
         if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails)
         {
             _fanPresenter.positioningMode = FanPositioningMode.CenterToBase;
             _fanPresenter.GenerateFanWorkflow();
         }
+
+        separateBackButton.gameObject.SetActive(false); // False since it switches back to coarse
     }
 
     private void DropButtonClicked()
@@ -101,6 +109,15 @@ public class PlayScreenPresenter : MonoBehaviour
         if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
         {
             _model.DropBall();
+        }
+    }
+
+    private void FanTypeChanged()
+    {
+        // Activate the separate back button (if in use) now that the fan changed to Fine Fan
+        if (_model.UseSeparateButtons && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
+        {
+            separateBackButton.gameObject.SetActive(true);
         }
     }
 
