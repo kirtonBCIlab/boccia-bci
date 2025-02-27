@@ -9,7 +9,9 @@ public class ScreenSwitcher : MonoBehaviour
 {
     public Camera ScreenCamera;
     public float CameraDistance = 600.0f;
-    public float RampViewCameraDistance = 5.0f; // Custom distance so the camera will view the ramp
+    public float ScreenDistance = 5.0f; // Distance to view screens
+    public float RampViewDistance = 3.3f; // Distance to place the camera behind the ramp
+    public float RampCameraHeight = 2.3f; // Y-position of the camera when looking at the ramp
     public float CameraSpeed = 5.0f;
 
     private Vector3 targetPosition;
@@ -69,37 +71,37 @@ public class ScreenSwitcher : MonoBehaviour
         switch (model.CurrentScreen)
         {
             case BocciaScreen.PlayMenu:
-                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
+                PanCameraToScreen(PlayMenu, ScreenDistance);
                 break;
                 
             case BocciaScreen.HamburgerMenu:
-                PanCameraToScreen(HamburgerMenuOptions, RampViewCameraDistance);
+                PanCameraToScreen(HamburgerMenuOptions, ScreenDistance);
                 break;
 
             case BocciaScreen.TrainingScreen:
-                PanCameraToScreen(TrainingScreen, RampViewCameraDistance);
+                PanCameraToScreen(TrainingScreen, ScreenDistance);
                 break;
 
             case BocciaScreen.RampSetup:
                 // First show the play menu since ramp setup displays there
-                PanCameraToScreen(PlayMenu, RampViewCameraDistance);
+                PanCameraToScreen(PlayMenu, ScreenDistance);
                 ShowRampSetupMenu(true);
                 break;
 
             case BocciaScreen.Play:
-                PanCameraToScreen(PlayScreen, RampViewCameraDistance);
+                PanCameraToScreen(PlayScreen, RampViewDistance);
                 break;
 
             case BocciaScreen.VirtualPlay:
-                PanCameraToScreen(VirtualPlayScreen, RampViewCameraDistance);
+                PanCameraToScreen(VirtualPlayScreen, RampViewDistance);
                 break;
 
             case BocciaScreen.GameOptions:
-                PanCameraToScreen(GameOptionsMenu, RampViewCameraDistance);
+                PanCameraToScreen(GameOptionsMenu, ScreenDistance);
                 break;
 
             case BocciaScreen.BciOptions:
-                PanCameraToScreen(BciOptionsMenu, RampViewCameraDistance);
+                PanCameraToScreen(BciOptionsMenu, ScreenDistance);
                 break;
             
             // For now just switch back to start menu to show switching works
@@ -132,6 +134,12 @@ public class ScreenSwitcher : MonoBehaviour
     {
         // Calculate target camera pose based on screen's postion and direction in world space
         targetPosition = screenToShow.transform.position + screenToShow.transform.forward * distance * -1.0f;
+
+        if (IsRampView())
+        {
+            targetPosition.y = RampCameraHeight;
+        }
+
         targetRotation = screenToShow.transform.rotation;
 
         // Spawn two routines to move the camera to the new pose.  Use private members for target
@@ -167,5 +175,10 @@ public class ScreenSwitcher : MonoBehaviour
     private void ShowRampSetupMenu(bool isActive)
     {
         RampSetupMenu.SetActive(isActive);
+    }
+
+    private bool IsRampView()
+    {
+        return (model.CurrentScreen == BocciaScreen.Play || model.CurrentScreen == BocciaScreen.VirtualPlay);
     }
 }
