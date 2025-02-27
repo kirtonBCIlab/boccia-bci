@@ -10,7 +10,8 @@ public class ScreenSwitcher : MonoBehaviour
     public Camera ScreenCamera;
     public float CameraDistance = 600.0f;
     public float ScreenDistance = 5.0f; // Distance to view screens
-    public float RampViewDistance = 3.1f; // Distance to place the camera behind the ramp
+    public float RampViewDistance = 3.3f; // Distance to place the camera behind the ramp
+    public float RampCameraHeight = 2.3f; // Y-position of the camera when looking at the ramp
     public float CameraSpeed = 5.0f;
 
     private Vector3 targetPosition;
@@ -133,6 +134,12 @@ public class ScreenSwitcher : MonoBehaviour
     {
         // Calculate target camera pose based on screen's postion and direction in world space
         targetPosition = screenToShow.transform.position + screenToShow.transform.forward * distance * -1.0f;
+
+        if (IsRampView())
+        {
+            targetPosition.y = RampCameraHeight;
+        }
+
         targetRotation = screenToShow.transform.rotation;
 
         // Spawn two routines to move the camera to the new pose.  Use private members for target
@@ -168,5 +175,10 @@ public class ScreenSwitcher : MonoBehaviour
     private void ShowRampSetupMenu(bool isActive)
     {
         RampSetupMenu.SetActive(isActive);
+    }
+
+    private bool IsRampView()
+    {
+        return (model.CurrentScreen == BocciaScreen.Play || model.CurrentScreen == BocciaScreen.VirtualPlay);
     }
 }
