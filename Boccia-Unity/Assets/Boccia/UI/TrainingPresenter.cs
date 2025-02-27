@@ -17,6 +17,9 @@ public class TrainingPresenter : MonoBehaviour
 
     public FanPresenter fanPresenter;
 
+    public GameObject separateBackButton;
+    public GameObject separateDropButton;
+
     void Start()
     {
         // cache model and subscribe for changed event
@@ -26,6 +29,9 @@ public class TrainingPresenter : MonoBehaviour
 
         // Generate the fan
         //fanPresenter.GenerateFan();
+
+        separateBackButton.gameObject.SetActive(_model.UseSeparateButtons);
+        separateDropButton.gameObject.SetActive(_model.UseSeparateButtons);
     }
 
     void OnEnable()
@@ -38,7 +44,7 @@ public class TrainingPresenter : MonoBehaviour
         }
 
         // Set the instruction text
-        instructionText.GetComponent<TextMeshProUGUI>().text = "Press T to start training.";
+        instructionText.GetComponent<TextMeshProUGUI>().text = "Press  T  to start training.";
     }
 
 

@@ -305,7 +305,7 @@ MonoBehaviour:
         m_CallState: 2
   Selectable: 1
   SelectablePoolIndex: 0
-  ObjectID: 0
+  ObjectID: 41
 --- !u!114 &456346186598166485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,7 +726,7 @@ MonoBehaviour:
         m_CallState: 2
   Selectable: 1
   SelectablePoolIndex: 0
-  ObjectID: 0
+  ObjectID: 42
 --- !u!114 &4824134683417883831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,6 +1266,8 @@ MonoBehaviour:
   bciControllerManager: {fileID: 0}
   instructionText: {fileID: 6428448526347787154}
   fanPresenter: {fileID: 0}
+  separateBackButton: {fileID: 2379991372603170479}
+  separateDropButton: {fileID: 2771549185955087148}
 --- !u!1 &5281748401890387066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,16 +1483,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6428448526347787154}
   m_LocalRotation: {x: -0.014286327, y: -0, z: -0, w: 0.99989796}
-  m_LocalPosition: {x: 0, y: 0, z: -11}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3678344975101463026}
   m_LocalEulerAnglesHint: {x: -1.637, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2, y: 130}
-  m_SizeDelta: {x: -941, y: -595}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 59, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1593389572433942853
 CanvasRenderer:
@@ -1547,8 +1549,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
