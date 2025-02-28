@@ -106,6 +106,11 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void DropButtonClicked()
     {
+        if (_model.IsRampMoving)
+        {
+            return;
+        }
+        
         if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
         {
             _model.DropBall();

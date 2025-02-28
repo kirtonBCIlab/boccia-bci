@@ -128,6 +128,11 @@ public class VirtualPlayPresenter : MonoBehaviour
 
     private void DropButtonClicked()
     {
+        if (model.IsRampMoving)
+        {
+            return;
+        }
+        
         if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
         {
             model.DropBall();
