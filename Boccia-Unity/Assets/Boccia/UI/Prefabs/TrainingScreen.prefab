@@ -305,7 +305,7 @@ MonoBehaviour:
         m_CallState: 2
   Selectable: 1
   SelectablePoolIndex: 0
-  ObjectID: 41
+  ObjectID: -100
 --- !u!114 &456346186598166485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,7 +726,7 @@ MonoBehaviour:
         m_CallState: 2
   Selectable: 1
   SelectablePoolIndex: 0
-  ObjectID: 42
+  ObjectID: -100
 --- !u!114 &4824134683417883831
 MonoBehaviour:
   m_ObjectHideFlags: 0
