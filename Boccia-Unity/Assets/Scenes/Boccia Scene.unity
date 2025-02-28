@@ -3335,7 +3335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3249766819828270722, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: ObjectID
-      value: 40
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 3576948454555312335, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: randomJackButton
@@ -3353,6 +3353,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -73.11
       objectReference: {fileID: 0}
+    - target: {fileID: 4326876296027433403, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
+      propertyPath: ObjectID
+      value: -100
+      objectReference: {fileID: 0}
     - target: {fileID: 4818931384772691849, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: m_Name
       value: VirtualPlayScreen
@@ -3361,9 +3365,13 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5831516321743215832, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
+      propertyPath: ObjectID
+      value: -100
+      objectReference: {fileID: 0}
     - target: {fileID: 7511090427285945928, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: ObjectID
-      value: 39
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 7764173004061172451, guid: 6a619933318bf764aa5fb150788918f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3723,7 +3731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 748026187130600216, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: ObjectID
-      value: 38
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 748026187130600216, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -3743,7 +3751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1731453703119658755, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: ObjectID
-      value: 37
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 1731453703119658755, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -4159,7 +4167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4024192604322936517, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: ObjectID
-      value: 39
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 4024192604322936517, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -4807,7 +4815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7334154639932684827, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: ObjectID
-      value: 40
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 7334154639932684827, guid: 4ec461a4c7b12064a9299ba234c99f06, type: 3}
       propertyPath: StopTrainingStimulusEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -5514,6 +5522,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6277914520999626746, guid: 61bd1dc80c9f06c45b87ea455ac607ff, type: 3}
+      propertyPath: ObjectID
+      value: -100
+      objectReference: {fileID: 0}
     - target: {fileID: 6291168778706367911, guid: 61bd1dc80c9f06c45b87ea455ac607ff, type: 3}
       propertyPath: VirtualPlayCamera
       value: 
@@ -5525,6 +5537,10 @@ PrefabInstance:
     - target: {fileID: 7062422457744525498, guid: 61bd1dc80c9f06c45b87ea455ac607ff, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358808418726444481, guid: 61bd1dc80c9f06c45b87ea455ac607ff, type: 3}
+      propertyPath: ObjectID
+      value: -100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
