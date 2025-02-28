@@ -101,12 +101,28 @@ public class VirtualPlayPresenter : MonoBehaviour
 
     private void AddListenerToButton(Button button, UnityEngine.Events.UnityAction action)
     {
-        button.onClick.AddListener(action);
+        button.onClick.RemoveAllListeners(); // Remove any existing listeners
+        button.onClick.AddListener(() => HandleButtonClick(button, action));
+
         SPO buttonSPO = button.GetComponent<SPO>();
         if (buttonSPO != null)
         {
             buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
-            buttonSPO.OnSelectedEvent.AddListener(() => action());
+            buttonSPO.OnSelectedEvent.AddListener(() => HandleButtonClick(button, action));
+        }
+    }
+
+    private void HandleButtonClick(Button button, UnityEngine.Events.UnityAction action)
+    {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            // Store the button as the target element
+            Debug.Log("Target element is " + button.name);
+        }
+        else
+        {
+            // Execute the normal button action
+            action.Invoke();
         }
     }
 
