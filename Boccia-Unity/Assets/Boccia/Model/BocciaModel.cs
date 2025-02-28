@@ -55,6 +55,8 @@ public class BocciaModel : Singleton<BocciaModel>
     // get is public, set is private
     public bool BciTrained { get; private set; }
 
+    public int TargetElementID { get; private set; }
+
     // Expose the entire P300SettingsContainer via a property
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
 
@@ -510,6 +512,12 @@ public class BocciaModel : Singleton<BocciaModel>
         IsTraining = false;
         BciTrained = true;
         SendBciChangeEvent();
+    }
+
+    public void SetTargetElement(int targetElementID)
+    {
+        TargetElementID = targetElementID;
+        Debug.Log("Target element set to: " + TargetElementID);
     }
 
     // MARK: BCI Setting Defaults
