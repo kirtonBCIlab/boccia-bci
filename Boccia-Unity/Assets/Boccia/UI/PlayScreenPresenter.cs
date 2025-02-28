@@ -7,12 +7,15 @@ using TMPro;
 using UnityEngine.EventSystems;
 using BCIEssentials.StimulusObjects;
 using BCIEssentials.StimulusEffects;
+using FanNamespace;
 
 public class PlayScreenPresenter : MonoBehaviour
 {
     [Header("Buttons")]
     public Button resetRampButton;
     public Button randomBallButton;
+    public Button separateBackButton;
+    public Button separateDropButton;
 
     [Header("Debug tools")]
     public bool echoSerialCommands = true;
@@ -33,22 +36,45 @@ public class PlayScreenPresenter : MonoBehaviour
     private int _randomRotation;
     private int _randomElevation;
 
-    
+    private FanPresenter _fanPresenter;
 
     // Start is called before the first frame update
     void Start()
     {
         _model = BocciaModel.Instance;
         _model.NavigationChanged += NavigationChanged;
+        _model.FanChanged += FanTypeChanged;
+
+        // Get the VirtualPlayFan's fan presenter component
+        _fanPresenter = GameObject.Find("PlayControlFan").GetComponent<FanPresenter>();
+
+        if (_model.UseSeparateButtons)
+        {
+            InitializeSeparateButtons();
+        }
 
         // Add listeners to Play buttons
         addListenersToPlayButtons();
+    }
+
+    private void InitializeSeparateButtons()
+    {
+        separateBackButton.gameObject.SetActive(false); // False since we start with coarse fan
+        separateDropButton.gameObject.SetActive(true);
+
+        addListenersToSeparateButtons();
     }
 
     private void addListenersToPlayButtons()
     {
         addListenerToButton(resetRampButton, ResetRamp);
         addListenerToButton(randomBallButton, SetRandomBallDropPosition);
+    }
+
+    private void addListenersToSeparateButtons()
+    {
+        addListenerToButton(separateBackButton, BackButtonClicked);
+        addListenerToButton(separateDropButton, DropButtonClicked);
     }
 
     private void addListenerToButton(Button button, UnityEngine.Events.UnityAction action)
@@ -59,6 +85,44 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
             buttonSPO.OnSelectedEvent.AddListener(() => action());
+        }
+    }
+
+    private void BackButtonClicked()
+    {
+        if (_model.IsRampMoving)
+        {
+            return;
+        }
+
+        if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails)
+        {
+            _fanPresenter.positioningMode = FanPositioningMode.CenterToBase;
+            _fanPresenter.GenerateFanWorkflow();
+        }
+
+        separateBackButton.gameObject.SetActive(false); // False since it switches back to coarse
+    }
+
+    private void DropButtonClicked()
+    {
+        if (_model.IsRampMoving)
+        {
+            return;
+        }
+        
+        if (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails || _fanPresenter.positioningMode == FanPositioningMode.CenterToBase)
+        {
+            _model.DropBall();
+        }
+    }
+
+    private void FanTypeChanged()
+    {
+        // Activate the separate back button (if in use) now that the fan changed to Fine Fan
+        if (_model.UseSeparateButtons && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
+        {
+            separateBackButton.gameObject.SetActive(true);
         }
     }
 

@@ -90,6 +90,7 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
                     case FanPositioningMode.CenterToBase:
                         _fanPresenter.positioningMode = FanPositioningMode.CenterToRails;
                         _fanPresenter.GenerateFanWorkflow();
+                        _model.FanTypeChanged();
                         break;
                     case FanPositioningMode.CenterToRails:
                         _fanPresenter.positioningMode = FanPositioningMode.CenterToRails;
