@@ -6,14 +6,17 @@ using BCIEssentials.StimulusObjects;
 
 public class TargetElementLSLStream : MonoBehaviour
 {
+    public string StreamName = "TargetElementStream";
+    public string StreamId = "target_element_stream_01";
+
     [Header("LSL Stream")]
     private StreamOutlet _outlet;
-    public string StreamName = "TargetElementStream";
-    private string StreamType = "Text";
-    public string StreamId = "target_element_stream_01";
+    private readonly string _StreamType = "Text";
     private StreamInfo _streamInfo;
     private string[] _sample;
     private BocciaModel _model;
+    private int _WaitTimeforObjectID = 5;   // Wait time for ObjectID to be populated [sec]
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +36,7 @@ public class TargetElementLSLStream : MonoBehaviour
             return false;
         }
 
-        _streamInfo = new StreamInfo(StreamName, StreamType, 2, 0.0, LSL.channel_format_t.cf_string, StreamId);
+        _streamInfo = new StreamInfo(StreamName, _StreamType, 2, 0.0, LSL.channel_format_t.cf_string, StreamId);
         _outlet = new StreamOutlet(_streamInfo);
 
         _sample = new string[2];
@@ -69,7 +72,7 @@ public class TargetElementLSLStream : MonoBehaviour
 
         // Make sure to wait for the object ID to be set
         float timer = 0;
-        while (targetSPO.ObjectID == -100 && timer < 5)
+        while (targetSPO.ObjectID == -100 && timer < _WaitTimeforObjectID)
         {
             timer += Time.deltaTime;
         }
