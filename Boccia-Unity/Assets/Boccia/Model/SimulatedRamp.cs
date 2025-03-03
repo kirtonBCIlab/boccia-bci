@@ -30,6 +30,7 @@ public class SimulatedRamp : RampController
 
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
+    public bool IsSweeping { get; set; }
 
     public SimulatedRamp()
     {
@@ -39,6 +40,7 @@ public class SimulatedRamp : RampController
         Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
+        IsSweeping = false;
     }
 
     public void RotateBy(float degrees)
@@ -57,6 +59,13 @@ public class SimulatedRamp : RampController
         SendChangeEvent();
     }
 
+    public void SetRotation(float degrees)
+    {
+        // Same as RotateTo, for consistency with the interface
+        Rotation = degrees;
+        SendChangeEvent();
+    }
+
     public void ElevateBy(float elevation)
     {
         // Relative elevation
@@ -70,6 +79,13 @@ public class SimulatedRamp : RampController
         // Absolute elevation
         Elevation = elevation;
         // Debug.Log($"Simulated elevation to: {Elevation}");
+        SendChangeEvent();
+    }
+
+    public void SetElevation(float elevation)
+    {
+        // Same as ElevateTo, for consistency with the interface
+        Elevation = elevation;
         SendChangeEvent();
     }
 

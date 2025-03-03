@@ -23,15 +23,27 @@ public class PlayScreenPresenter : MonoBehaviour
     [Header("Serial Connection")]
     public GameObject serialStatusIndicator;
 
-    private bool connectionStatus;
+    private bool _connectionStatus;
     private Coroutine _checkSerialCoroutine;
     private Coroutine _readSerialCommandCoroutine;
-    private float _waitTime = 6f;
+    private readonly float _waitTime = 6f;
 
     private BocciaModel _model;
 
     private int _randomRotation;
     private int _randomElevation;
+
+    private Dictionary<KeyCode, int> _rotationActions = new()
+    {
+        { KeyCode.LeftArrow, 0 },
+        { KeyCode.RightArrow, 1 }
+    };
+
+    private Dictionary<KeyCode, int> _elevationActions = new()
+    {
+        { KeyCode.DownArrow, 0 },
+        { KeyCode.UpArrow, 1 }
+    };
 
     
 
@@ -65,7 +77,8 @@ public class PlayScreenPresenter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        HandleRotationSweep();
+        HandleElevationSweep();
     }
 
     void OnEnable()
@@ -124,6 +137,33 @@ public class PlayScreenPresenter : MonoBehaviour
         }
     }
 
+    private void HandleRotationSweep()
+    {
+        foreach (var keyAction in _rotationActions)
+        {
+            if (Input.GetKeyDown(keyAction.Key) || Input.GetKeyUp(keyAction.Key))
+            {
+                _model.ToggleSweepingMode();
+                _model.RotationSweep(keyAction.Value);
+                // Debug.Log("Rotation sweep: " + keyAction.Value);
+            }
+        }
+    }
+
+    private void HandleElevationSweep()
+    {
+        foreach (var keyAction in _elevationActions)
+        {
+            if (Input.GetKeyDown(keyAction.Key) || Input.GetKeyUp(keyAction.Key))
+            {
+                _model.ToggleSweepingMode();
+                _model.ElevationSweep(keyAction.Value);
+                // Debug.Log("Elevation sweep: " + keyAction.Value);
+            }
+        }
+
+    }
+
     private IEnumerator ReadSerialCommand()
     {
         while(_model.GameMode == BocciaGameMode.Play)
@@ -169,8 +209,8 @@ public class PlayScreenPresenter : MonoBehaviour
     private IEnumerator CheckSerialPortConnection()
     {
         // Initialize indicator
-        connectionStatus = IsPortConnected(_model.HardwareSettings.COMPort);
-        IndicateSerialStatus(connectionStatus);
+        _connectionStatus = IsPortConnected(_model.HardwareSettings.COMPort);
+        IndicateSerialStatus(_connectionStatus);
 
         // Check every 6 seconds while the serial port is connected
         while (IsPortConnected(_model.HardwareSettings.COMPort))
