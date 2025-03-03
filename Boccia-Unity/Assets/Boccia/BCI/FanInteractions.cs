@@ -76,6 +76,14 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
 
     private void OnSegmentClick(Transform segment)
     {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            // Store the target segment's SPO
+            SPO segmentSPO = segment.GetComponent<SPO>();
+            _model.SetTargetElement(segmentSPO);
+            return;
+        }
+
         string segmentName = segment.name;
         switch (segmentName)
         {
