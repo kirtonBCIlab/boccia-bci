@@ -16,6 +16,7 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button randomBallButton;
     public Button separateBackButton;
     public Button separateDropButton;
+    private List<Button> _playButtons;
 
     [Header("Debug tools")]
     public bool echoSerialCommands = true;
@@ -48,6 +49,12 @@ public class PlayScreenPresenter : MonoBehaviour
         // Get the VirtualPlayFan's fan presenter component
         _fanPresenter = GameObject.Find("PlayControlFan").GetComponent<FanPresenter>();
 
+        _playButtons = new List<Button>()
+        {
+            resetRampButton,
+            randomBallButton,
+        };
+
         if (_model.UseSeparateButtons)
         {
             InitializeSeparateButtons();
@@ -61,6 +68,9 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         separateBackButton.gameObject.SetActive(false); // False since we start with coarse fan
         separateDropButton.gameObject.SetActive(true);
+
+        _playButtons.Add(separateBackButton);
+        _playButtons.Add(separateDropButton);
 
         addListenersToSeparateButtons();
     }
@@ -95,7 +105,8 @@ public class PlayScreenPresenter : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             // Store the button as the target element
-            Debug.Log("Target element is " + button.name);
+            int buttonID = _playButtons.IndexOf(button);
+            _model.SetTargetElement(buttonID);
         }
         else
         {
