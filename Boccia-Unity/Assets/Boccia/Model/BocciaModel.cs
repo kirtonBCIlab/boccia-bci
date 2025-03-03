@@ -519,7 +519,6 @@ public class BocciaModel : Singleton<BocciaModel>
     public void SetTargetElement(SPO targetSPO)
     {
         TargetElementSPO = targetSPO;
-        Debug.Log("TargetElementSPO type: " + TargetElementSPO.GetType());
     }
 
     // MARK: BCI Setting Defaults
