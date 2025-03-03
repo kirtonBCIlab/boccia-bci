@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
+using BCIEssentials.StimulusObjects;
 
 
 // BocciaModel implements the "business logic" for the game.  The BocciaModel 
@@ -55,7 +56,7 @@ public class BocciaModel : Singleton<BocciaModel>
     // get is public, set is private
     public bool BciTrained { get; private set; }
 
-    public int TargetElementID { get; private set; }
+    public SPO TargetElementSPO;
 
     // Expose the entire P300SettingsContainer via a property
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
@@ -514,10 +515,11 @@ public class BocciaModel : Singleton<BocciaModel>
         SendBciChangeEvent();
     }
 
-    public void SetTargetElement(int targetElementID)
+    // Store the SPO of the target element
+    public void SetTargetElement(SPO targetSPO)
     {
-        TargetElementID = targetElementID;
-        Debug.Log("Target element set to: " + TargetElementID);
+        TargetElementSPO = targetSPO;
+        Debug.Log("TargetElementSPO type: " + TargetElementSPO.GetType());
     }
 
     // MARK: BCI Setting Defaults

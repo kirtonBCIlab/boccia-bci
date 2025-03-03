@@ -104,9 +104,9 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            // Store the button as the target element
-            int buttonID = _playButtons.IndexOf(button);
-            _model.SetTargetElement(buttonID);
+            // Store the target button's SPO
+            SPO buttonSPO = button.GetComponent<SPO>();
+            _model.SetTargetElement(buttonSPO);
         }
         else
         {

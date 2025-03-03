@@ -116,9 +116,9 @@ public class VirtualPlayPresenter : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            // Store the button as the target element
-            int buttonID = virtualPlayButtons.IndexOf(button);
-            model.SetTargetElement(buttonID);
+            // Store the target button's SPO
+            SPO buttonSPO = button.GetComponent<SPO>();
+            model.SetTargetElement(buttonSPO);
         }
         else
         {
