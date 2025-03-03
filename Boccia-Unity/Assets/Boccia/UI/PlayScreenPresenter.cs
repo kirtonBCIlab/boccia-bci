@@ -16,6 +16,7 @@ public class PlayScreenPresenter : MonoBehaviour
     public Button randomBallButton;
     public Button separateBackButton;
     public Button separateDropButton;
+    private List<Button> _playButtons;
 
     [Header("Debug tools")]
     public bool echoSerialCommands = true;
@@ -48,6 +49,12 @@ public class PlayScreenPresenter : MonoBehaviour
         // Get the VirtualPlayFan's fan presenter component
         _fanPresenter = GameObject.Find("PlayControlFan").GetComponent<FanPresenter>();
 
+        _playButtons = new List<Button>()
+        {
+            resetRampButton,
+            randomBallButton,
+        };
+
         if (_model.UseSeparateButtons)
         {
             InitializeSeparateButtons();
@@ -61,6 +68,9 @@ public class PlayScreenPresenter : MonoBehaviour
     {
         separateBackButton.gameObject.SetActive(false); // False since we start with coarse fan
         separateDropButton.gameObject.SetActive(true);
+
+        _playButtons.Add(separateBackButton);
+        _playButtons.Add(separateDropButton);
 
         addListenersToSeparateButtons();
     }
@@ -79,12 +89,29 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void addListenerToButton(Button button, UnityEngine.Events.UnityAction action)
     {
-        button.onClick.AddListener(action);
+        button.onClick.RemoveAllListeners(); // Remove any existing listeners
+        button.onClick.AddListener(() => HandleButtonClick(button, action));
+
         SPO buttonSPO = button.GetComponent<SPO>();
         if (buttonSPO != null)
         {
             buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
-            buttonSPO.OnSelectedEvent.AddListener(() => action());
+            buttonSPO.OnSelectedEvent.AddListener(() => HandleButtonClick(button, action));
+        }
+    }
+
+    private void HandleButtonClick(Button button, UnityEngine.Events.UnityAction action)
+    {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            // Store the target button's SPO
+            SPO buttonSPO = button.GetComponent<SPO>();
+            _model.SetTargetElement(buttonSPO);
+        }
+        else
+        {
+            // Execute the normal button action
+            action.Invoke();
         }
     }
 

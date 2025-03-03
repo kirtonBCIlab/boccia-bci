@@ -1998,6 +1998,7 @@ GameObject:
   - component: {fileID: 7764173004061172451}
   - component: {fileID: 3576948454555312335}
   - component: {fileID: 8716667809871874162}
+  - component: {fileID: 4579577047200106202}
   m_Layer: 6
   m_Name: VirtualPlayScreen
   m_TagString: Untagged
@@ -2061,6 +2062,20 @@ MonoBehaviour:
   _trialNumber: 0
   _fineFanSettings: {fileID: 11400000, guid: fa646aefe576f30429b0ff7334216751, type: 2}
   _coarseFanSettings: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
+--- !u!114 &4579577047200106202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818931384772691849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0207bb2c705e341b1e4563aecd220e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StreamName: TargetElementStream_VirtualPlay
+  StreamId: target_element_stream_01
 --- !u!1 &4844458911459802053
 GameObject:
   m_ObjectHideFlags: 0
