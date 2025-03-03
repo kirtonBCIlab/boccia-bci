@@ -521,6 +521,11 @@ public class BocciaModel : Singleton<BocciaModel>
         TargetElementSPO = targetSPO;
     }
 
+    public void ClearTargetElement()
+    {
+        TargetElementSPO = null;
+    }
+
     // MARK: BCI Setting Defaults
     // These is triggered for the active BCI paradigm by the ResetBciSettingsToDefaults() public method below whenever the
     // "Reset to Default" button is pressed/ within the BCI Options menu, via the OnResetDefaultsClicked() method in BciOptionsMenuPresenter.cs

@@ -67,8 +67,10 @@ public class TargetElementLSLStream : MonoBehaviour
 
             // Send the sample to the LSL stream
             _outlet.push_sample(new string[] { _sample });
+            // Debug.Log("Target element object ID sent to LSL stream: " + _sample);
 
-            Debug.Log("Target element object ID sent to LSL stream: " + _sample);
+            // Clear the target element SPO in the model
+            _model.ClearTargetElement();
         }
     }
 }
