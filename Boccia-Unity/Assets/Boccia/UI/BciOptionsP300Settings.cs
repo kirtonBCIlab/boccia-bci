@@ -37,6 +37,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Text labelTrainShamSelectionAnimationText;  // Text element for the animation dropdown
     public TMP_Dropdown trainStimulusOnDurationDropdown;
     public TMP_Dropdown trainStimulusOffDurationDropdown;
+    public TMP_Dropdown trainStimulusTypeDropdown;
     public TMP_Dropdown trainFlashColourDropdown;
 
     // UI elements for Testing settings
@@ -46,6 +47,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Text labelTestTargetSelectionAnimationText;  // Text label for the animation dropdown
     public TMP_Dropdown testStimulusOnDurationDropdown;
     public TMP_Dropdown testStimulusOffDurationDropdown;
+    public TMP_Dropdown testStimulusTypeDropdown;
     public TMP_Dropdown testFlashColourDropdown;
 
     private BocciaModel _model;
@@ -73,6 +75,9 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     // List of animations
     private List<string> animationOptions = new List<string>(Enum.GetNames(typeof(BocciaAnimation)));
+
+    // List of stimulus types
+    private List<string> stimulusTypeOptions = new List<string>(Enum.GetNames(typeof(BocciaStimulusType)));
 
     void Awake()
     {
@@ -177,6 +182,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainShamSelectionAnimationDropdown.value = (int)trainSettings.ShamSelectionAnimation;
         trainStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(trainSettings.StimulusOnDuration);
         trainStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(trainSettings.StimulusOffDuration);
+        trainStimulusTypeDropdown.value = (int)trainSettings.StimulusType;
         trainFlashColourDropdown.value = GetColourDropdownIndex(trainSettings.FlashColour);
 
         // Set testing settings UI
@@ -185,6 +191,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         testTargetSelectionAnimationDropdown.value = (int)testSettings.TargetSelectionAnimation;
         testStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(testSettings.StimulusOnDuration);
         testStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(testSettings.StimulusOffDuration);
+        testStimulusTypeDropdown.value = (int)testSettings.StimulusType;
         testFlashColourDropdown.value = GetColourDropdownIndex(testSettings.FlashColour);
 
         // Ensure the animation dropdowns are correctly enabled/disabled based on the feedback toggles
@@ -199,6 +206,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         PopulateDurationDropdowns();
         PopulateAnimationDropdowns();
+        PopulateStimulusTypeDropdowns();
         PopulateFlashColourDropdown();
     }
 
@@ -228,6 +236,15 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainTargetAnimationDropdown.AddOptions(animationOptions);
         trainShamSelectionAnimationDropdown.AddOptions(animationOptions);
         testTargetSelectionAnimationDropdown.AddOptions(animationOptions);
+    }
+
+    private void PopulateStimulusTypeDropdowns()
+    {
+        trainStimulusTypeDropdown.ClearOptions();
+        testStimulusTypeDropdown.ClearOptions();
+
+        trainStimulusTypeDropdown.AddOptions(stimulusTypeOptions);
+        testStimulusTypeDropdown.AddOptions(stimulusTypeOptions);
     }
 
     private void PopulateFlashColourDropdown()
@@ -289,6 +306,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainShamSelectionAnimationDropdown.onValueChanged.AddListener(OnChangeTrainShamSelectionAnimation);
         trainStimulusOnDurationDropdown.onValueChanged.AddListener(OnChangeTrainStimulusOnDuration);
         trainStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTrainStimulusOffDuration);
+        trainStimulusTypeDropdown.onValueChanged.AddListener(OnChangeTrainStimulusType);
         trainFlashColourDropdown.onValueChanged.AddListener(OnChangeTrainFlashColour);
 
         // Testing settings listeners
@@ -297,6 +315,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         testTargetSelectionAnimationDropdown.onValueChanged.AddListener(OnChangeTestTargetSelectionAnimation);
         testStimulusOnDurationDropdown.onValueChanged.AddListener(OnChangeTestStimulusOnDuration);
         testStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTestStimulusOffDuration);
+        testStimulusTypeDropdown.onValueChanged.AddListener(OnChangeTestStimulusType);
         testFlashColourDropdown.onValueChanged.AddListener(OnChangeTestFlashColour);
     }
 
@@ -404,6 +423,12 @@ public class BciOptionsP300Settings : MonoBehaviour
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusOffDuration, selectedDuration);
     }
 
+    private void OnChangeTrainStimulusType(int index)
+    {
+        var selectedStimulusType = (BocciaStimulusType)index;
+        _model.SetBciOption(ref _model.P300Settings.Train.StimulusType, selectedStimulusType);
+    }
+
     private void OnChangeTrainFlashColour(int index)
     {
         var selectedColour = GetColourFromDropdownIndex(index);
@@ -452,6 +477,12 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedDuration = stimulusOffOptions[index];
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusOffDuration, selectedDuration);
+    }
+
+    private void OnChangeTestStimulusType(int index)
+    {
+        var selectedStimulusType = (BocciaStimulusType)index;
+        _model.SetBciOption(ref _model.P300Settings.Test.StimulusType, selectedStimulusType);
     }
 
     private void OnChangeTestFlashColour(int index)

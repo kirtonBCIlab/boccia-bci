@@ -16,6 +16,13 @@ public enum BocciaAnimation
     ColorChange
 }
 
+public enum BocciaStimulusType
+{
+    SolidColor,
+    Gradient,
+    FaceSprite,
+}
+
 // BocciaData contains state used by BocciaModel.  This is just a dumb container
 // that's easy to serialize to/from disk.  Busines logic should go in the model.
 [System.Serializable]
@@ -160,6 +167,7 @@ public class P300SettingsContainer
         public BocciaAnimation ShamSelectionAnimation;  // "Sham Selection Animation". 
         public float StimulusOnDuration;  // Stimulus on duration
         public float StimulusOffDuration;  // Stimulus off duration
+        public BocciaStimulusType StimulusType; // Stimulus type
         public Color FlashColour;  // Stimulus flash colour
         // Add more P300 training-specific parameters here if needed
     }
@@ -173,6 +181,7 @@ public class P300SettingsContainer
         public BocciaAnimation TargetSelectionAnimation;  // "Target Selection Animation"
         public float StimulusOnDuration;  // Stimulus on duration
         public float StimulusOffDuration;  // Stimulus off duration
+        public BocciaStimulusType StimulusType; // Stimulus type
         public Color FlashColour;  // Stimulus flash colour
         // Add more P300 testing-specific parameters here if needed
     }
