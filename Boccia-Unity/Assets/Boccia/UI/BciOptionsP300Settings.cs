@@ -38,6 +38,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown trainStimulusOnDurationDropdown;
     public TMP_Dropdown trainStimulusOffDurationDropdown;
     public TMP_Dropdown trainStimulusTypeDropdown;
+    public GameObject trainFlashColourSetting;
     public TMP_Dropdown trainFlashColourDropdown;
 
     // UI elements for Testing settings
@@ -48,6 +49,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown testStimulusOnDurationDropdown;
     public TMP_Dropdown testStimulusOffDurationDropdown;
     public TMP_Dropdown testStimulusTypeDropdown;
+    public GameObject testFlashColourSetting;
     public TMP_Dropdown testFlashColourDropdown;
 
     private BocciaModel _model;
@@ -198,6 +200,8 @@ public class BciOptionsP300Settings : MonoBehaviour
         UpdateShamSelectionAnimationInteractable(trainShamSelectionFeedbackToggle.isOn);
         UpdateTargetSelectionAnimationInteractable(testTargetSelectionFeedbackToggle.isOn);
 
+        UpdateTrainStimulusSettingsDropdown(trainSettings.StimulusType);
+        UpdateTestStimulusSettingsDropdown(testSettings.StimulusType);
     }
 
     // MARK: Populate Dropdowns
@@ -292,6 +296,31 @@ public class BciOptionsP300Settings : MonoBehaviour
         {
             // Restore the previously selected value when enabled
             testTargetSelectionAnimationDropdown.captionText.text = animationOptions[testTargetSelectionAnimationDropdown.value];
+        }
+    }
+
+    // MARK: Helpers to update stimulus settings dropdown based on stimulus type
+    private void UpdateTrainStimulusSettingsDropdown(BocciaStimulusType stimulusType)
+    {
+        if (stimulusType == BocciaStimulusType.FaceSprite)
+        {
+            trainFlashColourSetting.SetActive(false);
+        }
+        else
+        {
+            trainFlashColourSetting.SetActive(true);
+        }
+    }
+
+    private void UpdateTestStimulusSettingsDropdown(BocciaStimulusType stimulusType)
+    {
+        if (stimulusType == BocciaStimulusType.FaceSprite)
+        {
+            testFlashColourSetting.SetActive(false);
+        }
+        else
+        {
+            testFlashColourSetting.SetActive(true);
         }
     }
 
@@ -427,6 +456,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedStimulusType = (BocciaStimulusType)index;
         _model.SetBciOption(ref _model.P300Settings.Train.StimulusType, selectedStimulusType);
+        UpdateTrainStimulusSettingsDropdown(selectedStimulusType);
     }
 
     private void OnChangeTrainFlashColour(int index)
@@ -483,6 +513,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedStimulusType = (BocciaStimulusType)index;
         _model.SetBciOption(ref _model.P300Settings.Test.StimulusType, selectedStimulusType);
+        UpdateTestStimulusSettingsDropdown(selectedStimulusType);
     }
 
     private void OnChangeTestFlashColour(int index)
