@@ -27,9 +27,7 @@ namespace BCIEssentials.StimulusEffects
         [Tooltip("Gradient material to use for gradient stimulus type")]
         private Material _gradientMaterial;
 
-        [SerializeField]
-        [Tooltip("If true, will use a gradient material.")]
-        private bool _useGradient = true;
+        private BocciaStimulusType _stimulusType;
 
         [SerializeField]
         [Tooltip("If the flash on color is applied on start or the flash off color.")]
@@ -71,7 +69,9 @@ namespace BCIEssentials.StimulusEffects
                     Debug.LogWarning($"No Renderer component found for {gameObject.name}");
                     return;
                 }
+
                 setFlashOnColor();
+                setStimulusType();
             }
         }
 
@@ -88,6 +88,19 @@ namespace BCIEssentials.StimulusEffects
             } 
         }
 
+        private void setStimulusType()
+        {
+            if (_model.GameMode == BocciaGameMode.Train)
+            {
+                _stimulusType = _model.P300Settings.Train.StimulusType;
+            }
+
+            else if (_model.GameMode == BocciaGameMode.Play || _model.GameMode == BocciaGameMode.Virtual)
+            {
+                _stimulusType = _model.P300Settings.Test.StimulusType;
+            }
+        }
+
         public override void SetOn()
         {
             if (_renderer == null)
@@ -95,7 +108,7 @@ namespace BCIEssentials.StimulusEffects
                 return;
             }
 
-            if (_useGradient && _gradientMaterial != null)
+            if ((_stimulusType == BocciaStimulusType.Gradient) && _gradientMaterial != null)
             {
                 _gradientMaterial.SetColor("_GradientColor", _flashOnColor); // Set gradient color to flashOnColor
                 AssignMaterial(_gradientMaterial);
@@ -115,7 +128,7 @@ namespace BCIEssentials.StimulusEffects
                 return;
             }
 
-            if (_useGradient)
+            if (_stimulusType == BocciaStimulusType.Gradient)
             {
                 Material defaultUIMaterial = new Material(Shader.Find("UI/Default")); // Get Unity's default UI Material
                 AssignMaterial(defaultUIMaterial);
