@@ -57,7 +57,7 @@ public class FanGenerator : MonoBehaviour
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
    {
         // If using separate Back button, skip method
-        if (_model.UseSeparateButtons) return;
+        if (_model.P300Settings.SeparateButtons) return;
         
         // If no backbutton (i.e. for the coarse fan), skip method
         if (positionMode == BackButtonPositioningMode.None) return;
@@ -85,7 +85,7 @@ public class FanGenerator : MonoBehaviour
     public void GenerateDropButton(FanSettings fanSettings)
     {
         // If using separate Drop button, skip method
-        if (_model.UseSeparateButtons) return;
+        if (_model.P300Settings.SeparateButtons) return;
 
         int segments = 10; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);

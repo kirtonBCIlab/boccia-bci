@@ -55,10 +55,7 @@ public class PlayScreenPresenter : MonoBehaviour
             randomBallButton,
         };
 
-        if (_model.UseSeparateButtons)
-        {
-            InitializeSeparateButtons();
-        }
+        InitializeSeparateButtons();
 
         // Add listeners to Play buttons
         addListenersToPlayButtons();
@@ -66,13 +63,28 @@ public class PlayScreenPresenter : MonoBehaviour
 
     private void InitializeSeparateButtons()
     {
-        separateBackButton.gameObject.SetActive(false); // False since we start with coarse fan
-        separateDropButton.gameObject.SetActive(true);
-
         _playButtons.Add(separateBackButton);
         _playButtons.Add(separateDropButton);
 
         addListenersToSeparateButtons();
+
+        ToggleSeparateButtons(_model.P300Settings.SeparateButtons);
+    }
+
+    private void ToggleSeparateButtons(bool useSeparateButtons)
+    {
+        separateDropButton.gameObject.SetActive(useSeparateButtons);
+
+        // Set the back button to active if the fan is fine fan
+        if (_fanPresenter != null && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
+        {
+            separateBackButton.gameObject.SetActive(useSeparateButtons);
+            return;
+        }
+        else if (_fanPresenter != null && (_fanPresenter.positioningMode == FanPositioningMode.CenterToBase))
+        {
+            separateBackButton.gameObject.SetActive(false);
+        }
     }
 
     private void addListenersToPlayButtons()
@@ -147,7 +159,7 @@ public class PlayScreenPresenter : MonoBehaviour
     private void FanTypeChanged()
     {
         // Activate the separate back button (if in use) now that the fan changed to Fine Fan
-        if (_model.UseSeparateButtons && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
+        if (_model.P300Settings.SeparateButtons && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
         {
             separateBackButton.gameObject.SetActive(true);
         }
@@ -177,6 +189,8 @@ public class PlayScreenPresenter : MonoBehaviour
         {
             _readSerialCommandCoroutine = StartCoroutine(ReadSerialCommand());
         }
+
+        ToggleSeparateButtons(_model.P300Settings.SeparateButtons);
     }
 
     void OnDisable()

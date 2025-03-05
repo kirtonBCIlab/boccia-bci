@@ -47,6 +47,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown testStimulusOnDurationDropdown;
     public TMP_Dropdown testStimulusOffDurationDropdown;
     public TMP_Dropdown testFlashColourDropdown;
+    public Toggle separateButtonsToggle;
 
     private BocciaModel _model;
 
@@ -186,6 +187,8 @@ public class BciOptionsP300Settings : MonoBehaviour
         testStimulusOnDurationDropdown.value = GetOnDurationDropdownIndex(testSettings.StimulusOnDuration);
         testStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(testSettings.StimulusOffDuration);
         testFlashColourDropdown.value = GetColourDropdownIndex(testSettings.FlashColour);
+        
+        separateButtonsToggle.isOn = _model.P300Settings.SeparateButtons;
 
         // Ensure the animation dropdowns are correctly enabled/disabled based on the feedback toggles
         UpdateShamSelectionAnimationInteractable(trainShamSelectionFeedbackToggle.isOn);
@@ -298,6 +301,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         testStimulusOnDurationDropdown.onValueChanged.AddListener(OnChangeTestStimulusOnDuration);
         testStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTestStimulusOffDuration);
         testFlashColourDropdown.onValueChanged.AddListener(OnChangeTestFlashColour);
+        separateButtonsToggle.onValueChanged.AddListener(OnChangeSeparateButtons);
     }
 
     // Helper methods to get the dropdown index based on duration
@@ -458,6 +462,11 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedColour = GetColourFromDropdownIndex(index);
         _model.SetBciOption(ref _model.P300Settings.Test.FlashColour, selectedColour);
+    }
+
+    private void OnChangeSeparateButtons(bool isOn)
+    {
+        _model.SetBciOption(ref _model.P300Settings.SeparateButtons, isOn);
     }
 
     // MARK: Update P300 Controller

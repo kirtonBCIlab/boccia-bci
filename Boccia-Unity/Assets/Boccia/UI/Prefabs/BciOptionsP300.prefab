@@ -2440,6 +2440,7 @@ MonoBehaviour:
   testStimulusOnDurationDropdown: {fileID: 6760720784470214230}
   testStimulusOffDurationDropdown: {fileID: 2248103270412371685}
   testFlashColourDropdown: {fileID: 341120287138695433}
+  separateButtonsToggle: {fileID: 6577012362561536190}
   bciControllerManager: {fileID: 0}
 --- !u!114 &124571744188632792
 MonoBehaviour:
