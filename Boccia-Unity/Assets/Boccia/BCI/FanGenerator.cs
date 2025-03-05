@@ -123,6 +123,7 @@ public class FanGenerator : MonoBehaviour
         Mesh mesh = new();
         int verticesCount = (segments + 1) * 2;
         Vector3[] vertices = new Vector3[verticesCount];
+        Vector2[] uv = new Vector2[verticesCount]; // UVs for each vertex
         int[] triangles = new int[segments * 6];
         float angleStep = (endAngle - startAngle) / segments;
 
@@ -138,6 +139,18 @@ public class FanGenerator : MonoBehaviour
             vertices[i] = innerVertex;
             vertices[i + segments + 1] = outerVertex;
 
+            // Calculate the distance from the center
+            float innerDistance = Mathf.Sqrt(innerVertex.x * innerVertex.x + innerVertex.y * innerVertex.y);
+            float outerDistance = Mathf.Sqrt(outerVertex.x * outerVertex.x + outerVertex.y * outerVertex.y);
+    
+            // Normalize the distances
+            float innerNormalizedDistance = Mathf.InverseLerp(innerRadius, outerRadius, innerDistance);
+            float outerNormalizedDistance = Mathf.InverseLerp(innerRadius, outerRadius, outerDistance);
+    
+            // Map the UVs (used to create the gradient effect for gradient stimulus)
+            uv[i] = new Vector2(innerNormalizedDistance, innerNormalizedDistance);
+            uv[i + segments + 1] = new Vector2(outerNormalizedDistance, outerNormalizedDistance);
+
             if (i < segments)
             {
                 int start = i * 6;
@@ -152,6 +165,7 @@ public class FanGenerator : MonoBehaviour
         }
 
         mesh.vertices = vertices;
+        mesh.uv = uv;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
