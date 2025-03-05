@@ -59,10 +59,7 @@ public class VirtualPlayPresenter : MonoBehaviour
             randomJackButton,
         };
 
-        if (model.UseSeparateButtons)
-        {
-            InitializeSeparateButtons();
-        }
+        InitializeSeparateButtons();
 
         // Add listeners to Virtual Play buttons
         AddListenersToVirtualPlayButtons();
@@ -74,15 +71,39 @@ public class VirtualPlayPresenter : MonoBehaviour
         ConnectTestingButtons();
     }
 
+    void OnEnable()
+    {
+        if (model == null)
+        {
+            return;
+        }
+
+        ToggleSeparateButtons(model.P300Settings.SeparateButtons);
+    }
+
     private void InitializeSeparateButtons()
     {
-        separateBackButton.gameObject.SetActive(false); // False since we start with coarse fan
-        separateDropButton.gameObject.SetActive(true);
-
         virtualPlayButtons.Add(separateBackButton);
         virtualPlayButtons.Add(separateDropButton);
 
         AddListenersToSeparateButtons();
+
+        ToggleSeparateButtons(model.P300Settings.SeparateButtons);
+    }
+
+    private void ToggleSeparateButtons(bool useSeparateButtons)
+    {
+        separateDropButton.gameObject.SetActive(useSeparateButtons);
+
+        // Set the back button to active if the fan is fine fan
+        if (_fanPresenter != null && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
+        {
+            separateBackButton.gameObject.SetActive(useSeparateButtons);
+        }
+        else if (_fanPresenter != null && (_fanPresenter.positioningMode == FanPositioningMode.CenterToBase))
+        {
+            separateBackButton.gameObject.SetActive(false);
+        }
     }
 
     private void AddListenersToVirtualPlayButtons()
@@ -159,7 +180,7 @@ public class VirtualPlayPresenter : MonoBehaviour
     private void FanTypeChanged()
     {
         // Activate the separate back button (if in use) now that the fan changed to Fine Fan
-        if (model.UseSeparateButtons && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
+        if (model.P300Settings.SeparateButtons && (_fanPresenter.positioningMode == FanPositioningMode.CenterToRails))
         {
             separateBackButton.gameObject.SetActive(true);
         }

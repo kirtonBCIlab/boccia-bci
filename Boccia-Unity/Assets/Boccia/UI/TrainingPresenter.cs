@@ -29,9 +29,6 @@ public class TrainingPresenter : MonoBehaviour
 
         // Generate the fan
         //fanPresenter.GenerateFan();
-
-        separateBackButton.gameObject.SetActive(_model.UseSeparateButtons);
-        separateDropButton.gameObject.SetActive(_model.UseSeparateButtons);
     }
 
     void OnEnable()
@@ -41,6 +38,9 @@ public class TrainingPresenter : MonoBehaviour
         {
             _model.WasChanged += ModelChanged;
             _model.BciChanged += BciChanged;
+
+            separateBackButton.gameObject.SetActive(_model.P300Settings.SeparateButtons);
+            separateDropButton.gameObject.SetActive(_model.P300Settings.SeparateButtons);
         }
 
         // Set the instruction text

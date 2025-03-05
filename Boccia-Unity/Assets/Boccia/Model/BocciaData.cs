@@ -148,6 +148,7 @@ public class P300SettingsContainer
 {
     public TrainSettings Train = new TrainSettings();  // Settings related to training
     public TestSettings Test = new TestSettings();    // Settings related to testing
+    public bool SeparateButtons;
 
     // Nested class for P300 training settings
     [System.Serializable]
