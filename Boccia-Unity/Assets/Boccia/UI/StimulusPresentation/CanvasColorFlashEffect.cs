@@ -24,6 +24,14 @@ namespace BCIEssentials.StimulusEffects
         private Color _flashOffColor = Color.white;
 
         [SerializeField]
+        [Tooltip("Gradient material to use for gradient stimulus type")]
+        private Material _gradientMaterial;
+
+        [SerializeField]
+        [Tooltip("If true, will use a gradient material.")]
+        private bool _useGradient = true;
+
+        [SerializeField]
         [Tooltip("If the flash on color is applied on start or the flash off color.")]
         private bool _startOn;
         
@@ -87,7 +95,16 @@ namespace BCIEssentials.StimulusEffects
                 return;
             }
 
-            AssignMaterialColor(_flashOnColor);
+            if (_useGradient && _gradientMaterial != null)
+            {
+                _gradientMaterial.SetColor("_GradientColor", _flashOnColor); // Set gradient color to flashOnColor
+                AssignMaterial(_gradientMaterial);
+            }
+            else
+            {
+                AssignMaterialColor(_flashOnColor);
+            }
+
             IsOn = true;
         }
 
@@ -97,8 +114,17 @@ namespace BCIEssentials.StimulusEffects
             {
                 return;
             }
+
+            if (_useGradient)
+            {
+                Material defaultUIMaterial = new Material(Shader.Find("UI/Default")); // Get Unity's default UI Material
+                AssignMaterial(defaultUIMaterial);
+            }
+            else
+            {
+                AssignMaterialColor(_flashOffColor);
+            }
             
-            AssignMaterialColor(_flashOffColor);
             IsOn = false;
         }
 
@@ -146,6 +172,11 @@ namespace BCIEssentials.StimulusEffects
         private void AssignMaterialColor(Color color)
         {
             _renderer.SetColor(color);
+        }
+
+        private void AssignMaterial(Material material)
+        {
+            _renderer.SetMaterial(material, 0);
         }
     }
 }
