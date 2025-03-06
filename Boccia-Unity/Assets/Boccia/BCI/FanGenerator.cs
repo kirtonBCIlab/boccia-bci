@@ -71,7 +71,7 @@ public class FanGenerator : MonoBehaviour
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
    {
         // If using separate Back button, skip method
-        if (_model.UseSeparateButtons) return;
+        if (_model.P300Settings.SeparateButtons) return;
         
         // If no backbutton (i.e. for the coarse fan), skip method
         if (positionMode == BackButtonPositioningMode.None) return;
@@ -107,7 +107,7 @@ public class FanGenerator : MonoBehaviour
     public void GenerateDropButton(FanSettings fanSettings)
     {
         // If using separate Drop button, skip method
-        if (_model.UseSeparateButtons) return;
+        if (_model.P300Settings.SeparateButtons) return;
 
         float innerRadius = fanSettings.InnerRadius - fanSettings.DropButtonHeight;
         float outerRadius = fanSettings.InnerRadius - fanSettings.rowSpacing;

@@ -23,9 +23,6 @@ public class BocciaModel : Singleton<BocciaModel>
     public BocciaScreen CurrentScreen;
     private BocciaScreen PreviousScreen;
 
-    // Fan segment testing
-    public bool UseSeparateButtons { get; private set; }
-
     // Game
     public BocciaGameMode GameMode;
 
@@ -149,8 +146,6 @@ public class BocciaModel : Singleton<BocciaModel>
         // Send the change event after SimulatedRamp is ready
         SendRampChangeEvent();
         // These will fail to run if put in the Awake() method
-
-        UseSeparateButtons = true;
     }
 
     private void OnDisable()
@@ -551,6 +546,8 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.P300Settings.Test.StimulusOffDuration = 0.075f;
         bocciaData.P300Settings.Test.StimulusType = BocciaStimulusType.SolidColor;
         bocciaData.P300Settings.Test.FlashColour = Color.red;
+
+        bocciaData.P300Settings.SeparateButtons = false;
 
         // Note: SendBciChangeEvent() trigged within ResetBciOptionsToDefaults();
     }
