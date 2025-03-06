@@ -363,8 +363,8 @@ public class FanGenerator : MonoBehaviour
         Vector3 fanSegmentMidPoint = new Vector3(midX, midY, -0.01f);
             
         spriteObject.transform.localPosition = fanSegmentMidPoint;
-        spriteObject.transform.localRotation = fanSegment.transform.localRotation;
-        spriteObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        spriteObject.transform.localRotation = Quaternion.identity;
+        spriteObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
     }
 
     private bool IsFaceSpriteStimulus()
