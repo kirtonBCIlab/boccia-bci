@@ -2587,6 +2587,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8581553552163632729, guid: 8bac6dea2a454405e87b152ccf944687, type: 3}
+      propertyPath: m_text
+      value: Use separate drop/back buttons
+      objectReference: {fileID: 0}
     - target: {fileID: 9094978950140901730, guid: 8bac6dea2a454405e87b152ccf944687, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
