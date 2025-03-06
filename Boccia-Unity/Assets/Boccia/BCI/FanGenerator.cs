@@ -159,6 +159,9 @@ public class FanGenerator : MonoBehaviour
         int[] triangles = new int[segments * 6];
         float angleStep = (endAngle - startAngle) / segments;
 
+        // Calculate the center of the segment
+        Vector3 meshCenter = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
+
         for (int i = 0; i <= segments; i++)
         {
             float angle = startAngle + i * angleStep;
@@ -171,17 +174,14 @@ public class FanGenerator : MonoBehaviour
             vertices[i] = innerVertex;
             vertices[i + segments + 1] = outerVertex;
 
-            // Calculate the distance from the center
-            float innerDistance = Mathf.Sqrt(innerVertex.x * innerVertex.x + innerVertex.y * innerVertex.y);
-            float outerDistance = Mathf.Sqrt(outerVertex.x * outerVertex.x + outerVertex.y * outerVertex.y);
-    
-            // Normalize the distances
-            float innerNormalizedDistance = Mathf.InverseLerp(innerRadius, outerRadius, innerDistance);
-            float outerNormalizedDistance = Mathf.InverseLerp(innerRadius, outerRadius, outerDistance);
-    
-            // Map the UVs (used to create the gradient effect for gradient stimulus)
-            uv[i] = new Vector2(innerNormalizedDistance, innerNormalizedDistance);
-            uv[i + segments + 1] = new Vector2(outerNormalizedDistance, outerNormalizedDistance);
+            // Calculate UV coordinates (used for the gradient shader)
+            Vector2 segmentCenter = new Vector2(meshCenter.x, meshCenter.y);
+            Vector2 innerUV = new Vector2(innerVertex.x, innerVertex.y) - segmentCenter;
+            Vector2 outerUV = new Vector2(outerVertex.x, outerVertex.y) - segmentCenter;
+
+            // Normalize UV
+            uv[i] = innerUV * 0.5f + new Vector2(0.5f, 0.5f);
+            uv[i + segments + 1] = outerUV * 0.5f + new Vector2(0.5f, 0.5f);
 
             if (i < segments)
             {
