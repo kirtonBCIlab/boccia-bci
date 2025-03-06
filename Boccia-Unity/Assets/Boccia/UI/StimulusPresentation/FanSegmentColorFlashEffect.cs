@@ -29,7 +29,7 @@ namespace BCIEssentials.StimulusEffects
 
         [SerializeField]
         [Tooltip("Sprite to use for FaceSprite stimulus type")]
-        private GameObject spriteObject;
+        private GameObject _spriteObject;
 
         private BocciaStimulusType _stimulusType;
 
@@ -121,11 +121,11 @@ namespace BCIEssentials.StimulusEffects
 
             else if (_stimulusType == BocciaStimulusType.FaceSprite)
             {
-                spriteObject = transform.Find("FaceSprite").gameObject;
+                _spriteObject = transform.Find("FaceSprite").gameObject;
 
-                if (spriteObject != null)
+                if (_spriteObject != null)
                 {
-                    spriteObject.SetActive(true);
+                    _spriteObject.SetActive(true);
                 }
             }
 
@@ -151,7 +151,7 @@ namespace BCIEssentials.StimulusEffects
             }
             else if (_stimulusType == BocciaStimulusType.FaceSprite)
             {
-                spriteObject.SetActive(false);
+                _spriteObject.SetActive(false);
             }
             else
             {
