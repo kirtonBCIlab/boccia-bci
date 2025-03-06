@@ -149,10 +149,12 @@ namespace BCIEssentials.StimulusEffects
                 Material defaultUIMaterial = new Material(Shader.Find("UI/Default")); // Get Unity's default UI Material
                 AssignMaterial(defaultUIMaterial);
             }
+
             else if (_stimulusType == BocciaStimulusType.FaceSprite)
             {
                 _spriteObject.SetActive(false);
             }
+            
             else
             {
                 AssignMaterialColor(_flashOffColor);
