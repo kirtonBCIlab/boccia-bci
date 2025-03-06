@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
+using BCIEssentials.StimulusEffects;
 using FanNamespace;
 using TMPro;
 using UnityEngine.Rendering;
@@ -14,6 +15,11 @@ public class FanGenerator : MonoBehaviour
     public Color colour = Color.grey;
 
     public GameObject fanAnnotations;
+
+    [Header("Stimulus Settings")]
+    public Sprite faceSprite;
+    private GameObject spriteObject;
+    private BocciaStimulusType _stimulusType;
 
     private BocciaModel _model;
 
@@ -42,16 +48,21 @@ public class FanGenerator : MonoBehaviour
                 float innerRadius = fanSettings.InnerRadius + j * (radiusStep + fanSettings.rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
-                CreateFanSegment(startAngle, endAngle, innerRadius, outerRadius);
+                CreateFanSegment(angleStep, startAngle, endAngle, innerRadius, outerRadius);
             }
         }
     }
 
-    public void CreateFanSegment(float startAngle, float endAngle, float innerRadius, float outerRadius)
+    public void CreateFanSegment(float angleStep, float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
         int segments = 100; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
-        CreateMeshObject("FanSegment", fanMesh);
+        GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh);
+
+        if (IsFaceSpriteStimulus())
+        {
+            CreateFanSegmentSprites(fanSegment, angleStep, startAngle, endAngle, innerRadius, outerRadius);
+        }
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
@@ -334,5 +345,44 @@ public class FanGenerator : MonoBehaviour
             Debug.Log($"Scaled font size: {scaledFontSize}");
             return scaledFontSize;
         }
+    }
+
+    public void CreateFanSegmentSprites(GameObject fanSegment, float angleStep, float startAngle, float endAngle, float innerRadius, float outerRadius)
+    {
+        // Create GameObject for the face sprite as a child of the fan segment
+        spriteObject = new GameObject("FaceSprite");
+        spriteObject.transform.SetParent(fanSegment.transform);
+        SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = faceSprite;
+
+        // Calculate location for the face sprite object
+        float midAngle = startAngle + angleStep / 2f;
+        float midRadius = (innerRadius + outerRadius) / 2f;
+        float midX = midRadius * Mathf.Cos(midAngle * Mathf.Deg2Rad);
+        float midY = midRadius * Mathf.Sin(midAngle * Mathf.Deg2Rad);
+        Vector3 fanSegmentMidPoint = new Vector3(midX, midY, -0.01f);
+            
+        spriteObject.transform.localPosition = fanSegmentMidPoint;
+        spriteObject.transform.localRotation = fanSegment.transform.localRotation;
+        spriteObject.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+    }
+
+    private bool IsFaceSpriteStimulus()
+    {
+        if (_model.GameMode == BocciaGameMode.Train)
+        {
+            _stimulusType = _model.P300Settings.Train.StimulusType;
+        }
+        else if (_model.GameMode == BocciaGameMode.Play || _model.GameMode == BocciaGameMode.Virtual)
+        {
+            _stimulusType = _model.P300Settings.Test.StimulusType;
+        }
+
+        if (_stimulusType == BocciaStimulusType.FaceSprite)
+        {
+            return true;
+        }
+
+        return false;
     }
 }   

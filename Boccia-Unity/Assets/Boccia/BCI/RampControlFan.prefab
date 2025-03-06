@@ -68,6 +68,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: fc80352a2baed914fa228646173e5f3f, type: 2}
   colour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   fanAnnotations: {fileID: 8655961538621574760, guid: cb8177dd45c161c44bd3d192f6de8adc, type: 3}
+  faceSprite: {fileID: 21300000, guid: 3626d00d2dde13b4a89845096544f9c0, type: 3}
 --- !u!114 &-7705321522961072228
 MonoBehaviour:
   m_ObjectHideFlags: 0
