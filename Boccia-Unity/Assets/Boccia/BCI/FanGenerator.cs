@@ -365,6 +365,9 @@ public class FanGenerator : MonoBehaviour
         spriteObject.transform.localPosition = fanSegmentMidPoint;
         spriteObject.transform.localRotation = Quaternion.identity;
         spriteObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+
+        // Disable sprite initially
+        spriteObject.SetActive(false);
     }
 
     private bool IsFaceSpriteStimulus()

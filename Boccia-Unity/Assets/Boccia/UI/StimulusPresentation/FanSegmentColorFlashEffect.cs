@@ -27,6 +27,10 @@ namespace BCIEssentials.StimulusEffects
         [Tooltip("Gradient material to use for gradient stimulus type")]
         private Material _gradientMaterial;
 
+        [SerializeField]
+        [Tooltip("Sprite to use for FaceSprite stimulus type")]
+        private GameObject spriteObject;
+
         private BocciaStimulusType _stimulusType;
 
         [SerializeField]
@@ -113,8 +117,18 @@ namespace BCIEssentials.StimulusEffects
             {
                 _gradientMaterial.SetColor("_GradientColor", _flashOnColor); // Set gradient color to flashOnColor
                 AssignMaterial(_gradientMaterial);
-                return;
             }
+
+            else if (_stimulusType == BocciaStimulusType.FaceSprite)
+            {
+                spriteObject = transform.Find("FaceSprite").gameObject;
+
+                if (spriteObject != null)
+                {
+                    spriteObject.SetActive(true);
+                }
+            }
+
             else
             {
                 AssignMaterialColor(_flashOnColor);
@@ -134,6 +148,10 @@ namespace BCIEssentials.StimulusEffects
             {
                 Material defaultUIMaterial = new Material(Shader.Find("UI/Default")); // Get Unity's default UI Material
                 AssignMaterial(defaultUIMaterial);
+            }
+            else if (_stimulusType == BocciaStimulusType.FaceSprite)
+            {
+                spriteObject.SetActive(false);
             }
             else
             {
