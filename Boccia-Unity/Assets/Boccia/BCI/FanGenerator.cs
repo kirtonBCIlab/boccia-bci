@@ -90,7 +90,14 @@ public class FanGenerator : MonoBehaviour
                 break;
         }
 
-        CreateMeshObject("BackButton", fanMesh, rotationOffset);
+        GameObject backButton = CreateMeshObject("BackButton", fanMesh, rotationOffset);
+
+        if (IsFaceSpriteStimulus())
+        {
+            Quaternion spriteRotation = Quaternion.Euler(0, 0, -90);
+            Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
+            CreateBackAndDropSprite(backButton, startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, spriteRotation, spriteScale);
+        }
     }
 
     public void GenerateDropButton(FanSettings fanSettings)
@@ -98,9 +105,18 @@ public class FanGenerator : MonoBehaviour
         // If using separate Drop button, skip method
         if (_model.UseSeparateButtons) return;
 
+        float innerRadius = fanSettings.InnerRadius - fanSettings.DropButtonHeight;
+        float outerRadius = fanSettings.InnerRadius - fanSettings.rowSpacing;
         int segments = 10; // Number of segments to approximate the arc
-        Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
-        CreateMeshObject("DropButton", fanMesh);
+        Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, innerRadius, outerRadius, segments);
+        GameObject dropButton =CreateMeshObject("DropButton", fanMesh);
+
+        if (IsFaceSpriteStimulus())
+        {
+            Quaternion spriteRotation = Quaternion.Euler(0, 0, 0);
+            Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
+            CreateBackAndDropSprite(dropButton, 0, fanSettings.Theta, innerRadius, outerRadius, spriteRotation, spriteScale);
+        }
     }
 
     public void DestroyFanSegments()
@@ -363,8 +379,30 @@ public class FanGenerator : MonoBehaviour
         Vector3 fanSegmentMidPoint = new Vector3(midX, midY, -0.01f);
             
         spriteObject.transform.localPosition = fanSegmentMidPoint;
-        spriteObject.transform.localRotation = Quaternion.identity;
+        spriteObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
         spriteObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+
+        // Disable sprite initially
+        spriteObject.SetActive(false);
+    }
+
+    public void CreateBackAndDropSprite(GameObject fanButton, float startAngle, float endAngle, float innerRadius, float outerRadius, Quaternion rotation, Vector3 scale)
+    {
+        // Create GameObject for the face sprite as a child of the back button
+        spriteObject = new GameObject("FaceSprite");
+        spriteObject.transform.SetParent(fanButton.transform);
+        SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = faceSprite;
+
+        float midAngle = (startAngle + endAngle) / 2f;
+        float midRadius = (innerRadius + outerRadius) / 2f;
+        float midX = midRadius * Mathf.Cos(midAngle * Mathf.Deg2Rad);
+        float midY = midRadius * Mathf.Sin(midAngle * Mathf.Deg2Rad);
+        Vector3 segmentMidPoint = new Vector3(midX, midY, -0.01f);
+
+        spriteObject.transform.localPosition = segmentMidPoint;
+        spriteObject.transform.localRotation = rotation;
+        spriteObject.transform.localScale = scale;
 
         // Disable sprite initially
         spriteObject.SetActive(false);
