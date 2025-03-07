@@ -24,6 +24,16 @@ namespace BCIEssentials.StimulusEffects
         private Color _flashOffColor = Color.white;
 
         [SerializeField]
+        [Tooltip("Gradient material to use for gradient stimulus type")]
+        private Material _gradientMaterial;
+
+        [SerializeField]
+        [Tooltip("Sprite to use for FaceSprite stimulus type")]
+        private GameObject _spriteObject;
+
+        private BocciaStimulusType _stimulusType;
+
+        [SerializeField]
         [Tooltip("If the flash on color is applied on start or the flash off color.")]
         private bool _startOn;
         
@@ -63,7 +73,9 @@ namespace BCIEssentials.StimulusEffects
                     Debug.LogWarning($"No Renderer component found for {gameObject.name}");
                     return;
                 }
+
                 setFlashOnColor();
+                setStimulusType();
             }
         }
 
@@ -80,6 +92,19 @@ namespace BCIEssentials.StimulusEffects
             } 
         }
 
+        private void setStimulusType()
+        {
+            if (_model.GameMode == BocciaGameMode.Train)
+            {
+                _stimulusType = _model.P300Settings.Train.StimulusType;
+            }
+
+            else if (_model.GameMode == BocciaGameMode.Play || _model.GameMode == BocciaGameMode.Virtual)
+            {
+                _stimulusType = _model.P300Settings.Test.StimulusType;
+            }
+        }
+
         public override void SetOn()
         {
             if (_renderer == null)
@@ -87,7 +112,22 @@ namespace BCIEssentials.StimulusEffects
                 return;
             }
 
-            AssignMaterialColor(_flashOnColor);
+            if ((_stimulusType == BocciaStimulusType.Gradient) && _gradientMaterial != null)
+            {
+                _gradientMaterial.SetColor("_GradientColor", _flashOnColor); // Set gradient color to flashOnColor
+                AssignMaterial(_gradientMaterial);
+            }
+
+            else if (_stimulusType == BocciaStimulusType.FaceSprite && _spriteObject != null)
+            {
+                _spriteObject.SetActive(true);
+            }
+
+            else
+            {
+                AssignMaterialColor(_flashOnColor);
+            }
+
             IsOn = true;
         }
 
@@ -97,8 +137,23 @@ namespace BCIEssentials.StimulusEffects
             {
                 return;
             }
+
+            if (_stimulusType == BocciaStimulusType.Gradient)
+            {
+                Material defaultUIMaterial = new Material(Shader.Find("UI/Default")); // Get Unity's default UI Material
+                AssignMaterial(defaultUIMaterial);
+            }
+
+            else if (_stimulusType == BocciaStimulusType.FaceSprite)
+            {
+                _spriteObject.SetActive(false);
+            }
             
-            AssignMaterialColor(_flashOffColor);
+            else
+            {
+                AssignMaterialColor(_flashOffColor);
+            }
+            
             IsOn = false;
         }
 
@@ -146,6 +201,11 @@ namespace BCIEssentials.StimulusEffects
         private void AssignMaterialColor(Color color)
         {
             _renderer.SetColor(color);
+        }
+
+        private void AssignMaterial(Material material)
+        {
+            _renderer.SetMaterial(material, 0);
         }
     }
 }
