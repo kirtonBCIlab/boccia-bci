@@ -139,6 +139,12 @@ public class FanPresenter : MonoBehaviour
                 CenterGameOptionsMenu();
                 fanGenerator.GenerateFanShape(_fineFan);
         }
+        // Make sure the fan positioning mode is Center North for the training fan
+        if (fanTypeScreen == BocciaScreen.TrainingScreen)
+        {
+            positioningMode = FanPositioningMode.CenterNorth;
+            StartCoroutine(GenerateFanCoroutine());
+        }
         // For all other cases, generate fan with a coroutine
         else
         {
