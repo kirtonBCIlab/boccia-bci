@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BCIEssentials.StimulusObjects;
+using BCIEssentials.StimulusEffects;
 using FanNamespace;
 using TMPro;
 using UnityEngine.Rendering;
@@ -14,6 +15,11 @@ public class FanGenerator : MonoBehaviour
     public Color colour = Color.grey;
 
     public GameObject fanAnnotations;
+
+    [Header("Stimulus Settings")]
+    public Sprite faceSprite;
+    private GameObject spriteObject;
+    private BocciaStimulusType _stimulusType;
 
     private BocciaModel _model;
 
@@ -42,16 +48,24 @@ public class FanGenerator : MonoBehaviour
                 float innerRadius = fanSettings.InnerRadius + j * (radiusStep + fanSettings.rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
-                CreateFanSegment(startAngle, endAngle, innerRadius, outerRadius);
+                CreateFanSegment(angleStep, startAngle, endAngle, innerRadius, outerRadius);
             }
         }
     }
 
-    public void CreateFanSegment(float startAngle, float endAngle, float innerRadius, float outerRadius)
+    public void CreateFanSegment(float angleStep, float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
         int segments = 100; // Number of segments to approximate the arc
         Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
-        CreateMeshObject("FanSegment", fanMesh);
+        GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh);
+        Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
+
+        if (IsFaceSpriteStimulus())
+        {
+            Quaternion spriteRotation = Quaternion.Euler(0, 0, 0);
+            Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
+            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, spriteRotation, spriteScale);
+        }
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
@@ -79,7 +93,15 @@ public class FanGenerator : MonoBehaviour
                 break;
         }
 
-        CreateMeshObject("BackButton", fanMesh, rotationOffset);
+        GameObject backButton = CreateMeshObject("BackButton", fanMesh, rotationOffset);
+        Vector3 backButtonMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius); 
+
+        if (IsFaceSpriteStimulus())
+        {
+            Quaternion spriteRotation = Quaternion.Euler(0, 0, -90);
+            Vector3 spriteScale = new Vector3(0.1f, 0.1f, 0.1f);
+            CreateSegmentSprite(backButton, backButtonMidpoint, spriteRotation, spriteScale);
+        }
     }
 
     public void GenerateDropButton(FanSettings fanSettings)
@@ -87,9 +109,19 @@ public class FanGenerator : MonoBehaviour
         // If using separate Drop button, skip method
         if (_model.P300Settings.SeparateButtons) return;
 
+        float innerRadius = fanSettings.InnerRadius - fanSettings.DropButtonHeight;
+        float outerRadius = fanSettings.InnerRadius - fanSettings.rowSpacing;
         int segments = 10; // Number of segments to approximate the arc
-        Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
-        CreateMeshObject("DropButton", fanMesh);
+        Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, innerRadius, outerRadius, segments);
+        GameObject dropButton = CreateMeshObject("DropButton", fanMesh);
+        Vector3 dropButtonMidpoint = CalculateSegmentMidpoint(0, fanSettings.Theta, innerRadius, outerRadius);
+
+        if (IsFaceSpriteStimulus())
+        {
+            Quaternion spriteRotation = Quaternion.Euler(0, 0, 0);
+            Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
+            CreateSegmentSprite(dropButton, dropButtonMidpoint, spriteRotation, spriteScale);
+        }
     }
 
     public void DestroyFanSegments()
@@ -123,8 +155,12 @@ public class FanGenerator : MonoBehaviour
         Mesh mesh = new();
         int verticesCount = (segments + 1) * 2;
         Vector3[] vertices = new Vector3[verticesCount];
+        Vector2[] uv = new Vector2[verticesCount]; // UVs for each vertex
         int[] triangles = new int[segments * 6];
         float angleStep = (endAngle - startAngle) / segments;
+
+        // Calculate the center of the segment
+        Vector3 meshCenter = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
 
         for (int i = 0; i <= segments; i++)
         {
@@ -137,6 +173,15 @@ public class FanGenerator : MonoBehaviour
 
             vertices[i] = innerVertex;
             vertices[i + segments + 1] = outerVertex;
+
+            // Calculate UV coordinates (used for the gradient shader)
+            Vector2 segmentCenter = new Vector2(meshCenter.x, meshCenter.y);
+            Vector2 innerUV = new Vector2(innerVertex.x, innerVertex.y) - segmentCenter;
+            Vector2 outerUV = new Vector2(outerVertex.x, outerVertex.y) - segmentCenter;
+
+            // Normalize UV
+            uv[i] = innerUV * 0.5f + new Vector2(0.5f, 0.5f);
+            uv[i + segments + 1] = outerUV * 0.5f + new Vector2(0.5f, 0.5f);
 
             if (i < segments)
             {
@@ -152,6 +197,7 @@ public class FanGenerator : MonoBehaviour
         }
 
         mesh.vertices = vertices;
+        mesh.uv = uv;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
@@ -320,5 +366,53 @@ public class FanGenerator : MonoBehaviour
             Debug.Log($"Scaled font size: {scaledFontSize}");
             return scaledFontSize;
         }
+    }
+
+    public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, Quaternion rotation, Vector3 scale)
+    {
+        // Create GameObject for the face sprite as a child of the fan segment
+        spriteObject = new GameObject("FaceSprite");
+        spriteObject.transform.SetParent(segment.transform);
+        SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = faceSprite;
+
+        // Set the transform of the sprite object based on the segment mid point
+        Vector3 spriteObjectPosition = new Vector3(segmentMidPoint.x, segmentMidPoint.y, -0.01f);
+        spriteObject.transform.localPosition = spriteObjectPosition;
+        spriteObject.transform.localRotation = rotation;
+        spriteObject.transform.localScale = scale;
+
+        // Disable sprite initially
+        spriteObject.SetActive(false);
+    }
+
+    private bool IsFaceSpriteStimulus()
+    {
+        if (_model.GameMode == BocciaGameMode.Train)
+        {
+            _stimulusType = _model.P300Settings.Train.StimulusType;
+        }
+        else if (_model.GameMode == BocciaGameMode.Play || _model.GameMode == BocciaGameMode.Virtual)
+        {
+            _stimulusType = _model.P300Settings.Test.StimulusType;
+        }
+
+        if (_stimulusType == BocciaStimulusType.FaceSprite)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private Vector3 CalculateSegmentMidpoint(float startAngle, float endAngle, float innerRadius, float outerRadius)
+    {
+        float midAngle = (startAngle + endAngle) / 2f;
+        float midRadius = (innerRadius + outerRadius) / 2f;
+        float midX = midRadius * Mathf.Cos(midAngle * Mathf.Deg2Rad);
+        float midY = midRadius * Mathf.Sin(midAngle * Mathf.Deg2Rad);
+        Vector3 segmentMidpoint = new Vector3(midX, midY, 0f);
+
+        return segmentMidpoint;
     }
 }   
