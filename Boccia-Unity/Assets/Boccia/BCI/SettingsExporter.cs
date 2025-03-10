@@ -69,11 +69,14 @@ public class SettingsExporter : MonoBehaviour
         Debug.Log($"Exported Trial {_trialNumber} settings to {path}");
     }
 
+    // Searches the files names currently in the directory and finds the highest trial number
+    // Increments that number to get the next trial number
     private int GetTrialNumber()
     {
         if (!Directory.Exists(_settingsDir))
         {
-            return 1; // If the directory doesn't exist, start at 1
+            Debug.LogWarning("Directory does not exist.");
+            return 1;
         }
 
         string[] files = Directory.GetFiles(_settingsDir, "*_Trial_*_Settings.json");
