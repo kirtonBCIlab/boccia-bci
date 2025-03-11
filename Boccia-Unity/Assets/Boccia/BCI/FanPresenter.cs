@@ -139,12 +139,6 @@ public class FanPresenter : MonoBehaviour
                 CenterGameOptionsMenu();
                 fanGenerator.GenerateFanShape(_fineFan);
         }
-        // Make sure the fan positioning mode is Center North for the training fan
-        if (fanTypeScreen == BocciaScreen.TrainingScreen)
-        {
-            positioningMode = FanPositioningMode.CenterNorth;
-            StartCoroutine(GenerateFanCoroutine());
-        }
         // For all other cases, generate fan with a coroutine
         else
         {
@@ -204,7 +198,7 @@ public class FanPresenter : MonoBehaviour
     }
 
     /// <summary>
-    ///  Resets the fan to generate a coarse fan if the gameMode changes
+    ///  Resets the fan to generate a coarse fan if the gameMode changes, and a north fan in training
     /// </summary>
     private void ResetFanWhenPlayModeChanges()
     {
@@ -215,6 +209,10 @@ public class FanPresenter : MonoBehaviour
         {
             positioningMode = FanPositioningMode.CenterToBase;
             _lastPlayMode = currentPlayMode;
+        }
+        else if (!currentlyInPlayMode && fanTypeScreen == BocciaScreen.TrainingScreen)
+        {
+            positioningMode = FanPositioningMode.CenterNorth;
         }
     }
 
