@@ -162,6 +162,9 @@ public class FanPresenter : MonoBehaviour
         // Reset to original rotation to avoid cumulative effects
         CenterToOrigin();
 
+        // Set positioning mode
+        fanGenerator.SetFanPositioningMode(positioningMode);
+
         // Get positioning mode and apply the corresponding offset    
         switch (positioningMode)
         {
