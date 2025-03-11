@@ -18,14 +18,23 @@ public class FanGenerator : MonoBehaviour
 
     [Header("Stimulus Settings")]
     public Sprite faceSprite;
+    [SerializeField]
+    private GameObject faceSpriteRotationCorrector;
     private GameObject spriteObject;
     private BocciaStimulusType _stimulusType;
+
+    private FanPositioningMode _fanPositioningMode;
 
     private BocciaModel _model;
 
     void Start()
     {
         _model = BocciaModel.Instance;
+    }
+
+    public void SetFanPositioningMode(FanPositioningMode fanPositioningMode)
+    {
+        _fanPositioningMode = fanPositioningMode;
     }
 
     public void GenerateFanShape(FanSettings fanSettings)
@@ -60,12 +69,8 @@ public class FanGenerator : MonoBehaviour
         GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh);
         Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
 
-        if (IsFaceSpriteStimulus())
-        {
-            Quaternion spriteRotation = Quaternion.Euler(0, 0, 0);
-            Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
-            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, spriteRotation, spriteScale);
-        }
+        Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
+        CreateSegmentSprite(fanSegment, fanSegmentMidpoint, spriteScale);
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
@@ -98,9 +103,8 @@ public class FanGenerator : MonoBehaviour
 
         if (IsFaceSpriteStimulus())
         {
-            Quaternion spriteRotation = Quaternion.Euler(0, 0, -90);
             Vector3 spriteScale = new Vector3(0.1f, 0.1f, 0.1f);
-            CreateSegmentSprite(backButton, backButtonMidpoint, spriteRotation, spriteScale);
+            CreateSegmentSprite(backButton, backButtonMidpoint, spriteScale);
         }
     }
 
@@ -118,9 +122,8 @@ public class FanGenerator : MonoBehaviour
 
         if (IsFaceSpriteStimulus())
         {
-            Quaternion spriteRotation = Quaternion.Euler(0, 0, 0);
             Vector3 spriteScale = new Vector3(0.05f, 0.05f, 0.05f);
-            CreateSegmentSprite(dropButton, dropButtonMidpoint, spriteRotation, spriteScale);
+            CreateSegmentSprite(dropButton, dropButtonMidpoint, spriteScale);
         }
     }
 
@@ -368,7 +371,7 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, Quaternion rotation, Vector3 scale)
+    public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, Vector3 scale)
     {
         // Create GameObject for the face sprite as a child of the fan segment
         spriteObject = new GameObject("FaceSprite");
@@ -379,8 +382,20 @@ public class FanGenerator : MonoBehaviour
         // Set the transform of the sprite object based on the segment mid point
         Vector3 spriteObjectPosition = new Vector3(segmentMidPoint.x, segmentMidPoint.y, -0.01f);
         spriteObject.transform.localPosition = spriteObjectPosition;
-        spriteObject.transform.localRotation = rotation;
         spriteObject.transform.localScale = scale;
+
+        // Set the rotation of the sprite object
+        Quaternion spriteRotation;
+        if (_fanPositioningMode == FanPositioningMode.CenterToRails)
+        {
+            spriteRotation = Quaternion.Euler(-90, faceSpriteRotationCorrector.transform.eulerAngles.y, 0);
+        }
+        else
+        {
+            spriteRotation = Quaternion.Euler(90, 0, 0);
+        }
+
+        spriteObject.transform.rotation = spriteRotation;
 
         // Disable sprite initially
         spriteObject.SetActive(false);
