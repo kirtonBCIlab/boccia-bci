@@ -19,6 +19,7 @@ public class FanGenerator : MonoBehaviour
     [Header("Stimulus Settings")]
     public Sprite faceSprite;
     [SerializeField]
+    [Tooltip("Set this to the Shaft Adapter GameObject for Play and Virtual Play fans")]
     private GameObject faceSpriteRotationCorrector;
     private GameObject spriteObject;
     private BocciaStimulusType _stimulusType;
