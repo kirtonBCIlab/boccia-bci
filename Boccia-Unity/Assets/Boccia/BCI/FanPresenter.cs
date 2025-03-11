@@ -198,7 +198,7 @@ public class FanPresenter : MonoBehaviour
     }
 
     /// <summary>
-    ///  Resets the fan to generate a coarse fan if the gameMode changes
+    ///  Resets the fan to generate a coarse fan if the gameMode changes, and a north fan in training
     /// </summary>
     private void ResetFanWhenPlayModeChanges()
     {
@@ -209,6 +209,10 @@ public class FanPresenter : MonoBehaviour
         {
             positioningMode = FanPositioningMode.CenterToBase;
             _lastPlayMode = currentPlayMode;
+        }
+        else if (!currentlyInPlayMode && fanTypeScreen == BocciaScreen.TrainingScreen)
+        {
+            positioningMode = FanPositioningMode.CenterNorth;
         }
     }
 
