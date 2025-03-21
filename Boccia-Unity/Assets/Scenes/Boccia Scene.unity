@@ -1370,6 +1370,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: flashPlurality
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: multiFlashPattern
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: FactorySetupRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
       propertyPath: _selfRegisterAsActive
       value: 1
       objectReference: {fileID: 0}
@@ -2148,7 +2160,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 281971961862754810, guid: 478a387523a05364c8d059c19c67e161, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150.00003
+      value: 150.00005
       objectReference: {fileID: 0}
     - target: {fileID: 1360815048455865100, guid: 478a387523a05364c8d059c19c67e161, type: 3}
       propertyPath: m_LocalPosition.x

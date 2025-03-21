@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 439125805200747300}
   - component: {fileID: 6644194211345973513}
-  - component: {fileID: 6644194211345973512}
   m_Layer: 0
   m_Name: MIControllerBehavior
   m_TagString: Untagged
@@ -25,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439125805200747299}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6644194211345973513
 MonoBehaviour:
@@ -47,40 +46,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selfRegister: 1
   _selfRegisterAsActive: 0
+  SPOTag: BCI
+  _spoFactory: {fileID: 11400000, guid: 742b42676bf053442b2d98c4ba8f2b18, type: 2}
+  FactorySetupRequired: 1
   targetFrameRate: 60
-  _selectableSPOs: []
   _hotkeysEnabled: 1
   windowLength: 2
   interWindowInterval: 0
-  setup: {fileID: 6644194211345973512}
-  setupRequired: 0
   numTrainingSelections: 9
   numTrainWindows: 3
   pauseBeforeTraining: 2
-  trainTargetPersistent: 0
   trainTargetPresentationTime: 3
   trainBreak: 1
   shamFeedback: 0
+  trainTargetPersistent: 0
   trainTarget: 99
-  myTag: BCI
   numSelectionsBeforeTraining: 2
   numSelectionsBetweenTraining: 2
---- !u!114 &6644194211345973512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439125805200747299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a183c01a805ed648ae373d6e8b3047e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spoPrefab: {fileID: 7639228323464969584, guid: 4a190a7ad6ec4e64d87105d7de7f0611, type: 3}
-  _numRows: 1
-  _numColumns: 2
-  _spacing: {x: 4, y: 0}
 --- !u!1 &1649985291859044835
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +73,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1649985291859044833}
   - component: {fileID: 5532972414438851525}
-  - component: {fileID: 5532972414438851522}
   m_Layer: 0
   m_Name: SSVEPControllerBehavior
   m_TagString: Untagged
@@ -106,13 +87,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985291859044835}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5532972414438851525
 MonoBehaviour:
@@ -128,23 +109,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selfRegister: 1
   _selfRegisterAsActive: 0
+  SPOTag: BCI
+  _spoFactory: {fileID: 11400000, guid: b49306ce22f5a9d4d848717eb04761c0, type: 2}
+  FactorySetupRequired: 1
   targetFrameRate: 165
-  _selectableSPOs: []
   _hotkeysEnabled: 1
   windowLength: 1
   interWindowInterval: 0
-  setup: {fileID: 5532972414438851522}
-  setupRequired: 1
   numTrainingSelections: 12
   numTrainWindows: 6
   pauseBeforeTraining: 2
-  trainTargetPersistent: 0
   trainTargetPresentationTime: 3
   trainBreak: 1
   shamFeedback: 0
+  trainTargetPersistent: 0
   trainTarget: 99
-  myTag: BCI
-  setFreqFlash:
+  requestedFlashingFrequencies:
   - 8
   - 10
   - 12
@@ -152,22 +132,6 @@ MonoBehaviour:
   - 18
   - 20
   realFreqFlash: []
---- !u!114 &5532972414438851522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1649985291859044835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a183c01a805ed648ae373d6e8b3047e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spoPrefab: {fileID: 7639228323464969584, guid: 4a190a7ad6ec4e64d87105d7de7f0611, type: 3}
-  _numRows: 2
-  _numColumns: 3
-  _spacing: {x: 2, y: 2}
 --- !u!1 &1649985292535673242
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,9 +142,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1649985292535673238}
   - component: {fileID: 5532972415090187197}
-  - component: {fileID: 5532972415090187194}
-  - component: {fileID: 5532972415090187195}
-  - component: {fileID: 870782259031274312}
+  - component: {fileID: 8178904105061118666}
+  - component: {fileID: 2566001631052182581}
   m_Layer: 0
   m_Name: ControllerManager
   m_TagString: Untagged
@@ -195,7 +158,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985292535673242}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -205,6 +167,7 @@ Transform:
   - {fileID: 1649985293060537290}
   - {fileID: 1649985291859044833}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5532972415090187197
 MonoBehaviour:
@@ -218,10 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa8dfff27ddf714abcbba57f76469d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lslMarkerStream: {fileID: 5532972415090187194}
-  _lslResponseStream: {fileID: 5532972415090187195}
+  _lslMarkerStream: {fileID: 8178904105061118666}
+  _lslResponseStream: {fileID: 2566001631052182581}
   _dontDestroyActiveInstance: 1
---- !u!114 &5532972415090187194
+--- !u!114 &8178904105061118666
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,13 +193,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1649985292535673242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abcc24b3277378e439b2519bf143cb32, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a8771d2f5118f04290065e4181ccc69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StreamName: UnityMarkerStream
   StreamType: LSL_Marker_Strings
-  StreamId: MyStreamID-Unity1234
---- !u!114 &5532972415090187195
+  PrintLogs: 0
+--- !u!114 &2566001631052182581
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -245,24 +208,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1649985292535673242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 725310e9dbbc07a40960a87df5dd5764, type: 3}
+  m_Script: {fileID: 11500000, guid: 991f28f423ad3d945a7c6b50090b8ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetStreamName: PythonResponse
-  _resolveTimeout: 1
-  _pollFrequency: 0
---- !u!114 &870782259031274312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1649985292535673242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e84af0d649a928443b662abe23f64dbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  StreamType: BCI
+  _openOnStart: 0
+  PrintLogs: 0
+  PollingPeriod: 0.1
 --- !u!1 &1649985293060537292
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1649985293060537290}
   - component: {fileID: 5532972415639130384}
-  - component: {fileID: 5532972415639130385}
   m_Layer: 0
   m_Name: P300ControllerBehavior
   m_TagString: Untagged
@@ -288,13 +239,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985293060537292}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5532972415639130384
 MonoBehaviour:
@@ -309,48 +260,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selfRegister: 1
-  _selfRegisterAsActive: 1
+  _selfRegisterAsActive: 0
+  SPOTag: BCI
+  _spoFactory: {fileID: 11400000, guid: f10aba30caad32345985da46bd8337b6, type: 2}
+  FactorySetupRequired: 1
   targetFrameRate: 60
-  _selectableSPOs: []
   _hotkeysEnabled: 1
   windowLength: 1
   interWindowInterval: 0
-  setup: {fileID: 5532972415639130385}
-  setupRequired: 0
   numTrainingSelections: 5
   numTrainWindows: 0
   pauseBeforeTraining: 2
-  trainTargetPersistent: 0
   trainTargetPresentationTime: 3
   trainBreak: 1
   shamFeedback: 0
+  trainTargetPersistent: 0
   trainTarget: 99
-  myTag: BCI
+  trainBufferTime: 0
   numFlashesLowerLimit: 9
   numFlashesUpperLimit: 12
   onTime: 0.1
   offTime: 0.075
   singleFlash: 1
+  contextAwareSingleFlash: 0
   multiFlash: 0
   rowColumn: 0
   checkerboard: 0
+  contextAwareMultiFlash: 0
   numFlashRows: 5
   numFlashColumns: 6
   timeDebug: 0
-  trainBufferTime: 0
---- !u!114 &5532972415639130385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1649985293060537292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a183c01a805ed648ae373d6e8b3047e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spoPrefab: {fileID: 7639228323464969584, guid: 4a190a7ad6ec4e64d87105d7de7f0611, type: 3}
-  _numRows: 3
-  _numColumns: 3
-  _spacing: {x: 2, y: 2}
+  myPopMethod: 3
