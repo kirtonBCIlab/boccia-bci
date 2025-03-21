@@ -57,12 +57,12 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             spo.ObjectID = -100;
             spo.Selectable = true;
 
-            spo.StartStimulusEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOn());
-            spo.StopStimulusEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOff());
+            spo.OnStimulusTriggered.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOn());
+            spo.OnStimulusEndTriggered.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOff());
 
-            spo.OnSelectedEvent.AddListener(() => child.GetComponent<SPO>().StopStimulus());
-            spo.OnSelectedEvent.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().Play());            
-            spo.OnSelectedEvent.AddListener(() => OnSegmentClick(child.transform));  
+            spo.OnSelected.AddListener(() => child.GetComponent<SPO>().StopStimulus());
+            spo.OnSelected.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().Play());            
+            spo.OnSelected.AddListener(() => OnSegmentClick(child.transform));  
 
             // Add BCITargetAnimations component to change color when training starts
             BCITargetAnimations bciTargetAnimations = child.gameObject.AddComponent<BCITargetAnimations>();

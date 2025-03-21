@@ -107,8 +107,8 @@ public class PlayScreenPresenter : MonoBehaviour
         SPO buttonSPO = button.GetComponent<SPO>();
         if (buttonSPO != null)
         {
-            buttonSPO.OnSelectedEvent.AddListener(() => button.GetComponent<SPO>().StopStimulus());
-            buttonSPO.OnSelectedEvent.AddListener(() => HandleButtonClick(button, action));
+            buttonSPO.OnSelected.AddListener(() => button.GetComponent<SPO>().StopStimulus());
+            buttonSPO.OnSelected.AddListener(() => HandleButtonClick(button, action));
         }
     }
 
