@@ -8,7 +8,7 @@
         "com.unity.shadergraph": "12.1.8",
         "com.labstreaminglayer.lsl4unity": "1.16.0"
       },
-      "hash": "19fb87499dd226e9838a54b30339d09ab51892d3"
+      "hash": "fe8261633a3e7c549c7107b66b631e585d4bda0e"
     },
     "com.labstreaminglayer.lsl4unity": {
       "version": "https://github.com/labstreaminglayer/LSL4Unity.git",
