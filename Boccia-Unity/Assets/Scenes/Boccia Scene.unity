@@ -1301,6 +1301,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1249083558419516824, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1649985292535673238, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1346,6 +1350,10 @@ PrefabInstance:
       value: ControllerManager
       objectReference: {fileID: 0}
     - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
       propertyPath: rowColumn
       value: 0
       objectReference: {fileID: 0}
@@ -1367,6 +1375,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
       propertyPath: setupRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: flashPlurality
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: multiFlashPattern
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}
+      propertyPath: FactorySetupRequired
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5532972415639130384, guid: 42ce536088f800e4d94b8a8c92ae7277, type: 3}

@@ -51,7 +51,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     private BocciaModel _model;
 
     public GameObject bciControllerManager;
-    private P300ControllerBehavior p300ControllerBehavior;
+    private CustomP300ControllerBehavior p300ControllerBehavior;
 
     // Colour options for Flash Colour
     private static readonly Dictionary<string, Color> colours = new Dictionary<string, Color>
@@ -78,7 +78,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         _model = BocciaModel.Instance;
         bciControllerManager = GameObject.Find("ControllerManager");
-        p300ControllerBehavior = bciControllerManager.GetComponentInChildren<P300ControllerBehavior>();
+        p300ControllerBehavior = bciControllerManager.GetComponentInChildren<CustomP300ControllerBehavior>();
     }
 
     void Start()
