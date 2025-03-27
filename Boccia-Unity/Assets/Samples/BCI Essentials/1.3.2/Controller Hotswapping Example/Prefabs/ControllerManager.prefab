@@ -49,6 +49,7 @@ MonoBehaviour:
   SPOTag: BCI
   _spoFactory: {fileID: 11400000, guid: 742b42676bf053442b2d98c4ba8f2b18, type: 2}
   FactorySetupRequired: 1
+  _selectableSPOs: []
   targetFrameRate: 60
   _hotkeysEnabled: 1
   windowLength: 2
@@ -112,6 +113,7 @@ MonoBehaviour:
   SPOTag: BCI
   _spoFactory: {fileID: 11400000, guid: b49306ce22f5a9d4d848717eb04761c0, type: 2}
   FactorySetupRequired: 1
+  _selectableSPOs: []
   targetFrameRate: 165
   _hotkeysEnabled: 1
   windowLength: 1
@@ -237,6 +239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1649985293060537290}
+  - component: {fileID: 1249083558419516824}
   - component: {fileID: 5532972415639130384}
   m_Layer: 0
   m_Name: P300ControllerBehavior
@@ -260,7 +263,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1649985292535673238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5532972415639130384
+--- !u!114 &1249083558419516824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,6 +271,48 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649985293060537292}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27f2abf34eeba040aab2214e114c1a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selfRegister: 1
+  _selfRegisterAsActive: 1
+  SPOTag: BCI
+  _spoFactory: {fileID: 11400000, guid: f10aba30caad32345985da46bd8337b6, type: 2}
+  FactorySetupRequired: 0
+  _selectableSPOs: []
+  targetFrameRate: 60
+  _hotkeysEnabled: 1
+  windowLength: 1
+  interWindowInterval: 0
+  numTrainingSelections: 5
+  numTrainWindows: 0
+  pauseBeforeTraining: 2
+  trainTargetPresentationTime: 3
+  trainBreak: 1
+  shamFeedback: 0
+  trainTargetPersistent: 0
+  trainTarget: 99
+  trainBufferTime: 0
+  numFlashesLowerLimit: 9
+  numFlashesUpperLimit: 12
+  onTime: 0.1
+  offTime: 0.075
+  flashPlurality: 0
+  singleFlashPattern: 0
+  multiFlashPattern: 0
+  numFlashRows: 5
+  numFlashColumns: 6
+  timeDebug: 0
+  myPopMethod: 3
+--- !u!114 &5532972415639130384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649985293060537292}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b0fc542aefa44840bb3889f25d6e245, type: 3}
   m_Name: 
@@ -277,6 +322,7 @@ MonoBehaviour:
   SPOTag: BCI
   _spoFactory: {fileID: 11400000, guid: f10aba30caad32345985da46bd8337b6, type: 2}
   FactorySetupRequired: 1
+  _selectableSPOs: []
   targetFrameRate: 60
   _hotkeysEnabled: 1
   windowLength: 1
