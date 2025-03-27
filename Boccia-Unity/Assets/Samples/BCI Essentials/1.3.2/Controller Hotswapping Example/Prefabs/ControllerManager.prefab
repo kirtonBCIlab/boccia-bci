@@ -298,9 +298,9 @@ MonoBehaviour:
   numFlashesUpperLimit: 12
   onTime: 0.1
   offTime: 0.075
-  flashPlurality: 0
+  flashPlurality: 1
   singleFlashPattern: 0
-  multiFlashPattern: 0
+  multiFlashPattern: 2
   numFlashRows: 5
   numFlashColumns: 6
   timeDebug: 0
