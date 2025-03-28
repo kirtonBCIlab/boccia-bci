@@ -43,8 +43,8 @@ public class FanGenerator : MonoBehaviour
     public void CreateFanSegment(float startAngle, float endAngle, float innerRadius, float outerRadius)
     {
         int segments = 100; // Number of segments to approximate the arc
-        Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
-        CreateMeshObject("FanSegment", fanMesh);
+        (Mesh fanMesh, Vector3 offset) = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
+        CreateMeshObject("FanSegment", fanMesh, offset);
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
@@ -55,7 +55,7 @@ public class FanGenerator : MonoBehaviour
         float startAngle = 0;
         float endAngle = fanSettings.BackButtonWidth / fanSettings.OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
         int segments = 10; // Number of segments to approximate the arc
-        Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
+        (Mesh fanMesh, Vector3 offset) = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
 
         // Position the back button based on the BackButtonPositioningMode
         float rotationOffset = 0;
@@ -69,14 +69,14 @@ public class FanGenerator : MonoBehaviour
                 break;
         }
 
-        CreateMeshObject("BackButton", fanMesh, rotationOffset);
+        CreateMeshObject("BackButton", fanMesh, offset, rotationOffset);
     }
 
     public void GenerateDropButton(FanSettings fanSettings)
     {
         int segments = 10; // Number of segments to approximate the arc
-        Mesh fanMesh = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
-        CreateMeshObject("DropButton", fanMesh);
+        (Mesh fanMesh, Vector3 offset) = GenerateFanMesh(0, fanSettings.Theta, fanSettings.InnerRadius - fanSettings.DropButtonHeight, fanSettings.InnerRadius - fanSettings.rowSpacing, segments);
+        CreateMeshObject("DropButton", fanMesh, offset);
     }
 
     public void DestroyFanSegments()
@@ -87,11 +87,14 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh, float eulerRotation = 0)
+    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh, Vector3 offset, float eulerRotation = 0)
     {
         GameObject meshObject = new(objectName);
         meshObject.transform.SetParent(transform);
-        meshObject.transform.localPosition = Vector3.zero;
+
+        // Position the object based on the offset
+        meshObject.transform.localPosition = offset;
+
         meshObject.transform.localEulerAngles = new Vector3(0, 0, eulerRotation);
         meshObject.transform.localScale = Vector3.one;
 
@@ -105,7 +108,7 @@ public class FanGenerator : MonoBehaviour
         return meshObject;
     }
 
-    private Mesh GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
+    private (Mesh, Vector3) GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
     {
         Mesh mesh = new();
         int verticesCount = (segments + 1) * 2;
@@ -143,7 +146,19 @@ public class FanGenerator : MonoBehaviour
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
 
-        return mesh;
+        // Calculate the center of the mesh
+        Vector3 meshCenter = mesh.bounds.center;
+
+        // Move vertices to center the mesh at (0, 0, 0)
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] -= meshCenter;
+        }
+
+        mesh.vertices = vertices;
+        mesh.RecalculateBounds();
+
+        return (mesh, meshCenter);
     }
 
     public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode, FanPositioningMode fanPositioningMode)
