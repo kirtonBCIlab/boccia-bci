@@ -55,7 +55,7 @@ public class FanGenerator : MonoBehaviour
         float startAngle = 0;
         float endAngle = fanSettings.BackButtonWidth / fanSettings.OuterRadius * Mathf.Rad2Deg; // Calculate the end angle for the back button
         int segments = 10; // Number of segments to approximate the arc
-        (Mesh fanMesh, Vector3 offset) = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments);
+        (Mesh fanMesh, Vector3 offset) = GenerateFanMesh(startAngle, endAngle, fanSettings.InnerRadius, fanSettings.OuterRadius, segments, false);
 
         // Position the back button based on the BackButtonPositioningMode
         float rotationOffset = 0;
@@ -108,7 +108,7 @@ public class FanGenerator : MonoBehaviour
         return meshObject;
     }
 
-    private (Mesh, Vector3) GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
+    private (Mesh, Vector3) GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments, bool repositionMesh = true)
     {
         Mesh mesh = new();
         int verticesCount = (segments + 1) * 2;
@@ -146,19 +146,27 @@ public class FanGenerator : MonoBehaviour
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
 
-        // Calculate the center of the mesh
-        Vector3 meshCenter = mesh.bounds.center;
-
-        // Move vertices to center the mesh at (0, 0, 0)
-        for (int i = 0; i < vertices.Length; i++)
+        // Calculate the center of the mesh as the offset
+        Vector3 meshOffset = mesh.bounds.center;
+        
+        if (repositionMesh)
         {
-            vertices[i] -= meshCenter;
+            // Move vertices to center the mesh at (0, 0, 0)
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] -= meshOffset;
+            }
+
+            mesh.vertices = vertices;
+            mesh.RecalculateBounds();
         }
 
-        mesh.vertices = vertices;
-        mesh.RecalculateBounds();
+        else
+        {
+            meshOffset = Vector3.zero;
+        }
 
-        return (mesh, meshCenter);
+        return (mesh, meshOffset);
     }
 
     public void GenerateFanAnnotations(FanSettings fanSettings, float currentRotation, float currentElevation, BackButtonPositioningMode backButtonPositioningMode, FanPositioningMode fanPositioningMode)
