@@ -2160,7 +2160,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 281971961862754810, guid: 478a387523a05364c8d059c19c67e161, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150.00005
+      value: 150.00006
       objectReference: {fileID: 0}
     - target: {fileID: 1360815048455865100, guid: 478a387523a05364c8d059c19c67e161, type: 3}
       propertyPath: m_LocalPosition.x
