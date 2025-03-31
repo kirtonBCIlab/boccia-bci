@@ -38,8 +38,8 @@ public class BCITargetAnimations : MonoBehaviour
     {
         if (spo != null)
         {
-            spo.StartTrainingStimulusEvent.AddListener(OnTrainingStart);
-            spo.StopTrainingStimulusEvent.AddListener(OnTrainingStop);
+            spo.OnSetAsTrainingTarget.AddListener(OnTrainingStart);
+            spo.OnRemovedAsTrainingTarget.AddListener(OnTrainingStop);
         }
     }
 
@@ -47,8 +47,8 @@ public class BCITargetAnimations : MonoBehaviour
     {
         if (spo != null)
         {
-            spo.StartTrainingStimulusEvent.RemoveListener(OnTrainingStart);
-            spo.StopTrainingStimulusEvent.RemoveListener(OnTrainingStop);
+            spo.OnSetAsTrainingTarget.RemoveListener(OnTrainingStart);
+            spo.OnRemovedAsTrainingTarget.RemoveListener(OnTrainingStop);
         }
     }
 

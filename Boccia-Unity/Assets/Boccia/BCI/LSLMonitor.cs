@@ -7,7 +7,7 @@ using BCIEssentials.LSLFramework;
 public class LSLMonitor : MonoBehaviour
 {
     private BocciaModel _model;
-    private LSLMarkerStream _markerStream;
+    private LSLStreamWriter _markerStream;
     private StreamInlet _streamInlet;
     private Coroutine _sampleStreamCoroutine;
 
@@ -19,11 +19,10 @@ public class LSLMonitor : MonoBehaviour
         _model.BciChanged += BciChanged;
 
         // Initialize the LSL marker stream
-        _markerStream = GetComponent<LSLMarkerStream>();
+        _markerStream = GetComponent<LSLStreamWriter>();
         string streamName = _markerStream.StreamName;
         string streamType = _markerStream.StreamType;
-        string streamID = _markerStream.StreamId;
-        LSL.StreamInfo streamInfo = new LSL.StreamInfo(streamName, streamType, 1, 0.0, LSL.channel_format_t.cf_string, streamID);
+        LSL.StreamInfo streamInfo = new LSL.StreamInfo(streamName, streamType, 1, 0.0, LSL.channel_format_t.cf_string);
 
         // Initialize the stream inlet for the LSL marker stream
         _streamInlet = new StreamInlet(streamInfo);
