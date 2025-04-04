@@ -3,8 +3,9 @@ Shader "Custom/RadialGradientShaderFanSegment"
     Properties
     {
         _GradientColor ("Gradient Color", Color) = (1, 0, 0, 1)  // Red color
-        _Radius ("Gradient Radius", Range(0.1, 1)) = 0.16 // How far the red extends
-        _Softness ("Gradient Softness", Range(0.1, 1)) = 0.45 // Controls how smooth the gradient is
+        _Radius ("Gradient Radius", Range(0.1, 1)) = 0.15 // How far the red extends
+        _Softness ("Gradient Softness", Range(0, 1)) = 0.45 // Controls how smooth the gradient is
+        _SegmentSize ("Segment Size", Float) = 1.0
     }
     SubShader
     {
@@ -32,6 +33,7 @@ Shader "Custom/RadialGradientShaderFanSegment"
             fixed4 _GradientColor;
             float _Radius;
             float _Softness;
+            float _SegmentSize;
 
             v2f vert (appdata_t v)
             {
@@ -45,12 +47,12 @@ Shader "Custom/RadialGradientShaderFanSegment"
             {
                 float2 center = float2(0.5, 0.5); // Center of texture UV
                 float dist = length(i.uv - center); // Distance from center
-                float gradient = smoothstep(_Radius - _Softness, _Radius + _Softness, dist); // Blend smoothly
-                return lerp(_GradientColor, fixed4(1,1,1,1), gradient); // Blend red to white
 
-                // float dist = i.uv.y; // Use the Y-axis of UVs as radial distance
-                // float gradient = smoothstep(_Radius - _Softness, _Radius + _Softness, dist); // Smooth transition
-                // return lerp(_GradientColor, fixed4(1,1,1,1), gradient);
+                float adjustedRadius = _Radius * _SegmentSize;
+                float adjustedSoftness = _Softness * _SegmentSize * 0.4;
+                float gradient = smoothstep(adjustedRadius - adjustedSoftness, adjustedRadius + adjustedSoftness, dist); // Blend smoothly
+
+                return lerp(_GradientColor, fixed4(1,1,1,1), gradient); 
             }
             ENDCG
         }
