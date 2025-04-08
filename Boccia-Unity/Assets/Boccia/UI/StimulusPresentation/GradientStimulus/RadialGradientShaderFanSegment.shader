@@ -3,7 +3,7 @@ Shader "Custom/RadialGradientShaderFanSegment"
     Properties
     {
         _GradientColor ("Gradient Color", Color) = (1, 0, 0, 1)  // Red color
-        _Radius ("Gradient Radius", Range(0.1, 1)) = 0.15 // How far the red extends
+        _Radius ("Gradient Radius", Range(0.1, 1)) = 0.10 // How far the red extends
         _Softness ("Gradient Softness", Range(0, 1)) = 0.45 // Controls how smooth the gradient is
         _SegmentSize ("Segment Size", Float) = 1.0
     }
