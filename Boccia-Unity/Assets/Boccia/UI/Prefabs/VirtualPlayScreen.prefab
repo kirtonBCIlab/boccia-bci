@@ -157,7 +157,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: -100
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 254528354684835403}
@@ -173,7 +176,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 254528354684835403}
@@ -189,7 +192,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 254528354684835403}
@@ -205,15 +208,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: -100
 --- !u!23 &8654613303835990424
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -417,8 +417,8 @@ RectTransform:
   m_GameObject: {fileID: 596006636295551685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1609435497391829437}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -492,8 +492,8 @@ RectTransform:
   m_GameObject: {fileID: 754120637866929300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3689214675342381772}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -958,8 +958,8 @@ RectTransform:
   m_GameObject: {fileID: 1366696253509317234}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3873688616874597760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1154,8 +1154,8 @@ RectTransform:
   m_GameObject: {fileID: 2490443085129465571}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3868265736320995415}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1342,8 +1342,8 @@ RectTransform:
   m_GameObject: {fileID: 3409627167219108506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7917022609935669927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2177,7 +2177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 39
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2364165486713040064}
@@ -2193,7 +2196,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2364165486713040064}
@@ -2209,7 +2212,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2364165486713040064}
@@ -2225,15 +2228,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 39
 --- !u!1 &4539551266856479437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,7 +2440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6918da7c742f07348b0b07714ae8c48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _trialNumber: 0
+  _settingsDir: 
   _fineFanSettings: {fileID: 11400000, guid: fa646aefe576f30429b0ff7334216751, type: 2}
   _coarseFanSettings: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
 --- !u!114 &4579577047200106202
@@ -2752,8 +2752,8 @@ RectTransform:
   m_GameObject: {fileID: 5528262509060860321}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1493494056422143403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2956,7 +2956,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 0
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2409295025597468113}
@@ -2972,7 +2975,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2409295025597468113}
@@ -2988,7 +2991,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2409295025597468113}
@@ -3004,15 +3007,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 0
 --- !u!1 &5838688182821822396
 GameObject:
   m_ObjectHideFlags: 0
@@ -3438,7 +3438,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: -100
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4260421711942752492}
@@ -3454,7 +3457,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4260421711942752492}
@@ -3470,7 +3473,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4260421711942752492}
@@ -3486,15 +3489,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: -100
 --- !u!23 &5908812649387642318
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3948,7 +3948,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 37
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4005011814417834446}
@@ -3964,7 +3967,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4005011814417834446}
@@ -3980,7 +3983,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4005011814417834446}
@@ -3996,15 +3999,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 37
 --- !u!1 &8029773889997611271
 GameObject:
   m_ObjectHideFlags: 0
@@ -4295,7 +4295,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 38
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3235224418995685258}
@@ -4311,7 +4314,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3235224418995685258}
@@ -4327,7 +4330,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3235224418995685258}
@@ -4343,12 +4346,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 38

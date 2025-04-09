@@ -27,8 +27,8 @@ RectTransform:
   m_GameObject: {fileID: 1463807469962962584}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8012614959361384900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -102,8 +102,8 @@ RectTransform:
   m_GameObject: {fileID: 1517593836372816046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3556022268195855465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -376,7 +376,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: -100
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 456346186598166485}
@@ -392,7 +395,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 456346186598166485}
@@ -408,7 +411,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 456346186598166485}
@@ -424,39 +427,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 555308171663583367}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OnTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopTrainingStimulusEvent:
+      m_Calls: []
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 555308171663583367}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OffTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: -100
+      m_Calls: []
 --- !u!114 &456346186598166485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,7 +586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 0
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1756189233252656481}
@@ -626,7 +605,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1756189233252656481}
@@ -642,7 +621,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1756189233252656481}
@@ -658,39 +637,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1731453703119658755}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OnTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopTrainingStimulusEvent:
+      m_Calls: []
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1731453703119658755}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OffTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 0
+      m_Calls: []
 --- !u!114 &1756189233252656481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -803,7 +755,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: -100
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4824134683417883831}
@@ -819,7 +774,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4824134683417883831}
@@ -835,7 +790,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4824134683417883831}
@@ -851,39 +806,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2635404750274107252}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OnTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopTrainingStimulusEvent:
+      m_Calls: []
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2635404750274107252}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OffTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: -100
+      m_Calls: []
 --- !u!114 &4824134683417883831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1279,7 +1207,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 0
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6717722877327859085}
@@ -1295,7 +1226,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6717722877327859085}
@@ -1311,7 +1242,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6717722877327859085}
@@ -1327,39 +1258,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 748026187130600216}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OnTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopTrainingStimulusEvent:
+      m_Calls: []
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 748026187130600216}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OffTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 0
+      m_Calls: []
 --- !u!114 &6717722877327859085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1407,8 +1311,8 @@ RectTransform:
   m_GameObject: {fileID: 3809459399281008014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1055580221340801892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1482,8 +1386,8 @@ RectTransform:
   m_GameObject: {fileID: 3897737573158674797}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5237364723240253182}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1557,8 +1461,8 @@ RectTransform:
   m_GameObject: {fileID: 3932511845041612883}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6614293211033050276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1746,7 +1650,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 0
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7246584267091366005}
@@ -1762,7 +1669,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7246584267091366005}
@@ -1778,7 +1685,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7246584267091366005}
@@ -1794,39 +1701,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7334154639932684827}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OnTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopTrainingStimulusEvent:
+      m_Calls: []
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7334154639932684827}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OffTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 0
+      m_Calls: []
 --- !u!114 &7246584267091366005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1874,8 +1754,8 @@ RectTransform:
   m_GameObject: {fileID: 6129417948524746309}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2854514153397762145}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2683,7 +2563,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 0
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2490677908431095246}
@@ -2699,7 +2582,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2490677908431095246}
@@ -2715,7 +2598,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2490677908431095246}
@@ -2731,39 +2614,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4024192604322936517}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OnTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StopTrainingStimulusEvent:
+      m_Calls: []
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4024192604322936517}
-        m_TargetAssemblyTypeName: BCIEssentials.StimulusObjects.SPO, Bci4Kids.BciEssentials.Runtime
-        m_MethodName: OffTrainTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 0
+      m_Calls: []
 --- !u!114 &2490677908431095246
 MonoBehaviour:
   m_ObjectHideFlags: 0
