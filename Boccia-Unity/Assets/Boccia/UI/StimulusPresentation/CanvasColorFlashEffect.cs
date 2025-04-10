@@ -110,9 +110,16 @@ namespace BCIEssentials.StimulusEffects
 
             if (_stimulusType == BocciaStimulusType.FaceSprite)
             {
-                Image image = _spriteObjectHolder.GetComponent<Image>();
-                image.sprite = faceSpriteSelection.faceSprite;
+                SetFaceSprite();
             }
+        }
+
+        private void SetFaceSprite()
+        {
+            Image spriteImage = _spriteObjectHolder.GetComponent<Image>();
+            spriteImage.sprite = faceSpriteSelection.faceSprite;
+            spriteImage.type = Image.Type.Simple;
+            spriteImage.preserveAspect = true;
         }
 
         public override void SetOn()
