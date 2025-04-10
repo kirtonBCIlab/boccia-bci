@@ -151,6 +151,14 @@ public class FanGenerator : MonoBehaviour
         meshRenderer.material = material;
         meshRenderer.material.color = colour;
 
+        Bounds bounds = generatedMesh.bounds;
+        float segmentSize = Mathf.Max(bounds.size.x, bounds.size.y);
+
+        MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+        meshRenderer.GetPropertyBlock(materialPropertyBlock);
+        materialPropertyBlock.SetFloat("_SegmentSize", segmentSize);
+        meshRenderer.SetPropertyBlock(materialPropertyBlock);
+
         return meshObject;
     }
 
