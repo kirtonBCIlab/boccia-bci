@@ -17,7 +17,7 @@ public class FanGenerator : MonoBehaviour
     public GameObject fanAnnotations;
 
     [Header("Stimulus Settings")]
-    public Sprite faceSprite;
+    public FaceSpriteSelector faceSpriteSelection;
 
     [SerializeField]
     [Tooltip("Set this to the Shaft Adapter GameObject for Play and Virtual Play fans")]
@@ -385,7 +385,7 @@ public class FanGenerator : MonoBehaviour
         spriteObject = new GameObject("FaceSprite");
         spriteObject.transform.SetParent(segment.transform);
         SpriteRenderer spriteRenderer = spriteObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = faceSprite;
+        spriteRenderer.sprite = faceSpriteSelection.faceSprite;
 
         // Set the transform of the sprite object based on the segment mid point
         Vector3 spriteObjectPosition = new Vector3(segmentMidPoint.x, segmentMidPoint.y, -0.01f);

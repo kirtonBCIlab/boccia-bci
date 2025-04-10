@@ -141,7 +141,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 3409627167219108506}
+  _spriteObjectHolder: {fileID: 3409627167219108506}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -455,7 +456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -530,7 +531,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -996,7 +997,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1192,7 +1193,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1380,7 +1381,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2161,7 +2162,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 596006636295551685}
+  _spriteObjectHolder: {fileID: 596006636295551685}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -2790,7 +2792,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2940,7 +2942,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 2490443085129465571}
+  _spriteObjectHolder: {fileID: 2490443085129465571}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -3422,7 +3425,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 1366696253509317234}
+  _spriteObjectHolder: {fileID: 1366696253509317234}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -3932,7 +3936,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 5528262509060860321}
+  _spriteObjectHolder: {fileID: 5528262509060860321}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -4279,7 +4284,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 754120637866929300}
+  _spriteObjectHolder: {fileID: 754120637866929300}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3

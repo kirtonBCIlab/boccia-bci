@@ -449,7 +449,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 3932511845041612883}
+  _spriteObjectHolder: {fileID: 3932511845041612883}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -659,7 +660,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 1517593836372816046}
+  _spriteObjectHolder: {fileID: 1517593836372816046}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -828,7 +830,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 3897737573158674797}
+  _spriteObjectHolder: {fileID: 3897737573158674797}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -1280,7 +1283,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 3809459399281008014}
+  _spriteObjectHolder: {fileID: 3809459399281008014}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -1723,7 +1727,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 1463807469962962584}
+  _spriteObjectHolder: {fileID: 1463807469962962584}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -2636,7 +2641,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 6129417948524746309}
+  _spriteObjectHolder: {fileID: 6129417948524746309}
+  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
