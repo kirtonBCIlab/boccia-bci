@@ -24,7 +24,9 @@ public class FanGenerator : MonoBehaviour
     private GameObject faceSpriteRotationCorrector;
 
     [SerializeField]
-    private float _faceSpriteScaleFactor = 1.2f;
+    private float _faceSpriteScaleFactorCoarseFan = 1.5f;
+    [SerializeField]
+    private float _faceSpriteScaleFactorFineFan = 1.2f;
     
     private GameObject spriteObject;
     private BocciaStimulusType _stimulusType;
@@ -388,23 +390,25 @@ public class FanGenerator : MonoBehaviour
         // Set the transform of the sprite object based on the segment mid point
         Vector3 spriteObjectPosition = new Vector3(segmentMidPoint.x, segmentMidPoint.y, -0.01f);
         spriteObject.transform.localPosition = spriteObjectPosition;
-
         float currentSize = spriteRenderer.bounds.size.y;
-        float faceSpriteScale = (segmentHeight / currentSize) * _faceSpriteScaleFactor;
-        spriteRenderer.transform.localScale = Vector3.one * faceSpriteScale;
+        float sizeRatio = segmentHeight / currentSize;
 
-        // Set the rotation of the sprite object
+        // Set the rotation and scaleof the sprite object
         Quaternion spriteRotation;
+        float faceSpriteScale;
         if (_fanPositioningMode == FanPositioningMode.CenterToRails)
         {
             spriteRotation = Quaternion.Euler(-90, faceSpriteRotationCorrector.transform.eulerAngles.y, 0);
+            faceSpriteScale = sizeRatio * _faceSpriteScaleFactorFineFan;
         }
         else
         {
             spriteRotation = Quaternion.Euler(90, 0, 0);
+            faceSpriteScale = sizeRatio * _faceSpriteScaleFactorCoarseFan;
         }
 
         spriteObject.transform.rotation = spriteRotation;
+        spriteRenderer.transform.localScale = Vector3.one * faceSpriteScale;
 
         // Disable sprite initially
         spriteObject.SetActive(false);
