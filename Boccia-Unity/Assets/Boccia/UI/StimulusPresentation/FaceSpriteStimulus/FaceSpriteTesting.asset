@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 435c59d6d9f01de4b926e3c63130d93c, type: 3}
-  m_Name: FaceSpriteSelection
+  m_Name: FaceSpriteTesting
   m_EditorClassIdentifier: 
   faceSprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}

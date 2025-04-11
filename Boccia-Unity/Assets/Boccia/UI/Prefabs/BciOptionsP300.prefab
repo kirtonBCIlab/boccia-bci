@@ -3682,6 +3682,7 @@ MonoBehaviour:
   trainFlashColourDropdown: {fileID: 1996489095225954582}
   trainFaceSpriteSetting: {fileID: 7845185101222140254}
   trainFaceSpriteDropdown: {fileID: 3648463807484439992}
+  trainFaceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
   testNumFlashesInputField: {fileID: 3954542803868699697}
   testTargetSelectionFeedbackToggle: {fileID: 6200041248093682795}
   testTargetSelectionAnimationDropdown: {fileID: 7304132811385400197}
@@ -3693,6 +3694,7 @@ MonoBehaviour:
   testFlashColourDropdown: {fileID: 341120287138695433}
   testFaceSpriteSetting: {fileID: 8977995782715569048}
   testFaceSpriteDropdown: {fileID: 1070693687968869273}
+  testFaceSpriteSelection: {fileID: 11400000, guid: 29d63e10a82f8284c83ac354be21ec97, type: 2}
   separateButtonsToggle: {fileID: 6577012362561536190}
   bciControllerManager: {fileID: 0}
   faceSpriteOptions:
@@ -3708,7 +3710,6 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
   - displayName: Zendaya
     sprite: {fileID: 21300000, guid: f5ceb2e91d42ded4ab667598a66a373c, type: 3}
-  faceSpriteSelection: {fileID: 11400000, guid: b8b2507ca38cc4744aa85373f8430e02, type: 2}
 --- !u!114 &124571744188632792
 MonoBehaviour:
   m_ObjectHideFlags: 0

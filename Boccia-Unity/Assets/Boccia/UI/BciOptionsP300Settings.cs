@@ -42,6 +42,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown trainFlashColourDropdown;
     public GameObject trainFaceSpriteSetting;
     public TMP_Dropdown trainFaceSpriteDropdown;
+    public FaceSpriteSelector trainFaceSpriteSelection;
 
     // UI elements for Testing settings
     public TMP_InputField testNumFlashesInputField;
@@ -55,6 +56,7 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown testFlashColourDropdown;
     public GameObject testFaceSpriteSetting;
     public TMP_Dropdown testFaceSpriteDropdown;
+    public FaceSpriteSelector testFaceSpriteSelection;
     public Toggle separateButtonsToggle;
 
     private BocciaModel _model;
@@ -89,7 +91,6 @@ public class BciOptionsP300Settings : MonoBehaviour
     // List of face sprite options
     [SerializeField]
     private List<FaceSprite> faceSpriteOptions;
-    public FaceSpriteSelector faceSpriteSelection;
 
     void Awake()
     {
@@ -362,6 +363,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTrainStimulusOffDuration);
         trainStimulusTypeDropdown.onValueChanged.AddListener(OnChangeTrainStimulusType);
         trainFlashColourDropdown.onValueChanged.AddListener(OnChangeTrainFlashColour);
+        trainFaceSpriteDropdown.onValueChanged.AddListener(OnChangeTrainFaceSprite);
 
         // Testing settings listeners
         testNumFlashesInputField.onEndEdit.AddListener(OnChangeTestNumFlashes);
@@ -371,6 +373,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         testStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTestStimulusOffDuration);
         testStimulusTypeDropdown.onValueChanged.AddListener(OnChangeTestStimulusType);
         testFlashColourDropdown.onValueChanged.AddListener(OnChangeTestFlashColour);
+        testFaceSpriteDropdown.onValueChanged.AddListener(OnChangeTestFaceSprite);
         separateButtonsToggle.onValueChanged.AddListener(OnChangeSeparateButtons);
     }
 
@@ -491,6 +494,16 @@ public class BciOptionsP300Settings : MonoBehaviour
         _model.SetBciOption(ref _model.P300Settings.Train.FlashColour, selectedColour);
     }
 
+    private void OnChangeTrainFaceSprite(int index)
+    {
+        // Update the face sprite reference
+        trainFaceSpriteSelection.faceSprite = faceSpriteOptions[index].sprite;
+
+        // Update the model
+        var selectedFaceSprite = faceSpriteOptions[index].displayName;
+        _model.SetBciOption(ref _model.P300Settings.Train.FaceSpriteSelection, selectedFaceSprite);
+    }
+
     // MARK: Testing Setting Change Handlers
 
     private void OnChangeTestNumFlashes(string value)
@@ -546,6 +559,15 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedColour = GetColourFromDropdownIndex(index);
         _model.SetBciOption(ref _model.P300Settings.Test.FlashColour, selectedColour);
+    }
+
+    private void OnChangeTestFaceSprite(int index)
+    {
+        testFaceSpriteSelection.faceSprite = faceSpriteOptions[index].sprite;
+
+        // Update the model
+        var selectedFaceSprite = faceSpriteOptions[index].displayName;
+        _model.SetBciOption(ref _model.P300Settings.Test.FaceSpriteSelection, selectedFaceSprite);
     }
 
     private void OnChangeSeparateButtons(bool isOn)
