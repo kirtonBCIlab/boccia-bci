@@ -40,6 +40,8 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown trainStimulusTypeDropdown;
     public GameObject trainFlashColourSetting;
     public TMP_Dropdown trainFlashColourDropdown;
+    public GameObject trainFaceSpriteSetting;
+    public TMP_Dropdown trainFaceSpriteDropdown;
 
     // UI elements for Testing settings
     public TMP_InputField testNumFlashesInputField;
@@ -51,6 +53,8 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown testStimulusTypeDropdown;
     public GameObject testFlashColourSetting;
     public TMP_Dropdown testFlashColourDropdown;
+    public GameObject testFaceSpriteSetting;
+    public TMP_Dropdown testFaceSpriteDropdown;
     public Toggle separateButtonsToggle;
 
     private BocciaModel _model;
@@ -81,6 +85,11 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     // List of stimulus types
     private List<string> stimulusTypeOptions = new List<string>(Enum.GetNames(typeof(BocciaStimulusType)));
+
+    // List of face sprite options
+    [SerializeField]
+    private List<FaceSprite> faceSpriteOptions;
+    public FaceSpriteSelector faceSpriteSelection;
 
     void Awake()
     {
@@ -215,6 +224,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         PopulateAnimationDropdowns();
         PopulateStimulusTypeDropdowns();
         PopulateFlashColourDropdown();
+        PopulateFaceSpriteDropdowns();
     }
 
     private void PopulateDurationDropdowns()
@@ -263,6 +273,18 @@ public class BciOptionsP300Settings : MonoBehaviour
 
         trainFlashColourDropdown.AddOptions(colourOptions);
         testFlashColourDropdown.AddOptions(colourOptions);
+    }
+
+    private void PopulateFaceSpriteDropdowns()
+    {
+        // Get list of sprite names
+        List<string> spriteNames = faceSpriteOptions.Select(item => item.displayName).ToList();
+
+        trainFaceSpriteDropdown.ClearOptions();
+        testFaceSpriteDropdown.ClearOptions();
+
+        trainFaceSpriteDropdown.AddOptions(spriteNames);
+        testFaceSpriteDropdown.AddOptions(spriteNames);
     }
 
     // MARK: Helpers to toggle state of animation dropdowns based on whether feedback is enabled
