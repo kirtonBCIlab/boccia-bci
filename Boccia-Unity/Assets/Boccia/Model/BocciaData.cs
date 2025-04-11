@@ -171,6 +171,7 @@ public class P300SettingsContainer
         public BocciaStimulusType StimulusType; // Stimulus type
         public Color FlashColour;  // Stimulus flash colour
         // Add more P300 training-specific parameters here if needed
+        public string FaceSpriteSelection; // Name of the training face sprite
     }
 
     // Nested class for P300 testing settings
@@ -185,5 +186,13 @@ public class P300SettingsContainer
         public BocciaStimulusType StimulusType; // Stimulus type
         public Color FlashColour;  // Stimulus flash colour
         // Add more P300 testing-specific parameters here if needed
+        public string FaceSpriteSelection; // Name of the testing face sprite
     }
+}
+
+[System.Serializable]
+public class FaceSprite
+{
+    public string displayName;
+    public Sprite sprite;
 }

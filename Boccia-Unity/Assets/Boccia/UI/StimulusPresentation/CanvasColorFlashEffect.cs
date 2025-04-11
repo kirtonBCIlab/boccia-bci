@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BCIEssentials.StimulusEffects
 {
@@ -23,13 +24,16 @@ namespace BCIEssentials.StimulusEffects
         [Tooltip("Material Color to assign while flashing is off")]
         private Color _flashOffColor = Color.white;
 
+        [Header("Gradient Stimulus")]
         [SerializeField]
         [Tooltip("Gradient material to use for gradient stimulus type")]
         private Material _gradientMaterial;
 
+        [Header("Face Sprite Stimulus")]
         [SerializeField]
-        [Tooltip("Sprite to use for FaceSprite stimulus type")]
-        private GameObject _spriteObject;
+        [Tooltip("Object to hold the sprite for face sprite stimulus type")]
+        private GameObject _spriteObjectHolder;
+        public FaceSpriteSelector faceSpriteSelection;
 
         private BocciaStimulusType _stimulusType;
 
@@ -103,6 +107,19 @@ namespace BCIEssentials.StimulusEffects
             {
                 _stimulusType = _model.P300Settings.Test.StimulusType;
             }
+
+            if (_stimulusType == BocciaStimulusType.FaceSprite)
+            {
+                SetFaceSprite();
+            }
+        }
+
+        private void SetFaceSprite()
+        {
+            Image spriteImage = _spriteObjectHolder.GetComponent<Image>();
+            spriteImage.sprite = faceSpriteSelection.faceSprite;
+            spriteImage.type = Image.Type.Simple;
+            spriteImage.preserveAspect = true;
         }
 
         public override void SetOn()
@@ -118,9 +135,9 @@ namespace BCIEssentials.StimulusEffects
                 AssignMaterial(_gradientMaterial);
             }
 
-            else if (_stimulusType == BocciaStimulusType.FaceSprite && _spriteObject != null)
+            else if (_stimulusType == BocciaStimulusType.FaceSprite && _spriteObjectHolder != null)
             {
-                _spriteObject.SetActive(true);
+                _spriteObjectHolder.SetActive(true);
             }
 
             else
@@ -146,7 +163,7 @@ namespace BCIEssentials.StimulusEffects
 
             else if (_stimulusType == BocciaStimulusType.FaceSprite)
             {
-                _spriteObject.SetActive(false);
+                _spriteObjectHolder.SetActive(false);
             }
             
             else

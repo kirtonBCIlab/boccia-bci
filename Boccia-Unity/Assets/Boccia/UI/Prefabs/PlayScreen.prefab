@@ -347,7 +347,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 38
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 679174540274438189}
@@ -363,7 +366,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 679174540274438189}
@@ -379,7 +382,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 679174540274438189}
@@ -395,15 +398,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 38
 --- !u!114 &679174540274438189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,7 +420,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 8003587274944611468}
+  _spriteObjectHolder: {fileID: 8003587274944611468}
+  faceSpriteSelection: {fileID: 11400000, guid: 29d63e10a82f8284c83ac354be21ec97, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -493,8 +494,8 @@ RectTransform:
   m_GameObject: {fileID: 1717572747260339306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8726474406035192916}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -531,7 +532,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1225,8 +1226,8 @@ RectTransform:
   m_GameObject: {fileID: 3821727043029150024}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1080350261981266307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1263,7 +1264,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1409,7 +1410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: 37
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6438268955628440154}
@@ -1425,7 +1429,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6438268955628440154}
@@ -1441,7 +1445,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6438268955628440154}
@@ -1457,15 +1461,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: 37
 --- !u!114 &6438268955628440154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,7 +1483,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 8469980838022904083}
+  _spriteObjectHolder: {fileID: 8469980838022904083}
+  faceSpriteSelection: {fileID: 11400000, guid: 29d63e10a82f8284c83ac354be21ec97, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -1623,7 +1625,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: -100
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 917692829281854953}
@@ -1639,7 +1644,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 917692829281854953}
@@ -1655,7 +1660,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 917692829281854953}
@@ -1671,15 +1676,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: -100
 --- !u!114 &917692829281854953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1696,7 +1698,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 1717572747260339306}
+  _spriteObjectHolder: {fileID: 1717572747260339306}
+  faceSpriteSelection: {fileID: 11400000, guid: 29d63e10a82f8284c83ac354be21ec97, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -1879,7 +1882,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartStimulusEvent:
+  Selectable: 1
+  ObjectID: -100
+  SelectablePoolIndex: 0
+  OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 172800519893491245}
@@ -1895,7 +1901,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StopStimulusEvent:
+  OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 172800519893491245}
@@ -1911,7 +1917,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnSelectedEvent:
+  OnSelected:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 172800519893491245}
@@ -1927,15 +1933,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StartTrainingStimulusEvent:
+  OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  StopTrainingStimulusEvent:
+  OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls: []
-  Selectable: 1
-  SelectablePoolIndex: 0
-  ObjectID: -100
 --- !u!114 &172800519893491245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1952,7 +1955,8 @@ MonoBehaviour:
   _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
   _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
   _gradientMaterial: {fileID: 2100000, guid: 1e0583149c686d242aaf6815cb1c747d, type: 2}
-  _spriteObject: {fileID: 3821727043029150024}
+  _spriteObjectHolder: {fileID: 3821727043029150024}
+  faceSpriteSelection: {fileID: 11400000, guid: 29d63e10a82f8284c83ac354be21ec97, type: 2}
   _startOn: 0
   _flashDurationSeconds: 0.2
   _flashAmount: 3
@@ -2064,7 +2068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6918da7c742f07348b0b07714ae8c48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _trialNumber: 0
+  _settingsDir: 
   _fineFanSettings: {fileID: 11400000, guid: fa646aefe576f30429b0ff7334216751, type: 2}
   _coarseFanSettings: {fileID: 11400000, guid: 9bf211a5d6524d04a80756a708287313, type: 2}
 --- !u!114 &7070389972008775068
@@ -2215,8 +2219,8 @@ RectTransform:
   m_GameObject: {fileID: 8003587274944611468}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3529464456708228205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2253,7 +2257,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2424,8 +2428,8 @@ RectTransform:
   m_GameObject: {fileID: 8469980838022904083}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8661612199352977746}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2462,7 +2466,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5628417c1c824d24bb616bf1901c90ca, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

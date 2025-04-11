@@ -40,6 +40,9 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown trainStimulusTypeDropdown;
     public GameObject trainFlashColourSetting;
     public TMP_Dropdown trainFlashColourDropdown;
+    public GameObject trainFaceSpriteSetting;
+    public TMP_Dropdown trainFaceSpriteDropdown;
+    public FaceSpriteSelector trainFaceSpriteSelection;
 
     // UI elements for Testing settings
     public TMP_InputField testNumFlashesInputField;
@@ -51,6 +54,9 @@ public class BciOptionsP300Settings : MonoBehaviour
     public TMP_Dropdown testStimulusTypeDropdown;
     public GameObject testFlashColourSetting;
     public TMP_Dropdown testFlashColourDropdown;
+    public GameObject testFaceSpriteSetting;
+    public TMP_Dropdown testFaceSpriteDropdown;
+    public FaceSpriteSelector testFaceSpriteSelection;
     public Toggle separateButtonsToggle;
 
     private BocciaModel _model;
@@ -81,6 +87,10 @@ public class BciOptionsP300Settings : MonoBehaviour
 
     // List of stimulus types
     private List<string> stimulusTypeOptions = new List<string>(Enum.GetNames(typeof(BocciaStimulusType)));
+
+    // List of face sprite options
+    [SerializeField]
+    private List<FaceSprite> faceSpriteOptions;
 
     void Awake()
     {
@@ -187,6 +197,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(trainSettings.StimulusOffDuration);
         trainStimulusTypeDropdown.value = (int)trainSettings.StimulusType;
         trainFlashColourDropdown.value = GetColourDropdownIndex(trainSettings.FlashColour);
+        trainFaceSpriteDropdown.value = GetFaceSpriteDropdownIndex(trainSettings.FaceSpriteSelection);
 
         // Set testing settings UI
         testNumFlashesInputField.text = testSettings.NumFlashes.ToString();
@@ -196,6 +207,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         testStimulusOffDurationDropdown.value = GetOffDurationDropdownIndex(testSettings.StimulusOffDuration);
         testStimulusTypeDropdown.value = (int)testSettings.StimulusType;
         testFlashColourDropdown.value = GetColourDropdownIndex(testSettings.FlashColour);
+        testFaceSpriteDropdown.value = GetFaceSpriteDropdownIndex(testSettings.FaceSpriteSelection);
         
         separateButtonsToggle.isOn = _model.P300Settings.SeparateButtons;
 
@@ -215,6 +227,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         PopulateAnimationDropdowns();
         PopulateStimulusTypeDropdowns();
         PopulateFlashColourDropdown();
+        PopulateFaceSpriteDropdowns();
     }
 
     private void PopulateDurationDropdowns()
@@ -265,6 +278,18 @@ public class BciOptionsP300Settings : MonoBehaviour
         testFlashColourDropdown.AddOptions(colourOptions);
     }
 
+    private void PopulateFaceSpriteDropdowns()
+    {
+        // Get list of sprite names
+        List<string> spriteNames = faceSpriteOptions.Select(item => item.displayName).ToList();
+
+        trainFaceSpriteDropdown.ClearOptions();
+        testFaceSpriteDropdown.ClearOptions();
+
+        trainFaceSpriteDropdown.AddOptions(spriteNames);
+        testFaceSpriteDropdown.AddOptions(spriteNames);
+    }
+
     // MARK: Helpers to toggle state of animation dropdowns based on whether feedback is enabled
     // Helper to update the state of Sham Selection Animation dropdown
     private void UpdateShamSelectionAnimationInteractable(bool isOn)
@@ -302,16 +327,22 @@ public class BciOptionsP300Settings : MonoBehaviour
         }
     }
 
-    // MARK: Helpers to update stimulus settings dropdown based on stimulus type
+    // MARK: Helpers to update stimulus settings dropdowns based on stimulus type
     private void UpdateTrainStimulusSettingsDropdown(BocciaStimulusType stimulusType)
     {
         if (stimulusType == BocciaStimulusType.FaceSprite)
         {
+            // If stimulus is face sprite, deactivate flash colour dropdown
+            // Activate face sprite dropdown
             trainFlashColourSetting.SetActive(false);
+            trainFaceSpriteSetting.SetActive(true);
         }
         else
         {
+            // If stimulus is flash colour, activate flash colour dropdown
+            // Deactivate face sprite dropdown
             trainFlashColourSetting.SetActive(true);
+            trainFaceSpriteSetting.SetActive(false);
         }
     }
 
@@ -320,10 +351,12 @@ public class BciOptionsP300Settings : MonoBehaviour
         if (stimulusType == BocciaStimulusType.FaceSprite)
         {
             testFlashColourSetting.SetActive(false);
+            testFaceSpriteSetting.SetActive(true);
         }
         else
         {
             testFlashColourSetting.SetActive(true);
+            testFaceSpriteSetting.SetActive(false);
         }
     }
 
@@ -340,6 +373,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         trainStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTrainStimulusOffDuration);
         trainStimulusTypeDropdown.onValueChanged.AddListener(OnChangeTrainStimulusType);
         trainFlashColourDropdown.onValueChanged.AddListener(OnChangeTrainFlashColour);
+        trainFaceSpriteDropdown.onValueChanged.AddListener(OnChangeTrainFaceSprite);
 
         // Testing settings listeners
         testNumFlashesInputField.onEndEdit.AddListener(OnChangeTestNumFlashes);
@@ -349,6 +383,7 @@ public class BciOptionsP300Settings : MonoBehaviour
         testStimulusOffDurationDropdown.onValueChanged.AddListener(OnChangeTestStimulusOffDuration);
         testStimulusTypeDropdown.onValueChanged.AddListener(OnChangeTestStimulusType);
         testFlashColourDropdown.onValueChanged.AddListener(OnChangeTestFlashColour);
+        testFaceSpriteDropdown.onValueChanged.AddListener(OnChangeTestFaceSprite);
         separateButtonsToggle.onValueChanged.AddListener(OnChangeSeparateButtons);
     }
 
@@ -386,6 +421,13 @@ public class BciOptionsP300Settings : MonoBehaviour
         }
 
         return colours.First().Value;  // Return first color (red) if not found
+    }
+
+    // Helper to get dropdown index for a face sprite
+    private int GetFaceSpriteDropdownIndex(string faceSpriteName)
+    {
+        int index = faceSpriteOptions.FindIndex(option => option.displayName == faceSpriteName);
+        return index;
     }
 
     // MARK: Training Setting Change Handlers
@@ -469,6 +511,16 @@ public class BciOptionsP300Settings : MonoBehaviour
         _model.SetBciOption(ref _model.P300Settings.Train.FlashColour, selectedColour);
     }
 
+    private void OnChangeTrainFaceSprite(int index)
+    {
+        // Update the face sprite reference
+        trainFaceSpriteSelection.faceSprite = faceSpriteOptions[index].sprite;
+
+        // Update the model
+        var selectedFaceSprite = faceSpriteOptions[index].displayName;
+        _model.SetBciOption(ref _model.P300Settings.Train.FaceSpriteSelection, selectedFaceSprite);
+    }
+
     // MARK: Testing Setting Change Handlers
 
     private void OnChangeTestNumFlashes(string value)
@@ -524,6 +576,15 @@ public class BciOptionsP300Settings : MonoBehaviour
     {
         var selectedColour = GetColourFromDropdownIndex(index);
         _model.SetBciOption(ref _model.P300Settings.Test.FlashColour, selectedColour);
+    }
+
+    private void OnChangeTestFaceSprite(int index)
+    {
+        testFaceSpriteSelection.faceSprite = faceSpriteOptions[index].sprite;
+
+        // Update the model
+        var selectedFaceSprite = faceSpriteOptions[index].displayName;
+        _model.SetBciOption(ref _model.P300Settings.Test.FaceSpriteSelection, selectedFaceSprite);
     }
 
     private void OnChangeSeparateButtons(bool isOn)

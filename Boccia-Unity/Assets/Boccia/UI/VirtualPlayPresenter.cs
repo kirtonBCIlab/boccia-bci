@@ -14,12 +14,13 @@ using FanNamespace;
 public class VirtualPlayPresenter : MonoBehaviour
 {
     // TODO - This is a dummy example, replace with real ramp prefab object, etc
+    [Header("Testing Buttons")]
     public Button rotateLeftButton;
     public Button rotateRightButton;
     public Button moveUpButton;
     public Button moveDownButton;
 
-
+    [Header("Virtual Play Buttons")]
     public Button resetRampButton;
     public Button resetBallButton;
     public Button dropBallButton;
@@ -29,7 +30,7 @@ public class VirtualPlayPresenter : MonoBehaviour
     public Button separateDropButton;
     private List<Button> virtualPlayButtons;
 
-
+    [Header("Court View")]
     public Button toggleCameraButton;
     public Camera VirtualPlayCamera;
     private bool isCourtViewOn;

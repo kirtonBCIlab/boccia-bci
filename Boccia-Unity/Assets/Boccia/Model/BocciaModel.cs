@@ -537,6 +537,7 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.P300Settings.Train.StimulusOffDuration = 0.075f;
         bocciaData.P300Settings.Train.StimulusType = BocciaStimulusType.SolidColor;
         bocciaData.P300Settings.Train.FlashColour = Color.red;
+        bocciaData.P300Settings.Train.FaceSpriteSelection = "Trump";
 
         // Reset P300 Testing settings
         bocciaData.P300Settings.Test.NumFlashes = 5;
@@ -546,6 +547,7 @@ public class BocciaModel : Singleton<BocciaModel>
         bocciaData.P300Settings.Test.StimulusOffDuration = 0.075f;
         bocciaData.P300Settings.Test.StimulusType = BocciaStimulusType.SolidColor;
         bocciaData.P300Settings.Test.FlashColour = Color.red;
+        bocciaData.P300Settings.Test.FaceSpriteSelection = "Trump";
 
         bocciaData.P300Settings.SeparateButtons = false;
 
