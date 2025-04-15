@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using FanNamespace;
-using UnityEngine.UI;
-
+using BCIEssentials.StimulusObjects;
+using BCIEssentials.StimulusEffects;
 
 
 public class FanPresenter : MonoBehaviour
@@ -146,18 +144,43 @@ public class FanPresenter : MonoBehaviour
         }
     }
 
+    private bool FanSegmentFlashing()
+    {
+        // Get all SPO components in children
+        SPO[] spos = GetComponentsInChildren<SPO>();
+        
+        // Check if any SPO has a playing flash effect
+        foreach (SPO spo in spos)
+        {
+            // Get the flash effect component
+            FanSegmentColorFlashEffect flashEffect = spo.GetComponent<FanSegmentColorFlashEffect>();
+            if (flashEffect != null && flashEffect.IsPlaying)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     private IEnumerator GenerateFanCoroutine()
     {
-        fanGenerator.DestroyFanSegments();
-
-        // Force a frame to force fan segments destruction complete before generating the fan shape
-        yield return null;
-
+        while (FanSegmentFlashing())
+        {
+            // Wait until the fan segments are not flashing
+            yield return null;
+        }
+        
         // If the ramp is moving, wait for it to stop before generating the fan
         while (_model.IsRampMoving)
         {
             yield return null;
         }
+
+        fanGenerator.DestroyFanSegments();
+
+        // Force a frame to force fan segments destruction complete before generating the fan shape
+        yield return null;
 
         // Reset to original rotation to avoid cumulative effects
         CenterToOrigin();
