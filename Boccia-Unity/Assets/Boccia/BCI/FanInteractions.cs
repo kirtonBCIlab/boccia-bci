@@ -81,7 +81,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             // Store the target segment's SPO
             SPO segmentSPO = segment.GetComponent<SPO>();
             _model.SetTargetElement(segmentSPO);
-            Debug.Log($"Target element set: {segment.name}");
+            _model.IncrementTargetCount();
+            Debug.Log($"Target #{_model.TargetCount} set: {segment.name}");
             return;
         }
 

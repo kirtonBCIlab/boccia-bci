@@ -119,7 +119,8 @@ public class PlayScreenPresenter : MonoBehaviour
             // Store the target button's SPO
             SPO buttonSPO = button.GetComponent<SPO>();
             _model.SetTargetElement(buttonSPO);
-            Debug.Log($"Target element set: {button.name}");
+            _model.IncrementTargetCount();
+            Debug.Log($"Target #{_model.TargetCount} set: {button.name}");
         }
         else
         {
@@ -192,6 +193,9 @@ public class PlayScreenPresenter : MonoBehaviour
         }
 
         ToggleSeparateButtons(_model.P300Settings.SeparateButtons);
+
+        // Reset target count
+        _model.ResetTargetCount();
     }
 
     void OnDisable()
