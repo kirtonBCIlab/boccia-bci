@@ -78,7 +78,11 @@ public class FanGenerator : MonoBehaviour
         Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
         float fanSegmentHeight = CalculateFanSegmentHeight(innerRadius, outerRadius);
 
-        CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+        // Create the face sprite objects if stimulus is set to face sprite
+        if (IsFaceSpriteStimulus())
+        {
+            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+        }
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
