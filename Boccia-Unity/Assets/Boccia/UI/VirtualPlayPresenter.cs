@@ -141,6 +141,7 @@ public class VirtualPlayPresenter : MonoBehaviour
             // Store the target button's SPO
             SPO buttonSPO = button.GetComponent<SPO>();
             model.SetTargetElement(buttonSPO);
+            Debug.Log($"Target element set: {button.name}");
         }
         else
         {

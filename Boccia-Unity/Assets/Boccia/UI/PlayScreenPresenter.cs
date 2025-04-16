@@ -119,6 +119,7 @@ public class PlayScreenPresenter : MonoBehaviour
             // Store the target button's SPO
             SPO buttonSPO = button.GetComponent<SPO>();
             _model.SetTargetElement(buttonSPO);
+            Debug.Log($"Target element set: {button.name}");
         }
         else
         {
