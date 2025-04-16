@@ -389,6 +389,12 @@ public class FanGenerator : MonoBehaviour
 
     public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, float segmentHeight)
     {
+        // Skip this method for the game options menu fan
+        if (_model.CurrentScreen == BocciaScreen.GameOptions)
+        {
+            return;
+        }
+
         // Create GameObject for the face sprite as a child of the fan segment
         spriteObject = new GameObject("FaceSprite");
         spriteObject.transform.SetParent(segment.transform);
