@@ -54,6 +54,7 @@ public class BocciaModel : Singleton<BocciaModel>
     public bool BciTrained { get; private set; }
 
     public SPO TargetElementSPO;
+    public int TargetCount;
 
     // Expose the entire P300SettingsContainer via a property
     public P300SettingsContainer P300Settings => bocciaData.P300Settings;
@@ -514,6 +515,18 @@ public class BocciaModel : Singleton<BocciaModel>
     public void SetTargetElement(SPO targetSPO)
     {
         TargetElementSPO = targetSPO;
+    }
+
+    // Increment the target count
+    public void IncrementTargetCount()
+    {
+        TargetCount++;
+    }
+    
+    // Reset the count of the targets to 0
+    public void ResetTargetCount()
+    {
+        TargetCount = 0;
     }
 
     public void ClearTargetElement()

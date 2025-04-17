@@ -80,6 +80,9 @@ public class VirtualPlayPresenter : MonoBehaviour
         }
 
         ToggleSeparateButtons(model.P300Settings.SeparateButtons);
+
+        // Reset target count
+        model.ResetTargetCount();
     }
 
     private void InitializeSeparateButtons()
@@ -141,6 +144,8 @@ public class VirtualPlayPresenter : MonoBehaviour
             // Store the target button's SPO
             SPO buttonSPO = button.GetComponent<SPO>();
             model.SetTargetElement(buttonSPO);
+            model.IncrementTargetCount();
+            Debug.Log($"Target #{model.TargetCount} set: {button.name}");
         }
         else
         {
