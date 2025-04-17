@@ -78,7 +78,11 @@ public class FanGenerator : MonoBehaviour
         Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
         float fanSegmentHeight = CalculateFanSegmentHeight(innerRadius, outerRadius);
 
-        CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+        // Create the face sprite objects if stimulus is set to face sprite
+        if (IsFaceSpriteStimulus())
+        {
+            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+        }
     }
 
    public void GenerateBackButton(FanSettings fanSettings, BackButtonPositioningMode positionMode)
@@ -389,6 +393,12 @@ public class FanGenerator : MonoBehaviour
 
     public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, float segmentHeight)
     {
+        // Skip this method for the game options menu fan
+        if (_model.CurrentScreen == BocciaScreen.GameOptions)
+        {
+            return;
+        }
+
         // Create GameObject for the face sprite as a child of the fan segment
         spriteObject = new GameObject("FaceSprite");
         spriteObject.transform.SetParent(segment.transform);
