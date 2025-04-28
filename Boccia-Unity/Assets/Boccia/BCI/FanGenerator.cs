@@ -77,11 +77,12 @@ public class FanGenerator : MonoBehaviour
         GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh);
         Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
         float fanSegmentHeight = CalculateFanSegmentHeight(innerRadius, outerRadius);
+        float fanSegmentWidth = CalculateFanSegmentWidth(startAngle, endAngle);
 
         // Create the face sprite objects if stimulus is set to face sprite
         if (IsFaceSpriteStimulus())
         {
-            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight, fanSegmentWidth);
         }
     }
 
@@ -391,7 +392,7 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, float segmentHeight)
+    public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, float segmentHeight, float? segmentWidth = null)
     {
         // Skip this method for the game options menu fan
         if (_model.CurrentScreen == BocciaScreen.GameOptions)
@@ -408,8 +409,20 @@ public class FanGenerator : MonoBehaviour
         // Set the transform of the sprite object based on the segment mid point
         Vector3 spriteObjectPosition = new Vector3(segmentMidPoint.x, segmentMidPoint.y, -0.01f);
         spriteObject.transform.localPosition = spriteObjectPosition;
-        float currentSize = spriteRenderer.bounds.size.y;
-        float sizeRatio = segmentHeight / currentSize;
+        float currentSizeY = spriteRenderer.bounds.size.y;
+        float heightRatio = segmentHeight / currentSizeY;
+
+        float sizeRatio = 0;
+        if (segmentWidth != null)
+        {
+            float currentSizeX = spriteRenderer.bounds.size.x;
+            float widthRatio = segmentWidth.Value / currentSizeX;
+            sizeRatio = Mathf.Min(heightRatio, widthRatio);
+        }
+        else
+        {
+            sizeRatio = heightRatio;
+        }
 
         // Set the rotation and scaleof the sprite object
         Quaternion spriteRotation;
@@ -466,5 +479,11 @@ public class FanGenerator : MonoBehaviour
     {
         float segmentHeight = outerRadius - innerRadius;
         return segmentHeight;
+    }
+
+    private float CalculateFanSegmentWidth(float startAngle, float endAngle)
+    {
+        float segmentWidth = endAngle - startAngle;
+        return segmentWidth;
     }
 }   
