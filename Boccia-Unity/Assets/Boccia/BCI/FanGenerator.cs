@@ -26,7 +26,7 @@ public class FanGenerator : MonoBehaviour
     [SerializeField]
     private float _faceSpriteScaleFactorCoarseFan = 1.5f;
     [SerializeField]
-    private float _faceSpriteScaleFactorFineFan = 1.2f;
+    private float _faceSpriteScaleFactorFineFan = 0.9f;
     
     private GameObject spriteObject;
     private BocciaStimulusType _stimulusType;

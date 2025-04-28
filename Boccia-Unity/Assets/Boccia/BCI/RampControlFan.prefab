@@ -71,7 +71,7 @@ MonoBehaviour:
   faceSpriteSelection: {fileID: 0}
   faceSpriteRotationCorrector: {fileID: 0}
   _faceSpriteScaleFactorCoarseFan: 1.5
-  _faceSpriteScaleFactorFineFan: 1.2
+  _faceSpriteScaleFactorFineFan: 0.9
 --- !u!114 &-7705321522961072228
 MonoBehaviour:
   m_ObjectHideFlags: 0
