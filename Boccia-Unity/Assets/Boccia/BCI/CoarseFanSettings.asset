@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8ec9deed7acbc409e8a241cd3b84dc, type: 3}
   m_Name: CoarseFanSettings
   m_EditorClassIdentifier: 
-  columnSpacing: 0.5
-  rowSpacing: 0.1
-  _theta: 160
+  columnSpacing: 2
+  rowSpacing: 0.25
+  _theta: 100
   _outerRadius: 6
   _innerRadius: 3.5
-  _nColumns: 7
-  _nRows: 5
+  _nColumns: 3
+  _nRows: 3
   _elevationRange: 100
   _backButtonWidth: 1
-  _dropButtonHeight: 0.5
+  _dropButtonHeight: 1.5
   annotationFontSize: 5
