@@ -54,7 +54,8 @@ public class FanInteractions : MonoBehaviour, IPointerClickHandler
             // Add SPO component to make segment selectable with BCI
             child.tag = "BCI";
             SPO spo = child.AddComponent<SPO>();
-            spo.ObjectID = -100;
+            // Note: ObjectID property no longer exists in updated BCI Essentials package
+            // The system now uses Unity's GetInstanceID() method for unique identification
             spo.Selectable = true;
 
             spo.OnStimulusTriggered.AddListener(() => child.GetComponent<FanSegmentColorFlashEffect>().SetOn());
