@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LSL;
 using BCIEssentials.StimulusObjects;
+using BCIEssentials.ControllerBehaviors;
 
 public class TargetElementLSLStream : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class TargetElementLSLStream : MonoBehaviour
     private StreamInfo _streamInfo;
     private string[] _sample;
     private BocciaModel _model;
-    private int _WaitTimeforObjectID = 5;   // Wait time for ObjectID to be populated [sec]
+    
     
     // Start is called before the first frame update
     void Start()
@@ -49,7 +50,7 @@ public class TargetElementLSLStream : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            // Get and send the object ID of the target element when stimulus starts
+            // Get and send the segment ID and selectable pool index of the target element
             SendTargetElementObjectID();
         }
     }
@@ -70,29 +71,37 @@ public class TargetElementLSLStream : MonoBehaviour
             return;
         }
 
-        // Make sure to wait for the object ID to be set
-        float timer = 0;
-        while (targetSPO.ObjectID == -100 && timer < _WaitTimeforObjectID)
-        {
-            timer += Time.deltaTime;
-        }
-        if (targetSPO.ObjectID == -100)
-        {
-            // Show warning if object ID still not set after 5 seconds
-            Debug.LogWarning("Object ID not set yet.");
-        }
-
-        // Get the object ID and selectable pool index of the target element
-        string objectID = targetSPO.ObjectID.ToString();
-        string selectablePoolIndex = targetSPO.SelectablePoolIndex.ToString();
+        // Get the index of this SPO in the selectable objects list - this is the same
+        // index used by the P300ControllerBehavior for LSL markers during stimulus presentation
+        string selectablePoolIndex = "Unknown";
+        string segmentID = "Unknown";
         
-        _sample[0] = "ObjectID: " + objectID;
+        // Try to find the BCI controller to get the selectable SPO index
+        var bciController = FindObjectOfType<CustomP300ControllerBehavior>();
+        if (bciController != null)
+        {
+            var selectableSPOs = bciController.GetCameraVisibleSPOs();
+            int index = selectableSPOs.IndexOf(targetSPO);
+            if (index >= 0)
+            {
+                selectablePoolIndex = index.ToString();
+            }
+        }
+        
+        // Also try to get the FanSegmentIdentifier ID if it exists (for fan segments)
+        var segmentIdentifier = targetSPO.GetComponent<FanSegmentIdentifier>();
+        if (segmentIdentifier != null)
+        {
+            segmentID = segmentIdentifier.SegmentID.ToString();
+        }
+        
+        _sample[0] = "SegmentID: " + segmentID;
         _sample[1] = "iSPO: " + selectablePoolIndex;
 
         // Send the sample to the LSL stream
         _outlet.push_sample(_sample);
-        // Debug.Log("Target element object ID sent to LSL stream: " + _sample[0]);
-        // Debug.Log("Target element selectable pool index sent to LSL stream: " + _sample[1]);
+        Debug.Log("Target element segment ID sent to LSL stream: " + _sample[0]);
+        Debug.Log("Target element selectable pool index sent to LSL stream: " + _sample[1]);
 
         // Clear the target element SPO in the model
         _model.ClearTargetElement();
