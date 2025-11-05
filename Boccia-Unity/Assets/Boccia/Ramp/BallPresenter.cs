@@ -186,13 +186,13 @@ public class BallPresenter : MonoBehaviour
         BallDropped?.Invoke(_activeBall);
 
         // Velocity threshold
-        while (_ballRigidbody.velocity.magnitude > 0.01f)
+        while (_ballRigidbody.linearVelocity.magnitude > 0.01f)
         {
             yield return new WaitForSecondsRealtime(0.1f); 
         }
 
         // Stop the ball
-        _ballRigidbody.velocity = Vector3.zero;
+        _ballRigidbody.linearVelocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
 
         // If the bar is NOT closed, wait before creating a new ball
