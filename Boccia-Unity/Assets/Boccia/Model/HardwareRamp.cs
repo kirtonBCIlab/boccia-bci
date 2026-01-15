@@ -37,6 +37,7 @@ public class HardwareRamp : RampController, ISerialController
 
     public bool IsBarOpen { get; private set;}
     public bool IsMoving { get; set; }
+    public bool IsSweeping { get; set; }
 
     public bool SerialEnabled { get; private set; }    
 
@@ -61,6 +62,7 @@ public class HardwareRamp : RampController, ISerialController
         Elevation = _model.RampSettings.ElevationOrigin;
         IsBarOpen = false; // Initialize the bar state as closed
         IsMoving = false;
+        IsSweeping = false;
         _serialCommand = "";
         _serialCommandsList = new List<string>();
     }
@@ -89,7 +91,7 @@ public class HardwareRamp : RampController, ISerialController
         }        
         AddSerialCommandToList($"rr{degrees.ToString("0")}");
         _model.SendSerialCommandList();
-        // Debug.Log($"Hardware rotate by: {degrees}");
+        Debug.Log($"Hardware rotate by: {degrees}");
         SendChangeEvent();
     }
 
@@ -109,6 +111,30 @@ public class HardwareRamp : RampController, ISerialController
         AddSerialCommandToList($"ra{Rotation.ToString("0")}");
         _model.SendSerialCommandList();
         // Debug.Log($"Hardware rotate to: {Rotation}");
+        SendChangeEvent();
+    }
+
+    public void SetRotation(float degrees)
+    {
+        // Same as RotateTo, without sending the serial command
+        Rotation = degrees;
+        // Debug.Log($"Hardware rotate to: {Rotation}");
+        SendChangeEvent();
+    }
+
+    public void RotationSweep(int direction)
+    {
+        var rotationLimits = new Dictionary<int, float>
+        {
+            { 0, _model.RampSettings.RotationLimitMin },
+            { 1, _model.RampSettings.RotationLimitMax }
+        };
+
+        Rotation = rotationLimits[direction];
+        
+        AddSerialCommandToList($"rs{direction}");
+        _model.SendSerialCommandList();
+        
         SendChangeEvent();
     }
 
@@ -157,6 +183,30 @@ public class HardwareRamp : RampController, ISerialController
         AddSerialCommandToList($"ea{Elevation.ToString("0")}");
         _model.SendSerialCommandList();
         // Debug.Log($"Hardware elevate to: {Elevation}");
+        SendChangeEvent();
+    }
+
+    public void SetElevation(float elevation)
+    {
+        // Same as ElevateTo, without sending the serial command
+        Elevation = elevation;
+        // Debug.Log($"Hardware elevate to: {Elevation}");
+        SendChangeEvent();
+    }
+
+    public void ElevateSweep(int direction)
+    {
+        var elevationLimits = new Dictionary<int, float>
+        {
+            { 0, _model.RampSettings.ElevationLimitMin },
+            { 1, _model.RampSettings.ElevationLimitMax }
+        };
+
+        Elevation = elevationLimits[direction];
+
+        AddSerialCommandToList($"es{direction}");
+        _model.SendSerialCommandList();
+
         SendChangeEvent();
     }
 

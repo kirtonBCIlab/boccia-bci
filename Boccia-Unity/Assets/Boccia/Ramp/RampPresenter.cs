@@ -87,6 +87,10 @@ public class RampPresenter : MonoBehaviour
 
     private IEnumerator RotationVisualization()
     {
+        // Determine if the rotation visualization started because of a sweeping movement
+        bool RotationDueToSweeping = false;
+        if (_model.IsSweeping) { RotationDueToSweeping = true; }
+
         // Starting and ending rotation points
         Quaternion startQuaternion = rotationShaft.transform.localRotation;
         Quaternion endQuaternion = Quaternion.Euler(rotationShaft.transform.localEulerAngles.x, _model.RampRotation, rotationShaft.transform.localEulerAngles.z);
@@ -150,15 +154,49 @@ public class RampPresenter : MonoBehaviour
             float t = currentAngle / deltaAngle;
             rotationShaft.transform.localRotation = Quaternion.Slerp(startQuaternion, endQuaternion, t);
             
+            // Update the current rotation angle in the model if it has changed significantly
+            float newRotationAngle = rotationShaft.transform.localEulerAngles.y;
+            if (Mathf.Abs(newRotationAngle - _model.CurrentRotationAngle) > 1f) // Adjust the threshold as needed
+            {
+                _model.CurrentRotationAngle = newRotationAngle;
+            }
+
+            // If the rotation visualization started do to a sweeping movement
+            if (RotationDueToSweeping)
+            {
+                // Normalize the rotation angle to be between -180 and 180 deg
+                float normalizedStopAngle = rotationShaft.transform.localEulerAngles.y; 
+                normalizedStopAngle = (normalizedStopAngle > 180) ? normalizedStopAngle - 360 : normalizedStopAngle;
+
+                // - Check if the Sweeping flag is down, if so stop the sweeping movement.
+                if (_model.IsSweeping == false)
+                {                    
+                    // Set rotation without sending serial command
+                    _model.SetRotation(normalizedStopAngle); 
+                    yield break;
+                }
+
+                // - Check if the target has been reached, if so set target to oposite direction to keep sweeping
+                if (Mathf.Abs(normalizedStopAngle - targetAngle) < 1f)
+                {
+                    _model.RotationSweep(ToggleRotationWhileSweeping(targetAngle));
+                    yield break;
+                }   
+            }
+            
             yield return null;
         }
 
         // Ensure the final rotation matches exactly
         rotationShaft.transform.localRotation = endQuaternion;
+        _model.CurrentRotationAngle = rotationShaft.transform.localEulerAngles.y;
     }
 
     private IEnumerator ElevationVisualization()
     {
+        bool ElevationDueToSweeping = false;
+        if (_model.IsSweeping) { ElevationDueToSweeping = true; }
+
         // Store the starting elevation
         Vector3 startElevation = elevationMechanism.transform.localPosition;
 
@@ -189,6 +227,31 @@ public class RampPresenter : MonoBehaviour
             // float normalizedProgress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsedTime / totalTime));
             float normalizedProgress = elapsedTime / totalTime;
 
+             // If the rotation visualization started do to a sweeping movement
+            if (ElevationDueToSweeping)
+            {
+                // Convert the current local position to a scalar value
+                float currentElevationScalar = Vector3.Dot(elevationMechanism.transform.localPosition, elevationDirection);
+
+                // Normalize the scalar value to a percentage (0 to 1)
+                float normalizedElevation = 100 * (currentElevationScalar - ElevationVisualizationMin) / (ElevationVisualizationMax - ElevationVisualizationMin);
+
+                // - Check if the Sweeping flag is down, if so stop the sweeping movement.
+                if (_model.IsSweeping == false)
+                {                    
+                    // Set rotation without sending serial command
+                    _model.SetElevation(normalizedElevation); 
+                    yield break;
+                }
+
+                // - Check if the target has been reached, if so set target to oposite direction to keep sweeping
+                if (Mathf.Abs(normalizedElevation - _model.RampElevation) < 1f)
+                {
+                    _model.ElevationSweep(ToggleElevationWhileSweeping(_model.RampElevation));
+                    yield break;
+                }   
+            }
+
             // Interpolate between the start and target elevation
             elevationMechanism.transform.localPosition = Vector3.Lerp(startElevation, targetElevation, normalizedProgress);
 
@@ -199,6 +262,40 @@ public class RampPresenter : MonoBehaviour
         elevationMechanism.transform.localPosition = targetElevation;
     }
 
+    /// <summary>
+    /// Toggles the rotation of the ramp while sweeping
+    /// </summary>
+    /// <param name="targetRotation">Current target rotation</param>
+    /// <returns>Target rotation in the opposite direction</returns>
+    private int ToggleRotationWhileSweeping(float targetRotation)
+    {
+        if (targetRotation == _model.RampSettings.RotationLimitMax)
+        {
+            return 0;
+        }
+        else 
+        {
+            return 1;
+        }
+    }
+
+    /// <summary>
+    /// Toggles the elevation of the ramp while sweeping
+    /// </summary>
+    /// <param name="targetElevation">Current target elevation</param>
+    /// <returns></returns>Target elevation in the opposite direction
+    private int ToggleElevationWhileSweeping(float targetElevation)
+    {
+        if (targetElevation == _model.RampSettings.ElevationLimitMax)
+        {
+            return 0;
+        }
+        else 
+        {
+            return 1;
+        }
+    }
+
     private void ResetRampWhenPlayModeChanges()
     {
         BocciaGameMode currentPlayMode = _model.GameMode;
@@ -206,11 +303,10 @@ public class RampPresenter : MonoBehaviour
 
         if (currentlyInPlayMode && _lastPlayMode != currentPlayMode)
         {
-            Debug.Log("Resetting ramp position");
+            // Debug.Log("Resetting ramp position");
             _model.ResetRampPosition();
             _lastPlayMode = currentPlayMode;
         }
     }
-
 }
 
