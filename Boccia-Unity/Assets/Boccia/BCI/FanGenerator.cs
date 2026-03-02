@@ -16,7 +16,7 @@ public class FanGenerator : MonoBehaviour
 
     public GameObject fanAnnotations;
 
-    [Header("Stimulus Settings")]
+    [Header("Face Sprite Stimulus Settings")]
     public FaceSpriteSelector faceSpriteSelection;
 
     [SerializeField]
@@ -26,7 +26,11 @@ public class FanGenerator : MonoBehaviour
     [SerializeField]
     private float _faceSpriteScaleFactorCoarseFan = 1.5f;
     [SerializeField]
-    private float _faceSpriteScaleFactorFineFan = 1.2f;
+    private float _faceSpriteScaleFactorFineFan = 0.9f;
+    [SerializeField]
+    private float _faceSpriteScaleFactorBackButton = 0.4f;
+    [SerializeField]
+    private float _faceSpriteScaleFactorDropButton = 1.2f;
     
     private GameObject spriteObject;
     private BocciaStimulusType _stimulusType;
@@ -77,11 +81,12 @@ public class FanGenerator : MonoBehaviour
         GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh);
         Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
         float fanSegmentHeight = CalculateFanSegmentHeight(innerRadius, outerRadius);
+        float fanSegmentWidth = CalculateFanSegmentWidth(startAngle, endAngle);
 
         // Create the face sprite objects if stimulus is set to face sprite
         if (IsFaceSpriteStimulus())
         {
-            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight, fanSegmentWidth);
         }
     }
 
@@ -116,8 +121,8 @@ public class FanGenerator : MonoBehaviour
 
         if (IsFaceSpriteStimulus())
         {
-            float faceSpriteHeight = backButtonHeight / 2.5f; // So the face sprite doesn't take up the entire back button
-            CreateSegmentSprite(backButton, backButtonMidpoint, faceSpriteHeight);
+            // float faceSpriteHeight = backButtonHeight / 2.5f; // So the face sprite doesn't take up the entire back button
+            CreateSegmentSprite(backButton, backButtonMidpoint, backButtonHeight);
         }
     }
 
@@ -391,7 +396,7 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    public void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, float segmentHeight)
+    private void CreateSegmentSprite(GameObject segment, Vector3 segmentMidPoint, float segmentHeight, float? segmentWidth = null)
     {
         // Skip this method for the game options menu fan
         if (_model.CurrentScreen == BocciaScreen.GameOptions)
@@ -408,28 +413,60 @@ public class FanGenerator : MonoBehaviour
         // Set the transform of the sprite object based on the segment mid point
         Vector3 spriteObjectPosition = new Vector3(segmentMidPoint.x, segmentMidPoint.y, -0.01f);
         spriteObject.transform.localPosition = spriteObjectPosition;
-        float currentSize = spriteRenderer.bounds.size.y;
-        float sizeRatio = segmentHeight / currentSize;
+        float currentSizeY = spriteRenderer.bounds.size.y;
+        float heightRatio = segmentHeight / currentSizeY;
+
+        float sizeRatio = 0;
+        if (segmentWidth != null)
+        {
+            float currentSizeX = spriteRenderer.bounds.size.x;
+            float widthRatio = segmentWidth.Value / currentSizeX;
+            sizeRatio = Mathf.Min(heightRatio, widthRatio);
+        }
+        else
+        {
+            sizeRatio = heightRatio;
+        }
 
         // Set the rotation and scaleof the sprite object
         Quaternion spriteRotation;
-        float faceSpriteScale;
         if (_fanPositioningMode == FanPositioningMode.CenterToRails)
         {
             spriteRotation = Quaternion.Euler(-90, faceSpriteRotationCorrector.transform.eulerAngles.y, 0);
-            faceSpriteScale = sizeRatio * _faceSpriteScaleFactorFineFan;
         }
         else
         {
             spriteRotation = Quaternion.Euler(90, 0, 0);
-            faceSpriteScale = sizeRatio * _faceSpriteScaleFactorCoarseFan;
         }
-
         spriteObject.transform.rotation = spriteRotation;
+
+        float faceSpriteScale = GetFaceSpriteScaleFactor(segment) * sizeRatio;
         spriteRenderer.transform.localScale = Vector3.one * faceSpriteScale;
 
         // Disable sprite initially
         spriteObject.SetActive(false);
+    }
+
+    private float GetFaceSpriteScaleFactor(GameObject segment)
+    {
+        if (segment.name == "BackButton")
+        {
+            return _faceSpriteScaleFactorBackButton; // Adjust this value as needed for the back button
+        }
+
+        if (segment.name == "DropButton")
+        {
+            return _faceSpriteScaleFactorDropButton; // Adjust this value as needed for the drop button
+        }
+
+        if (_fanPositioningMode == FanPositioningMode.CenterToRails)
+        {
+            return _faceSpriteScaleFactorFineFan;
+        }
+        else
+        {
+            return _faceSpriteScaleFactorCoarseFan;
+        }
     }
 
     private bool IsFaceSpriteStimulus()
@@ -466,5 +503,11 @@ public class FanGenerator : MonoBehaviour
     {
         float segmentHeight = outerRadius - innerRadius;
         return segmentHeight;
+    }
+
+    private float CalculateFanSegmentWidth(float startAngle, float endAngle)
+    {
+        float segmentWidth = endAngle - startAngle;
+        return segmentWidth;
     }
 }   
