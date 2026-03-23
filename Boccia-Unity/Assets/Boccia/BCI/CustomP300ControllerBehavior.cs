@@ -820,7 +820,7 @@ namespace BCIEssentials.ControllerBehaviors
 
             if (_objectIDtoSPODict.ContainsKey(objectID))
             {
-                var spo = _selectableSPOs[objectID];
+                var spo = _objectIDtoSPODict[objectID];
                 if (spo == null)
                 {
                     Debug.LogWarning("SPO is now null and can't be selected");
