@@ -36,7 +36,15 @@ namespace BCIEssentials.ControllerBehaviors
 
         public override void SelectSPO(int objectID, bool stopStimulusRun = false)
         {
-            int ResolveIndex(int prediction) => prediction;
+            int ResolveIndex(int prediction, int count)
+            {
+                if (prediction >= 0 && prediction < count)
+                {
+                    return prediction;
+                }
+
+                return -1;
+            }
 
             if (_selectableSPOs.Count == 0)
             {
@@ -44,16 +52,16 @@ namespace BCIEssentials.ControllerBehaviors
                 return;
             }
 
-            int index = ResolveIndex(objectID);
-            if (index < 0 || index >= _selectableSPOs.Count || _selectableSPOs[index] == null)
+            int index = ResolveIndex(objectID, _selectableSPOs.Count);
+            if (index < 0 || _selectableSPOs[index] == null)
             {
                 Debug.LogWarning($"[SelectSPO] Prediction {objectID} invalid for current pool. Repopulating and retrying...");
                 PopulateObjectList(myPopMethod);
 
-                index = ResolveIndex(objectID);
-                if (index < 0 || index >= _selectableSPOs.Count || _selectableSPOs[index] == null)
+                index = ResolveIndex(objectID, _selectableSPOs.Count);
+                if (index < 0 || _selectableSPOs[index] == null)
                 {
-                    Debug.LogError($"[SelectSPO] Unable to resolve prediction {objectID} to a live SPO by index. Available count: {_selectableSPOs.Count}");
+                    Debug.LogError($"[SelectSPO] Unable to resolve prediction {objectID} to a live SPO by 0-based index. Valid range: 0..{_selectableSPOs.Count - 1}");
                     return;
                 }
             }
