@@ -35,6 +35,10 @@ public class FanGenerator : MonoBehaviour
 
     private BocciaModel _model;
 
+    [Header("Debug")]
+    [SerializeField]
+    private bool _debugMode = false;
+
     void Start()
     {
         _model = BocciaModel.Instance;
@@ -46,7 +50,9 @@ public class FanGenerator : MonoBehaviour
     }
 
     public void GenerateFanShape(FanSettings fanSettings)
-    {        
+    {
+        int objectNumber = 0;
+
         float angleStep = fanSettings.Theta / fanSettings.NColumns;
         float radiusStep = (fanSettings.OuterRadius - fanSettings.InnerRadius) / fanSettings.NRows;
 
@@ -65,23 +71,30 @@ public class FanGenerator : MonoBehaviour
                 float innerRadius = fanSettings.InnerRadius + j * (radiusStep + fanSettings.rowSpacing);
                 float outerRadius = innerRadius + radiusStep;
 
-                CreateFanSegment(angleStep, startAngle, endAngle, innerRadius, outerRadius);
+                CreateFanSegment(angleStep, startAngle, endAngle, innerRadius, outerRadius, objectNumber);
+                objectNumber++;
             }
         }
     }
 
-    public void CreateFanSegment(float angleStep, float startAngle, float endAngle, float innerRadius, float outerRadius)
+    public void CreateFanSegment(float angleStep, float startAngle, float endAngle, float innerRadius, float outerRadius, int objectNumber)
     {
         int segments = 100; // Number of segments to approximate the arc
-        Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
-        GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh);
         Vector3 fanSegmentMidpoint = CalculateSegmentMidpoint(startAngle, endAngle, innerRadius, outerRadius);
+        Mesh fanMesh = GenerateFanMesh(startAngle, endAngle, innerRadius, outerRadius, segments);
+        OffsetMeshVertices(fanMesh, -fanSegmentMidpoint);
+        GameObject fanSegment = CreateMeshObject("FanSegment", fanMesh, 0f, fanSegmentMidpoint);
         float fanSegmentHeight = CalculateFanSegmentHeight(innerRadius, outerRadius);
+
+        if (_debugMode)
+        {
+            CreateSegmentNumberLabel(fanSegment, objectNumber, Vector3.zero, fanSegmentHeight);
+        }
 
         // Create the face sprite objects if stimulus is set to face sprite
         if (IsFaceSpriteStimulus())
         {
-            CreateSegmentSprite(fanSegment, fanSegmentMidpoint, fanSegmentHeight);
+            CreateSegmentSprite(fanSegment, Vector3.zero, fanSegmentHeight);
         }
     }
 
@@ -147,11 +160,11 @@ public class FanGenerator : MonoBehaviour
         }
     }
 
-    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh, float eulerRotation = 0)
+    private GameObject CreateMeshObject(string objectName, Mesh generatedMesh, float eulerRotation = 0, Vector3 localPosition = default)
     {
         GameObject meshObject = new(objectName);
         meshObject.transform.SetParent(transform);
-        meshObject.transform.localPosition = Vector3.zero;
+        meshObject.transform.localPosition = localPosition;
         meshObject.transform.localEulerAngles = new Vector3(0, 0, eulerRotation);
         meshObject.transform.localScale = Vector3.one;
 
@@ -171,6 +184,17 @@ public class FanGenerator : MonoBehaviour
         meshRenderer.SetPropertyBlock(materialPropertyBlock);
 
         return meshObject;
+    }
+
+    private void OffsetMeshVertices(Mesh mesh, Vector3 offset)
+    {
+        Vector3[] vertices = mesh.vertices;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] += offset;
+        }
+        mesh.vertices = vertices;
+        mesh.RecalculateBounds();
     }
 
     private Mesh GenerateFanMesh(float startAngle, float endAngle, float innerRadius, float outerRadius, int segments)
@@ -430,6 +454,28 @@ public class FanGenerator : MonoBehaviour
 
         // Disable sprite initially
         spriteObject.SetActive(false);
+    }
+
+    private void CreateSegmentNumberLabel(GameObject segment, int objectNumber, Vector3 segmentMidpoint, float segmentHeight)
+    {
+        GameObject numberLabelObject = new("SegmentNumberLabel");
+        numberLabelObject.transform.SetParent(segment.transform);
+        numberLabelObject.transform.localPosition = new Vector3(segmentMidpoint.x, segmentMidpoint.y, -0.02f);
+        numberLabelObject.transform.localRotation = Quaternion.identity;
+        numberLabelObject.transform.localScale = Vector3.one * 0.1f;
+
+        TextMeshPro numberLabel = numberLabelObject.AddComponent<TextMeshPro>();
+        numberLabel.text = objectNumber.ToString();
+        numberLabel.alignment = TextAlignmentOptions.Center;
+        numberLabel.color = GetContrastingColor(colour);
+        numberLabel.fontSize = 20;
+    }
+
+    private Color GetContrastingColor(Color baseColor)
+    {
+        // Rec. 709 luma approximation for perceived brightness.
+        float luma = 0.2126f * baseColor.r + 0.7152f * baseColor.g + 0.0722f * baseColor.b;
+        return luma > 0.5f ? Color.black : Color.white;
     }
 
     private bool IsFaceSpriteStimulus()
